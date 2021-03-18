@@ -3,6 +3,8 @@
 !.idea/artifacts
 !.idea/scopes
 !.idea/copyright
+!.idea/codeStyles
+!.idea/misc.xml
 
 *.iml
 *.ipr
