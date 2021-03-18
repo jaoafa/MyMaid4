@@ -1,6 +1,8 @@
 # User-specific stuff
 .idea/*
 !.idea/artifacts
+!.idea/scopes
+!.idea/copyright
 
 *.iml
 *.ipr
