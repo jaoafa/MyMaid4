@@ -2,7 +2,7 @@
   <artifact name="JarOutput">
     <output-path>$PROJECT_DIR$/server/plugins</output-path>
     <root id="root">
-      <element id="file-copy" path="$PROJECT_DIR$/target/MyMaid4-1.0.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/target/MyMaid4.jar" />
     </root>
   </artifact>
 </component>

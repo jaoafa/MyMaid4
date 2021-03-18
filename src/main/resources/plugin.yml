@@ -1,6 +1,6 @@
 name: MyMaid4
 version: ${project.version}
-main: org.jaoafa.mymaid4.MyMaid4
+main: com.jaoafa.mymaid4.Main
 api-version: 1.16
 author: mine_book000
 database: true

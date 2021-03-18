@@ -5,7 +5,11 @@
     <option name="WORKING_DIRECTORY" value="N:\Programming\Java\workspace\MyMaid4" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <method v="2">
-      <option name="RunConfigurationTask" enabled="true" run_configuration_name="MyMaid4 build" run_configuration_type="MavenRunConfiguration" />
+        <option name="RunConfigurationTask" enabled="true" run_configuration_name="MyMaid4 build"
+                run_configuration_type="MavenRunConfiguration"/>
+        <option name="BuildArtifacts" enabled="true">
+            <artifact name="JarOutput"/>
+        </option>
     </method>
   </configuration>
 </component>
