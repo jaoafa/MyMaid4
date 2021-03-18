@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ReBuild and Reload" type="JarApplication">
+    <option name="JAR_PATH" value="$PROJECT_DIR$/server/mcrconapi-1.1.1.jar" />
+    <option name="PROGRAM_PARAMETERS" value="-a localhost -l rconpassword -n -c &quot;rl confirm&quot;" />
+    <option name="WORKING_DIRECTORY" value="N:\Programming\Java\workspace\MyMaid4" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <method v="2">
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="MyMaid4 build" run_configuration_type="MavenRunConfiguration" />
+    </method>
+  </configuration>
+</component>
