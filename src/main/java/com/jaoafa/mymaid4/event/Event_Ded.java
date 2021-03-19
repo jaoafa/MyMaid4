@@ -17,8 +17,8 @@ public class Event_Ded extends MyMaidLibrary implements Listener {
         Location loc = player.getLocation();
         MyMaidData.setLastded(player.getName(), loc);
         player.sendMessage("[DED] " + ChatColor.GREEN + "死亡した場所に戻るには「/ded」コマンドが使用できます。");
-        player.sendMessage("[DED] " + ChatColor.RED + "" + ChatColor.BOLD + "===[!]警告===");
-        player.sendMessage("[DED] " + ChatColor.RED + "" + ChatColor.BOLD + "PvP等での「/ded」コマンドの利用は原則禁止です！");
+        player.sendMessage("[DED] " + ChatColor.RED + "" + ChatColor.BOLD + "=== [!] 警告 ===");
+        player.sendMessage("[DED] " + ChatColor.RED + "" + ChatColor.BOLD + "PvP等での「/ded」コマンドの利用は原則禁止です。");
         player.sendMessage("[DED] " + ChatColor.RED + "" + ChatColor.BOLD + "多く使用すると迷惑行為として認識される場合もあります！");
     }
 }
