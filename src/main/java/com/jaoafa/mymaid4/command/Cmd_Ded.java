@@ -7,6 +7,7 @@ import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import com.sun.javafx.binding.StringFormatter;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -54,7 +55,8 @@ public class Cmd_Ded extends MyMaidLibrary implements CommandPremise {
         else {
             Location location = MyMaidData.getLastded().get(player.getName());
             player.teleport(location);
-            SendMessage(player, details(), "最終死亡場所"+ChatColor.BOLD+"( X:"+location.getBlockX()+" Y:"+location.getBlockY()+" Z:"+location.getBlockZ()+" )"+ChatColor.RESET+"にテレポートしました。");
+            String locationDescription = String.format("( X:%s Y:%s Z:%s )",location.getBlockX(),location.getBlockY(),location.getBlockZ());
+            SendMessage(player, details(), "最終死亡場所"+ChatColor.BOLD+locationDescription+ChatColor.RESET+"にテレポートしました。");
             SendMessage(player, details(), ChatColor.RED + "" + ChatColor.BOLD + "===[!]警告===");
             SendMessage(player, details(), ChatColor.RED + "" + ChatColor.BOLD + "PvP等での「/ded」コマンドの利用は原則禁止です！");
             SendMessage(player, details(), ChatColor.RED + "" + ChatColor.BOLD + "多く使用すると迷惑行為として認識される場合もあります！");

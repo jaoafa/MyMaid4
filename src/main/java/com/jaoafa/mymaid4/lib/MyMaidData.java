@@ -15,7 +15,7 @@ public class MyMaidData {
     private static TextChannel serverChatChannel = null;
     private static TextChannel jaotanChannel = null;
     private static TextChannel generalChannel = null;
-    private static Map<String, Location> lastded = null;
+    private static Map<String, Location> lastded = new HashMap<>();
 
     @Nullable
     public static TextChannel getReportChannel() {
@@ -53,7 +53,6 @@ public class MyMaidData {
         MyMaidData.generalChannel = generalChannel;
     }
 
-    @Nullable
     public static Map<String, Location> getLastded() {
         return lastded;
     }
