@@ -16,9 +16,13 @@ import cloud.commandframework.Command;
 import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
+import com.jaoafa.mymaid4.lib.MyMaidData;
+import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import org.bukkit.command.CommandSender;
 
-public class Cmd_Test implements CommandPremise {
+import java.sql.SQLException;
+
+public class Cmd_Test extends MyMaidLibrary implements CommandPremise {
     @Override
     public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
@@ -34,7 +38,25 @@ public class Cmd_Test implements CommandPremise {
                 .literal("version", ArgumentDescription.of("バージョンを表示します。"))
                 .handler(context -> {
                     final CommandSender sender = context.getSender();
-                    sender.sendMessage("Version: " + Main.getJavaPlugin().getDescription().getVersion());
+                    SendMessage(sender, details(), "Version: " + Main.getJavaPlugin().getDescription().getVersion());
+                })
+                .build(),
+            builder
+                .literal("database", ArgumentDescription.of("データベースへの接続を試行します。"))
+                .handler(context -> {
+                    final CommandSender sender = context.getSender();
+                    try {
+                        MyMaidData.getMainMySQLDBManager().getConnection();
+                        SendMessage(sender, details(), "Main: 接続成功");
+                    } catch (SQLException e) {
+                        SendMessage(sender, details(), "Main: 接続失敗");
+                    }
+                    try {
+                        MyMaidData.getZKRHatMySQLDBManager().getConnection();
+                        SendMessage(sender, details(), "ZakuroHat: 接続成功");
+                    } catch (SQLException e) {
+                        SendMessage(sender, details(), "ZakuroHat: 接続失敗");
+                    }
                 })
                 .build()
         );
