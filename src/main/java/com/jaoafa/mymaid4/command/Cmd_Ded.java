@@ -40,8 +40,12 @@ public class Cmd_Ded extends MyMaidLibrary implements CommandPremise {
     void tpLastDed(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
         if (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) {
-            SendMessage(player, details(), "Dedコマンドはサバイバル・アドベンチャーモードでは利用できません。\nクリエイティブモードに切り替えてから実行してください。");
-            SendMessage(player, details(), ChatColor.RED + "" + ChatColor.BOLD + "===[!]警告===\nPvP等での「/ded」コマンドの利用は原則禁止です！\n多く使用すると迷惑行為として認識される場合もあります！");
+            SendMessage(player, details(), "Dedコマンドはサバイバル・アドベンチャーモードでは利用できません。");
+            SendMessage(player, details(), "クリエイティブモードに切り替えてから実行してください。");
+            SendMessage(player, details(), ChatColor.RED + "" + ChatColor.BOLD + "===[!]警告===");
+            SendMessage(player, details(), ChatColor.RED + "" + ChatColor.BOLD + "PvP等での「/ded」コマンドの利用は原則禁止です！");
+            SendMessage(player, details(), ChatColor.RED + "" + ChatColor.BOLD + "多く使用すると迷惑行為として認識される場合もあります！");
+
             return;
         }
         if (!lastded.containsKey(player.getName())) {
@@ -51,7 +55,9 @@ public class Cmd_Ded extends MyMaidLibrary implements CommandPremise {
             Location location = lastded.get(player.getName());
             player.teleport(location);
             SendMessage(player, details(), "最終死亡場所"+ChatColor.BOLD+"( X:"+location.getBlockX()+" Y:"+location.getBlockY()+" Z:"+location.getBlockZ()+" )"+ChatColor.RESET+"にテレポートしました。");
-            SendMessage(player, details(), ChatColor.RED + "" + ChatColor.BOLD + "===[!]警告===\nPvP等での「/ded」コマンドの利用は原則禁止です！\n多く使用すると迷惑行為として認識される場合もあります！");
+            SendMessage(player, details(), ChatColor.RED + "" + ChatColor.BOLD + "===[!]警告===");
+            SendMessage(player, details(), ChatColor.RED + "" + ChatColor.BOLD + "PvP等での「/ded」コマンドの利用は原則禁止です！");
+            SendMessage(player, details(), ChatColor.RED + "" + ChatColor.BOLD + "多く使用すると迷惑行為として認識される場合もあります！");
         }
     }
 }
