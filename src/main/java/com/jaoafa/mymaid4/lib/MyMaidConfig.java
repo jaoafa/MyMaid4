@@ -32,7 +32,7 @@ public class MyMaidConfig {
     private Long reportChannelId = null;
     private Long serverChatChannelId = null;
 
-    public MyMaidConfig() {
+    public void init(){
         JavaPlugin plugin = Main.getJavaPlugin();
         if (!new File(plugin.getDataFolder(), "config.yml").exists()) {
             plugin.getLogger().warning("コンフィグファイルが見つかりませんでした。一部の機能は無効化されます。");
@@ -43,6 +43,22 @@ public class MyMaidConfig {
 
         ConfigurationSection discord = config.getConfigurationSection("discord");
         if (config.contains("discord") && discord != null) {
+            if (discord.contains("general_id")) {
+                generalChannelId = discord.getLong("general_id");
+            } else plugin.getLogger().warning(notFoundConfigKey("discord.general_id"));
+
+            if (discord.contains("jaotan_id")) {
+                jaotanChannelId = discord.getLong("jaotan_id");
+            } else plugin.getLogger().warning(notFoundConfigKey("discord.jaotan_id"));
+
+            if (discord.contains("report_id")) {
+                reportChannelId = discord.getLong("report_id");
+            } else plugin.getLogger().warning(notFoundConfigKey("discord.report_id"));
+
+            if (discord.contains("serverchat_id")) {
+                serverChatChannelId = discord.getLong("serverchat_id");
+            } else plugin.getLogger().warning(notFoundConfigKey("discord.report_id"));
+
             if (discord.contains("token")) {
                 try {
                     JDABuilder jdabuilder = JDABuilder.createDefault(discord.getString("token"))
@@ -61,22 +77,6 @@ public class MyMaidConfig {
                     plugin.getServer().getPluginManager().disablePlugin(plugin);
                 }
             }
-
-            if (discord.contains("general_id")) {
-                generalChannelId = discord.getLong("general_id");
-            } else plugin.getLogger().warning(notFoundConfigKey("discord.general_id"));
-
-            if (discord.contains("jaotan_id")) {
-                jaotanChannelId = discord.getLong("jaotan_id");
-            } else plugin.getLogger().warning(notFoundConfigKey("discord.jaotan_id"));
-
-            if (discord.contains("report_id")) {
-                reportChannelId = discord.getLong("report_id");
-            } else plugin.getLogger().warning(notFoundConfigKey("discord.report_id"));
-
-            if (discord.contains("serverchat_id")) {
-                serverChatChannelId = discord.getLong("serverchat_id");
-            } else plugin.getLogger().warning(notFoundConfigKey("discord.report_id"));
         } else {
             plugin.getLogger().warning(notFoundConfigKey("discord"));
         }
