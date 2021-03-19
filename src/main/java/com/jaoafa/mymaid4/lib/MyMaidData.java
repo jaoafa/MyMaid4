@@ -15,7 +15,9 @@ public class MyMaidData {
     private static TextChannel serverChatChannel = null;
     private static TextChannel jaotanChannel = null;
     private static TextChannel generalChannel = null;
-    private static Map<String, Location> lastded = new HashMap<>();
+    private static final Map<String, Location> lastDed = new HashMap<>();
+    private static MySQLDBManager mainMySQLDBManager = null;
+    private static MySQLDBManager zkrhatMySQLDBManager = null;
 
     @Nullable
     public static TextChannel getReportChannel() {
@@ -53,11 +55,35 @@ public class MyMaidData {
         MyMaidData.generalChannel = generalChannel;
     }
 
-    public static Map<String, Location> getLastded() {
-        return lastded;
+    public static Map<String, Location> getLastDed() {
+        return lastDed;
     }
 
-    public static void setLastded(String name, Location loc) {
-        lastded.put(name, loc);
+    public static void setLastDed(String name, Location loc) {
+        lastDed.put(name, loc);
+    }
+
+    public static boolean isMainDBActive(){
+        return mainMySQLDBManager != null;
+    }
+
+    public static MySQLDBManager getMainMySQLDBManager() {
+        return mainMySQLDBManager;
+    }
+
+    public static void setMainMySQLDBManager(MySQLDBManager mainMySQLDBManager) {
+        MyMaidData.mainMySQLDBManager = mainMySQLDBManager;
+    }
+
+    public static boolean isZKRHatDBActive(){
+        return zkrhatMySQLDBManager != null;
+    }
+
+    public static MySQLDBManager getZKRHatMySQLDBManager() {
+        return zkrhatMySQLDBManager;
+    }
+
+    public static void setZKRHatMySQLDBManager(MySQLDBManager zkrhatMySQLDBManager) {
+        MyMaidData.zkrhatMySQLDBManager = zkrhatMySQLDBManager;
     }
 }

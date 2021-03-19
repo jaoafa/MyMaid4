@@ -45,7 +45,7 @@ public class MyMaidConfig {
         if (config.contains("discord") && discord != null) {
             if (discord.contains("token")) {
                 try {
-                    JDABuilder jdabuilder = JDABuilder.createDefault(config.getString("discordtoken"))
+                    JDABuilder jdabuilder = JDABuilder.createDefault(discord.getString("token"))
                         .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES)
                         .setAutoReconnect(true)
                         .setBulkDeleteSplittingEnabled(false)
@@ -70,7 +70,7 @@ public class MyMaidConfig {
                 jaotanChannelId = discord.getLong("jaotan_id");
             } else plugin.getLogger().warning(notFoundConfigKey("discord.jaotan_id"));
 
-            if (discord.contains("jaotan_id")) {
+            if (discord.contains("report_id")) {
                 reportChannelId = discord.getLong("report_id");
             } else plugin.getLogger().warning(notFoundConfigKey("discord.report_id"));
 
@@ -79,6 +79,42 @@ public class MyMaidConfig {
             } else plugin.getLogger().warning(notFoundConfigKey("discord.report_id"));
         } else {
             plugin.getLogger().warning(notFoundConfigKey("discord"));
+        }
+
+        ConfigurationSection main_database = config.getConfigurationSection("main_database");
+        if (config.contains("main_database") && main_database != null) {
+            String hostname = main_database.getString("hostname");
+            int port = main_database.getInt("port");
+            String username = main_database.getString("username");
+            String password = main_database.getString("password");
+            String dbname = main_database.getString("database");
+
+            try {
+                MyMaidData.setMainMySQLDBManager(new MySQLDBManager(hostname, port, username, password, dbname));
+            } catch (ClassNotFoundException e) {
+                plugin.getLogger().warning("MainDBのInitに失敗しました（ClassNotFoundException）一部の機能は無効化されます。");
+                e.printStackTrace();
+            }
+        } else {
+            plugin.getLogger().warning(notFoundConfigKey("main_database"));
+        }
+
+        ConfigurationSection zakurohat_database = config.getConfigurationSection("zakurohat_database");
+        if (config.contains("zakurohat_database") && zakurohat_database != null) {
+            String hostname = zakurohat_database.getString("hostname");
+            int port = zakurohat_database.getInt("port");
+            String username = zakurohat_database.getString("username");
+            String password = zakurohat_database.getString("password");
+            String dbname = zakurohat_database.getString("database");
+
+            try {
+                MyMaidData.setZKRHatMySQLDBManager(new MySQLDBManager(hostname, port, username, password, dbname));
+            } catch (ClassNotFoundException e) {
+                plugin.getLogger().warning("ZakuroHatDBのInitに失敗しました（ClassNotFoundException）一部の機能は無効化されます。");
+                e.printStackTrace();
+            }
+        } else {
+            plugin.getLogger().warning(notFoundConfigKey("zakurohat_database"));
         }
     }
 

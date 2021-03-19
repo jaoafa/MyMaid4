@@ -44,10 +44,10 @@ public class Cmd_Ded extends MyMaidLibrary implements CommandPremise {
 
             return;
         }
-        if (!MyMaidData.getLastded().containsKey(player.getName())) {
+        if (!MyMaidData.getLastDed().containsKey(player.getName())) {
             SendMessage(player, details(), "最後に死亡した場所が見つかりませんでした。");
         } else {
-            Location location = MyMaidData.getLastded().get(player.getName());
+            Location location = MyMaidData.getLastDed().get(player.getName());
             player.teleport(location);
             String locationDescription = String.format("( X:%s Y:%s Z:%s )", location.getBlockX(), location.getBlockY(), location.getBlockZ());
             SendMessage(player, details(), "最終死亡場所" + ChatColor.BOLD + locationDescription + ChatColor.RESET + "にテレポートしました。");
