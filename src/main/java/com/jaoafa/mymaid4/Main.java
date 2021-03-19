@@ -14,14 +14,15 @@ package com.jaoafa.mymaid4;
 import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
+import cloud.commandframework.meta.CommandMeta;
 import cloud.commandframework.paper.PaperCommandManager;
 import com.jaoafa.mymaid4.lib.ClassFinder;
 import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidConfig;
+import net.dv8tion.jda.api.JDABuilder;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -30,11 +31,7 @@ import java.util.function.Function;
 
 public final class Main extends JavaPlugin {
     private static Main Main = null;
-    private MyMaidConfig config = null;
-
-    public static JavaPlugin getJavaPlugin() {
-        return Main;
-    }
+    private static MyMaidConfig config = null;
 
     @Override
     public void onEnable() {
@@ -49,6 +46,50 @@ public final class Main extends JavaPlugin {
             return;
 
         registerEvent();
+    }
+
+    public static void registerDiscordEvent(JDABuilder d) {
+        getJavaPlugin().getLogger().info("----- registerDiscordEvent -----");
+        try {
+            ClassFinder classFinder = new ClassFinder(getMain().getClassLoader());
+            for (Class<?> clazz : classFinder.findClasses("com.jaoafa.mymaid4.discordEvent")) {
+                if (!clazz.getName().startsWith("com.jaoafa.mymaid4.discordEvent.DiscordEvent_")) {
+                    continue;
+                }
+                if (clazz.getEnclosingClass() != null) {
+                    continue;
+                }
+                if (clazz.getName().contains("$")) {
+                    continue;
+                }
+                String name = clazz.getName().substring("com.jaoafa.mymaid4.discordEvent.DiscordEvent_".length())
+                    .toLowerCase();
+                try {
+                    Constructor<?> construct = clazz.getConstructor();
+                    Object instance = construct.newInstance();
+
+                    d.addEventListeners(instance);
+                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                    getJavaPlugin().getLogger().warning(String.format("%s register failed", name));
+                    e.printStackTrace();
+                }
+            }
+        } catch (ClassNotFoundException | IOException e) {
+            getJavaPlugin().getLogger().warning("registerCommand failed");
+            e.printStackTrace();
+        }
+    }
+
+    public static Main getMain() {
+        return Main;
+    }
+
+    public static JavaPlugin getJavaPlugin() {
+        return Main;
+    }
+
+    public static MyMaidConfig getMyMaidConfig() {
+        return config;
     }
 
     private void registerCommand() {
@@ -82,9 +123,11 @@ public final class Main extends JavaPlugin {
                     Object instance = construct.newInstance();
                     CommandPremise cmdPremise = (CommandPremise) instance;
 
-                    Command.Builder<CommandSender> builder = manager.commandBuilder(cmdPremise.getDetails().getName(),
-                        ArgumentDescription.of(cmdPremise.getDetails().getDescription()),
-                        cmdPremise.getDetails().getAliases().toArray(new String[0]));
+                    Command.Builder<CommandSender> builder = manager.commandBuilder(
+                        cmdPremise.details().getName(),
+                        ArgumentDescription.of(cmdPremise.details().getDescription()),
+                        cmdPremise.details().getAliases().toArray(new String[0])
+                    ).meta(CommandMeta.DESCRIPTION, cmdPremise.details().getDescription());
 
                     cmdPremise.register(builder).getCommands().forEach(manager::command);
 
@@ -114,7 +157,7 @@ public final class Main extends JavaPlugin {
                 if (clazz.getName().contains("$")) {
                     continue;
                 }
-                String commandName = clazz.getName().substring("com.jaoafa.mymaid4.event.Event_".length())
+                String name = clazz.getName().substring("com.jaoafa.mymaid4.event.Event_".length())
                     .toLowerCase();
                 try {
                     Constructor<?> construct = clazz.getConstructor();
@@ -133,7 +176,7 @@ public final class Main extends JavaPlugin {
                         getLogger().warning(String.format("%s: Listener not implemented [1]", clazz.getSimpleName()));
                     }
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                    getLogger().warning(String.format("%s register failed", commandName));
+                    getLogger().warning(String.format("%s register failed", name));
                     e.printStackTrace();
                 }
             }
@@ -141,10 +184,5 @@ public final class Main extends JavaPlugin {
             getLogger().warning("registerCommand failed");
             e.printStackTrace();
         }
-    }
-
-    @NotNull
-    public MyMaidConfig getMyMaidConfig() {
-        return config;
     }
 }

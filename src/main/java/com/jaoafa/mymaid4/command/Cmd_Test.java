@@ -20,7 +20,7 @@ import org.bukkit.command.CommandSender;
 
 public class Cmd_Test implements CommandPremise {
     @Override
-    public MyMaidCommand.Detail getDetails() {
+    public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
             "test",
             "MyMaidテストコマンド"
@@ -35,13 +35,6 @@ public class Cmd_Test implements CommandPremise {
                 .handler(context -> {
                     final CommandSender sender = context.getSender();
                     sender.sendMessage("Version: " + Main.getJavaPlugin().getDescription().getVersion());
-                })
-                .build(),
-            builder
-                .literal("test", ArgumentDescription.of("テスト。"))
-                .handler(context -> {
-                    final CommandSender sender = context.getSender();
-                    sender.sendMessage(context.toString());
                 })
                 .build()
         );
