@@ -49,50 +49,6 @@ public final class Main extends JavaPlugin {
         registerEvent();
     }
 
-    public static void registerDiscordEvent(JDABuilder d) {
-        getJavaPlugin().getLogger().info("----- registerDiscordEvent -----");
-        try {
-            ClassFinder classFinder = new ClassFinder(getMain().getClassLoader());
-            for (Class<?> clazz : classFinder.findClasses("com.jaoafa.mymaid4.discordEvent")) {
-                if (!clazz.getName().startsWith("com.jaoafa.mymaid4.discordEvent.DiscordEvent_")) {
-                    continue;
-                }
-                if (clazz.getEnclosingClass() != null) {
-                    continue;
-                }
-                if (clazz.getName().contains("$")) {
-                    continue;
-                }
-                String name = clazz.getName().substring("com.jaoafa.mymaid4.discordEvent.DiscordEvent_".length())
-                    .toLowerCase();
-                try {
-                    Constructor<?> construct = clazz.getConstructor();
-                    Object instance = construct.newInstance();
-
-                    d.addEventListeners(instance);
-                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                    getJavaPlugin().getLogger().warning(String.format("%s register failed", name));
-                    e.printStackTrace();
-                }
-            }
-        } catch (ClassNotFoundException | IOException e) {
-            getJavaPlugin().getLogger().warning("registerCommand failed");
-            e.printStackTrace();
-        }
-    }
-
-    public static Main getMain() {
-        return Main;
-    }
-
-    public static JavaPlugin getJavaPlugin() {
-        return Main;
-    }
-
-    public static MyMaidConfig getMyMaidConfig() {
-        return config;
-    }
-
     private void registerCommand() {
         getLogger().info("----- registerCommand -----");
         final PaperCommandManager<CommandSender> manager;
@@ -128,7 +84,9 @@ public final class Main extends JavaPlugin {
                         cmdPremise.details().getName(),
                         ArgumentDescription.of(cmdPremise.details().getDescription()),
                         cmdPremise.details().getAliases().toArray(new String[0])
-                    ).meta(CommandMeta.DESCRIPTION, cmdPremise.details().getDescription());
+                    )
+                        .permission(String.format("mymaid.%s", cmdPremise.details().getName().toLowerCase()))
+                        .meta(CommandMeta.DESCRIPTION, cmdPremise.details().getDescription());
 
                     cmdPremise.register(builder).getCommands().forEach(manager::command);
 
@@ -185,5 +143,49 @@ public final class Main extends JavaPlugin {
             getLogger().warning("registerCommand failed");
             e.printStackTrace();
         }
+    }
+
+    public static void registerDiscordEvent(JDABuilder d) {
+        getJavaPlugin().getLogger().info("----- registerDiscordEvent -----");
+        try {
+            ClassFinder classFinder = new ClassFinder(getMain().getClassLoader());
+            for (Class<?> clazz : classFinder.findClasses("com.jaoafa.mymaid4.discordEvent")) {
+                if (!clazz.getName().startsWith("com.jaoafa.mymaid4.discordEvent.DiscordEvent_")) {
+                    continue;
+                }
+                if (clazz.getEnclosingClass() != null) {
+                    continue;
+                }
+                if (clazz.getName().contains("$")) {
+                    continue;
+                }
+                String name = clazz.getName().substring("com.jaoafa.mymaid4.discordEvent.DiscordEvent_".length())
+                    .toLowerCase();
+                try {
+                    Constructor<?> construct = clazz.getConstructor();
+                    Object instance = construct.newInstance();
+
+                    d.addEventListeners(instance);
+                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                    getJavaPlugin().getLogger().warning(String.format("%s register failed", name));
+                    e.printStackTrace();
+                }
+            }
+        } catch (ClassNotFoundException | IOException e) {
+            getJavaPlugin().getLogger().warning("registerCommand failed");
+            e.printStackTrace();
+        }
+    }
+
+    public static Main getMain() {
+        return Main;
+    }
+
+    public static JavaPlugin getJavaPlugin() {
+        return Main;
+    }
+
+    public static MyMaidConfig getMyMaidConfig() {
+        return config;
     }
 }
