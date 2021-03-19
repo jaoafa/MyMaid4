@@ -36,7 +36,7 @@ public class Cmd_Ded extends MyMaidLibrary implements CommandPremise {
                 .build()
         );
     }
-    public static Map<String, Location> lastded = new HashMap<String, Location>();
+    public static Map<String, Location> lastded = new HashMap<>();
     void tpLastDed(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
         if (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) {
