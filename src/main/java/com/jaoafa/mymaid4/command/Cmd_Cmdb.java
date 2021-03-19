@@ -28,7 +28,7 @@ public class Cmd_Cmdb extends MyMaidLibrary implements CommandPremise {
             builder
                 .meta(CommandMeta.DESCRIPTION, "コマンドブロックをコマンド実行者のメインハンドのアイテムと置き換えます。")
                 .senderType(Player.class)
-                .handler(this::giveBarrier)
+                .handler(this::giveCommandBlock)
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "コマンドブロックを指定したプレイヤーのメインハンドのアイテムと置き換えます。")
@@ -38,7 +38,7 @@ public class Cmd_Cmdb extends MyMaidLibrary implements CommandPremise {
         );
     }
 
-    void giveBarrier(CommandContext<CommandSender> context) {
+    void giveCommandBlock(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
         ItemStack is = new ItemStack(Material.COMMAND_BLOCK);
 
