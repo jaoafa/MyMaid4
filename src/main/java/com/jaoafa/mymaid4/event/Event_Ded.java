@@ -1,6 +1,7 @@
 package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.command.Cmd_Ded;
+import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -14,7 +15,7 @@ public class Event_Ded extends MyMaidLibrary implements Listener {
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
         Player player = event.getEntity();
         Location loc = player.getLocation();
-        Cmd_Ded.lastded.put(player.getName(), loc);
+        MyMaidData.setLastded(player.getName(), loc);
         player.sendMessage("[DED] " + ChatColor.GREEN + "死亡した場所に戻るには「/ded」コマンドが使用できます。");
         player.sendMessage("[DED] " + ChatColor.RED + "" + ChatColor.BOLD + "===[!]警告===");
         player.sendMessage("[DED] " + ChatColor.RED + "" + ChatColor.BOLD + "PvP等での「/ded」コマンドの利用は原則禁止です！");
