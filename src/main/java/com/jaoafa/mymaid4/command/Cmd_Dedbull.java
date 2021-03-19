@@ -1,17 +1,13 @@
 package com.jaoafa.mymaid4.command;
 
 import cloud.commandframework.Command;
-import cloud.commandframework.bukkit.parsers.PlayerArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
 import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -30,12 +26,12 @@ public class Cmd_Dedbull extends MyMaidLibrary implements CommandPremise {
             builder
                 .meta(CommandMeta.DESCRIPTION, "プレイヤーに暗視効果を付与します。すでに付与されている場合は削除します。")
                 .senderType(Player.class)
-                .handler(this::addDedbull)
+                .handler(this::addDedBull)
                 .build()
         );
     }
 
-    void addDedbull(CommandContext<CommandSender> context) {
+    void addDedBull(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
         if (player.hasPotionEffect(PotionEffectType.NIGHT_VISION)){
             player.removePotionEffect(PotionEffectType.NIGHT_VISION);
