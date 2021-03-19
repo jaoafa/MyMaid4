@@ -27,11 +27,11 @@ public class Cmd_Brb extends MyMaidLibrary implements CommandPremise {
         return new MyMaidCommand.Cmd(
             builder
                 .meta(CommandMeta.DESCRIPTION, "バリアブロックをコマンド実行者のメインハンドのアイテムと置き換えます。")
+                .senderType(Player.class)
                 .handler(this::giveBarrier)
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "バリアブロックを指定したプレイヤーのメインハンドのアイテムと置き換えます。")
-                .senderType(Player.class)
                 .argument(PlayerArgument.of("player"))
                 .handler(this::giveBarrierToPlayer)
                 .build()
