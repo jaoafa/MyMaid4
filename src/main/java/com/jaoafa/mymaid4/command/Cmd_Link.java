@@ -35,7 +35,7 @@ public class Cmd_Link extends MyMaidLibrary implements CommandPremise {
 
     void tellLinkHelp(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
-        SendMessage(player, details(), "linkコマンドはMinecraftサーバ内ではなくjMS Gamers Clubの"+ChatColor.BOLD+"Discordサーバ内"+ChatColor.RESET+"で実行してね！");
+        SendMessage(player, details(), "linkコマンドはMinecraftサーバ内ではなくjMS Gamers Clubの" + ChatColor.BOLD + "Discordサーバ内" + ChatColor.RESET + "で実行してね！");
         SendMessage(player, details(), "そこでコマンドが発行されるから、そのコマンドをMinecraftサーバ内で打ち込んでね！");
     }
 }
