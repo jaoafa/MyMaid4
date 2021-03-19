@@ -1,5 +1,6 @@
 package com.jaoafa.mymaid4.lib;
 
+import cloud.commandframework.context.CommandContext;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
@@ -10,13 +11,18 @@ import net.luckperms.api.model.user.User;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * MyMaid全体で利用されるスタティックメソッドをまとめたライブラリクラス
@@ -96,18 +102,16 @@ public class MyMaidLibrary {
      * @param player プレイヤー名
      * @return メイン権限グループ名
      */
-    public static String getPermissionMainGroup(Player player) {
+    public static String getPermissionMainGroup(OfflinePlayer player) {
         LuckPerms LPApi = LuckPermsProvider.get();
         User LP_Player = LPApi.getUserManager().getUser(player.getUniqueId());
         if (LP_Player == null) {
-            throw new IllegalArgumentException("指定されたプレイヤーは見つかりません。");
+            return null;
         }
         String groupName = LP_Player.getPrimaryGroup();
         Group group = LPApi.getGroupManager().getGroup(groupName);
-        if (group == null)
-            throw new InternalError("Groupがnullです。");
+        if (group == null) return null;
         return group.getFriendlyName();
-
     }
 
     /**
@@ -155,6 +159,7 @@ public class MyMaidLibrary {
      */
     protected static boolean isA(Player player) {
         String group = getPermissionMainGroup(player);
+        if (group == null) return false;
         return group.equalsIgnoreCase("Admin");
     }
 
@@ -165,6 +170,7 @@ public class MyMaidLibrary {
      */
     public static boolean isAM(Player player) {
         String group = getPermissionMainGroup(player);
+        if (group == null) return false;
         return isA(player) || group.equalsIgnoreCase("Moderator");
     }
 
@@ -175,6 +181,7 @@ public class MyMaidLibrary {
      */
     public static boolean isAMR(Player player) {
         String group = getPermissionMainGroup(player);
+        if (group == null) return false;
         return isAM(player) || group.equalsIgnoreCase("Regular");
     }
 
@@ -185,6 +192,7 @@ public class MyMaidLibrary {
      */
     protected static boolean isAMRV(Player player) {
         String group = getPermissionMainGroup(player);
+        if (group == null) return false;
         return isAMR(player) || group.equalsIgnoreCase("Verified");
     }
 
@@ -324,5 +332,20 @@ public class MyMaidLibrary {
             }
         }
         return closestp;
+    }
+
+    /**
+     * オフラインプレイヤーのサジェスト
+     *
+     * @param context CommandContext
+     * @param current current String
+     * @return 該当するプレイヤー
+     */
+    public List<String> suggestOfflinePlayers(final CommandContext<CommandSender> context, final String current) {
+        return Arrays.stream(Bukkit.getServer().getOfflinePlayers())
+            .map(OfflinePlayer::getName)
+            .filter(Objects::nonNull)
+            .filter(s -> s.toLowerCase().startsWith(current.toLowerCase()))
+            .collect(Collectors.toList());
     }
 }
