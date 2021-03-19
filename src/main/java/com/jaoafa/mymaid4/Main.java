@@ -124,10 +124,10 @@ public final class Main extends JavaPlugin {
                     CommandPremise cmdPremise = (CommandPremise) instance;
 
                     Command.Builder<CommandSender> builder = manager.commandBuilder(
-                        cmdPremise.getDetails().getName(),
-                        ArgumentDescription.of(cmdPremise.getDetails().getDescription()),
-                        cmdPremise.getDetails().getAliases().toArray(new String[0])
-                    ).meta(CommandMeta.DESCRIPTION, cmdPremise.getDetails().getDescription());
+                        cmdPremise.details().getName(),
+                        ArgumentDescription.of(cmdPremise.details().getDescription()),
+                        cmdPremise.details().getAliases().toArray(new String[0])
+                    ).meta(CommandMeta.DESCRIPTION, cmdPremise.details().getDescription());
 
                     cmdPremise.register(builder).getCommands().forEach(manager::command);
 

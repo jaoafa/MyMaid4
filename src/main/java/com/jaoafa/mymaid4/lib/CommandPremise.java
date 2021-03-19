@@ -20,7 +20,7 @@ public interface CommandPremise {
      *
      * @return コマンドの使い方
      */
-    MyMaidCommand.Detail getDetails();
+    MyMaidCommand.Detail details();
 
     /**
      * コマンドを登録します。

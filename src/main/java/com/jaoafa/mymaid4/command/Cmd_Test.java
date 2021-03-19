@@ -20,7 +20,7 @@ import org.bukkit.command.CommandSender;
 
 public class Cmd_Test implements CommandPremise {
     @Override
-    public MyMaidCommand.Detail getDetails() {
+    public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
             "test",
             "MyMaidテストコマンド"

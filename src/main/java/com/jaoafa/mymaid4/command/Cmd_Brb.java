@@ -15,7 +15,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 public class Cmd_Brb extends MyMaidLibrary implements CommandPremise {
     @Override
-    public MyMaidCommand.Detail getDetails() {
+    public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
             "brb",
             "バリアブロックを入手します。"
@@ -46,12 +46,12 @@ public class Cmd_Brb extends MyMaidLibrary implements CommandPremise {
         ItemStack main = inv.getItemInMainHand();
 
         inv.setItemInMainHand(is);
-        SendMessage(player, getDetails(), "バリアブロックをメインハンドのアイテムと置きかえました。");
+        SendMessage(player, details(), "バリアブロックをメインハンドのアイテムと置きかえました。");
 
         if (main.getType() != Material.AIR) {
             if (player.getInventory().firstEmpty() == -1) {
                 player.getLocation().getWorld().dropItem(player.getLocation(), main);
-                SendMessage(player, getDetails(), "インベントリがいっぱいだったため、既に持っていたアイテムはあなたの足元にドロップしました。");
+                SendMessage(player, details(), "インベントリがいっぱいだったため、既に持っていたアイテムはあなたの足元にドロップしました。");
             } else {
                 inv.addItem(main);
             }
@@ -61,7 +61,7 @@ public class Cmd_Brb extends MyMaidLibrary implements CommandPremise {
     void giveBarrierToPlayer(CommandContext<CommandSender> context) {
         Player player = context.getOrDefault("player", null);
         if (player == null) {
-            SendMessage(context.getSender(), getDetails(), "プレイヤーは指定されていないか存在しません。");
+            SendMessage(context.getSender(), details(), "プレイヤーは指定されていないか存在しません。");
             return;
         }
 
@@ -71,12 +71,12 @@ public class Cmd_Brb extends MyMaidLibrary implements CommandPremise {
         ItemStack main = inv.getItemInMainHand();
 
         inv.setItemInMainHand(is);
-        SendMessage(context.getSender(), getDetails(), "バリアブロックをプレイヤー「" + player.getName() + "」のメインハンドのアイテムと置きかえました。");
+        SendMessage(context.getSender(), details(), "バリアブロックをプレイヤー「" + player.getName() + "」のメインハンドのアイテムと置きかえました。");
 
         if (main.getType() != Material.AIR) {
             if (player.getInventory().firstEmpty() == -1) {
                 player.getLocation().getWorld().dropItem(player.getLocation(), main);
-                SendMessage(player, getDetails(), "インベントリがいっぱいだったため、既に持っていたアイテムはあなたの足元にドロップしました。");
+                SendMessage(player, details(), "インベントリがいっぱいだったため、既に持っていたアイテムはあなたの足元にドロップしました。");
             } else {
                 inv.addItem(main);
             }
