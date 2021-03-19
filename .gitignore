@@ -1,6 +1,5 @@
 # User-specific stuff
 .idea/*
-!.idea/artifacts
 !.idea/scopes
 !.idea/copyright
 !.idea/codeStyles

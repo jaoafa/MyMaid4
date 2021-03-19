@@ -29,19 +29,18 @@ MyMaidとは、jao Minecraft Serverにおける独自のプラグインで特に
 
 機能のテスト等はローカルサーバでテストしてください。初期設定を実施すると、IntelliJ でプロジェクトを開いたときに自動的にテストサーバが起動します。
 
-テストサーバを利用するための初期設定は以下の通りです。
+テストサーバを利用するための初期設定は以下の通りです。ホワイトリストがオンになっています。
 
 1. IntelliJ を閉じる
-2. `server` ディレクトリを作成する
-3. [PaperMCのダウンロードページ](https://papermc.io/downloads) から`1.16.5`の最新のビルドをダウンロードする
-4. ダウンロードした jar ファイルを作成した `server` ディレクトリに移動し、 `paper-1.16.5.jar` とリネームする
-5. `paper-1.16.5.jar` を起動し、[Minecraft EULA](https://account.mojang.com/documents/minecraft_eula) を読み同意する場合は `eula.txt` の `eula=false` を `eula=true` に変える
-6. IntelliJ からプラグインをビルドした後に自動的にリロードするため、[fnetworks/mcrconapi v1.1.1](https://github.com/fnetworks/mcrconapi/releases/tag/v1.1.1) の `mcrconapi-1.1.1.jar` をダウンロード、 `server/mcrconapi-1.1.1.jar` ディレクトリに移動する
-7. IntelliJ を起動・プロジェクトを開き、自動実行される `PaperServer` が起動したあとに `op <PlayerName>` を実行し OP 権限を自身に付与する
+2. [PaperMCのダウンロードページ](https://papermc.io/downloads) から `1.16.5` の最新のビルドをダウンロードする
+3. ダウンロードした jar ファイルを `server` ディレクトリに配置し、 `paper-1.16.5.jar` とリネームする
+4. `paper-1.16.5.jar` を一度起動し、[Minecraft EULA](https://account.mojang.com/documents/minecraft_eula) を読み同意する場合は `eula.txt` の `eula=false` を `eula=true` に変える
+5. IntelliJ からプラグインをビルドした後に自動的にリロードするため、[fnetworks/mcrconapi v1.1.1](https://github.com/fnetworks/mcrconapi/releases/tag/v1.1.1) の `mcrconapi-1.1.1.jar` をダウンロード、 `server/mcrconapi-1.1.1.jar` ディレクトリに移動する
+6. `paper-1.16.5.jar` をもう一度起動し、起動してくるウィンドウのテキストボックスで `op <PlayerName>` を実行し OP 権限を自身に付与する
 
 プラグインをテストする際は以下を行います。
 
-1. ウィンドウ右上「実行」で `ReBuild and Reload` を実行する
+1. ウィンドウ右上「実行」で `ReBuild and Reload` を実行する (端末に応じて Win か Mac を選択してください)
 2. Minecraftから `localhost` にログインし、機能が動作するかどうかのテストを行う
 
 ### Publish
@@ -58,8 +57,8 @@ masterブランチ = メインサーバ導入ソースコード
 
 - 全てのコマンドは [`src/main/java/com/jaoafa/MyMaid4/Command/Cmd_<CommandName>.java`](src/main/java/com/jaoafa/MyMaid4/Command)に配置されます。
 - また、ここに配置されるコマンドクラスは CommandPremise インターフェースを実装する必要があります（`implements CommandPremise`）
-- コマンドの情報（コマンド名・説明）は `details` で定義します
-- コマンドの内容は `register` で定義します。このメソッドは Main クラスの `registerCommand` から呼び出され、コマンドが追加されます。（`plugin.yml` に書く必要がありません）
+- コマンドの情報（コマンド名・説明）は `details()` で定義します
+- コマンドの内容は `register()` で定義します。このメソッドは Main クラスの `registerCommand` から呼び出され、コマンドが追加されます。（`plugin.yml` に書く必要がありません）
 - 全てのコマンドのパーミッションは小文字の `mymaid.<CommandName>` でなければなりません
 
 #### Event
