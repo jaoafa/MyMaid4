@@ -58,6 +58,6 @@ public class MyMaidData {
     }
 
     public static void setLastded(String name, Location loc) {
-        lastded.put(name,loc);
+        lastded.put(name, loc);
     }
 }
