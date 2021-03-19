@@ -36,13 +36,6 @@ public class Cmd_Test implements CommandPremise {
                     final CommandSender sender = context.getSender();
                     sender.sendMessage("Version: " + Main.getJavaPlugin().getDescription().getVersion());
                 })
-                .build(),
-            builder
-                .literal("test", ArgumentDescription.of("テスト。"))
-                .handler(context -> {
-                    final CommandSender sender = context.getSender();
-                    sender.sendMessage(context.toString());
-                })
                 .build()
         );
     }
