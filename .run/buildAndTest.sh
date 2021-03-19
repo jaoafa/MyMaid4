@@ -1,5 +1,22 @@
 #!/bin/bash
 
+if [ -f "server/server.properties" ]; then
+    echo "server.propertiesが存在しないため作成します。"
+    cat <<EOF > server/server.properties
+gamemode=creative
+enforce-whitelist=true
+difficulty=peaceful
+level-type=flat
+enable-command-block=true
+server-port=25565
+enable-rcon=true
+rcon.password=rconpassword
+rcon.port=25575
+white-list=true
+motd=MyMaid4 Test Server
+EOF
+fi
+
 echo "jarファイルをコピーします。"
 cp target/MyMaid4.jar server/plugins/
 if [ $? -ne 0 ]; then
