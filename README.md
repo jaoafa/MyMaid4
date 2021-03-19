@@ -6,14 +6,14 @@
 
 ## FAQ
 
-### MyMaidとはなんですか？
+### MyMaid とはなんですか？
 
-MyMaidとは、jao Minecraft Serverにおける独自のプラグインで特にどれに特化したといった制約を持たせずに総合プラグイン的に製作しているものです。  
-`わたしたちの「めいど」をここに。` をキャッチフレーズとし、メイドさんのようにMinecraftを楽しく出来るような補助的役割を基本として制作しています。
+MyMaid とは、jao Minecraft Server における独自のプラグインで特にどれに特化したといった制約を持たせずに総合プラグイン的に製作しているものです。  
+`わたしたちの「めいど」をここに。` をキャッチフレーズとし、メイドさんのように Minecraft を楽しく出来るような補助的役割を基本として制作しています。
 
 ### 開発者は誰ですか？
 
-表面上はjao Minecraft Server 開発部としていますが、実質的には[Tomachi](https://github.com/book000)が全ての開発を担っています。
+表面上は jao Minecraft Server 開発部としていますが、実質的には[Tomachi](https://github.com/book000)が全ての開発を担っています。
 
 ## Development
 
@@ -31,23 +31,24 @@ MyMaidとは、jao Minecraft Serverにおける独自のプラグインで特に
 
 テストサーバを利用するための初期設定は以下の通りです。ホワイトリストがオンになっています。
 
-1. IntelliJ を閉じる
-2. [PaperMCのダウンロードページ](https://papermc.io/downloads) から `1.16.5` の最新のビルドをダウンロードする
-3. ダウンロードした jar ファイルを `server` ディレクトリに配置し、 `paper-1.16.5.jar` とリネームする
-4. `paper-1.16.5.jar` を一度起動し、[Minecraft EULA](https://account.mojang.com/documents/minecraft_eula) を読み同意する場合は `eula.txt` の `eula=false` を `eula=true` に変える
-5. IntelliJ からプラグインをビルドした後に自動的にリロードするため、[fnetworks/mcrconapi v1.1.1](https://github.com/fnetworks/mcrconapi/releases/tag/v1.1.1) の `mcrconapi-1.1.1.jar` をダウンロード、 `server/mcrconapi-1.1.1.jar` ディレクトリに移動する
-6. `paper-1.16.5.jar` をもう一度起動し、起動してくるウィンドウのテキストボックスで `op <PlayerName>` を実行し OP 権限を自身に付与する
+1. [PaperMC のダウンロードページ](https://papermc.io/downloads) から `1.16.5` の最新のビルドをダウンロードする
+2. ダウンロードした jar ファイルを `server` ディレクトリに配置し、 `paper-1.16.5.jar` とリネームする
+3. IntelliJ を開き、ウィンドウ右上「実行」で `ReBuild and Reload` を実行する
+4. [Minecraft EULA](https://account.mojang.com/documents/minecraft_eula) を読み同意する場合は `eula.txt` の `eula=false` を `eula=true` に変える
+5. IntelliJ からプラグインをビルドした後に自動的にリロードするために、[fnetworks/mcrconapi v1.1.1](https://github.com/fnetworks/mcrconapi/releases/tag/v1.1.1) の `mcrconapi-1.1.1.jar` をダウンロード、 `server/mcrconapi-1.1.1.jar` ディレクトリに移動する
+6. IntelliJ を開き、ウィンドウ右上「実行」で `ReBuild and Reload` を実行する
+7. 表示されるターミナルで `op <PlayerName>` を実行し OP 権限を自身に付与する
 
 プラグインをテストする際は以下を行います。
 
 1. ウィンドウ右上「実行」で `ReBuild and Reload` を実行する (端末に応じて Win か Mac を選択してください)
-2. Minecraftから `localhost` にログインし、機能が動作するかどうかのテストを行う
+2. Minecraft から `localhost` にログインし、機能が動作するかどうかのテストを行う
 
 ### Publish
 
-masterブランチ = メインサーバ導入ソースコード
+master ブランチ = メインサーバ導入ソースコード
 
-- コミットされると、GitHub Actionsによってビルドが実施されます。失敗した場合、jMS Gamers Club `#github-notice` に通知が飛びます。
+- コミットされると、GitHub Actions によってビルドが実施されます。失敗した場合、jMS Gamers Club `#github-notice` に通知が飛びます。
 - コミットされると、メインサーバでビルドされビルドに成功すれば本番環境の`MinecraftServerDir/plugins/update/`にビルド成果物が配置されます。再起動時に自動的にアップデートされます。
 - バージョン表記は本番環境でのビルド処理によって、`yyyy.mm.dd_hh.mm_最終コミットsha8桁`に変更されます。
 
@@ -75,7 +76,7 @@ masterブランチ = メインサーバ導入ソースコード
   - `type`, `subject` は必須、 `scope` は必須ではありません
     - `type-enum`: `type` は必ず次のいずれかにしなければなりません
     - `build`: ビルド関連
-    - `ci`: CI関連
+    - `ci`: CI 関連
     - `chore`: いろいろ
     - `docs`: ドキュメント関連
     - `feat`: 新機能
@@ -97,7 +98,7 @@ masterブランチ = メインサーバ導入ソースコード
 - 基本的にはフォークして開発してください
 - 必要がある場合、ブランチは機能追加・修正などに応じて分けて作成してください
 - ブランチ名は機能追加・修正の内容を示す言葉で構成してください（例: `add-test-command`, `fix-test-command-api-url`）
-- masterブランチへの直接コミットはできません
+- master ブランチへの直接コミットはできません
 - 全てのコード追加はプルリクエストを必要とします
 - Tomachi に限りセルフマージを可能とします
 - レビューはほぼすべてを Tomachi が行います
@@ -109,4 +110,4 @@ masterブランチ = メインサーバ導入ソースコード
 ### プログラムについて
 
 ここで公開されているプログラムのソースコードには、多分なにかしらの瑕疵やバグが存在します。しかし、開発者および jao Minecraft Server の管理部・開発部はそれらの瑕疵やバグをなるべく除去する努力義務を負いますが、それらによって生じた一切の問題についての**責任を負いません。**  
-また、利用者はこのプラグインに実装されている全ての機能及びプログラムなどを jao Minecraft Server の管理部・開発部の許可なく他の場所において、一部もしくは全部を使用することはできません。Discordなどを通じて、明確に許可を取った上で、許可された範囲内で利用してください。
+また、利用者はこのプラグインに実装されている全ての機能及びプログラムなどを jao Minecraft Server の管理部・開発部の許可なく他の場所において、一部もしくは全部を使用することはできません。Discord などを通じて、明確に許可を取った上で、許可された範囲内で利用してください。

@@ -38,6 +38,7 @@ public final class Main extends JavaPlugin {
         Main = this;
 
         config = new MyMaidConfig();
+        config.init();
         if (!isEnabled())
             return;
 
