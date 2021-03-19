@@ -58,7 +58,8 @@ masterブランチ = メインサーバ導入ソースコード
 
 - 全てのコマンドは [`src/main/java/com/jaoafa/MyMaid4/Command/Cmd_<CommandName>.java`](src/main/java/com/jaoafa/MyMaid4/Command)に配置されます。
 - また、ここに配置されるコマンドクラスは CommandPremise インターフェースを実装する必要があります（`implements CommandPremise`）
-- コマンドの内容は `registerCommand` で定義します。このメソッドは Main クラスの `registerCommand` から呼び出され、コマンドが追加されます。（`plugin.yml` に書く必要がありません）
+- コマンドの情報（コマンド名・説明）は `details` で定義します
+- コマンドの内容は `register` で定義します。このメソッドは Main クラスの `registerCommand` から呼び出され、コマンドが追加されます。（`plugin.yml` に書く必要がありません）
 - 全てのコマンドのパーミッションは小文字の `mymaid.<CommandName>` でなければなりません
 
 #### Event
@@ -94,7 +95,8 @@ masterブランチ = メインサーバ導入ソースコード
 
 #### Branch rule
 
-- ブランチは機能追加・修正などに応じて分けて作成してください
+- 基本的にはフォークして開発してください
+- 必要がある場合、ブランチは機能追加・修正などに応じて分けて作成してください
 - ブランチ名は機能追加・修正の内容を示す言葉で構成してください（例: `add-test-command`, `fix-test-command-api-url`）
 - masterブランチへの直接コミットはできません
 - 全てのコード追加はプルリクエストを必要とします
