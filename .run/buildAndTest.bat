@@ -2,17 +2,17 @@
 
 if not exist server/server.properties (
     echo server.propertiesが存在しないため作成します。
-    echo gamemode=creative > server/server.properties
-    echo enforce-whitelist=true >> server/server.properties
-    echo difficulty=peaceful >> server/server.properties
-    echo level-type=flat >> server/server.properties
-    echo enable-command-block=true >> server/server.properties
-    echo server-port=25565 >> server/server.properties
-    echo enable-rcon=true >> server/server.properties
-    echo rcon.password=rconpassword >> server/server.properties
-    echo rcon.port=25575 >> server/server.properties
-    echo white-list=true >> server/server.properties
-    echo motd=MyMaid4 Test Server >> server/server.properties
+    echo gamemode=creative> server/server.properties
+    echo enforce-whitelist=true>> server/server.properties
+    echo difficulty=peaceful>> server/server.properties
+    echo level-type=flat>> server/server.properties
+    echo enable-command-block=true>> server/server.properties
+    echo server-port=25565>> server/server.properties
+    echo enable-rcon=true>> server/server.properties
+    echo rcon.password=rconpassword>> server/server.properties
+    echo rcon.port=25575>> server/server.properties
+    echo white-list=true>> server/server.properties
+    echo motd=MyMaid4 Test Server>> server/server.properties
 )
 
 echo jarファイルをコピーします。
