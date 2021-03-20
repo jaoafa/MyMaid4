@@ -17,6 +17,8 @@ import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
+
 public class Cmd_G extends MyMaidLibrary implements CommandPremise {
     @Override
     public MyMaidCommand.Detail details() {
@@ -103,10 +105,8 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
                 player.setGameMode(GameMode.SPECTATOR);
                 SendMessage(player, details(), "ゲームモードを切り替えました。");
                 SendMessage(player, details(), beforeGamemode + " -> " + ChatColor.BOLD + "SPECTATOR");
-                return;
             } else {
                 SendMessage(player, details(), "あなたはゲームモードをスペクテイターに切り替えることができません。");
-                return;
             }
         } else {
             gamemodeNotFound(player);
@@ -119,7 +119,7 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
         String gamemodeName = context.getOrDefault("gamemode", null);
         String beforeGamemode = player.getGameMode().name();
 
-        if (getGameModeStartWith(gamemodeName) == null) {
+        if (gamemodeName == null && getGameModeStartWith(gamemodeName) == null) {
             gamemodeNotFound(player);
             return;
         }
@@ -136,14 +136,14 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
         Player player = (Player) context.getSender();
         Player gamemodeChangePlayer = context.getOrDefault("player", null);
         String gamemodeName = context.getOrDefault("gamemode", null);
-        String changePlayerName = gamemodeChangePlayer.getName();
+        String changePlayerName = Objects.requireNonNull(gamemodeChangePlayer).getName();
         String beforeGamemode = gamemodeChangePlayer.getGameMode().name();
 
         if (!isAMR(player)) {
             SendMessage(player, details(), "あなたは他人のゲームモードを切り替えることができません。");
             return;
         }
-        if (getGameModeStartWith(gamemodeName) == null) {
+        if (getGameModeStartWith(Objects.requireNonNull(gamemodeName)) == null) {
             gamemodeNotFound(player);
         }
         if (getGameModeStartWith(gamemodeName) == GameMode.SPECTATOR && !isAMR(gamemodeChangePlayer)) {
