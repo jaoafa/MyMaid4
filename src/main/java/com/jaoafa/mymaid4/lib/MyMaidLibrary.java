@@ -1,6 +1,10 @@
 package com.jaoafa.mymaid4.lib;
 
 import cloud.commandframework.context.CommandContext;
+import com.jaoafa.mymaid4.Main;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
@@ -15,6 +19,12 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.awt.*;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -56,6 +66,37 @@ public class MyMaidLibrary {
             Component.space(),
             component
         ).build());
+    }
+
+    /**
+     * エラーをDiscordのreportチャンネルへ報告します。
+     *
+     * @param e Throwable
+     */
+    public static void reportError(Class<?> clazz, Throwable e) {
+        e.printStackTrace();
+
+        TextChannel reportChannel = MyMaidData.getReportChannel();
+        if (reportChannel == null) {
+            return;
+        }
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        pw.flush();
+        String details = sw.toString();
+        InputStream is = new ByteArrayInputStream(details.getBytes(StandardCharsets.UTF_8));
+
+        MessageEmbed embed = new EmbedBuilder()
+            .setTitle("MyMaid4 Error Reporter")
+            .addField("Summary", String.format("%s (%s)", e.getMessage(), e.getClass().getName()), false)
+            .addField("Details", details.substring(0, 1000), false)
+            .addField("Class", clazz.getName(), false)
+            .setColor(Color.RED)
+            .setFooter(String.format("MyMaid4 %s", Main.getJavaPlugin().getDescription().getVersion()))
+            .build();
+        reportChannel.sendMessage(embed).queue();
+        reportChannel.sendFile(is, "stacktrace.txt").queue();
     }
 
     /**
