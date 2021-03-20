@@ -51,16 +51,21 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
 
     void gamemodeNotFound(Player player) {
         Component component = Component.text().append(
-            Component.text("指定されたゲームモードが見つかりませんでした。").append(Component.newline()),
-            Component.text("Survival -> s / 0 / survival").style(Style.style(NamedTextColor.GOLD))
-                .clickEvent(ClickEvent.runCommand("/g s")), Component.newline(),
-            Component.text("Creative -> c / 1 / creative").style(Style.style(NamedTextColor.WHITE))
-                .clickEvent(ClickEvent.runCommand("/g c")), Component.newline(),
-            Component.text("Advanture -> a / 2 / advanture").style(Style.style(NamedTextColor.RED))
-                .clickEvent(ClickEvent.runCommand("/g a")), Component.newline(),
-            Component.text("Spectator -> sp / 3 / spectator").style(Style.style(NamedTextColor.YELLOW))
-                .clickEvent(ClickEvent.runCommand("/g sp")), Component.newline(),
-            Component.text("で指定できます。").style(Style.style(Style.empty().color()))
+            Component.text("指定されたゲームモードが見つかりませんでした。", NamedTextColor.GREEN),
+            Component.newline(),
+            Component.text("Survival -> s / 0 / survival", NamedTextColor.GOLD)
+                .clickEvent(ClickEvent.runCommand("/g s")),
+            Component.newline(),
+            Component.text("Creative -> c / 1 / creative", NamedTextColor.WHITE)
+                .clickEvent(ClickEvent.runCommand("/g c")),
+            Component.newline(),
+            Component.text("Advanture -> a / 2 / advanture", NamedTextColor.RED)
+                .clickEvent(ClickEvent.runCommand("/g a")),
+            Component.newline(),
+            Component.text("Spectator -> sp / 3 / spectator", NamedTextColor.YELLOW)
+                .clickEvent(ClickEvent.runCommand("/g sp")),
+            Component.newline(),
+            Component.text("で指定できます。", NamedTextColor.GREEN)
         ).build();
         SendMessage(player, details(), component);
     }
