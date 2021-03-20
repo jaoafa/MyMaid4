@@ -33,7 +33,7 @@ public class Event_ClearSelection extends MyMaidLibrary implements Listener {
         player.getWorld().playSound(
             player.getLocation(),
             Sound.BLOCK_WOODEN_BUTTON_CLICK_ON,
-            1,
+            3,
             1
         );
     }
