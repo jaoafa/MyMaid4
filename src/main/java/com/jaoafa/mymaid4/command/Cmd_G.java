@@ -11,13 +11,10 @@ import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.Style;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.Objects;
 
 public class Cmd_G extends MyMaidLibrary implements CommandPremise {
     @Override
@@ -116,7 +113,7 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
 
     void changeGamemode(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
-        String gamemodeName = context.getOrDefault("gamemode", null);
+        String gamemodeName = context.getOrDefault("gamemode", "creative");
         String beforeGamemode = player.getGameMode().name();
 
         if (gamemodeName == null && getGameModeStartWith(gamemodeName) == null) {
@@ -127,6 +124,10 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
             SendMessage(player, details(), "あなたはゲームモードをスペクテイターに切り替えることができません。");
             return;
         }
+        if (getGameModeStartWith(gamemodeName) == null) {
+            gamemodeNotFound(player);
+            return;
+        }
         player.setGameMode(getGameModeStartWith(gamemodeName));
         SendMessage(player, details(), "ゲームモードを切り替えました。");
         SendMessage(player, details(), beforeGamemode + " -> " + ChatColor.BOLD + player.getGameMode().name());
@@ -135,15 +136,15 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
     void changePlayerGamemode(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
         Player gamemodeChangePlayer = context.getOrDefault("player", null);
-        String gamemodeName = context.getOrDefault("gamemode", null);
-        String changePlayerName = Objects.requireNonNull(gamemodeChangePlayer).getName();
+        String gamemodeName = context.getOrDefault("gamemode", "creative");
+        String changePlayerName = gamemodeChangePlayer.getName();
         String beforeGamemode = gamemodeChangePlayer.getGameMode().name();
 
         if (!isAMR(player)) {
             SendMessage(player, details(), "あなたは他人のゲームモードを切り替えることができません。");
             return;
         }
-        if (getGameModeStartWith(Objects.requireNonNull(gamemodeName)) == null) {
+        if (getGameModeStartWith(gamemodeName) == null) {
             gamemodeNotFound(player);
         }
         if (getGameModeStartWith(gamemodeName) == GameMode.SPECTATOR && !isAMR(gamemodeChangePlayer)) {
