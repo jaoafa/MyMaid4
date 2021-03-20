@@ -1,8 +1,9 @@
 package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
-import org.bukkit.ChatColor;
+import com.jaoafa.mymaid4.lib.SelClickManager;
 import org.bukkit.GameMode;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,7 +26,15 @@ public class Event_ClearSelection extends MyMaidLibrary implements Listener {
         if (!player.isSprinting()) {
             return;
         }
+        if (!SelClickManager.isEnable(player)) {
+            return;
+        }
         player.performCommand("/sel");
-        player.sendMessage("[SEL] " + ChatColor.GREEN + "Selection Cleared!");
+        player.getWorld().playSound(
+            player.getLocation(),
+            Sound.BLOCK_WOODEN_BUTTON_CLICK_ON,
+            1,
+            1
+        );
     }
 }
