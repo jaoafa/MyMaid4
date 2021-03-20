@@ -1,0 +1,154 @@
+package com.jaoafa.mymaid4.command;
+
+import cloud.commandframework.Command;
+import cloud.commandframework.arguments.standard.StringArgument;
+import cloud.commandframework.bukkit.parsers.PlayerArgument;
+import cloud.commandframework.context.CommandContext;
+import cloud.commandframework.meta.CommandMeta;
+import com.jaoafa.mymaid4.lib.CommandPremise;
+import com.jaoafa.mymaid4.lib.MyMaidCommand;
+import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.Style;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+public class Cmd_G extends MyMaidLibrary implements CommandPremise {
+    @Override
+    public MyMaidCommand.Detail details() {
+        return new MyMaidCommand.Detail(
+            "g",
+            "ゲームモードを変更します。"
+        );
+    }
+
+    @Override
+    public MyMaidCommand.Cmd register(Command.Builder<CommandSender> builder) {
+        return new MyMaidCommand.Cmd(
+            builder
+                .meta(CommandMeta.DESCRIPTION, "ゲームモードを切り替えます。")
+                .senderType(Player.class)
+                .handler(this::autoChangeGamemode)
+                .build(),
+            builder
+                .meta(CommandMeta.DESCRIPTION, "指定されたゲームモードに切り替えます。")
+                .senderType(Player.class)
+                .argument(StringArgument.of("gamemode"))
+                .handler(this::changeGamemode)
+                .build(),
+            builder
+                .meta(CommandMeta.DESCRIPTION, "指定されたプレイヤーのゲームモードを切り替えます。")
+                .argument(StringArgument.of("gamemode"))
+                .argument(PlayerArgument.of("player"))
+                .handler(this::changePlayerGamemode)
+                .build()
+        );
+    }
+
+    void gamemodeNotFound(Player player) {
+        Component component = Component.text().append(
+            Component.text("指定されたゲームモードが見つかりませんでした。").append(Component.newline()),
+            Component.text("Survival -> s / 0 / survival").style(Style.style(NamedTextColor.GOLD))
+                .clickEvent(ClickEvent.runCommand("/g s")), Component.newline(),
+            Component.text("Creative -> c / 1 / creative").style(Style.style(NamedTextColor.WHITE))
+                .clickEvent(ClickEvent.runCommand("/g c")), Component.newline(),
+            Component.text("Advanture -> a / 2 / advanture").style(Style.style(NamedTextColor.RED))
+                .clickEvent(ClickEvent.runCommand("/g a")), Component.newline(),
+            Component.text("Spectator -> sp / 3 / spectator").style(Style.style(NamedTextColor.YELLOW))
+                .clickEvent(ClickEvent.runCommand("/g sp")), Component.newline(),
+            Component.text("で指定できます。").style(Style.style(Style.empty().color()))
+        ).build();
+        SendMessage(player, details(), component);
+    }
+
+    GameMode getGameModeStartWith(String str) {
+        switch (str) {
+            case "0":
+                return GameMode.SURVIVAL;
+            case "1":
+                return GameMode.CREATIVE;
+            case "2":
+                return GameMode.ADVENTURE;
+            case "3":
+                return GameMode.SPECTATOR;
+        }
+        for (GameMode mode : GameMode.values()) {
+            if (mode.name().toLowerCase().startsWith(str)) {
+                return mode;
+            }
+        }
+        return null;
+    }
+
+    void autoChangeGamemode(CommandContext<CommandSender> context) {
+        Player player = (Player) context.getSender();
+        String beforeGamemode = player.getGameMode().name();
+        if (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE || player.getGameMode() == GameMode.SPECTATOR) {
+            player.setGameMode(GameMode.CREATIVE);
+            SendMessage(player, details(), "ゲームモードを切り替えました。");
+            SendMessage(player, details(), beforeGamemode + " -> " + ChatColor.BOLD + "CREATIVE");
+            return;
+        }
+        if (player.getGameMode() == GameMode.CREATIVE) {
+            if (isAMR(player)) {
+                player.setGameMode(GameMode.SPECTATOR);
+                SendMessage(player, details(), "ゲームモードを切り替えました。");
+                SendMessage(player, details(), beforeGamemode + " -> " + ChatColor.BOLD + "SPECTATOR");
+                return;
+            } else {
+                SendMessage(player, details(), "あなたはゲームモードをスペクテイターに切り替えることができません。");
+                return;
+            }
+        } else {
+            gamemodeNotFound(player);
+        }
+
+    }
+
+    void changeGamemode(CommandContext<CommandSender> context) {
+        Player player = (Player) context.getSender();
+        String gamemodeName = context.getOrDefault("gamemode", null);
+        String beforeGamemode = player.getGameMode().name();
+
+        if (getGameModeStartWith(gamemodeName) == null) {
+            gamemodeNotFound(player);
+            return;
+        }
+        if (getGameModeStartWith(gamemodeName) == GameMode.SPECTATOR && !isAMR(player)) {
+            SendMessage(player, details(), "あなたはゲームモードをスペクテイターに切り替えることができません。");
+            return;
+        }
+        player.setGameMode(getGameModeStartWith(gamemodeName));
+        SendMessage(player, details(), "ゲームモードを切り替えました。");
+        SendMessage(player, details(), beforeGamemode + " -> " + ChatColor.BOLD + player.getGameMode().name());
+    }
+
+    void changePlayerGamemode(CommandContext<CommandSender> context) {
+        Player player = (Player) context.getSender();
+        Player gamemodeChangePlayer = context.getOrDefault("player", null);
+        String gamemodeName = context.getOrDefault("gamemode", null);
+        String changePlayerName = gamemodeChangePlayer.getName();
+        String beforeGamemode = gamemodeChangePlayer.getGameMode().name();
+
+        if (!isAMR(player)) {
+            SendMessage(player, details(), "あなたは他人のゲームモードを切り替えることができません。");
+            return;
+        }
+        if (getGameModeStartWith(gamemodeName) == null) {
+            gamemodeNotFound(player);
+        }
+        if (getGameModeStartWith(gamemodeName) == GameMode.SPECTATOR && !isAMR(gamemodeChangePlayer)) {
+            SendMessage(player, details(), gamemodeChangePlayer.getName() + "のゲームモードをスペクテイターに切り替えることができません。");
+            return;
+        }
+
+        gamemodeChangePlayer.setGameMode(getGameModeStartWith(gamemodeName));
+        SendMessage(player, details(), changePlayerName + "のゲームモードを切り替えました。");
+        SendMessage(player, details(), beforeGamemode + " -> " + ChatColor.BOLD + gamemodeChangePlayer.getGameMode().name());
+    }
+
+}
