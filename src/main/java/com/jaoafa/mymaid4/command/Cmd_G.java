@@ -124,6 +124,10 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
             SendMessage(player, details(), "あなたはゲームモードをスペクテイターに切り替えることができません。");
             return;
         }
+        if (getGameModeStartWith(gamemodeName) == null) {
+            gamemodeNotFound(player);
+            return;
+        }
         player.setGameMode(getGameModeStartWith(gamemodeName));
         SendMessage(player, details(), "ゲームモードを切り替えました。");
         SendMessage(player, details(), beforeGamemode + " -> " + ChatColor.BOLD + player.getGameMode().name());
