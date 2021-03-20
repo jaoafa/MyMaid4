@@ -64,7 +64,7 @@ public class MyMaidLibrary {
         sender.sendMessage(Component.text().append(
             Component.text("[" + detail.getName().toUpperCase() + "]"),
             Component.space(),
-            component
+            component.replaceText(builder -> builder.match("\n").replacement("\n" + "[" + detail.getName().toUpperCase() + "] "))
         ).build());
     }
 
