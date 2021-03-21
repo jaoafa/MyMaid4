@@ -100,6 +100,10 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
     void listHome(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
         String pagenumString = context.getOrDefault("Page", "1");
+        if (pagenumString.equals("0")) {
+            SendMessage(player, details(), "ページ数は1以上の数字を指定してください。");
+            return;
+        }
         int visualPagenum = 0;//ユーザーに表示する際のページナンバー
         try {
             visualPagenum = Integer.parseInt(pagenumString);
