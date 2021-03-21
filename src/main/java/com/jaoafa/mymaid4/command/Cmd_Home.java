@@ -139,10 +139,7 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
                 Component.text("] "),
                 Component.text(" ("),
                 Component.text(s.worldName, NamedTextColor.AQUA),
-                Component.text(" x:" + String.valueOf(s.x).split("\\.")[0] + " y:" + String.valueOf(s.y).split("\\.")[0] + " z:" + String.valueOf(s.z).split("\\.")[0] + ")"),
-                Component.text("===<<", Style.style().clickEvent(ClickEvent.runCommand("/home list " + finalVisualPagenumBefore)).build()),
-                Component.text("[" + finalVisualPagenum + "]PAGE", NamedTextColor.GOLD),
-                Component.text(">>===", Style.style().clickEvent(ClickEvent.runCommand("/home list " + finalVisualPagenumAfter)).build())
+                Component.text(" x:" + String.valueOf(s.x).split("\\.")[0] + " y:" + String.valueOf(s.y).split("\\.")[0] + " z:" + String.valueOf(s.z).split("\\.")[0] + ")")
             ).build();
             SendMessage(player, details(), componentHomeInfo);
         });
