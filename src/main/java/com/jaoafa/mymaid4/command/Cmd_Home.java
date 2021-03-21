@@ -12,6 +12,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -48,6 +49,7 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
                 .senderType(Player.class)
                 .literal("list")
                 .handler(this::listHome)
+                .argument(StringArgument.newBuilder("Page"))
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "指定したホームに関する情報を表示します。")
@@ -95,6 +97,67 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
 
     void listHome(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
+        String pagenumString = context.getOrDefault("Page", "1");
+        int visualPagenum = 0;//ユーザーに表示する際のページナンバー
+        try {
+            visualPagenum = Integer.parseInt(pagenumString);
+        } catch (NumberFormatException e) {
+            SendMessage(player, details(), "ページ数は半角数字で指定してください。");
+            return;
+        }
+        int listPagenum = visualPagenum - 1;//Listから検索する際のページナンバー
+
+        int listBeginnum = listPagenum * 5;
+        int visualBeginnum = listBeginnum + 1;
+
+        int listEndnum = listBeginnum + 4;
+        int visualEndnum = listEndnum + 1;
+
+        int listCurrentnum = listBeginnum;
+
+        Component componentHeader = Component.text().append(
+            Component.text("===// "),
+            Component.text("HOMELIST", NamedTextColor.GOLD),
+            Component.text(" //===")
+        ).build();
+        SendMessage(player, details(), componentHeader);
+
+        Home home = new Home(player);
+        int finalVisualPagenum = visualPagenum;
+        int finalVisualPagenumBefore = visualPagenum - 1;
+        int finalVisualPagenumAfter = visualPagenum + 1;
+        home.getHomes().forEach(s -> {
+            if (listCurrentnum < listEndnum) {
+                //ここで現在のhome情報を送る
+                //そしてlistCurrentnumに1足す
+                String homename = cutHomeName(s.name);
+                Component componentHomeInfo = Component.text().append(
+                    Component.text("["),
+                    Component.text(homename, Style.style().color(NamedTextColor.GOLD).clickEvent(ClickEvent.runCommand("/home " + s.name)).build()),
+                    Component.text("] "),
+                    Component.text(" ("),
+                    Component.text(s.worldName, NamedTextColor.AQUA),
+                    Component.text(" x:" + s.x + " y:" + s.y + " z:" + s.z + ")"),
+                    Component.newline()
+                ).build();
+                SendMessage(player, details(), componentHomeInfo);
+            } else {
+                String homename = cutHomeName(s.name);
+                Component componentHomeInfo = Component.text().append(
+                    Component.text("["),
+                    Component.text(homename, Style.style().color(NamedTextColor.GOLD).clickEvent(ClickEvent.runCommand("/home " + s.name)).build()),
+                    Component.text("] "),
+                    Component.text(" ("),
+                    Component.text(s.worldName, NamedTextColor.AQUA),
+                    Component.text(" x:" + s.x + " y:" + s.y + " z:" + s.z + ")"),
+                    Component.newline(),
+                    Component.text("===<<", Style.style().clickEvent(ClickEvent.runCommand("/home list " + finalVisualPagenumBefore)).build()),
+                    Component.text("[" + finalVisualPagenum + "]PAGE", NamedTextColor.GOLD),
+                    Component.text(">>===", Style.style().clickEvent(ClickEvent.runCommand("/home list " + finalVisualPagenumAfter)).build())
+                ).build();
+            }
+        });
+
         // TODO ホームリスト実装
         /*
         想定されるやり方:
@@ -106,12 +169,12 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
         // Home home = new Home(player);
         // Set<Home.Detail> homes = home.getHomes();
 
-        SendMessage(player, details(), Component.text().append(
+        /*SendMessage(player, details(), Component.text().append(
             Component.text("この機能は未実装です。(Issue: ", NamedTextColor.GREEN),
             Component.text("#21", NamedTextColor.AQUA, TextDecoration.UNDERLINED)
                 .clickEvent(ClickEvent.openUrl("https://github.com/jaoafa/MyMaid4/issues/21")),
             Component.text(")", NamedTextColor.GREEN)
-        ).build());
+        ).build());*/
     }
 
 
@@ -137,5 +200,18 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
             detail.pitch
         ));
         SendMessage(player, details(), "作成日時: " + detail.getDate());
+    }
+
+    String cutHomeName(String homename) {
+        int homenameLength = homename.length();
+        if (homenameLength >= 8) {
+            homename = homename.substring(0, 5) + "...";
+            return homename;
+        } else {
+            for (int count = 0; count < 8 - homenameLength; count++) {
+                homename = homename + " ";
+            }
+            return homename;
+        }
     }
 }
