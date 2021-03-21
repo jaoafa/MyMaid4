@@ -129,38 +129,29 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
         int finalVisualPagenumBefore = visualPagenum - 1;
         int finalVisualPagenumAfter = visualPagenum + 1;
         int[] finalListCurrentnum = {listCurrentnum};
-        home.getHomes().forEach(s -> {
-            if (listCurrentnum < listEndnum - 1) {
-                //ここで現在のhome情報を送る
-                //そしてlistCurrentnumに1足す
-                String homename = cutHomeName(s.name);
-                Component componentHomeInfo = Component.text().append(
-                    Component.text("["),
-                    Component.text(homename, Style.style().color(NamedTextColor.GOLD).clickEvent(ClickEvent.runCommand("/home " + s.name)).build()),
-                    Component.text("] "),
-                    Component.text(" ("),
-                    Component.text(s.worldName, NamedTextColor.AQUA),
-                    Component.text(" x:" + String.valueOf(s.x).split("\\.")[0] + " y:" + String.valueOf(s.y).split("\\.")[0] + " z:" + String.valueOf(s.z).split("\\.")[0] + ")")
-                ).build();
-                SendMessage(player, details(), componentHomeInfo);
-                finalListCurrentnum[0] = finalListCurrentnum[0] + 1;
-            } else {
-                String homename = cutHomeName(s.name);
-                Component componentHomeInfo = Component.text().append(
-                    Component.text("["),
-                    Component.text(homename, Style.style().color(NamedTextColor.GOLD).clickEvent(ClickEvent.runCommand("/home " + s.name)).build()),
-                    Component.text("] "),
-                    Component.text(" ("),
-                    Component.text(s.worldName, NamedTextColor.AQUA),
-                    Component.text(" x:" + String.valueOf(s.x).split("\\.")[0] + " y:" + String.valueOf(s.y).split("\\.")[0] + " z:" + String.valueOf(s.z).split("\\.")[0] + ")"),
-                    Component.newline(),
-                    Component.text("===<<", Style.style().clickEvent(ClickEvent.runCommand("/home list " + finalVisualPagenumBefore)).build()),
-                    Component.text("[" + finalVisualPagenum + "]PAGE", NamedTextColor.GOLD),
-                    Component.text(">>===", Style.style().clickEvent(ClickEvent.runCommand("/home list " + finalVisualPagenumAfter)).build())
-                ).build();
-                SendMessage(player, details(), componentHomeInfo);
-            }
+        home.getHomes().stream().skip(listBeginnum).limit(5).forEach(s -> {
+            //ここで現在のhome情報を送る
+            //そしてlistCurrentnumに1足す
+            String homename = cutHomeName(s.name);
+            Component componentHomeInfo = Component.text().append(
+                Component.text("["),
+                Component.text(homename, Style.style().color(NamedTextColor.GOLD).clickEvent(ClickEvent.runCommand("/home " + s.name)).build()),
+                Component.text("] "),
+                Component.text(" ("),
+                Component.text(s.worldName, NamedTextColor.AQUA),
+                Component.text(" x:" + String.valueOf(s.x).split("\\.")[0] + " y:" + String.valueOf(s.y).split("\\.")[0] + " z:" + String.valueOf(s.z).split("\\.")[0] + ")"),
+                Component.text("===<<", Style.style().clickEvent(ClickEvent.runCommand("/home list " + finalVisualPagenumBefore)).build()),
+                Component.text("[" + finalVisualPagenum + "]PAGE", NamedTextColor.GOLD),
+                Component.text(">>===", Style.style().clickEvent(ClickEvent.runCommand("/home list " + finalVisualPagenumAfter)).build())
+            ).build();
+            SendMessage(player, details(), componentHomeInfo);
         });
+        Component componentHomeInfo = Component.text().append(
+            Component.text("===<<", Style.style().clickEvent(ClickEvent.runCommand("/home list " + finalVisualPagenumBefore)).build()),
+            Component.text("[" + finalVisualPagenum + "]PAGE", NamedTextColor.GOLD),
+            Component.text(">>===", Style.style().clickEvent(ClickEvent.runCommand("/home list " + finalVisualPagenumAfter)).build())
+        ).build();
+        SendMessage(player, details(), componentHomeInfo);
 
         // TODO ホームリスト実装
         /*
