@@ -148,9 +148,9 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
             SendMessage(player, details(), componentHomeInfo);
         });
         Component componentHomeInfo = Component.text().append(
-            Component.text("===<<", Style.style().clickEvent(ClickEvent.runCommand("/home list " + finalVisualPagenumBefore)).build()),
+            Component.text("===<< ", Style.style().clickEvent(ClickEvent.runCommand("/home list " + finalVisualPagenumBefore)).build()),
             Component.text("[" + finalVisualPagenum + "]PAGE", NamedTextColor.GOLD),
-            Component.text(">>===", Style.style().clickEvent(ClickEvent.runCommand("/home list " + finalVisualPagenumAfter)).build())
+            Component.text(" >>===", Style.style().clickEvent(ClickEvent.runCommand("/home list " + finalVisualPagenumAfter)).build())
         ).build();
         SendMessage(player, details(), componentHomeInfo);
 
