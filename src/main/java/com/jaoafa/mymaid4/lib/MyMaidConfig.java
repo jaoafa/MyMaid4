@@ -62,7 +62,7 @@ public class MyMaidConfig {
             if (discord.contains("token")) {
                 try {
                     JDABuilder jdabuilder = JDABuilder.createDefault(discord.getString("token"))
-                        .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES)
+                        // .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES)
                         .setAutoReconnect(true)
                         .setBulkDeleteSplittingEnabled(false)
                         .setContextEnabled(false)
