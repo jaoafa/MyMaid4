@@ -49,7 +49,9 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
                 .senderType(Player.class)
                 .literal("list")
                 .handler(this::listHome)
-                .argument(StringArgument.newBuilder("Page"))
+                .argument(StringArgument
+                    .<CommandSender>newBuilder("Page")
+                    .asOptionalWithDefault("1"))
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "指定したホームに関する情報を表示します。")
@@ -127,7 +129,7 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
         int finalVisualPagenumBefore = visualPagenum - 1;
         int finalVisualPagenumAfter = visualPagenum + 1;
         home.getHomes().forEach(s -> {
-            if (listCurrentnum < listEndnum) {
+            if (listCurrentnum < listEndnum - 1) {
                 //ここで現在のhome情報を送る
                 //そしてlistCurrentnumに1足す
                 String homename = cutHomeName(s.name);
@@ -137,8 +139,7 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
                     Component.text("] "),
                     Component.text(" ("),
                     Component.text(s.worldName, NamedTextColor.AQUA),
-                    Component.text(" x:" + s.x + " y:" + s.y + " z:" + s.z + ")"),
-                    Component.newline()
+                    Component.text(" x:" + String.valueOf(s.x).split("\\.")[0] + " y:" + String.valueOf(s.y).split("\\.")[0] + " z:" + String.valueOf(s.z).split("\\.")[0] + ")")
                 ).build();
                 SendMessage(player, details(), componentHomeInfo);
             } else {
@@ -149,12 +150,13 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
                     Component.text("] "),
                     Component.text(" ("),
                     Component.text(s.worldName, NamedTextColor.AQUA),
-                    Component.text(" x:" + s.x + " y:" + s.y + " z:" + s.z + ")"),
+                    Component.text(" x:" + String.valueOf(s.x).split("\\.")[0] + " y:" + String.valueOf(s.y).split("\\.")[0] + " z:" + String.valueOf(s.z).split("\\.")[0] + ")"),
                     Component.newline(),
                     Component.text("===<<", Style.style().clickEvent(ClickEvent.runCommand("/home list " + finalVisualPagenumBefore)).build()),
                     Component.text("[" + finalVisualPagenum + "]PAGE", NamedTextColor.GOLD),
                     Component.text(">>===", Style.style().clickEvent(ClickEvent.runCommand("/home list " + finalVisualPagenumAfter)).build())
                 ).build();
+                SendMessage(player, details(), componentHomeInfo);
             }
         });
 
