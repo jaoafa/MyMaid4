@@ -14,7 +14,7 @@ public class Event_SSKColor extends MyMaidLibrary implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEvent_ChatSKK(PlayerChatEvent event) {
         event.setFormat(
-            SKKColorManager.ReplacePlayerSKKChatColor(
+            SKKColorManager.replacePlayerSKKChatColor(
                 event.getPlayer(),
                 "%1",
                 event.getFormat()
