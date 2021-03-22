@@ -73,4 +73,126 @@ public class SKKColorManager {
         return Message;
     }
 
+    static List<String> MessageList = new ArrayList<String>();
+
+    private static List<String> DefaultJoinMessageList() {
+        List<String> MessageList = new ArrayList<String>();
+        MessageList.add("the New Generation");
+        MessageList.add("- Super");
+        MessageList.add("Hyper");
+        MessageList.add("Ultra");
+        MessageList.add("Extreme");
+        MessageList.add("Insane");
+        MessageList.add("Gigantic");
+        MessageList.add("Epic");
+        MessageList.add("Amazing");
+        MessageList.add("Beautiful");
+        MessageList.add("Special");
+        MessageList.add("Swag");
+        MessageList.add("Lunatic");
+        MessageList.add("Exotic");
+        MessageList.add("God");
+        MessageList.add("Hell");
+        MessageList.add("Heaven");
+        MessageList.add("Mega");
+        MessageList.add("Giga");
+        MessageList.add("Tera");
+        MessageList.add("Refined");
+        MessageList.add("Sharp");
+        MessageList.add("Strong");
+        MessageList.add("Muscle");
+        MessageList.add("Macho");
+        MessageList.add("Bomber");
+        MessageList.add("Blazing");
+        MessageList.add("Frozen");
+        MessageList.add("Legendary");
+        MessageList.add("Mystical");
+        MessageList.add("Tactical");
+        MessageList.add("Critical");
+        MessageList.add("Overload");
+        MessageList.add("Overclock");
+        MessageList.add("Fantastic");
+        MessageList.add("Criminal");
+        MessageList.add("Primordial");
+        MessageList.add("Genius");
+        MessageList.add("Great");
+        MessageList.add("Perfect");
+        MessageList.add("Fearless");
+        MessageList.add("Ruthless");
+        MessageList.add("Bold");
+        MessageList.add("Void");
+        MessageList.add("Millenium");
+        MessageList.add("Exact");
+        MessageList.add("Really");
+        MessageList.add("Certainty");
+        MessageList.add("Infernal");
+        MessageList.add("Ender");
+        MessageList.add("World");
+        MessageList.add("Mad");
+        MessageList.add("Crazy");
+        MessageList.add("Wrecked");
+        MessageList.add("Elegant");
+        MessageList.add("Expensive");
+        MessageList.add("Rich");
+        MessageList.add("Radioactive");
+        MessageList.add("Automatic");
+        MessageList.add("Honest");
+        MessageList.add("Cosmic");
+        MessageList.add("Galactic");
+        MessageList.add("Dimensional");
+        MessageList.add("Sinister");
+        MessageList.add("Evil");
+        MessageList.add("Abyssal");
+        MessageList.add("Hallowed");
+        MessageList.add("Holy");
+        MessageList.add("Sacred");
+        MessageList.add("Omnipotent");
+
+        return MessageList;
+    }
+
+    public static String getPlayerSKKJoinMessage(Player player) {
+        //try{
+            /*String group = PermissionsManager.getPermissionMainGroup(player);
+            if(group.equalsIgnoreCase("Limited")){
+                return ChatColor.RED + player.getName() + ChatColor.YELLOW + " joined the game.";
+            }*/
+        int i = 0;
+        try {
+            Connection connection = MyMaidData.getMainMySQLDBManager().getConnection();
+            ResultSet resultSet = connection.prepareStatement("SELECT * FROM vote WHERE `uuid`='" + player.getUniqueId() + "'").executeQuery();
+            while (resultSet.next()) {
+                i = resultSet.getInt("count");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        String result = "";
+        if (i < 20) {
+            return null;
+        } else if (i < 24) {
+            result = "VIP";
+        } else {
+            double vote_double = i / 4;
+            vote_double = vote_double - 5;
+            int vote = (int) Math.floor(vote_double);
+            int o = 0;
+            while (vote > 0) {
+                if (MessageList.size() <= o) {
+                    break;
+                }
+                if (!result.equalsIgnoreCase("")) {
+                    result += " ";
+                }
+                result += MessageList.get(o);
+                vote--;
+                o++;
+            }
+            result += " VIP (" + i + ")";
+        }
+        return ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + ", " + ChatColor.YELLOW + result + " joined the game.";
+        /*}catch(ClassNotFoundException | SQLException e){
+            return ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + ", " + ChatColor.YELLOW + player.getName() + " joined the game.";
+        }*/
+    }
 }
