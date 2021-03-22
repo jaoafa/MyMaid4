@@ -2,6 +2,7 @@ package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import com.jaoafa.mymaid4.lib.SKKColorManager;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -29,8 +30,8 @@ public class Event_SSKColor extends MyMaidLibrary implements Listener {
             event.setJoinMessage(JoinMessage);
         }
 
-        /*for(Player p: Bukkit.getServer().getOnlinePlayers()) {
-            new TabListSKKReloader(p).runTaskLater(plugin, 20L);
-        }*/
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            SKKColorManager.setPlayerSKKTabList(player);
+        }
     }
 }

@@ -1,7 +1,9 @@
 package com.jaoafa.mymaid4.lib;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Team;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -194,4 +196,20 @@ public class SKKColorManager {
             return ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + ", " + ChatColor.YELLOW + player.getName() + " joined the game.";
         }*/
     }
+
+    public static String getPlayerSKKTabListString(Player player) {
+        Team team = Bukkit.getServer().getScoreboardManager().getMainScoreboard().getPlayerTeam(player);
+        if (team == null) {
+            return getPlayerColor(player) + "■" + ChatColor.RESET + player.getName();
+        } else {
+            return getPlayerColor(player) + "■" + ChatColor.RESET + team.getPrefix() + player.getName();
+        }
+
+    }
+
+    public static void setPlayerSKKTabList(Player player) {
+        player.setPlayerListName(getPlayerSKKTabListString(player));
+    }
+
+
 }
