@@ -13,7 +13,7 @@ public class Event_SSKColor extends MyMaidLibrary implements Listener {
         event.setFormat(
             SKKColorManager.ReplacePlayerSKKChatColor(
                 event.getPlayer(),
-                "%1",
+                ":",
                 event.getFormat()
             )
         );
