@@ -13,7 +13,8 @@ MyMaid とは、jao Minecraft Server における独自のプラグインで特�
 
 ### 開発者は誰ですか？
 
-表面上は jao Minecraft Server 開発部としていますが、実質的には[Tomachi](https://github.com/book000)が全ての開発を担っています。
+表面上は jao Minecraft Server 開発部としていますが、実質的には[Tomachi](https://github.com/book000)が全ての開発・運用を担っています。  
+但し、本プロジェクトからは有志の手によってプルリクエストによる開発が行われています。
 
 ## Development
 
@@ -64,18 +65,29 @@ master ブランチ = メインサーバ導入ソースコード
 
 #### Event
 
-- 全てのイベント駆動の機能は [`src/main/java/com/jaoafa/MyMaid4/Event/Event_<FuncName>.java`](src/main/java/com/jaoafa/MyMaid4/Event)に配置されます。
+- 全てのイベント駆動の機能は [`src/main/java/com/jaoafa/MyMaid4/Event/Event_<FuncName>.java`](src/main/java/com/jaoafa/MyMaid4/Event)
+  に配置されます。
 - `<FuncName>` は自由で構いません
+
+### Other
+
+- コマンド内においてメッセージを送信する場合は、[MyMaidLibrary](src/main/java/com/jaoafa/MyMaid4/lib/MyMaidLibrary.java) の `SendMessage`
+  メソッドを使ってください
+- `SQLException` など本来発生しえない Exception
+  をキャッチする場合は [MyMaidLibrary](src/main/java/com/jaoafa/MyMaid4/lib/MyMaidLibrary.java) の `reportError`
+  でレポートを送信するように設計してください
 
 ### Git
 
 #### Commit rule
 
-- コミットメッセージは **[CommitLint のルール](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional#rules) である以下に沿っていることを期待しますが、必須ではありません。**
-  - 次の形式でコミットメッセージを指定してください: `type(scope): subject` (e.g. `fix(home): message`)
-  - `type`, `subject` は必須、 `scope` は必須ではありません
-    - `type-enum`: `type` は必ず次のいずれかにしなければなりません
-    - `build`: ビルド関連
+-
+コミットメッセージは **[CommitLint のルール](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional#rules)
+である以下に沿っていることを期待しますが、必須ではありません。**
+    - 次の形式でコミットメッセージを指定してください: `type(scope): subject` (e.g. `fix(home): message`)
+    - `type`, `subject` は必須、 `scope` は必須ではありません
+        - `type-enum`: `type` は必ず次のいずれかにしなければなりません
+        - `build`: ビルド関連
     - `ci`: CI 関連
     - `chore`: いろいろ
     - `docs`: ドキュメント関連

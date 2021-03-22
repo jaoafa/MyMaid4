@@ -21,10 +21,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.dynmap.DynmapAPI;
-import org.dynmap.markers.GenericMarker;
-import org.dynmap.markers.Marker;
-import org.dynmap.markers.MarkerAPI;
-import org.dynmap.markers.MarkerSet;
+import org.dynmap.markers.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +62,10 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
                 .argument(StringArgument
                     .<CommandSender>newBuilder("markerType")
                     .withSuggestionsProvider(this::suggestMarkerTypes))
+                .argument(StringArgument
+                    .<CommandSender>newBuilder("markerIcon")
+                    .asOptional()
+                    .withSuggestionsProvider(this::suggestMarkerIcons))
                 .handler(this::addMarker)
                 .build(),
             builder
@@ -161,7 +162,10 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
             return;
         }
         Location loc = new Location(world, marker.getX(), marker.getY(), marker.getZ());
-        loc.add(0.5f, 0f, 0.5f);
+        if (loc.getX() % 1 == 0 && loc.getZ() % 1 == 0) {
+            // 小数点以下が指定されていない場合に0.5を足す
+            loc.add(0.5f, 0f, 0.5f);
+        }
         teleportPlayer.teleport(loc);
 
         // 可読性悪すぎ
@@ -211,7 +215,46 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
     }
 
     void addMarker(CommandContext<CommandSender> context) {
+        Player player = (Player) context.getSender();
+        Location loc = player.getLocation();
+        String markerName = context.get("markerName");
+        String markerType = context.get("markerType");
+        String markerIconId = context.getOrDefault("markerIcon", null);
 
+        DynmapAPI dynmapAPI = getDynmapAPI();
+        MarkerAPI markerAPI = dynmapAPI.getMarkerAPI();
+
+        MarkerSet markerSet = markerAPI.getMarkerSet(markerType);
+        if (markerSet == null) {
+            SendMessage(player, details(), "指定されたマーカータイプは見つかりませんでした。");
+            return;
+        }
+
+        MarkerIcon markerIcon;
+        if (markerIconId != null) {
+            markerIcon = markerAPI.getMarkerIcon(markerIconId);
+            if (markerIcon == null) {
+                SendMessage(player, details(), "指定されたマーカーアイコンは見つかりませんでした。");
+                return;
+            }
+        } else {
+            markerIcon = markerSet.getDefaultMarkerIcon();
+        }
+
+        boolean isExistsEqualName = markerAPI.getMarkerSets().stream()
+            .flatMap(a -> a.getMarkers().stream())
+            .anyMatch(marker -> marker.getLabel().equals(markerName));
+
+        Marker marker = markerSet.createMarker(null, markerName, loc.getWorld().getName(), loc.getX(), loc.getY(), loc.getZ(), markerIcon, true);
+        if (marker == null) {
+            SendMessage(player, details(), "マーカーの作成に失敗しました。");
+            return;
+        }
+        SendMessage(player, details(), String.format("マーカー「%s」を %.2f %.2f %.2f に作成しました。", marker.getLabel(), marker.getX(), marker.getY(), marker.getZ()));
+
+        if (isExistsEqualName) {
+            SendMessage(player, details(), "同じマーカー名が他にもあるようです。期待した場所にテレポートできない可能性があります。");
+        }
     }
 
     void delMarker(CommandContext<CommandSender> context) {
@@ -281,7 +324,27 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
         MarkerAPI markerAPI = dynmapAPI.getMarkerAPI();
 
         return markerAPI.getMarkerSets().stream()
-            .map(MarkerSet::getMarkerSetLabel)
+            .map(MarkerSet::getMarkerSetID)
+            .filter(label -> label.startsWith(current))
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * マーカーアイコンのリストを返す
+     *
+     * @param context CommandContext
+     * @param current 入力されている値
+     * @return サジェストする文字列一覧
+     */
+    List<String> suggestMarkerIcons(final CommandContext<CommandSender> context, final String current) {
+        if (!isEnabledPlugin("dynmap")) {
+            return new ArrayList<>();
+        }
+        DynmapAPI dynmapAPI = getDynmapAPI();
+        MarkerAPI markerAPI = dynmapAPI.getMarkerAPI();
+
+        return markerAPI.getMarkerIcons().stream()
+            .map(MarkerIcon::getMarkerIconID)
             .filter(label -> label.startsWith(current))
             .collect(Collectors.toList());
     }
