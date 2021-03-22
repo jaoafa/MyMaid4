@@ -73,9 +73,8 @@ public class SKKColorManager {
         return Message;
     }
 
-    static List<String> MessageList = new ArrayList<String>();
 
-    private static List<String> DefaultJoinMessageList() {
+    private static List<String> MessageList() {
         List<String> MessageList = new ArrayList<String>();
         MessageList.add("the New Generation");
         MessageList.add("- Super");
@@ -178,13 +177,13 @@ public class SKKColorManager {
             int vote = (int) Math.floor(vote_double);
             int o = 0;
             while (vote > 0) {
-                if (MessageList.size() <= o) {
+                if (MessageList().size() <= o) {
                     break;
                 }
                 if (!result.equalsIgnoreCase("")) {
                     result += " ";
                 }
-                result += MessageList.get(o);
+                result += MessageList().get(o);
                 vote--;
                 o++;
             }
