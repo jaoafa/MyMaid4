@@ -49,6 +49,13 @@ public final class Main extends JavaPlugin {
         registerEvent();
     }
 
+    @Override
+    public void onDisable() {
+        config.getJDA().getEventManager().getRegisteredListeners()
+            .forEach(listener -> config.getJDA().getEventManager().unregister(listener));
+        config.getJDA().shutdownNow();
+    }
+
     private void registerCommand() {
         getLogger().info("----- registerCommand -----");
         final PaperCommandManager<CommandSender> manager;
