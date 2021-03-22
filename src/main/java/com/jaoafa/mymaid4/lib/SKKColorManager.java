@@ -189,7 +189,7 @@ public class SKKColorManager {
                 vote--;
                 o++;
             }
-            result += " VIP (" + i + ")";
+            result += String.format(" VIP (%d)", i);
         }
         return ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + ", " + ChatColor.YELLOW + result + " joined the game.";
         /*}catch(ClassNotFoundException | SQLException e){
