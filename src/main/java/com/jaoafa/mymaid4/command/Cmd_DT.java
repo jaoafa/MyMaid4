@@ -138,7 +138,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
         MarkerAPI markerAPI = dynmapAPI.getMarkerAPI();
 
         Set<Marker> markers = markerAPI.getMarkerSets().stream()
-            .flatMap(a -> a.getMarkers().stream())
+            .flatMap(sets -> sets.getMarkers().stream())
             .collect(Collectors.toSet());
 
         Optional<Marker> matchedMarker = markers.stream()
@@ -241,16 +241,15 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
             markerIcon = markerSet.getDefaultMarkerIcon();
         }
 
-        boolean isExistsEqualName = markerAPI.getMarkerSets().stream()
-            .flatMap(a -> a.getMarkers().stream())
-            .anyMatch(marker -> marker.getLabel().equals(markerName));
+        boolean isExistsEqualName = isExistsMarker(markerAPI, markerName);
 
         Marker marker = markerSet.createMarker(null, markerName, loc.getWorld().getName(), loc.getX(), loc.getY(), loc.getZ(), markerIcon, true);
         if (marker == null) {
             SendMessage(player, details(), "マーカーの作成に失敗しました。");
             return;
         }
-        SendMessage(player, details(), String.format("マーカー「%s」を %.2f %.2f %.2f に作成しました。", marker.getLabel(), marker.getX(), marker.getY(), marker.getZ()));
+        SendMessage(player, details(), String.format("マーカー「%s」を %s %.2f %.2f %.2f に作成しました。",
+            marker.getLabel(), marker.getWorld(), marker.getX(), marker.getY(), marker.getZ()));
 
         if (isExistsEqualName) {
             SendMessage(player, details(), "同じマーカー名が他にもあるようです。期待した場所にテレポートできない可能性があります。");
@@ -258,7 +257,27 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
     }
 
     void delMarker(CommandContext<CommandSender> context) {
+        Player player = (Player) context.getSender();
+        String markerName = context.get("markerName");
 
+        DynmapAPI dynmapAPI = getDynmapAPI();
+        MarkerAPI markerAPI = dynmapAPI.getMarkerAPI();
+
+        Optional<Marker> _marker = markerAPI.getMarkerSets().stream()
+            .flatMap(sets -> sets.getMarkers().stream())
+            .filter(m -> m.getLabel().equals(markerName))
+            .findFirst();
+
+        if (!_marker.isPresent()) {
+            SendMessage(player, details(), "指定されたマーカーは見つかりませんでした。");
+            return;
+        }
+        Marker marker = _marker.get();
+
+        SendMessage(player, details(), String.format("マーカー「%s (%s %.2f %.2f %.2f)」を削除しました。",
+            marker.getLabel(), marker.getWorld(), marker.getX(), marker.getY(), marker.getZ()));
+
+        marker.deleteMarker();
     }
 
     void teleportRandomMarker(CommandContext<CommandSender> context) {
@@ -357,5 +376,18 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
     DynmapAPI getDynmapAPI() {
         Plugin dynmap = Bukkit.getPluginManager().getPlugin("dynmap");
         return (DynmapAPI) dynmap;
+    }
+
+    /**
+     * マーカーが存在するかどうかを返す
+     *
+     * @param markerAPI  マーカーAPI
+     * @param markerName 調べるマーカー名
+     * @return 存在すればTrue
+     */
+    boolean isExistsMarker(MarkerAPI markerAPI, String markerName) {
+        return markerAPI.getMarkerSets().stream()
+            .flatMap(a -> a.getMarkers().stream())
+            .anyMatch(marker -> marker.getLabel().equals(markerName));
     }
 }
