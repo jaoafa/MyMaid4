@@ -41,7 +41,7 @@ public class Cmd_Getlookloc extends MyMaidLibrary implements CommandPremise {
         String loctext = String.format("x:%d y:%d z:%d", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
         String copyloctext = String.format("%d %d %d", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
         Component component = Component.text().append(
-            Component.text("ここをクリックすると見ているブロックの座標を提案します。", Style.style().clickEvent(ClickEvent.suggestCommand(copyloctext)).decorate(TextDecoration.UNDERLINED).color(NamedTextColor.GOLD).build()),
+            Component.text("ここをクリックすると見ているブロックの座標を提案します。", Style.style().clickEvent(ClickEvent.copyToClipboard(copyloctext)).decorate(TextDecoration.UNDERLINED).color(NamedTextColor.GOLD).build()),
             Component.text("Ctrl+A -> Ctrl+Cでコピーしてください。", Style.style().clickEvent(ClickEvent.suggestCommand(copyloctext)).decorate(TextDecoration.UNDERLINED).color(NamedTextColor.GOLD).build())
         ).build();
         SendMessage(player, details(), component);
