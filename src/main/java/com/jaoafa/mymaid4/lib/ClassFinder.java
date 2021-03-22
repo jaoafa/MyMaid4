@@ -24,6 +24,10 @@ import java.util.jar.JarFile;
 public class ClassFinder {
     private final ClassLoader classLoader;
 
+    public ClassFinder() {
+        classLoader = Thread.currentThread().getContextClassLoader();
+    }
+
     public ClassFinder(ClassLoader classLoader) {
         this.classLoader = classLoader;
     }
