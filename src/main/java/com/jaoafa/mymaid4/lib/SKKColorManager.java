@@ -69,7 +69,7 @@ public class SKKColorManager {
     }
 
     public static String ReplacePlayerSKKChatColor(Player player, String oldstr, String _Message) {
-        String Message = _Message.replaceFirst(oldstr, getPlayerColor(player) + "■" + ChatColor.WHITE + oldstr);
+        String Message = _Message.replaceFirst(oldstr, getPlayerColor(player) + "■" + ChatColor.WHITE + oldstr.replace("<", "").replace(">", ":"));
         return Message;
     }
 
