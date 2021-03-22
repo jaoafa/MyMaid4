@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -33,7 +34,9 @@ public class SKKColorManager {
             int i = 0;
             try {
                 Connection connection = MyMaidData.getMainMySQLDBManager().getConnection();
-                ResultSet resultSet = connection.prepareStatement("SELECT * FROM vote WHERE `uuid`='" + player.getUniqueId() + "'").executeQuery();
+                PreparedStatement stmt = connection.prepareStatement("SELECT * FROM vote WHERE uuid = ?");
+                stmt.setString(1, player.getUniqueId().toString());
+                ResultSet resultSet = stmt.executeQuery();
                 if (!resultSet.next()) {
                     return null;
                 }
@@ -165,8 +168,10 @@ public class SKKColorManager {
         int i = 0;
         try {
             Connection connection = MyMaidData.getMainMySQLDBManager().getConnection();
-            ResultSet resultSet = connection.prepareStatement("SELECT * FROM vote WHERE `uuid`='" + player.getUniqueId() + "'").executeQuery();
-            while (resultSet.next()) {
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM vote WHERE uuid = ?");
+            stmt.setString(1, player.getUniqueId().toString());
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
                 i = resultSet.getInt("count");
             }
         } catch (SQLException throwables) {
@@ -195,7 +200,7 @@ public class SKKColorManager {
             }
             result += String.format(" VIP (%d)", i);
         }
-        return ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + ", " + ChatColor.YELLOW + result + " joined the game.";
+        return String.format("%s%s%s, %s%s joined the game.", ChatColor.YELLOW, player.getName(), ChatColor.YELLOW, ChatColor.YELLOW, result);
         /*}catch(ClassNotFoundException | SQLException e){
             return ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + ", " + ChatColor.YELLOW + player.getName() + " joined the game.";
         }*/
