@@ -1,5 +1,7 @@
 package com.jaoafa.mymaid4.lib;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -159,7 +161,7 @@ public class SKKColorManager {
         return MessageList;
     }
 
-    public static String getPlayerSKKJoinMessage(Player player) {
+    public static Component getPlayerSKKJoinMessage(Player player) {
         //try{
             /*String group = PermissionsManager.getPermissionMainGroup(player);
             if(group.equalsIgnoreCase("Limited")){
@@ -200,7 +202,10 @@ public class SKKColorManager {
             }
             result += String.format(" VIP (%d)", i);
         }
-        return String.format("%s%s%s, %s%s joined the game.", ChatColor.YELLOW, player.getName(), ChatColor.YELLOW, ChatColor.YELLOW, result);
+        Component component = Component.text().append(
+            Component.text(String.format("%s%s, joined the game.", player.getName(), result), NamedTextColor.YELLOW)
+        ).build();
+        return component;
         /*}catch(ClassNotFoundException | SQLException e){
             return ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + ", " + ChatColor.YELLOW + player.getName() + " joined the game.";
         }*/
