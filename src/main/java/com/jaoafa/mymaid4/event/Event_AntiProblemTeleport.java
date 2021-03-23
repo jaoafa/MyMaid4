@@ -15,12 +15,13 @@ public class Event_AntiProblemTeleport extends MyMaidLibrary implements Listener
         Location from = event.getFrom();
         Location to = event.getTo();
         Player player = event.getPlayer();
-        if (!from.getWorld().getName().equals(to.getWorld().getName())){
+        if (!from.getWorld().getName().equals(to.getWorld().getName())) {
             return;
         }
-        if ((to.getY()>8192)||(to.getY()<-8192)){
-            player.sendMessage("[TeleportCheck] " + ChatColor.GREEN + "Y座標が極端な場所へはテレポートできません");
-            event.setCancelled(true);
+        if (Math.abs(to.getY()) <= 8192) { // プラスマイナス8192未満の場合何もしない
+            return;
         }
+        player.sendMessage("[TeleportCheck] " + ChatColor.GREEN + "Y座標が極端な場所へはテレポートできません。");
+        event.setCancelled(true);
     }
 }
