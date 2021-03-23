@@ -15,12 +15,14 @@ import com.jaoafa.mymaid4.Main;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.hooks.AnnotatedEventManager;
-import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * config.ymlで定義されるコンフィグのクラス
@@ -31,8 +33,50 @@ public class MyMaidConfig {
     private Long jaotanChannelId = null;
     private Long reportChannelId = null;
     private Long serverChatChannelId = null;
+    private static final Map<UUID, Integer> SpamCount = new HashMap<>();
+    private static final Map<UUID, Long> SpamTime = new HashMap<>();
 
-    public void init(){
+    public static Integer getSpamCount(UUID uuid) {
+        return SpamCount.get(uuid);
+    }
+
+    public static void setSpamCount(UUID uuid, int count) {
+        SpamCount.put(uuid, count);
+    }
+
+    public static Long getSpamTime(UUID uuid) {
+        return SpamTime.get(uuid);
+    }
+
+    public static void setSpamTime(UUID uuid, long time) {
+        SpamTime.put(uuid, time);
+    }
+
+    String notFoundConfigKey(String key) {
+        return String.format("%sコンフィグが見つかりませんでした。一部の機能は無効化されます。", key);
+    }
+
+    public JDA getJDA() {
+        return jda;
+    }
+
+    public Long getGeneralChannelId() {
+        return generalChannelId;
+    }
+
+    public Long getJaotanChannelId() {
+        return jaotanChannelId;
+    }
+
+    public Long getReportChannelId() {
+        return reportChannelId;
+    }
+
+    public Long getServerChatChannelId() {
+        return serverChatChannelId;
+    }
+
+    public void init() {
         JavaPlugin plugin = Main.getJavaPlugin();
         if (!new File(plugin.getDataFolder(), "config.yml").exists()) {
             plugin.getLogger().warning("コンフィグファイルが見つかりませんでした。一部の機能は無効化されます。");
@@ -116,29 +160,5 @@ public class MyMaidConfig {
         } else {
             plugin.getLogger().warning(notFoundConfigKey("zakurohat_database"));
         }
-    }
-
-    String notFoundConfigKey(String key) {
-        return String.format("%sコンフィグが見つかりませんでした。一部の機能は無効化されます。", key);
-    }
-
-    public JDA getJDA() {
-        return jda;
-    }
-
-    public Long getGeneralChannelId() {
-        return generalChannelId;
-    }
-
-    public Long getJaotanChannelId() {
-        return jaotanChannelId;
-    }
-
-    public Long getReportChannelId() {
-        return reportChannelId;
-    }
-
-    public Long getServerChatChannelId() {
-        return serverChatChannelId;
     }
 }
