@@ -15,6 +15,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Cmd_G extends MyMaidLibrary implements CommandPremise {
     @Override
@@ -36,12 +41,16 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
             builder
                 .meta(CommandMeta.DESCRIPTION, "指定されたゲームモードに切り替えます。")
                 .senderType(Player.class)
-                .argument(StringArgument.of("gamemode"))
+                .argument(StringArgument
+                    .<CommandSender>newBuilder("gamemode")
+                    .withSuggestionsProvider(this::suggestGameMode))
                 .handler(this::changeGamemode)
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "指定されたプレイヤーのゲームモードを切り替えます。")
-                .argument(StringArgument.of("gamemode"))
+                .argument(StringArgument
+                    .<CommandSender>newBuilder("gamemode")
+                    .withSuggestionsProvider(this::suggestGameMode))
                 .argument(PlayerArgument.of("player"))
                 .handler(this::changePlayerGamemode)
                 .build()
@@ -157,4 +166,15 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
         SendMessage(player, details(), beforeGamemode + " -> " + ChatColor.BOLD + gamemodeChangePlayer.getGameMode().name());
     }
 
+    List<String> suggestGameMode(final CommandContext<CommandSender> context, final String current) {
+        List<String> list = new ArrayList<>();
+        list.addAll(Arrays.asList("1", "2", "3", "s", "c", "a", "sp"));
+        list.addAll(Arrays.stream(GameMode.values())
+            .map(Enum::name)
+            .collect(Collectors.toList()));
+
+        return list.stream()
+            .filter(s -> s.toLowerCase().startsWith(current.toLowerCase()))
+            .collect(Collectors.toList());
+    }
 }
