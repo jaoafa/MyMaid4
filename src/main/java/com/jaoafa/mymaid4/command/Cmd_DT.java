@@ -23,10 +23,7 @@ import org.bukkit.plugin.Plugin;
 import org.dynmap.DynmapAPI;
 import org.dynmap.markers.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -125,6 +122,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
 
         Player teleportPlayer;
         if (inputPlayerName != null) {
+            Bukkit.getServer().sendMessage(Component.text(inputPlayerName));
             teleportPlayer = Bukkit.getPlayerExact(inputPlayerName);
             if (teleportPlayer == null) {
                 SendMessage(sender, details(), "指定されたプレイヤーは存在しないか、オンラインではありません。");
@@ -154,64 +152,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
             return;
         }
 
-        Marker marker = matchedMarker.get();
-        String markerName = marker.getLabel();
-        World world = Bukkit.getWorld(marker.getWorld());
-        if (world == null) {
-            SendMessage(sender, details(), String.format("指定されたマーカーのワールド「%s」が見つかりませんでした。", marker.getWorld()));
-            return;
-        }
-        Location loc = new Location(world, marker.getX(), marker.getY(), marker.getZ());
-        if (loc.getX() % 1 == 0 && loc.getZ() % 1 == 0) {
-            // 小数点以下が指定されていない場合に0.5を足す
-            loc.add(0.5f, 0f, 0.5f);
-        }
-        teleportPlayer.teleport(loc);
-
-        // 可読性悪すぎ
-        HoverEvent<?> senderHoverEvent =
-            inputPlayerName == null ?
-                HoverEvent.showEntity(
-                    Key.key("player"),
-                    teleportPlayer.getUniqueId(),
-                    Component.text(teleportPlayer.getName())) :
-                sender instanceof Player ?
-                    HoverEvent.showEntity(
-                        Key.key("player"),
-                        ((Player) sender).getUniqueId(),
-                        Component.text(sender.getName())) :
-                    HoverEvent.showText(Component.text(sender.getName()));
-
-        Bukkit.getServer().sendMessage(Component.text().append(
-            Component.text("[", NamedTextColor.GRAY),
-            Component.text(sender.getName(), NamedTextColor.GRAY, TextDecoration.ITALIC)
-                .hoverEvent(senderHoverEvent),
-            Component.text(":", NamedTextColor.GRAY),
-            Component.space(),
-            Component.text(teleportPlayer.getName(), NamedTextColor.GRAY, TextDecoration.ITALIC)
-                .hoverEvent(HoverEvent.showEntity(
-                    Key.key("player"),
-                    teleportPlayer.getUniqueId(),
-                    Component.text(teleportPlayer.getName()))),
-            Component.space(),
-            Component.text("は"),
-            Component.space(),
-            Component.text(markerName, NamedTextColor.GRAY, TextDecoration.ITALIC)
-                .hoverEvent(HoverEvent.showText(Component.text().append(
-                    Component.text("Dynmap Marker"),
-                    Component.newline(),
-                    Component.text(world.getName()),
-                    Component.space(),
-                    Component.text(loc.getX()),
-                    Component.space(),
-                    Component.text(loc.getY()),
-                    Component.space(),
-                    Component.text(loc.getZ())
-                )))
-                .clickEvent(ClickEvent.suggestCommand(String.format("/dt %s", markerName))),
-            Component.space(),
-            Component.text("にワープしました]", NamedTextColor.GRAY)
-        ));
+        teleportToMarker(sender, teleportPlayer, matchedMarker.get());
     }
 
     void addMarker(CommandContext<CommandSender> context) {
@@ -281,7 +222,23 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
     }
 
     void teleportRandomMarker(CommandContext<CommandSender> context) {
+        Player player = (Player) context.getSender();
 
+        DynmapAPI dynmapAPI = getDynmapAPI();
+        MarkerAPI markerAPI = dynmapAPI.getMarkerAPI();
+
+        // ストリーム上でランダム並び替えしてひとつ取得するのが理想
+        List<Marker> markers = markerAPI.getMarkerSets().stream()
+            .flatMap(sets -> sets.getMarkers().stream())
+            .filter(m -> m.getWorld().equals(player.getLocation().getWorld().getName()))
+            .collect(Collectors.toList());
+        Collections.shuffle(markers);
+        if (markers.size() == 0) {
+            SendMessage(player, details(), "ワールドにマーカーがひとつもありませんでした。");
+            return;
+        }
+
+        teleportToMarker(player, player, markers.get(0));
     }
 
     void getNearMarker(CommandContext<CommandSender> context) {
@@ -389,5 +346,67 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
         return markerAPI.getMarkerSets().stream()
             .flatMap(a -> a.getMarkers().stream())
             .anyMatch(marker -> marker.getLabel().equals(markerName));
+    }
+
+    void teleportToMarker(CommandSender sender, Player player, Marker marker) {
+        String markerName = marker.getLabel();
+        World world = Bukkit.getWorld(marker.getWorld());
+        if (world == null) {
+            SendMessage(sender, details(), String.format("指定されたマーカーのワールド「%s」が見つかりませんでした。", marker.getWorld()));
+            return;
+        }
+        Location loc = new Location(world, marker.getX(), marker.getY(), marker.getZ());
+        if (loc.getX() % 1 == 0 && loc.getZ() % 1 == 0) {
+            // 小数点以下が指定されていない場合に0.5を足す
+            loc.add(0.5f, 0f, 0.5f);
+        }
+        player.teleport(loc);
+
+        SendMessage(sender, details(), String.valueOf(sender == player));
+
+        // 可読性悪すぎ
+        HoverEvent<?> senderHoverEvent =
+            sender == player ? // こんなことできんの？ (期待していること: コマンド実行者とテレポートされるプレイヤーが同じかどうか調べたい)
+                HoverEvent.showEntity(
+                    Key.key("player"),
+                    player.getUniqueId(),
+                    Component.text(player.getName())) :
+                sender instanceof Player ?
+                    HoverEvent.showEntity(
+                        Key.key("player"),
+                        ((Player) sender).getUniqueId(),
+                        Component.text(sender.getName())) :
+                    HoverEvent.showText(Component.text(sender.getName()));
+
+        Bukkit.getServer().sendMessage(Component.text().append(
+            Component.text("[", NamedTextColor.GRAY),
+            Component.text(sender.getName(), NamedTextColor.GRAY, TextDecoration.ITALIC)
+                .hoverEvent(senderHoverEvent),
+            Component.text(":", NamedTextColor.GRAY),
+            Component.space(),
+            Component.text(player.getName(), NamedTextColor.GRAY, TextDecoration.ITALIC)
+                .hoverEvent(HoverEvent.showEntity(
+                    Key.key("player"),
+                    player.getUniqueId(),
+                    Component.text(player.getName()))),
+            Component.space(),
+            Component.text("は"),
+            Component.space(),
+            Component.text(markerName, NamedTextColor.GRAY, TextDecoration.ITALIC)
+                .hoverEvent(HoverEvent.showText(Component.text().append(
+                    Component.text("Dynmap Marker"),
+                    Component.newline(),
+                    Component.text(world.getName()),
+                    Component.space(),
+                    Component.text(loc.getX()),
+                    Component.space(),
+                    Component.text(loc.getY()),
+                    Component.space(),
+                    Component.text(loc.getZ())
+                )))
+                .clickEvent(ClickEvent.suggestCommand(String.format("/dt %s", markerName))),
+            Component.space(),
+            Component.text("にワープしました]", NamedTextColor.GRAY)
+        ));
     }
 }
