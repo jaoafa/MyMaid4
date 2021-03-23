@@ -18,6 +18,7 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.awt.*;
 import java.io.ByteArrayInputStream;
@@ -376,6 +377,20 @@ public class MyMaidLibrary {
     }
 
     /**
+     * オンラインプレイヤーのサジェスト (これではなくPlayerArgumentを使うことをお勧め)
+     *
+     * @param context CommandContext
+     * @param current current String
+     * @return 該当するプレイヤー
+     */
+    public List<String> suggestOnlinePlayers(final CommandContext<CommandSender> context, final String current) {
+        return Bukkit.getServer().getOnlinePlayers().stream()
+            .map(Player::getName)
+            .filter(s -> s.toLowerCase().startsWith(current.toLowerCase()))
+            .collect(Collectors.toList());
+    }
+
+    /**
      * オフラインプレイヤーのサジェスト
      *
      * @param context CommandContext
@@ -388,5 +403,15 @@ public class MyMaidLibrary {
             .filter(Objects::nonNull)
             .filter(s -> s.toLowerCase().startsWith(current.toLowerCase()))
             .collect(Collectors.toList());
+    }
+
+    /**
+     * プラグインが有効であるかどうかを取得します。
+     *
+     * @return プラグインが有効であるか
+     */
+    protected boolean isEnabledPlugin(String pluginName) {
+        Plugin plugin = Main.getJavaPlugin().getServer().getPluginManager().getPlugin(pluginName);
+        return plugin != null && plugin.isEnabled();
     }
 }
