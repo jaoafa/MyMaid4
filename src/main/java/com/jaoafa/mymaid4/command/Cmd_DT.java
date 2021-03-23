@@ -3,6 +3,7 @@ package com.jaoafa.mymaid4.command;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.IntegerArgument;
 import cloud.commandframework.arguments.standard.StringArgument;
+import cloud.commandframework.bukkit.parsers.selector.MultiplePlayerSelectorArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
 import com.jaoafa.mymaid4.lib.CommandPremise;
@@ -42,12 +43,19 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
         return new MyMaidCommand.Cmd(
             builder
                 .meta(CommandMeta.DESCRIPTION, "プレイヤーをマーカーにテレポートさせます。")
+                .senderType(Player.class)
                 .argument(StringArgument
-                    .<CommandSender>newBuilder("playerOrMarkerName") // この実装気に入らないけどこうしないと動かない
+                    .<CommandSender>newBuilder("markerName")
+                    .withSuggestionsProvider(this::suggestMarkerNames))
+                .handler(this::teleportMarker)
+                .build(),
+            builder
+                .meta(CommandMeta.DESCRIPTION, "プレイヤーをマーカーにテレポートさせます。")
+                .argument(MultiplePlayerSelectorArgument
+                    .<CommandSender>newBuilder("player")
                     .withSuggestionsProvider(this::suggestPlayerOrMarkerNames))
                 .argument(StringArgument
                     .<CommandSender>newBuilder("markerName")
-                    .asOptional()
                     .withSuggestionsProvider(this::suggestMarkerNames))
                 .handler(this::teleportMarker)
                 .build(),
@@ -101,35 +109,20 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
 
     void teleportMarker(CommandContext<CommandSender> context) {
         CommandSender sender = context.getSender();
-        String inputPlayerOrMarkerName = context.get("playerOrMarkerName");
-        String _inputMarkerName = context.getOrDefault("markerName", null);
+        Player target = context.getOrDefault("player", null);
+        String markerName = context.get("markerName");
 
         // /dt <Marker>
         // /dt <Player> <Marker>
-        String inputPlayerName = _inputMarkerName != null ? inputPlayerOrMarkerName : null;
-        String inputMarkerName = _inputMarkerName == null ? inputPlayerOrMarkerName : _inputMarkerName;
-
         if (!isEnabledPlugin("dynmap")) {
             SendMessage(sender, details(), "Dynmapプラグインが動作していないため、このコマンドは使用できません。");
             return;
         }
 
-        if (inputPlayerName == null && !(sender instanceof Player)) {
+        if (target == null && !(sender instanceof Player)) {
             // プレイヤー以外かつマーカー名しか指定していない
             SendMessage(sender, details(), "このコマンドはプレイヤーから実行してください。(ターゲットプレイヤーが指定されていません)");
             return;
-        }
-
-        Player teleportPlayer;
-        if (inputPlayerName != null) {
-            Bukkit.getServer().sendMessage(Component.text(inputPlayerName));
-            teleportPlayer = Bukkit.getPlayerExact(inputPlayerName);
-            if (teleportPlayer == null) {
-                SendMessage(sender, details(), "指定されたプレイヤーは存在しないか、オンラインではありません。");
-                return;
-            }
-        } else {
-            teleportPlayer = (Player) context.getSender();
         }
 
         DynmapAPI dynmapAPI = getDynmapAPI();
@@ -140,19 +133,19 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
             .collect(Collectors.toSet());
 
         Optional<Marker> matchedMarker = markers.stream()
-            .filter(marker -> marker.getLabel().equals(inputMarkerName))
+            .filter(marker -> marker.getLabel().equals(markerName))
             .findFirst();
 
         if (!matchedMarker.isPresent()) {
             SendMessage(sender, details(), "指定されたマーカー名のマーカーは見つかりませんでした。");
             Optional<Marker> perhapsMarker = markers.stream()
-                .filter(marker -> marker.getLabel().equalsIgnoreCase(inputMarkerName))
+                .filter(marker -> marker.getLabel().equalsIgnoreCase(markerName))
                 .findFirst();
             perhapsMarker.ifPresent(marker -> SendMessage(sender, details(), "もしかして: " + marker.getLabel()));
             return;
         }
 
-        teleportToMarker(sender, teleportPlayer, matchedMarker.get());
+        teleportToMarker(sender, target, matchedMarker.get());
     }
 
     void addMarker(CommandContext<CommandSender> context) {
