@@ -15,6 +15,9 @@ import com.jaoafa.mymaid4.Main;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.hooks.AnnotatedEventManager;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -25,14 +28,22 @@ import java.io.File;
  * config.ymlで定義されるコンフィグのクラス
  */
 public class MyMaidConfig {
+    private boolean isDevelopmentServer = false;
     private JDA jda;
     private Long generalChannelId = null;
     private Long jaotanChannelId = null;
     private Long reportChannelId = null;
     private Long serverChatChannelId = null;
 
-    public void init(){
+    public void init() {
         JavaPlugin plugin = Main.getJavaPlugin();
+        if (!new File(plugin.getDataFolder(), "this-server-is-development").exists()) {
+            plugin.getLogger().warning("このサーバは開発サーバです。いくつかの機能は無効化される可能性があります。");
+            if (Bukkit.getServer().getOnlinePlayers().size() != 0)
+                Bukkit.getServer().sendMessage(Component.text("このサーバは開発サーバです。いくつかの機能は無効化される可能性があります。", NamedTextColor.RED));
+            isDevelopmentServer = true;
+        }
+
         if (!new File(plugin.getDataFolder(), "config.yml").exists()) {
             plugin.getLogger().warning("コンフィグファイルが見つかりませんでした。一部の機能は無効化されます。");
             return;
@@ -120,6 +131,10 @@ public class MyMaidConfig {
 
     String notFoundConfigKey(String key) {
         return String.format("%sコンフィグが見つかりませんでした。一部の機能は無効化されます。", key);
+    }
+
+    public boolean isDevelopmentServer() {
+        return isDevelopmentServer;
     }
 
     public JDA getJDA() {
