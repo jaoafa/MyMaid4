@@ -20,104 +20,11 @@ MyMaid とは、jao Minecraft Server における独自のプラグインで特�
 
 本バージョンから他者による Issue・プルリクエストを受け付けます。
 
-### Environment
-
-- IDE: IntelliJ IDEA
-- Language: Java
-- Package Manager: Maven
-
-### Test Server
-
-機能のテスト等はローカルサーバでテストしてください。初期設定を実施すると、IntelliJ でプロジェクトを開いたときに自動的にテストサーバが起動します。
-
-テストサーバを利用するための初期設定は以下の通りです。ホワイトリストがオンになっています。
-
-1. [PaperMC のダウンロードページ](https://papermc.io/downloads) から `1.16.5` の最新のビルドをダウンロードする
-2. ダウンロードした jar ファイルを `server` ディレクトリに配置し、 `paper-1.16.5.jar` とリネームする
-3. IntelliJ を開き、ウィンドウ右上「実行」で `ReBuild and Reload` を実行する
-4. [Minecraft EULA](https://account.mojang.com/documents/minecraft_eula) を読み同意する場合は `eula.txt` の `eula=false` を `eula=true` に変える
-5. IntelliJ からプラグインをビルドした後に自動的にリロードするために、[fnetworks/mcrconapi v1.1.1](https://github.com/fnetworks/mcrconapi/releases/tag/v1.1.1) の `mcrconapi-1.1.1.jar` をダウンロード、 `server/mcrconapi-1.1.1.jar` ディレクトリに移動する
-6. IntelliJ を開き、ウィンドウ右上「実行」で `ReBuild and Reload` を実行する
-7. 表示されるターミナルで `op <PlayerName>` を実行し OP 権限を自身に付与する
-
-プラグインをテストする際は以下を行います。
-
-1. ウィンドウ右上「実行」で `ReBuild and Reload` を実行する (端末に応じて Win か Mac を選択してください)
-2. Minecraft から `localhost` にログインし、機能が動作するかどうかのテストを行う
-
-### Publish
-
-master ブランチ = メインサーバ導入ソースコード
-
-- コミットされると、GitHub Actions によってビルドが実施されます。失敗した場合、jMS Gamers Club `#github-notice` に通知が飛びます。
-- コミットされると、メインサーバでビルドされビルドに成功すれば本番環境の`MinecraftServerDir/plugins/update/`にビルド成果物が配置されます。再起動時に自動的にアップデートされます。
-- バージョン表記は本番環境でのビルド処理によって、`yyyy.mm.dd_hh.mm_最終コミットsha8桁`に変更されます。
-
-### Files
-
-#### Command
-
-- 全てのコマンドは [`src/main/java/com/jaoafa/MyMaid4/Command/Cmd_<CommandName>.java`](src/main/java/com/jaoafa/MyMaid4/Command)に配置されます。
-- また、ここに配置されるコマンドクラスは CommandPremise インターフェースを実装する必要があります（`implements CommandPremise`）
-- コマンドの情報（コマンド名・説明）は `details()` で定義します
-- コマンドの内容は `register()` で定義します。このメソッドは Main クラスの `registerCommand` から呼び出され、コマンドが追加されます。（`plugin.yml` に書く必要がありません）
-- 全てのコマンドのパーミッションは小文字の `mymaid.<CommandName>` でなければなりません
-
-#### Event
-
-- 全てのイベント駆動の機能は [`src/main/java/com/jaoafa/MyMaid4/Event/Event_<FuncName>.java`](src/main/java/com/jaoafa/MyMaid4/Event)
-  に配置されます。
-- `<FuncName>` は自由で構いません
-
-### Other
-
-- コマンド内においてメッセージを送信する場合は、[MyMaidLibrary](src/main/java/com/jaoafa/MyMaid4/lib/MyMaidLibrary.java) の `SendMessage`
-  メソッドを使ってください
-- `SQLException` など本来発生しえない Exception
-  をキャッチする場合は [MyMaidLibrary](src/main/java/com/jaoafa/MyMaid4/lib/MyMaidLibrary.java) の `reportError`
-  でレポートを送信するように設計してください
-
-### Git
-
-#### Commit rule
-
--
-コミットメッセージは **[CommitLint のルール](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional#rules)
-である以下に沿っていることを期待しますが、必須ではありません。**
-    - 次の形式でコミットメッセージを指定してください: `type(scope): subject` (e.g. `fix(home): message`)
-    - `type`, `subject` は必須、 `scope` は必須ではありません
-        - `type-enum`: `type` は必ず次のいずれかにしなければなりません
-        - `build`: ビルド関連
-    - `ci`: CI 関連
-    - `chore`: いろいろ
-    - `docs`: ドキュメント関連
-    - `feat`: 新機能
-    - `fix`: 修正
-    - `perf`: パフォーマンス改善
-    - `refactor`: リファクタリング
-    - `revert`: コミットの取り消し
-    - `style`: コードスタイルの修正
-    - `test`: テストコミット
-  - `type-case`: `type` は必ず小文字でなければなりません (NG: `FIX` / OK: `fix`)
-  - `type-empty`: `type` は必ず含めなければなりません (NG: `test message` / OK: `test: message`)
-  - `scope-case`: `scope` は必ず小文字でなければなりません (NG: `fix(HOME): message` / OK: `fix:(home): message`)
-  - `subject-case`: `subject` は必ず次のいずれかの書式でなければなりません `sentence-case`, `start-case`, `pascal-case`, `upper-case`
-  - `subject-empty`: `subject` は必ず含めなければなりません (NG: `fix:` / OK: `fix: message`)
-  - `subject-full-stop`: `subject` は `.` 以外で終えてください (NG: `fix: message.` / OK: `fix: message`)
-
-#### Branch rule
-
-- 基本的にはフォークして開発してください
-- 必要がある場合、ブランチは機能追加・修正などに応じて分けて作成してください
-- ブランチ名は機能追加・修正の内容を示す言葉で構成してください（例: `add-test-command`, `fix-test-command-api-url`）
-- master ブランチへの直接コミットはできません
-- 全てのコード追加はプルリクエストを必要とします
-- Tomachi に限りセルフマージを可能とします
-- レビューはほぼすべてを Tomachi が行います
+[CONTRIBUTING.md](CONTRIBUTING.md) をお読みください。
 
 ## License
 
-ライセンスは**独自のライセンスである[jaoLicense](https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE.md)を適用**します。
+ライセンスは**独自のライセンスである [jaoLicense](https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE.md) を適用**します。
 
 ### プログラムについて
 
