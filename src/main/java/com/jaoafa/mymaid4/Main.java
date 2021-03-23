@@ -62,6 +62,7 @@ public final class Main extends JavaPlugin {
         try {
             manager = new PaperCommandManager<>(this, CommandExecutionCoordinator.SimpleCoordinator.simpleCoordinator(),
                 Function.identity(), Function.identity());
+            manager.registerBrigadier();
         } catch (Exception e) {
             getLogger().warning("コマンドの登録に失敗しました。PaperCommandManagerを取得できません。");
             e.printStackTrace();
@@ -95,7 +96,10 @@ public final class Main extends JavaPlugin {
                         .permission(String.format("mymaid.%s", cmdPremise.details().getName().toLowerCase()))
                         .meta(CommandMeta.DESCRIPTION, cmdPremise.details().getDescription());
 
-                    cmdPremise.register(builder).getCommands().forEach(manager::command);
+                    cmdPremise.register(builder).getCommands().forEach(a -> {
+                        System.out.println(a.toString());
+                        manager.command(a);
+                    });
 
                     getLogger().info(String.format("%s registered", commandName));
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {

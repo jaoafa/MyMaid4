@@ -3,7 +3,6 @@ package com.jaoafa.mymaid4.command;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.IntegerArgument;
 import cloud.commandframework.arguments.standard.StringArgument;
-import cloud.commandframework.bukkit.parsers.selector.MultiplePlayerSelectorArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
 import com.jaoafa.mymaid4.lib.CommandPremise;
@@ -15,6 +14,7 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -26,7 +26,6 @@ import org.dynmap.markers.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
     @Override
@@ -42,23 +41,24 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
     public MyMaidCommand.Cmd register(Command.Builder<CommandSender> builder) {
         return new MyMaidCommand.Cmd(
             builder
-                .meta(CommandMeta.DESCRIPTION, "プレイヤーをマーカーにテレポートさせます。")
+                .meta(CommandMeta.DESCRIPTION, "マーカーにテレポートさせます。")
                 .senderType(Player.class)
                 .argument(StringArgument
                     .<CommandSender>newBuilder("markerName")
+                    .single()
                     .withSuggestionsProvider(this::suggestMarkerNames))
                 .handler(this::teleportMarker)
                 .build(),
+            /*
             builder
                 .meta(CommandMeta.DESCRIPTION, "プレイヤーをマーカーにテレポートさせます。")
                 .argument(MultiplePlayerSelectorArgument
-                    .<CommandSender>newBuilder("player")
-                    .withSuggestionsProvider(this::suggestPlayerOrMarkerNames))
+                    .newBuilder("player"))
                 .argument(StringArgument
-                    .<CommandSender>newBuilder("markerName")
-                    .withSuggestionsProvider(this::suggestMarkerNames))
+                    .newBuilder("markerName"))
                 .handler(this::teleportMarker)
                 .build(),
+             */
             builder
                 .meta(CommandMeta.DESCRIPTION, "マーカーを追加します。")
                 .senderType(Player.class)
@@ -101,7 +101,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
                 .argument(IntegerArgument
                     .<CommandSender>newBuilder("page")
                     .withMin(1)
-                    .asOptional())
+                    .asOptionalWithDefault("1"))
                 .handler(this::listMarkers)
                 .build()
         );
@@ -123,6 +123,9 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
             // プレイヤー以外かつマーカー名しか指定していない
             SendMessage(sender, details(), "このコマンドはプレイヤーから実行してください。(ターゲットプレイヤーが指定されていません)");
             return;
+        }
+        if (target == null) {
+            target = (Player) sender;
         }
 
         DynmapAPI dynmapAPI = getDynmapAPI();
@@ -235,25 +238,81 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
     }
 
     void getNearMarker(CommandContext<CommandSender> context) {
+        Player player = (Player) context.getSender();
+        Location loc = player.getLocation();
 
+        DynmapAPI dynmapAPI = getDynmapAPI();
+        MarkerAPI markerAPI = dynmapAPI.getMarkerAPI();
+
+        Optional<Marker> marker = markerAPI.getMarkerSets().stream()
+            .flatMap(sets -> sets.getMarkers().stream())
+            .filter(m -> m.getWorld().equals(player.getLocation().getWorld().getName())).min((e1, e2) -> {
+                double distance1 = new Location(Bukkit.getWorld(e1.getWorld()), e1.getX(), e1.getY(), e1.getZ()).distance(loc);
+                double distance2 = new Location(Bukkit.getWorld(e2.getWorld()), e2.getX(), e2.getY(), e2.getZ()).distance(loc);
+                return (int) (distance1 - distance2);
+            });
+        if (!marker.isPresent()) {
+            SendMessage(player, details(), "ワールドにマーカーがひとつもありませんでした。");
+            return;
+        }
+
+        teleportToMarker(player, player, marker.get());
     }
 
     void listMarkers(CommandContext<CommandSender> context) {
+        Player player = (Player) context.getSender();
+        int page = context.<Integer>get("page");
 
+        DynmapAPI dynmapAPI = getDynmapAPI();
+        MarkerAPI markerAPI = dynmapAPI.getMarkerAPI();
+
+        List<Marker> markers = markerAPI.getMarkerSets().stream()
+            .flatMap(sets -> sets.getMarkers().stream())
+            .collect(Collectors.toList());
+
+        int pageItemNum = 5;
+        int skipNum = (page - 1) * pageItemNum;
+
+        Component header = Component.text().append(
+            Component.text("----- "),
+            Component.text("DYNMAP MARKERS", NamedTextColor.GOLD),
+            Component.text(" -----")
+        ).build();
+        SendMessage(player, details(), header);
+
+        markers.stream().skip(skipNum).limit(pageItemNum).forEach(m -> {
+            Component componentHomeInfo = Component.text().append(
+                Component.text(formatText(m.getLabel(), 7), NamedTextColor.GOLD)
+                    .hoverEvent(HoverEvent.showText(Component.text(m.getLabel())))
+                    .clickEvent(ClickEvent.runCommand(String.format("/home %s", m.getLabel()))),
+                Component.text(formatText(m.getWorld(), 14), NamedTextColor.AQUA)
+                    .hoverEvent(HoverEvent.showText(Component.text(m.getWorld()))),
+                Component.space(),
+                Component.text(formatText(String.format("%.1f", m.getX()), 5))
+                    .hoverEvent(HoverEvent.showText(Component.text(m.getX()))),
+                Component.space(),
+                Component.text(formatText(String.format("%.1f", m.getY()), 5))
+                    .hoverEvent(HoverEvent.showText(Component.text(m.getY()))),
+                Component.space(),
+                Component.text(formatText(String.format("%.1f", m.getZ()), 5))
+                    .hoverEvent(HoverEvent.showText(Component.text(m.getZ())))
+            ).build();
+            SendMessage(player, details(), componentHomeInfo);
+        });
+        Component footer = Component.text().append(
+            Component.text("---<< ")
+                .clickEvent(ClickEvent.runCommand(String.format("/dt list %d", page - 1))),
+            Component.text("[" + (page - 1) + "] PAGE", NamedTextColor.GOLD),
+            Component.text(" >>---")
+                .clickEvent(ClickEvent.runCommand(String.format("/dt list %d", page + 1)))
+        ).build();
+        SendMessage(player, details(), footer);
     }
 
-    /**
-     * プレイヤー名とマーカー名のリストを返す
-     *
-     * @param context CommandContext
-     * @param current 入力されている値
-     * @return サジェストする文字列一覧
-     */
-    List<String> suggestPlayerOrMarkerNames(final CommandContext<CommandSender> context, final String current) {
-        return Stream.concat(
-            suggestMarkerNames(context, current).stream(),
-            suggestOnlinePlayers(context, current).stream())
-            .collect(Collectors.toList());
+    String formatText(String str, int width) {
+        return width == str.length() ? str :
+            width > str.length() ? str + StringUtils.repeat(" ", width - str.length()) :
+                str.substring(0, width);
     }
 
     /**
@@ -355,11 +414,9 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
         }
         player.teleport(loc);
 
-        SendMessage(sender, details(), String.valueOf(sender == player));
-
         // 可読性悪すぎ
         HoverEvent<?> senderHoverEvent =
-            sender == player ? // こんなことできんの？ (期待していること: コマンド実行者とテレポートされるプレイヤーが同じかどうか調べたい)
+            sender == player ?
                 HoverEvent.showEntity(
                     Key.key("player"),
                     player.getUniqueId(),
