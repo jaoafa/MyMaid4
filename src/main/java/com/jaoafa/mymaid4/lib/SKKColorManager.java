@@ -11,219 +11,142 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SKKColorManager {
-    private static ChatColor getPlayerColor(Player player) {
-        List<ChatColor> ColorList = new ArrayList<>();
-        ColorList.add(ChatColor.WHITE);
-        ColorList.add(ChatColor.DARK_BLUE);
-        ColorList.add(ChatColor.BLUE);
-        ColorList.add(ChatColor.AQUA);
-        ColorList.add(ChatColor.DARK_AQUA);
-        ColorList.add(ChatColor.DARK_GREEN);
-        ColorList.add(ChatColor.GREEN);
-        ColorList.add(ChatColor.YELLOW);
-        ColorList.add(ChatColor.GOLD);
-        ColorList.add(ChatColor.RED);
-        ColorList.add(ChatColor.DARK_RED);
-        ColorList.add(ChatColor.DARK_PURPLE);
-        ColorList.add(ChatColor.LIGHT_PURPLE);
+    static List<NamedTextColor> ColorList = Arrays.asList(
+        NamedTextColor.GRAY,
+        NamedTextColor.WHITE,
+        NamedTextColor.DARK_BLUE,
+        NamedTextColor.BLUE,
+        NamedTextColor.AQUA,
+        NamedTextColor.DARK_AQUA,
+        NamedTextColor.DARK_GREEN,
+        NamedTextColor.GREEN,
+        NamedTextColor.YELLOW,
+        NamedTextColor.GOLD,
+        NamedTextColor.RED,
+        NamedTextColor.DARK_RED,
+        NamedTextColor.DARK_PURPLE,
+        NamedTextColor.LIGHT_PURPLE);
+    static List<String> JoinMessages = Arrays.asList(
+        "the New Generation", "- Super", "Hyper", "Ultra", "Extreme", "Insane", "Gigantic", "Epic", "Amazing", "Beautiful",
+        "Special", "Swag", "Lunatic", "Exotic", "God", "Hell", "Heaven", "Mega", "Giga", "Tera", "Refined", "Sharp",
+        "Strong", "Muscle", "Macho", "Bomber", "Blazing", "Frozen", "Legendary", "Mystical", "Tactical", "Critical",
+        "Overload", "Overclock", "Fantastic", "Criminal", "Primordial", "Genius", "Great", "Perfect", "Fearless",
+        "Ruthless", "Bold", "Void", "Millenium", "Exact", "Really", "Certainty", "Infernal", "Ender", "World", "Mad",
+        "Crazy", "Wrecked", "Elegant", "Expensive", "Rich", "Radioactive", "Automatic", "Honest", "Cosmic", "Galactic",
+        "Dimensional", "Sinister", "Evil", "Abyssal", "Hallowed", "Holy", "Sacred", "Omnipotent"
+    );
 
-        if (MyMaidData.isMainDBActive()) {
-            int i = 0;
-            try {
-                Connection connection = MyMaidData.getMainMySQLDBManager().getConnection();
-                PreparedStatement stmt = connection.prepareStatement("SELECT * FROM vote WHERE uuid = ?");
-                stmt.setString(1, player.getUniqueId().toString());
-                ResultSet resultSet = stmt.executeQuery();
-                if (!resultSet.next()) {
-                    return null;
-                }
-                i = resultSet.getInt("count");
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            if (i >= 0 && i <= 5) {
-                return ChatColor.WHITE;
-            } else if (i >= 6 && i <= 19) {
-                return ChatColor.DARK_BLUE;
-            } else if (i >= 20 && i <= 33) {
-                return ChatColor.BLUE;
-            } else if (i >= 34 && i <= 47) {
-                return ChatColor.AQUA;
-            } else if (i >= 48 && i <= 61) {
-                return ChatColor.DARK_AQUA;
-            } else if (i >= 62 && i <= 76) {
-                return ChatColor.DARK_GREEN;
-            } else if (i >= 77 && i <= 89) {
-                return ChatColor.GREEN;
-            } else if (i >= 90 && i <= 103) {
-                return ChatColor.YELLOW;
-            } else if (i >= 104 && i <= 117) {
-                return ChatColor.GOLD;
-            } else if (i >= 118 && i <= 131) {
-                return ChatColor.RED;
-            } else if (i >= 132 && i <= 145) {
-                return ChatColor.DARK_RED;
-            } else if (i >= 146 && i <= 159) {
-                return ChatColor.DARK_PURPLE;
-            } else if (i >= 160) {
-                return ChatColor.LIGHT_PURPLE;
-            }
+    private static int getVoteCount(Player player) {
+        if (!MyMaidData.isMainDBActive()) {
+            return 0;
         }
-        return null;
-    }
-
-    public static String replacePlayerSKKChatColor(Player player, String oldstr, String _Message) {
-        String Message = _Message.replaceFirst(oldstr, String.format("%s■%s%s", getPlayerColor(player), ChatColor.WHITE, oldstr));
-        return Message;
-    }
-
-
-    private static List<String> MessageList() {
-        List<String> MessageList = Arrays.asList(
-            "the New Generation"
-            , "- Super"
-            , "Hyper"
-            , "Ultra"
-            , "Extreme"
-            , "Insane"
-            , "Gigantic"
-            , "Epic"
-            , "Amazing"
-            , "Beautiful"
-            , "Special"
-            , "Swag"
-            , "Lunatic"
-            , "Exotic"
-            , "God"
-            , "Hell"
-            , "Heaven"
-            , "Mega"
-            , "Giga"
-            , "Tera"
-            , "Refined"
-            , "Sharp"
-            , "Strong"
-            , "Muscle"
-            , "Macho"
-            , "Bomber"
-            , "Blazing"
-            , "Frozen"
-            , "Legendary"
-            , "Mystical"
-            , "Tactical"
-            , "Critical"
-            , "Overload"
-            , "Overclock"
-            , "Fantastic"
-            , "Criminal"
-            , "Primordial"
-            , "Genius"
-            , "Great"
-            , "Perfect"
-            , "Fearless"
-            , "Ruthless"
-            , "Bold"
-            , "Void"
-            , "Millenium"
-            , "Exact"
-            , "Really"
-            , "Certainty"
-            , "Infernal"
-            , "Ender"
-            , "World"
-            , "Mad"
-            , "Crazy"
-            , "Wrecked"
-            , "Elegant"
-            , "Expensive"
-            , "Rich"
-            , "Radioactive"
-            , "Automatic"
-            , "Honest"
-            , "Cosmic"
-            , "Galactic"
-            , "Dimensional"
-            , "Sinister"
-            , "Evil"
-            , "Abyssal"
-            , "Hallowed"
-            , "Holy"
-            , "Sacred"
-            , "Omnipotent"
-        );
-
-
-        return MessageList;
-    }
-
-    public static Component getPlayerSKKJoinMessage(Player player) {
-        //try{
-            /*String group = PermissionsManager.getPermissionMainGroup(player);
-            if(group.equalsIgnoreCase("Limited")){
-                return ChatColor.RED + player.getName() + ChatColor.YELLOW + " joined the game.";
-            }*/
-        int i = 0;
         try {
             Connection connection = MyMaidData.getMainMySQLDBManager().getConnection();
             PreparedStatement stmt = connection.prepareStatement("SELECT * FROM vote WHERE uuid = ?");
             stmt.setString(1, player.getUniqueId().toString());
-            ResultSet resultSet = stmt.executeQuery();
-            if (resultSet.next()) {
-                i = resultSet.getInt("count");
+            ResultSet res = stmt.executeQuery();
+            if (!res.next()) {
+                return 0;
             }
-        } catch (SQLException throwables) {
-            //MyMaidLibrary.reportError(throwables);
+            return res.getInt("count");
+        } catch (SQLException e) {
+            MyMaidLibrary.reportError(SKKColorManager.class, e);
+            return 0;
         }
-        String result = "";
-        if (i < 20) {
-            return null;
-        } else if (i < 24) {
-            result = "VIP";
-        } else {
-            double vote_double = i / 4;
-            vote_double = vote_double - 5;
-            int vote = (int) Math.floor(vote_double);
-            int o = 0;
-            while (vote > 0) {
-                if (MessageList().size() <= o) {
-                    break;
-                }
-                if (!result.equalsIgnoreCase("")) {
-                    result += " ";
-                }
-                result += MessageList().get(o);
-                vote--;
-                o++;
-            }
-            result += String.format(" VIP (%d)", i);
-        }
-        Component component = Component.text().append(
-            Component.text(String.format("%s%s, joined the game.", player.getName(), result), NamedTextColor.YELLOW)
-        ).build();
-        return component;
-        /*}catch(ClassNotFoundException | SQLException e){
-            return ChatColor.YELLOW + player.getName() + ChatColor.YELLOW + ", " + ChatColor.YELLOW + player.getName() + " joined the game.";
-        }*/
     }
 
-    public static String getPlayerSKKTabListString(Player player) {
-        Team team = Bukkit.getServer().getScoreboardManager().getMainScoreboard().getPlayerTeam(player);
-        if (team == null) {
-            return getPlayerColor(player) + "■" + ChatColor.RESET + player.getName();
-        } else {
-            return getPlayerColor(player) + "■" + ChatColor.RESET + team.getPrefix() + player.getName();
-        }
+    /**
+     * プレイヤーの四角色を取得する
+     *
+     * @param player プレイヤー
+     * @return 四角色
+     */
+    private static NamedTextColor getPlayerColor(Player player) {
+        int count = getVoteCount(player);
+        return ColorList.get(calculateRank(count));
+    }
 
+    /**
+     * ランク数値を取得する
+     *
+     * @param vote_count 投票数
+     * @return ランク数値 (0 <= n <= 13)
+     */
+    static int calculateRank(int vote_count) {
+        if (vote_count == 0)
+            return 0;
+        if (vote_count <= 5)
+            return 1;
+        if (vote_count >= 160)
+            return 13;
+        return (vote_count - 5) / 14 + 1;
+    }
+
+    /**
+     * プレイヤー名の前に四角色を追加する
+     *
+     * @param player  プレイヤー
+     * @param str     置き換えるテキストパラメーター
+     * @param message フォーマットテキスト
+     * @return 追加した後のテキスト
+     */
+    public static String replacePlayerSKKChatColor(Player player, String str, String message) {
+        return message.replaceFirst(str, String.format("%s■%s%s", getPlayerColor(player), ChatColor.WHITE, str));
+    }
+
+    private static String getJoinMessage(int count) {
+        if (count < 20) {
+            return null;
+        } else if (count < 24) {
+            return "VIP";
+        } else {
+            int _count = count;
+            _count /= 4;
+            _count -= 5;
+            _count = (int) Math.floor(_count);
+
+            return "the New Generation " + JoinMessages.stream().limit(_count).collect(Collectors.joining(" ")) + " VIP";
+        }
+    }
+
+    public static Component getPlayerSKKJoinMessage(Player player) {
+        int count = getVoteCount(player);
+        if (count < 20) {
+            return Component.text().append(
+                Component.text(player.getName()),
+                Component.space(),
+                Component.text("joined the game.")
+            ).color(NamedTextColor.GREEN).build();
+        }
+        String rankText = getJoinMessage(count);
+        return Component.text(
+            String.format("%s, %s (%d) joined the game.",
+                player.getName(),
+                rankText,
+                count),
+            NamedTextColor.YELLOW);
+    }
+
+    public static Component getPlayerSKKTabListComponent(Player player) {
+        Team team = Bukkit.getServer().getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
+
+        return team == null ?
+            Component.text().append(
+                Component.text("■").color(getPlayerColor(player)),
+                Component.text(player.getName())
+            ).build() :
+            Component.text().append(
+                Component.text("■").color(getPlayerColor(player)),
+                Component.text(player.getName(), team.color())
+            ).build();
     }
 
     public static void setPlayerSKKTabList(Player player) {
-        player.setPlayerListName(getPlayerSKKTabListString(player));
+        player.playerListName(getPlayerSKKTabListComponent(player));
     }
-
-
 }

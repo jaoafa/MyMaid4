@@ -15,7 +15,6 @@ import com.jaoafa.mymaid4.Main;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.hooks.AnnotatedEventManager;
-import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -66,7 +65,8 @@ public class MyMaidConfig {
                         .setAutoReconnect(true)
                         .setBulkDeleteSplittingEnabled(false)
                         .setContextEnabled(false)
-                        .setEventManager(new AnnotatedEventManager());
+                        .setEventManager(new AnnotatedEventManager())
+                        .setRawEventsEnabled(false);
 
                     Main.registerDiscordEvent(jdabuilder);
 
