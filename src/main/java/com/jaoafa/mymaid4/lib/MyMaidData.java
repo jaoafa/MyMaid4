@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * 複数のクラスを跨いで使用されるリストなどの変数をまとめるクラス
@@ -18,6 +19,8 @@ public class MyMaidData {
     private static final Map<String, Location> lastDed = new HashMap<>();
     private static MySQLDBManager mainMySQLDBManager = null;
     private static MySQLDBManager zkrhatMySQLDBManager = null;
+    private static final Map<UUID, Integer> SpamCount = new HashMap<>();
+    private static final Map<UUID, Long> SpamTime = new HashMap<>();
 
     @Nullable
     public static TextChannel getReportChannel() {
@@ -85,5 +88,21 @@ public class MyMaidData {
 
     public static void setZKRHatMySQLDBManager(MySQLDBManager zkrhatMySQLDBManager) {
         MyMaidData.zkrhatMySQLDBManager = zkrhatMySQLDBManager;
+    }
+
+    public static Integer getSpamCount(UUID uuid) {
+        return SpamCount.get(uuid);
+    }
+
+    public static void setSpamCount(UUID uuid, int count) {
+        SpamCount.put(uuid, count);
+    }
+
+    public static Long getSpamTime(UUID uuid) {
+        return SpamTime.get(uuid);
+    }
+
+    public static void setSpamTime(UUID uuid, long time) {
+        SpamTime.put(uuid, time);
     }
 }

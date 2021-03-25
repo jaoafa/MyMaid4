@@ -20,9 +20,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * config.ymlで定義されるコンフィグのクラス
@@ -33,24 +30,6 @@ public class MyMaidConfig {
     private Long jaotanChannelId = null;
     private Long reportChannelId = null;
     private Long serverChatChannelId = null;
-    private static final Map<UUID, Integer> SpamCount = new HashMap<>();
-    private static final Map<UUID, Long> SpamTime = new HashMap<>();
-
-    public static Integer getSpamCount(UUID uuid) {
-        return SpamCount.get(uuid);
-    }
-
-    public static void setSpamCount(UUID uuid, int count) {
-        SpamCount.put(uuid, count);
-    }
-
-    public static Long getSpamTime(UUID uuid) {
-        return SpamTime.get(uuid);
-    }
-
-    public static void setSpamTime(UUID uuid, long time) {
-        SpamTime.put(uuid, time);
-    }
 
     String notFoundConfigKey(String key) {
         return String.format("%sコンフィグが見つかりませんでした。一部の機能は無効化されます。", key);
