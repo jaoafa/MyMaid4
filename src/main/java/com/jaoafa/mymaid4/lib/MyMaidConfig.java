@@ -18,6 +18,7 @@ import net.dv8tion.jda.api.hooks.AnnotatedEventManager;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 
@@ -127,6 +128,7 @@ public class MyMaidConfig {
         return String.format("%sコンフィグが見つかりませんでした。一部の機能は無効化されます。", key);
     }
 
+    @Nullable
     public JDA getJDA() {
         return jda;
     }
