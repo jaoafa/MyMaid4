@@ -32,7 +32,7 @@ public class MyMaidConfig {
     private Long reportChannelId = null;
     private Long serverChatChannelId = null;
 
-    public void init() {
+    public void init(){
         JavaPlugin plugin = Main.getJavaPlugin();
         if (!new File(plugin.getDataFolder(), "this-server-is-development").exists()) {
             isDevelopmentServer = true;
@@ -150,4 +150,5 @@ public class MyMaidConfig {
     public Long getServerChatChannelId() {
         return serverChatChannelId;
     }
+
 }

@@ -4,8 +4,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import org.bukkit.Location;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 複数のクラスを跨いで使用されるリストなどの変数をまとめるクラス
@@ -18,6 +17,7 @@ public class MyMaidData {
     private static final Map<String, Location> lastDed = new HashMap<>();
     private static MySQLDBManager mainMySQLDBManager = null;
     private static MySQLDBManager zkrhatMySQLDBManager = null;
+    private static final Set<UUID> hid = new HashSet<>();
 
     @Nullable
     public static TextChannel getReportChannel() {
@@ -85,5 +85,17 @@ public class MyMaidData {
 
     public static void setZKRHatMySQLDBManager(MySQLDBManager zkrhatMySQLDBManager) {
         MyMaidData.zkrhatMySQLDBManager = zkrhatMySQLDBManager;
+    }
+
+    public static boolean isHid(UUID uuid) {
+        return hid.contains(uuid);
+    }
+
+    public static void addHid(UUID uuid) {
+        hid.add(uuid);
+    }
+
+    public static void removeHid(UUID uuid) {
+        hid.remove(uuid);
     }
 }

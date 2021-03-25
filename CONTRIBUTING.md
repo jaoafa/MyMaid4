@@ -140,7 +140,6 @@ ZakuroHat 上の Docker に立てられている PaperMC 環境で動作する�
 ### Commit
 
 - コミットメッセージは **[CommitLint のルール](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional#rules) である以下に沿っていることを期待しますが、必須ではありません。**
-
 - 次の形式でコミットメッセージを指定してください: `type(scope): subject` (e.g. `fix(home): message`)
   - `type`, `subject` は必須、 `scope` は必須ではありません
 - `type-enum`: `type` は必ず次のいずれかにしなければなりません
