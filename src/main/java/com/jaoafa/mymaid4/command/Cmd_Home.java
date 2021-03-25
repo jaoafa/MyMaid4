@@ -1,3 +1,14 @@
+/*
+ * jaoLicense
+ *
+ * Copyright (c) 2021 jao Minecraft Server
+ *
+ * The following license applies to this project: jaoLicense
+ *
+ * Japanese: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE.md
+ * English: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE-en.md
+ */
+
 package com.jaoafa.mymaid4.command;
 
 import cloud.commandframework.Command;
@@ -114,12 +125,6 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
         int listPagenum = visualPagenum - 1;
 
         int listBeginnum = listPagenum * 5;
-        int visualBeginnum = listBeginnum + 1;
-
-        int listEndnum = listBeginnum + 4;
-        int visualEndnum = listEndnum + 1;
-
-        int listCurrentnum = listBeginnum;
 
         Component componentHeader = Component.text().append(
             Component.text("===// "),
@@ -132,7 +137,6 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
         int finalVisualPagenum = visualPagenum;
         int finalVisualPagenumBefore = visualPagenum - 1;
         int finalVisualPagenumAfter = visualPagenum + 1;
-        int[] finalListCurrentnum = {listCurrentnum};
         home.getHomes().stream().skip(listBeginnum).limit(5).forEach(s -> {
             String homename = cutHomeName(s.name);
             Component componentHomeInfo = Component.text().append(
