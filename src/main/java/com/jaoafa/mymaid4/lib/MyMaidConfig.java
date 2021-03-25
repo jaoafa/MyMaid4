@@ -26,13 +26,18 @@ import java.io.File;
  */
 public class MyMaidConfig {
     private JDA jda;
+    private boolean isDevelopmentServer = false;
     private Long generalChannelId = null;
     private Long jaotanChannelId = null;
     private Long reportChannelId = null;
     private Long serverChatChannelId = null;
 
-    public void init(){
+    public void init() {
         JavaPlugin plugin = Main.getJavaPlugin();
+        if (!new File(plugin.getDataFolder(), "this-server-is-development").exists()) {
+            isDevelopmentServer = true;
+        }
+
         if (!new File(plugin.getDataFolder(), "config.yml").exists()) {
             plugin.getLogger().warning("コンフィグファイルが見つかりませんでした。一部の機能は無効化されます。");
             return;
@@ -124,6 +129,10 @@ public class MyMaidConfig {
 
     public JDA getJDA() {
         return jda;
+    }
+
+    public boolean isDevelopmentServer() {
+        return isDevelopmentServer;
     }
 
     public Long getGeneralChannelId() {
