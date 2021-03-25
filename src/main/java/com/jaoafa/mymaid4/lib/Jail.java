@@ -54,11 +54,44 @@ public class Jail {
         }
     }
 
+    public static List<JailData> getActiveJails() {
+        List<JailData> jails = new ArrayList<>();
+
+        try {
+            Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
+            try (PreparedStatement stmt = conn.prepareStatement(
+                "SELECT * FROM jail_new WHERE status = ?")) {
+                stmt.setBoolean(1, true);
+
+                ResultSet res = stmt.executeQuery();
+                while (res.next()) {
+                    jails.add(new JailData(
+                        res.getInt("id"),
+                        res.getString("player"),
+                        UUID.fromString(res.getString("uuid")),
+                        res.getString("banned_by"),
+                        res.getString("reason"),
+                        res.getString("testment"),
+                        res.getString("remover"),
+                        res.getBoolean("status"),
+                        res.getTimestamp("created_at")
+                    ));
+                }
+
+                return jails;
+            }
+        } catch (SQLException e) {
+            MyMaidLibrary.reportError(Jail.class, e);
+            return null;
+        }
+    }
+
     /**
      * このユーザーをJailに追加します。
      *
      * @param banned_by Banを実行した実行者情報
      * @param reason    理由
+     *
      * @return Result
      */
     public Result addBan(String banned_by, String reason) {
@@ -71,7 +104,7 @@ public class Jail {
         try {
             Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
             try (PreparedStatement stmt = conn.prepareStatement(
-                "INSERT INTO jail (player, uuid, banned_by, reason, created_at) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)")) {
+                "INSERT INTO jail_new (player, uuid, banned_by, reason, created_at) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)")) {
                 stmt.setString(1, player.getName());
                 stmt.setString(2, player.getUniqueId().toString());
                 stmt.setString(3, banned_by);
@@ -126,38 +159,6 @@ public class Jail {
         }
     }
 
-    public static List<JailData> getActiveJails() {
-        List<JailData> jails = new ArrayList<>();
-
-        try {
-            Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
-            try (PreparedStatement stmt = conn.prepareStatement(
-                "SELECT * FROM jail WHERE status = ?")) {
-                stmt.setBoolean(1, true);
-
-                ResultSet res = stmt.executeQuery();
-                while (res.next()) {
-                    jails.add(new JailData(
-                        res.getInt("id"),
-                        res.getString("player"),
-                        UUID.fromString(res.getString("uuid")),
-                        res.getString("banned_by"),
-                        res.getString("reason"),
-                        res.getString("testment"),
-                        res.getString("remover"),
-                        res.getBoolean("status"),
-                        res.getTimestamp("created_at")
-                    ));
-                }
-
-                return jails;
-            }
-        } catch (SQLException e) {
-            MyMaidLibrary.reportError(Jail.class, e);
-            return null;
-        }
-    }
-
     /**
      * このユーザーが処罰済みかどうか調べます
      *
@@ -183,7 +184,7 @@ public class Jail {
         try {
             Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
             try (PreparedStatement stmt = conn.prepareStatement(
-                "UPDATE jail SET status = ? AND remover = ? WHERE uuid = ? ORDER BY id DESC LIMIT 1")) {
+                "UPDATE jail_new SET status = ? AND remover = ? WHERE uuid = ? ORDER BY id DESC LIMIT 1")) {
                 stmt.setBoolean(1, false);
                 stmt.setString(2, remover);
                 stmt.setString(3, player.getUniqueId().toString());
@@ -264,7 +265,7 @@ public class Jail {
         try {
             Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
             try (PreparedStatement stmt = conn.prepareStatement(
-                "UPDATE jail SET testment = ? WHERE uuid = ? ORDER BY id DESC LIMIT 1")) {
+                "UPDATE jail_new SET testment = ? WHERE uuid = ? ORDER BY id DESC LIMIT 1")) {
                 stmt.setString(1, testment);
                 stmt.setString(2, player.getUniqueId().toString());
                 boolean isSuccess = stmt.executeUpdate() == 1;
@@ -601,14 +602,14 @@ public class Jail {
                 // このへんの処理綺麗に書きたい
                 PreparedStatement stmt;
                 if (id != -1) {
-                    stmt = conn.prepareStatement("SELECT * FROM jail WHERE id = ?");
+                    stmt = conn.prepareStatement("SELECT * FROM jail_new WHERE id = ?");
                     stmt.setInt(1, id);
                 } else if (playerName != null) {
-                    stmt = conn.prepareStatement("SELECT * FROM jail WHERE player = ? AND status = ? ORDER BY id DESC LIMIT 1");
+                    stmt = conn.prepareStatement("SELECT * FROM jail_new WHERE player = ? AND status = ? ORDER BY id DESC LIMIT 1");
                     stmt.setString(1, playerName);
                     stmt.setBoolean(2, true);
                 } else if (playerUUID != null) {
-                    stmt = conn.prepareStatement("SELECT * FROM jail WHERE uuid = ? AND status = ? ORDER BY id DESC LIMIT 1");
+                    stmt = conn.prepareStatement("SELECT * FROM jail_new WHERE uuid = ? AND status = ? ORDER BY id DESC LIMIT 1");
                     stmt.setString(1, playerUUID.toString());
                     stmt.setBoolean(2, true);
                 } else {
