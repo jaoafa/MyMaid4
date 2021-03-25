@@ -26,7 +26,10 @@ public class Event_Hide {
             if (!isAM(p)) {
                 continue;
             }
-            p.sendMessage(ChatColor.GRAY + player.getName() + " > " + msg);
+            Component component = Component.text().append(
+                Component.text(ChatColor.GRAY + player.getName() + " > " + msg)
+            ).build();
+            p.sendMessage(component);
         }
         event.setCancelled(true);
     }
