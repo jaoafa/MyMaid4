@@ -79,7 +79,7 @@ public class MainTest {
                     Object instance = construct.newInstance();
 
                     if (!(instance instanceof Listener)) {
-                        System.out.println("[" + name + "] This command class does not implement Listener.");
+                        System.out.println("[" + name + "] This event class does not implement Listener.");
                         fail();
                         return;
                     }
