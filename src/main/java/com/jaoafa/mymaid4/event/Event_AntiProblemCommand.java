@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener {
     static Map<String, AntiCommand> antiCommandMap = new HashMap<>();
-    static String[] LeastOne = new String[]{"r", "type", "team", "name"};
+    static String[] LeastOne = new String[]{"distance", "type", "team", "name"};
 
     static {
         antiCommandMap.put("/kill", new AntiCmd_Kill());
