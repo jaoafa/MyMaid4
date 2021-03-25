@@ -9,12 +9,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import static com.jaoafa.mymaid4.lib.MyMaidLibrary.isAM;
 
-public class Event_Hide {
+public class Event_Hide implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void onAsyncPlayerChatEvent(AsyncChatEvent event) {
         Player player = event.getPlayer();
