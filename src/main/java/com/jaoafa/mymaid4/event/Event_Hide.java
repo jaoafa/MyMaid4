@@ -28,7 +28,7 @@ public class Event_Hide implements Listener {
                 continue;
             }
             Component component = Component.text().append(
-                Component.text(ChatColor.GRAY + player.getName() + " > " + msg)
+                Component.text(ChatColor.GRAY + player.getName() + " > "), msg
             ).build();
             p.sendMessage(component);
         }
