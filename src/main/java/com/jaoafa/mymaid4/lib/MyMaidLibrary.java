@@ -199,7 +199,7 @@ public class MyMaidLibrary {
      *
      * @param player 判定するプレイヤー
      */
-    protected static boolean isA(Player player) {
+    protected static boolean isA(OfflinePlayer player) {
         String group = getPermissionMainGroup(player);
         if (group == null) return false;
         return group.equalsIgnoreCase("Admin");
@@ -210,7 +210,7 @@ public class MyMaidLibrary {
      *
      * @param player 判定するプレイヤー
      */
-    public static boolean isAM(Player player) {
+    public static boolean isAM(OfflinePlayer player) {
         String group = getPermissionMainGroup(player);
         if (group == null) return false;
         return isA(player) || group.equalsIgnoreCase("Moderator");
@@ -221,7 +221,7 @@ public class MyMaidLibrary {
      *
      * @param player 判定するプレイヤー
      */
-    public static boolean isAMR(Player player) {
+    public static boolean isAMR(OfflinePlayer player) {
         String group = getPermissionMainGroup(player);
         if (group == null) return false;
         return isAM(player) || group.equalsIgnoreCase("Regular");
@@ -232,7 +232,7 @@ public class MyMaidLibrary {
      *
      * @param player 判定するプレイヤー
      */
-    protected static boolean isAMRV(Player player) {
+    protected static boolean isAMRV(OfflinePlayer player) {
         String group = getPermissionMainGroup(player);
         if (group == null) return false;
         return isAMR(player) || group.equalsIgnoreCase("Verified");
