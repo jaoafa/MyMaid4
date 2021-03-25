@@ -1,3 +1,14 @@
+/*
+ * jaoLicense
+ *
+ * Copyright (c) 2021 jao Minecraft Server
+ *
+ * The following license applies to this project: jaoLicense
+ *
+ * Japanese: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE.md
+ * English: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE-en.md
+ */
+
 package com.jaoafa.mymaid4.lib;
 
 import com.jaoafa.mymaid4.Main;
@@ -13,19 +24,16 @@ import org.bukkit.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Jail Library
  */
 public class Jail {
     /** Jail IdとJail情報の紐付け・キャッシュ */
-    static Map<Integer, JailData> cacheData = new HashMap<>();
+    public static Map<Integer, JailData> cacheData = new HashMap<>();
     /** プレイヤーとJail Idの紐付け */
-    static Map<UUID, Integer> linkJailData = new HashMap<>();
+    public static Map<UUID, Integer> linkJailData = new HashMap<>();
 
     OfflinePlayer player;
     JailData jailData;
@@ -38,6 +46,12 @@ public class Jail {
             jailData = new JailData(player);
         }
         jailData.fetchData(false);
+
+        if (!jailData.isStatus()) {
+            linkJailData.entrySet().stream()
+                .filter(entry -> entry.getValue() == jailData.getJailId())
+                .forEach(entry -> linkJailData.remove(entry.getKey()));
+        }
     }
 
     /**
@@ -112,6 +126,47 @@ public class Jail {
         }
     }
 
+    public static List<JailData> getActiveJails() {
+        List<JailData> jails = new ArrayList<>();
+
+        try {
+            Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
+            try (PreparedStatement stmt = conn.prepareStatement(
+                "SELECT * FROM jail WHERE status = ?")) {
+                stmt.setBoolean(1, true);
+
+                ResultSet res = stmt.executeQuery();
+                while (res.next()) {
+                    jails.add(new JailData(
+                        res.getInt("id"),
+                        res.getString("player"),
+                        UUID.fromString(res.getString("uuid")),
+                        res.getString("banned_by"),
+                        res.getString("reason"),
+                        res.getString("testment"),
+                        res.getString("remover"),
+                        res.getBoolean("status"),
+                        res.getTimestamp("created_at")
+                    ));
+                }
+
+                return jails;
+            }
+        } catch (SQLException e) {
+            MyMaidLibrary.reportError(Jail.class, e);
+            return null;
+        }
+    }
+
+    /**
+     * このユーザーが処罰済みかどうか調べます
+     *
+     * @return 処罰済みかどうか
+     */
+    public boolean isBanned() {
+        return jailData.isStatus();
+    }
+
     /**
      * このユーザーのJailを解除します。
      *
@@ -128,8 +183,8 @@ public class Jail {
         try {
             Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
             try (PreparedStatement stmt = conn.prepareStatement(
-                "UPDATE jail SET status = ? AND remover = ? WHERE uuid = ?")) {
-                stmt.setString(1, player.getName());
+                "UPDATE jail SET status = ? AND remover = ? WHERE uuid = ? ORDER BY id DESC LIMIT 1")) {
+                stmt.setBoolean(1, false);
                 stmt.setString(2, remover);
                 stmt.setString(3, player.getUniqueId().toString());
                 boolean isSuccess = stmt.executeUpdate() == 1;
@@ -162,13 +217,13 @@ public class Jail {
                     player.getPlayer().sendMessage(Component.text().append(
                         Component.text("[Jail]"),
                         Component.space(),
-                        Component.text("元の場所に戻るために"),
+                        Component.text("元の場所に戻るために", NamedTextColor.GREEN),
                         Component.space(),
                         Component.text("/untp", NamedTextColor.AQUA, TextDecoration.UNDERLINED)
                             .hoverEvent(HoverEvent.showText(Component.text("/untpを実行します。")))
                             .clickEvent(ClickEvent.runCommand("/untp")),
                         Component.space(),
-                        Component.text("が使えるかもしれません。")
+                        Component.text("が使えるかもしれません。", NamedTextColor.GREEN)
                     ));
                 }
 
@@ -182,12 +237,12 @@ public class Jail {
     }
 
     /**
-     * このユーザーが処罰済みかどうか調べます
+     * JailDataを返します
      *
-     * @return 処罰済みかどうか
+     * @return JailData
      */
-    public boolean isBanned() {
-        return jailData.isStatus();
+    public JailData getJailData() {
+        return jailData;
     }
 
     /**
@@ -244,6 +299,8 @@ public class Jail {
                     removeBan("jaotan");
                 }
 
+                linkJailData.remove(jailData.getPlayerUUID());
+                jailData.fetchData(true);
                 return Result.SUCCESS;
             }
         } catch (SQLException e) {
@@ -253,20 +310,11 @@ public class Jail {
     }
 
     /**
-     * JailDataを返します
-     *
-     * @return JailData
-     */
-    public JailData getJailData() {
-        return jailData;
-    }
-
-    /**
      * 各種Jail通知の送信先を返します。
      *
      * @return 送信先
      */
-    public TextChannel getDiscordSendTo() {
+    TextChannel getDiscordSendTo() {
         JDA jda = Main.getMyMaidConfig().getJDA();
         if (jda == null) {
             return null;
@@ -278,7 +326,7 @@ public class Jail {
         }
     }
 
-    enum Result {
+    public enum Result {
         /** 成功 */
         SUCCESS,
         /** 既に処理済 */
@@ -308,7 +356,7 @@ public class Jail {
         UNKNOWN
     }
 
-    static class JailData {
+    public static class JailData {
         /** Jail Id */
         private int id = -1;
         /** 処罰対象プレイヤー名 */
@@ -324,7 +372,7 @@ public class Jail {
         /** 解除者 */
         private String remover = null;
         /** 処罰中か */
-        private boolean status = true;
+        private boolean status = false;
         /** データ作成時刻 */
         private Timestamp created_at = null;
         /** フェッチ日時 */
@@ -410,6 +458,31 @@ public class Jail {
             this.created_at = created_at;
         }
 
+        /**
+         * 指定された情報でJailデータを作成します。
+         *
+         * @param id         Jail Id
+         * @param playerName プレイヤー名
+         * @param playerUUID プレイヤーUUID
+         * @param banned_by  　処罰者
+         * @param reason     処罰理由
+         * @param testment   遺言
+         * @param remover    解除者
+         * @param status     処罰中か
+         * @param created_at データ作成時刻
+         */
+        public JailData(int id, String playerName, UUID playerUUID, String banned_by, String reason, String testment, String remover, boolean status, Timestamp created_at) {
+            this.id = id;
+            this.playerName = playerName;
+            this.playerUUID = playerUUID;
+            this.banned_by = banned_by;
+            this.reason = reason;
+            this.testment = testment;
+            this.remover = remover;
+            this.status = status;
+            this.created_at = created_at;
+        }
+
 
         /**
          * JailIdを取得します。-1の場合データが存在しないか、フェッチされていません。
@@ -456,7 +529,7 @@ public class Jail {
          * @return 処罰者名
          */
         @Nullable
-        public String getBanned_by() {
+        public String getBannedBy() {
             return banned_by;
         }
 
@@ -531,11 +604,13 @@ public class Jail {
                     stmt = conn.prepareStatement("SELECT * FROM jail WHERE id = ?");
                     stmt.setInt(1, id);
                 } else if (playerName != null) {
-                    stmt = conn.prepareStatement("SELECT * FROM jail WHERE player = ? ORDER BY id LIMIT 1");
+                    stmt = conn.prepareStatement("SELECT * FROM jail WHERE player = ? AND status = ? ORDER BY id DESC LIMIT 1");
                     stmt.setString(1, playerName);
+                    stmt.setBoolean(2, true);
                 } else if (playerUUID != null) {
-                    stmt = conn.prepareStatement("SELECT * FROM jail WHERE uuid = ? ORDER BY id LIMIT 1");
+                    stmt = conn.prepareStatement("SELECT * FROM jail WHERE uuid = ? AND status = ? ORDER BY id DESC LIMIT 1");
                     stmt.setString(1, playerUUID.toString());
+                    stmt.setBoolean(2, true);
                 } else {
                     throw new IllegalStateException("データをフェッチするために必要な情報が足りません。");
                 }
@@ -545,6 +620,7 @@ public class Jail {
                     return FetchDataResult.NOTFOUND;
                 }
 
+                this.id = res.getInt("id");
                 this.playerName = res.getString("player");
                 this.playerUUID = UUID.fromString(res.getString("uuid"));
                 this.banned_by = res.getString("banned_by");
@@ -554,6 +630,9 @@ public class Jail {
                 this.status = res.getBoolean("status");
                 this.created_at = res.getTimestamp("created_at");
                 this.dbSyncedTime = System.currentTimeMillis();
+
+                cacheData.put(id, this);
+                linkJailData.put(UUID.fromString(res.getString("uuid")), id);
 
                 return FetchDataResult.SUCCESS;
             } catch (SQLException e) {

@@ -35,7 +35,8 @@ public class MyMaidConfig {
 
     public void init(){
         JavaPlugin plugin = Main.getJavaPlugin();
-        if (!new File(plugin.getDataFolder(), "this-server-is-development").exists()) {
+        if (new File(plugin.getDataFolder(), "this-server-is-development").exists()) {
+            plugin.getLogger().warning("このサーバは開発サーバです。一部の機能が無効・変更される可能性があります。");
             isDevelopmentServer = true;
         }
 
