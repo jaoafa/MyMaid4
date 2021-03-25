@@ -3,6 +3,7 @@ package com.jaoafa.mymaid4.command;
 import cloud.commandframework.Command;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
+import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
 import com.jaoafa.mymaid4.lib.MyMaidConfig;
@@ -37,7 +38,7 @@ public class Cmd_Hide extends MyMaidLibrary implements CommandPremise {
             return;
         }
 
-        player.hidePlayer(player);
+        player.hidePlayer(Main.getJavaPlugin(), player);
         if (!MyMaidConfig.isHid(player.getUniqueId())) {
             MyMaidConfig.addHid(player.getUniqueId());
         }
