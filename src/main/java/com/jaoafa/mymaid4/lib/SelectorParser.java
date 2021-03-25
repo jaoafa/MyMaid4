@@ -172,25 +172,17 @@ public class SelectorParser extends MyMaidLibrary {
         if (!valid) {
             invalid.add("ALL");
         }
-        if (args.containsKey("x")) {
-            if (!isInt(args.get("x"))) {
-                invalid.add("x");
-            }
+        if (args.containsKey("x") && !isInt(args.get("x"))) {
+            invalid.add("x");
         }
-        if (args.containsKey("y")) {
-            if (!isInt(args.get("y"))) {
-                invalid.add("y");
-            }
+        if (args.containsKey("y") && !isInt(args.get("y"))) {
+            invalid.add("y");
         }
-        if (args.containsKey("z")) {
-            if (!isInt(args.get("z"))) {
-                invalid.add("z");
-            }
+        if (args.containsKey("z") && !isInt(args.get("z"))) {
+            invalid.add("z");
         }
-        if (args.containsKey("distance")) {
-            if (!isInt(args.get("distance"))) {
-                invalid.add("distance");
-            }
+        if (args.containsKey("distance") && !isInt(args.get("distance"))) {
+            invalid.add("distance");
         }
         if (args.containsKey("type")) {
             boolean TypeCheck = false;
