@@ -31,6 +31,7 @@ public class MyMaidConfig {
     private Long reportChannelId = null;
     private Long serverChatChannelId = null;
 
+
     public void init(){
         JavaPlugin plugin = Main.getJavaPlugin();
         if (!new File(plugin.getDataFolder(), "config.yml").exists()) {
@@ -141,4 +142,5 @@ public class MyMaidConfig {
     public Long getServerChatChannelId() {
         return serverChatChannelId;
     }
+
 }
