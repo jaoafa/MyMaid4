@@ -104,14 +104,14 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
             SendMessage(player, details(), "ページ数は1以上の数字を指定してください。");
             return;
         }
-        int visualPagenum = 0;//ユーザーに表示する際のページナンバー
+        int visualPagenum = 0;
         try {
             visualPagenum = Integer.parseInt(pagenumString);
         } catch (NumberFormatException e) {
             SendMessage(player, details(), "ページ数は半角数字で指定してください。");
             return;
         }
-        int listPagenum = visualPagenum - 1;//Listから検索する際のページナンバー
+        int listPagenum = visualPagenum - 1;
 
         int listBeginnum = listPagenum * 5;
         int visualBeginnum = listBeginnum + 1;
@@ -134,8 +134,6 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
         int finalVisualPagenumAfter = visualPagenum + 1;
         int[] finalListCurrentnum = {listCurrentnum};
         home.getHomes().stream().skip(listBeginnum).limit(5).forEach(s -> {
-            //ここで現在のhome情報を送る
-            //そしてlistCurrentnumに1足す
             String homename = cutHomeName(s.name);
             Component componentHomeInfo = Component.text().append(
                 Component.text("["),
@@ -153,24 +151,6 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
             Component.text(" >>===", Style.style().clickEvent(ClickEvent.runCommand("/home list " + finalVisualPagenumAfter)).build())
         ).build();
         SendMessage(player, details(), componentHomeInfo);
-
-        // TODO ホームリスト実装
-        /*
-        想定されるやり方:
-        - チャット欄・本などを使ってホームの一覧を表示する
-        - チャット欄の場合
-          - ページネーション機能を作って10アイテム毎とかで表示する
-          - クリックで前に・次に進む → 内部で/home list 2とかたたかせる？
-         */
-        // Home home = new Home(player);
-        // Set<Home.Detail> homes = home.getHomes();
-
-        /*SendMessage(player, details(), Component.text().append(
-            Component.text("この機能は未実装です。(Issue: ", NamedTextColor.GREEN),
-            Component.text("#21", NamedTextColor.AQUA, TextDecoration.UNDERLINED)
-                .clickEvent(ClickEvent.openUrl("https://github.com/jaoafa/MyMaid4/issues/21")),
-            Component.text(")", NamedTextColor.GREEN)
-        ).build());*/
     }
 
 
