@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-public class AntiProblemCommand extends MyMaidLibrary implements Listener {
+public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener {
     static Map<String, AntiCommand> antiCommandMap = new HashMap<>();
     static String[] LeastOne = new String[]{"r", "type", "team", "name"};
 
@@ -99,7 +99,6 @@ public class AntiProblemCommand extends MyMaidLibrary implements Listener {
                 player.chat("ちなみに彼女もアスナに似てる(聞いてないw)");
                 player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
                 event.setCancelled(true);
-                //MyMaidLibrary.checkSpam(player);
                 MyMaidLibrary.checkSpam(player);
                 return;
             }
@@ -149,7 +148,7 @@ public class AntiProblemCommand extends MyMaidLibrary implements Listener {
                         MyMaidLibrary.checkSpam(player);
                         return;
                     }
-                    if (!parser.getArgs().containsKey("r")) {
+                    if (!parser.getArgs().containsKey("distance")) {
                         boolean exist = false;
                         for (String one : LeastOne) {
                             if (parser.getArgs().containsKey(one)) {
