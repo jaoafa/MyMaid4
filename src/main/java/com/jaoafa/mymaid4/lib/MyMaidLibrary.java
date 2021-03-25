@@ -396,18 +396,18 @@ public class MyMaidLibrary {
      * @param player [player's name]
      */
     public static void checkSpam(Player player) {
-        if (MyMaidConfig.getSpamCount(player.getUniqueId()) == null || MyMaidConfig.getSpamTime(player.getUniqueId()) == null) {
-            MyMaidConfig.setSpamCount(player.getUniqueId(), 1);
-            MyMaidConfig.setSpamTime(player.getUniqueId(), System.currentTimeMillis());
+        if (MyMaidData.getSpamCount(player.getUniqueId()) == null || MyMaidData.getSpamTime(player.getUniqueId()) == null) {
+            MyMaidData.setSpamCount(player.getUniqueId(), 1);
+            MyMaidData.setSpamTime(player.getUniqueId(), System.currentTimeMillis());
             return;
         }
-        int count = MyMaidConfig.getSpamCount(player.getUniqueId());
-        long time = MyMaidConfig.getSpamTime(player.getUniqueId());
+        int count = MyMaidData.getSpamCount(player.getUniqueId());
+        long time = MyMaidData.getSpamTime(player.getUniqueId());
 
         if (System.currentTimeMillis() - time > 180000) {
             //3分
-            MyMaidConfig.setSpamCount(player.getUniqueId(), 1);
-            MyMaidConfig.setSpamTime(player.getUniqueId(), System.currentTimeMillis());
+            MyMaidData.setSpamCount(player.getUniqueId(), 1);
+            MyMaidData.setSpamTime(player.getUniqueId(), System.currentTimeMillis());
             return;
         }
 
@@ -425,7 +425,7 @@ public class MyMaidLibrary {
         } else {
             player.sendMessage(String.format("[AntiProblemCommand] %sあなたが実行したコマンドは迷惑コマンドとされています。複数回実行すると、迷惑行為として処罰対象となる場合がございます。", ChatColor.GREEN));
         }
-        MyMaidConfig.setSpamCount(player.getUniqueId(), count + 1);
-        MyMaidConfig.setSpamTime(player.getUniqueId(), System.currentTimeMillis());
+        MyMaidData.setSpamCount(player.getUniqueId(), count + 1);
+        MyMaidData.setSpamTime(player.getUniqueId(), System.currentTimeMillis());
     }
 }
