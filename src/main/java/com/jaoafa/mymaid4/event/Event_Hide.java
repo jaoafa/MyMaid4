@@ -1,7 +1,7 @@
 package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.Main;
-import com.jaoafa.mymaid4.lib.MyMaidConfig;
+import com.jaoafa.mymaid4.lib.MyMaidData;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -21,7 +21,7 @@ public class Event_Hide implements Listener {
     public void onAsyncPlayerChatEvent(AsyncChatEvent event) {
         Player player = event.getPlayer();
         Component msg = event.message();
-        if (!MyMaidConfig.isHid(player.getUniqueId())) {
+        if (!MyMaidData.isHid(player.getUniqueId())) {
             return;
         }
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
@@ -47,7 +47,7 @@ public class Event_Hide implements Listener {
             if (p.getUniqueId().equals(player.getUniqueId())) {
                 continue;
             }
-            if (!MyMaidConfig.isHid(p.getUniqueId())) {
+            if (!MyMaidData.isHid(p.getUniqueId())) {
                 player.showPlayer(Main.getJavaPlugin(), p);
                 continue;
             }
@@ -63,7 +63,7 @@ public class Event_Hide implements Listener {
         String command = event.getMessage();
 
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            if (!MyMaidConfig.isHid(p.getUniqueId())) {
+            if (!MyMaidData.isHid(p.getUniqueId())) {
                 continue;
             }
             if (!command.toLowerCase().contains(p.getName().toLowerCase())) {

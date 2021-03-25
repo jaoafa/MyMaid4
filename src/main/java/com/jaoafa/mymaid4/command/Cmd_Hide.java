@@ -6,7 +6,7 @@ import cloud.commandframework.meta.CommandMeta;
 import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
-import com.jaoafa.mymaid4.lib.MyMaidConfig;
+import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -42,8 +42,8 @@ public class Cmd_Hide extends MyMaidLibrary implements CommandPremise {
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             p.hidePlayer(Main.getJavaPlugin(), player);
         }
-        if (!MyMaidConfig.isHid(player.getUniqueId())) {
-            MyMaidConfig.addHid(player.getUniqueId());
+        if (!MyMaidData.isHid(player.getUniqueId())) {
+            MyMaidData.addHid(player.getUniqueId());
         }
         SendMessage(player, details(), "あなたは他のプレイヤーから見えなくなりました。見えるようにするには/showを実行しましょう。");
         SendMessage(player, details(), "なお、プレイヤーリストからも見えなくなりますのでお気をつけて。");

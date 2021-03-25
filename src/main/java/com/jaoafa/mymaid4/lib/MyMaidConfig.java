@@ -20,9 +20,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 
 /**
  * config.ymlで定義されるコンフィグのクラス
@@ -33,7 +30,7 @@ public class MyMaidConfig {
     private Long jaotanChannelId = null;
     private Long reportChannelId = null;
     private Long serverChatChannelId = null;
-    private static final Set<UUID> hid = new HashSet<>();
+
 
     public void init(){
         JavaPlugin plugin = Main.getJavaPlugin();
@@ -146,15 +143,4 @@ public class MyMaidConfig {
         return serverChatChannelId;
     }
 
-    public static boolean isHid(UUID uuid) {
-        return hid.contains(uuid);
-    }
-
-    public static void addHid(UUID uuid) {
-        hid.add(uuid);
-    }
-
-    public static void removeHid(UUID uuid) {
-        hid.remove(uuid);
-    }
 }
