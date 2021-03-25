@@ -4,6 +4,7 @@ import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.lib.MyMaidConfig;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -28,8 +29,12 @@ public class Event_Hide implements Listener {
                 continue;
             }
             Component component = Component.text().append(
-                Component.text(ChatColor.GRAY + player.getName() + " > ")
-            ).append(msg).build();
+                Component.text(player.getName(), NamedTextColor.GRAY),
+                Component.space(),
+                Component.text(">", NamedTextColor.GRAY)
+                Component.space(),
+                msg.color(NamedTextColor.GRAY)
+            ).build();
             p.sendMessage(component);
         }
         event.setCancelled(true);
