@@ -1,3 +1,14 @@
+/*
+ * jaoLicense
+ *
+ * Copyright (c) 2021 jao Minecraft Server
+ *
+ * The following license applies to this project: jaoLicense
+ *
+ * Japanese: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE.md
+ * English: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE-en.md
+ */
+
 package com.jaoafa.mymaid4.lib;
 
 import cloud.commandframework.context.CommandContext;
@@ -199,7 +210,7 @@ public class MyMaidLibrary {
      *
      * @param player 判定するプレイヤー
      */
-    protected static boolean isA(Player player) {
+    protected static boolean isA(OfflinePlayer player) {
         String group = getPermissionMainGroup(player);
         if (group == null) return false;
         return group.equalsIgnoreCase("Admin");
@@ -210,7 +221,7 @@ public class MyMaidLibrary {
      *
      * @param player 判定するプレイヤー
      */
-    public static boolean isAM(Player player) {
+    public static boolean isAM(OfflinePlayer player) {
         String group = getPermissionMainGroup(player);
         if (group == null) return false;
         return isA(player) || group.equalsIgnoreCase("Moderator");
@@ -221,7 +232,7 @@ public class MyMaidLibrary {
      *
      * @param player 判定するプレイヤー
      */
-    public static boolean isAMR(Player player) {
+    public static boolean isAMR(OfflinePlayer player) {
         String group = getPermissionMainGroup(player);
         if (group == null) return false;
         return isAM(player) || group.equalsIgnoreCase("Regular");
@@ -232,7 +243,7 @@ public class MyMaidLibrary {
      *
      * @param player 判定するプレイヤー
      */
-    protected static boolean isAMRV(Player player) {
+    protected static boolean isAMRV(OfflinePlayer player) {
         String group = getPermissionMainGroup(player);
         if (group == null) return false;
         return isAMR(player) || group.equalsIgnoreCase("Verified");
@@ -413,5 +424,12 @@ public class MyMaidLibrary {
     protected boolean isEnabledPlugin(String pluginName) {
         Plugin plugin = Main.getJavaPlugin().getServer().getPluginManager().getPlugin(pluginName);
         return plugin != null && plugin.isEnabled();
+    }
+
+    public static void debug(String message) {
+        if (!Main.getMyMaidConfig().isDevelopmentServer()) {
+            return;
+        }
+        System.out.printf("DEBUG -> %s%n", message);
     }
 }
