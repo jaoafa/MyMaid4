@@ -31,7 +31,7 @@ public class Event_Hide implements Listener {
             Component component = Component.text().append(
                 Component.text(player.getName(), NamedTextColor.GRAY),
                 Component.space(),
-                Component.text(">", NamedTextColor.GRAY)
+                Component.text(">", NamedTextColor.GRAY),
                 Component.space(),
                 msg.color(NamedTextColor.GRAY)
             ).build();
