@@ -616,24 +616,25 @@ public class Jail {
                     throw new IllegalStateException("データをフェッチするために必要な情報が足りません。");
                 }
 
-                ResultSet res = stmt.executeQuery();
-                if (!res.next()) {
-                    return FetchDataResult.NOTFOUND;
+                try (ResultSet res = stmt.executeQuery()) {
+                    if (!res.next()) {
+                        return FetchDataResult.NOTFOUND;
+                    }
+
+                    this.id = res.getInt("id");
+                    this.playerName = res.getString("player");
+                    this.playerUUID = UUID.fromString(res.getString("uuid"));
+                    this.banned_by = res.getString("banned_by");
+                    this.reason = res.getString("reason");
+                    this.testment = res.getString("testment");
+                    this.remover = res.getString("remover");
+                    this.status = res.getBoolean("status");
+                    this.created_at = res.getTimestamp("created_at");
+                    this.dbSyncedTime = System.currentTimeMillis();
+
+                    cacheData.put(id, this);
+                    linkJailData.put(UUID.fromString(res.getString("uuid")), id);
                 }
-
-                this.id = res.getInt("id");
-                this.playerName = res.getString("player");
-                this.playerUUID = UUID.fromString(res.getString("uuid"));
-                this.banned_by = res.getString("banned_by");
-                this.reason = res.getString("reason");
-                this.testment = res.getString("testment");
-                this.remover = res.getString("remover");
-                this.status = res.getBoolean("status");
-                this.created_at = res.getTimestamp("created_at");
-                this.dbSyncedTime = System.currentTimeMillis();
-
-                cacheData.put(id, this);
-                linkJailData.put(UUID.fromString(res.getString("uuid")), id);
 
                 return FetchDataResult.SUCCESS;
             } catch (SQLException e) {
