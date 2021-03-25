@@ -8,6 +8,7 @@ import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
 import com.jaoafa.mymaid4.lib.MyMaidConfig;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -38,11 +39,12 @@ public class Cmd_Show extends MyMaidLibrary implements CommandPremise {
             return;
         }
 
-        player.showPlayer(Main.getJavaPlugin(), player);
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            p.showPlayer(Main.getJavaPlugin(), player);
+        }
         if (MyMaidConfig.isHid(player.getUniqueId())) {
             MyMaidConfig.removeHid(player.getUniqueId());
         }
-        SendMessage(player, details(), "あなたは他のプレイヤーから見えなくなりました。見えるようにするには/showを実行しましょう。");
-        SendMessage(player, details(), "なお、プレイヤーリストからも見えなくなりますのでお気をつけて。");
+        SendMessage(player, details(), "あなたは他のプレイヤーから見えるようになりました。");
     }
 }

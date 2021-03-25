@@ -8,6 +8,7 @@ import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
 import com.jaoafa.mymaid4.lib.MyMaidConfig;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -38,7 +39,9 @@ public class Cmd_Hide extends MyMaidLibrary implements CommandPremise {
             return;
         }
 
-        player.hidePlayer(Main.getJavaPlugin(), player);
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            p.hidePlayer(Main.getJavaPlugin(), player);
+        }
         if (!MyMaidConfig.isHid(player.getUniqueId())) {
             MyMaidConfig.addHid(player.getUniqueId());
         }
