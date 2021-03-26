@@ -16,10 +16,8 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.*;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,12 +45,6 @@ public class EBan {
         }
         ebanData.fetchData(false);
 
-        Map<UUID, Integer> temp = new HashMap<>();
-        linkEBanData.entrySet().stream()
-            .filter(entry -> entry.getValue() == ebanData.getEBanId())
-            .forEach(entry -> temp.put(entry.getKey(), entry.getValue()));
-        linkEBanData = temp;
-
         if (!ebanData.isStatus()) {
             Map<UUID, Integer> temp2 = new HashMap<>();
             linkEBanData.entrySet().stream()
@@ -60,7 +52,6 @@ public class EBan {
                 .forEach(entry -> temp2.put(entry.getKey(), entry.getValue()));
             linkEBanData = temp2;
         }
-        linkEBanData = temp;
     }
 
     public static List<EBanData> getActiveEBans() {
@@ -221,20 +212,6 @@ public class EBan {
                     MyMaidData.getServerChatChannel().sendMessage(
                         String.format("__**EBan[解除]**__: プレイヤー「%s」のEBanを「%s」によって解除されました。",
                             MyMaidLibrary.DiscordEscape(player.getName()), MyMaidLibrary.DiscordEscape(remover))).queue();
-                }
-
-                if (player.isOnline() && player.getPlayer() != null) {
-                    player.getPlayer().sendMessage(Component.text().append(
-                        Component.text("[EBan]"),
-                        Component.space(),
-                        Component.text("元の場所に戻るために", NamedTextColor.GREEN),
-                        Component.space(),
-                        Component.text("/untp", NamedTextColor.AQUA, TextDecoration.UNDERLINED)
-                            .hoverEvent(HoverEvent.showText(Component.text("/untpを実行します。")))
-                            .clickEvent(ClickEvent.runCommand("/untp")),
-                        Component.space(),
-                        Component.text("が使えるかもしれません。", NamedTextColor.GREEN)
-                    ));
                 }
 
                 ebanData.fetchData(true);
