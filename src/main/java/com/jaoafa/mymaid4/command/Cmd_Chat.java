@@ -44,7 +44,7 @@ public class Cmd_Chat extends MyMaidLibrary implements CommandPremise {
 
     void chatFake(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
-        SendMessage(player, details(), context.getRawInputJoined());
+        SendMessage(player, details(), context.getRawInput().get(0));
         /*context.getOrDefault(0)
         ChatColor color = ChatColor.GRAY;
         List<String> colors = Arrays.stream(args).filter(
