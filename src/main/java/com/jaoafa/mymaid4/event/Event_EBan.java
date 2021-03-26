@@ -38,7 +38,6 @@ public class Event_EBan implements Listener {
     public void onEvent_ChatLiquidBounce(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         EBan eban = new EBan(player);
-        eban.DBSync();
 
         if (!eban.isBanned()) {
             return;
