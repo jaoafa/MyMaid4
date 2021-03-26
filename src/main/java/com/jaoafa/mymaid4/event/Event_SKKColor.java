@@ -22,7 +22,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class Event_SSKColor extends MyMaidLibrary implements Listener {
+public class Event_SKKColor extends MyMaidLibrary implements Listener {
     // TODO 非推奨イベントのため変更する必要がありますが、使い方が分からないので困り果てています
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEvent_ChatSKK(AsyncPlayerChatEvent event) {
