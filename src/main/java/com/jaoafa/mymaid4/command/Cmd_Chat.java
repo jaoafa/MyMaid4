@@ -11,15 +11,20 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
-import cloud.commandframework.arguments.standard.StringArgument;
+import cloud.commandframework.arguments.standard.StringArrayArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
 import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Cmd_Chat extends MyMaidLibrary implements CommandPremise {
     @Override
@@ -30,12 +35,27 @@ public class Cmd_Chat extends MyMaidLibrary implements CommandPremise {
         );
     }
 
+    List<String> colors = new ArrayList<>();
     @Override
     public MyMaidCommand.Cmd register(Command.Builder<CommandSender> builder) {
+        colors.add(ChatColor.BLUE.toString());
+        colors.add(ChatColor.RED.toString());
+        colors.add(ChatColor.GREEN.toString());
+        colors.add(ChatColor.WHITE.toString());
+        colors.add(ChatColor.DARK_BLUE.toString());
+        colors.add(ChatColor.DARK_PURPLE.toString());
+        colors.add(ChatColor.LIGHT_PURPLE.toString());
+        colors.add(ChatColor.AQUA.toString());
+        colors.add(ChatColor.DARK_AQUA.toString());
+        colors.add(ChatColor.DARK_GRAY.toString());
+        colors.add(ChatColor.DARK_GREEN.toString());
+        colors.add(ChatColor.DARK_RED.toString());
+        colors.add(ChatColor.BLACK.toString());
+        colors.add(ChatColor.GOLD.toString());
         return new MyMaidCommand.Cmd(
             builder
                 .meta(CommandMeta.DESCRIPTION, "偽のプレイヤーに喋らせます。")
-                .argument(StringArgument.newBuilder("text"))
+                .argument(StringArrayArgument.optional("text", ((commandContext, lastString) -> colors)), ArgumentDescription.of("Colors"))
                 .senderType(Player.class)
                 .handler(this::chatFake)
                 .build()
@@ -44,7 +64,7 @@ public class Cmd_Chat extends MyMaidLibrary implements CommandPremise {
 
     void chatFake(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
-        SendMessage(player, details(), context.getRawInput().get(0));
+        SendMessage(player, details(), context.getOrDefault("text", ""));
         /*context.getOrDefault(0)
         ChatColor color = ChatColor.GRAY;
         List<String> colors = Arrays.stream(args).filter(
