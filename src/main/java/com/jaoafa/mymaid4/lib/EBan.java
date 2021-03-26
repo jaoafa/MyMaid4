@@ -47,15 +47,20 @@ public class EBan {
         }
         ebanData.fetchData(false);
 
-        Map<UUID, Integer> tempLinkEBanData = linkEBanData;
-        EBanData tempEBanData = ebanData;
+        Map<UUID, Integer> temp = new HashMap<>();
+        linkEBanData.entrySet().stream()
+            .filter(entry -> entry.getValue() == ebanData.getEBanId())
+            .forEach(entry -> temp.put(entry.getKey(), entry.getValue()));
+        linkEBanData = temp;
+
         if (!ebanData.isStatus()) {
+            Map<UUID, Integer> temp2 = new HashMap<>();
             linkEBanData.entrySet().stream()
-                .filter(entry -> entry.getValue() == tempEBanData.getEBanId())
-                .forEach(entry -> tempLinkEBanData.remove(entry.getKey()));
+                .filter(entry -> entry.getValue() != ebanData.getEBanId())
+                .forEach(entry -> temp2.put(entry.getKey(), entry.getValue()));
+            linkEBanData = temp2;
         }
-        ebanData = tempEBanData;
-        linkEBanData = tempLinkEBanData;
+        linkEBanData = temp;
     }
 
     public static List<EBanData> getActiveEBans() {
