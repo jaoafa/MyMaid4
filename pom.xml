@@ -72,7 +72,7 @@
         </repository>
         <repository>
             <id>mikeprimm-repo</id>
-            <url>http://repo.mikeprimm.com/</url>
+            <url>https://repo.mikeprimm.com/</url>
         </repository>
     </repositories>
 
