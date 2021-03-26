@@ -12,6 +12,7 @@
 package com.jaoafa.mymaid4.command;
 
 import cloud.commandframework.Command;
+import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
 import com.jaoafa.mymaid4.lib.CommandPremise;
@@ -34,6 +35,7 @@ public class Cmd_Chat extends MyMaidLibrary implements CommandPremise {
         return new MyMaidCommand.Cmd(
             builder
                 .meta(CommandMeta.DESCRIPTION, "偽のプレイヤーに喋らせます。")
+                .argument(StringArgument.newBuilder("text"))
                 .senderType(Player.class)
                 .handler(this::chatFake)
                 .build()
@@ -42,7 +44,7 @@ public class Cmd_Chat extends MyMaidLibrary implements CommandPremise {
 
     void chatFake(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
-        SendMessage(player, details(), context.toString());
+        SendMessage(player, details(), context.getRawInputJoined());
         /*context.getOrDefault(0)
         ChatColor color = ChatColor.GRAY;
         List<String> colors = Arrays.stream(args).filter(
