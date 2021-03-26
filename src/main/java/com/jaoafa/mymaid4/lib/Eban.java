@@ -48,11 +48,13 @@ public class Eban {
         ebanData.fetchData(false);
 
         Map<UUID, Integer> tempLinkEbanData = linkEbanData;
+        EbanData tempEbanData = ebanData;
         if (!ebanData.isStatus()) {
             linkEbanData.entrySet().stream()
-                .filter(entry -> entry.getValue() == ebanData.getEbanId())
+                .filter(entry -> entry.getValue() == tempEbanData.getEbanId())
                 .forEach(entry -> tempLinkEbanData.remove(entry.getKey()));
         }
+        ebanData = tempEbanData;
         linkEbanData = tempLinkEbanData;
     }
 
