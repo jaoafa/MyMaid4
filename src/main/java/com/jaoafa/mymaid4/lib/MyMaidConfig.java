@@ -33,30 +33,6 @@ public class MyMaidConfig {
     private Long reportChannelId = null;
     private Long serverChatChannelId = null;
 
-    String notFoundConfigKey(String key) {
-        return String.format("%sコンフィグが見つかりませんでした。一部の機能は無効化されます。", key);
-    }
-
-    public JDA getJDA() {
-        return jda;
-    }
-
-    public Long getGeneralChannelId() {
-        return generalChannelId;
-    }
-
-    public Long getJaotanChannelId() {
-        return jaotanChannelId;
-    }
-
-    public Long getReportChannelId() {
-        return reportChannelId;
-    }
-
-    public Long getServerChatChannelId() {
-        return serverChatChannelId;
-    }
-
     public void init() {
         JavaPlugin plugin = Main.getJavaPlugin();
         if (new File(plugin.getDataFolder(), "this-server-is-development").exists()) {
@@ -148,7 +124,6 @@ public class MyMaidConfig {
             plugin.getLogger().warning(notFoundConfigKey("zakurohat_database"));
         }
     }
-
 
     String notFoundConfigKey(String key) {
         return String.format("%sコンフィグが見つかりませんでした。一部の機能は無効化されます。", key);
