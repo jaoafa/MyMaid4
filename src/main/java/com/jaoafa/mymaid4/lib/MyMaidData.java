@@ -28,6 +28,8 @@ public class MyMaidData {
     private static final Map<String, Location> lastDed = new HashMap<>();
     private static MySQLDBManager mainMySQLDBManager = null;
     private static MySQLDBManager zkrhatMySQLDBManager = null;
+    private static final Map<UUID, Integer> SpamCount = new HashMap<>();
+    private static final Map<UUID, Long> SpamTime = new HashMap<>();
     private static final Set<UUID> hid = new HashSet<>();
 
     @Nullable
@@ -98,6 +100,22 @@ public class MyMaidData {
         MyMaidData.zkrhatMySQLDBManager = zkrhatMySQLDBManager;
     }
 
+    public static Integer getSpamCount(UUID uuid) {
+        return SpamCount.get(uuid);
+    }
+
+    public static void setSpamCount(UUID uuid, int count) {
+        SpamCount.put(uuid, count);
+    }
+
+    public static Long getSpamTime(UUID uuid) {
+        return SpamTime.get(uuid);
+    }
+
+    public static void setSpamTime(UUID uuid, long time) {
+        SpamTime.put(uuid, time);
+    }
+    
     public static boolean isHid(UUID uuid) {
         return hid.contains(uuid);
     }
