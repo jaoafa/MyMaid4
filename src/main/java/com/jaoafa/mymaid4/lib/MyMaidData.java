@@ -114,7 +114,8 @@ public class MyMaidData {
 
     public static void setSpamTime(UUID uuid, long time) {
         SpamTime.put(uuid, time);
-      
+    }
+    
     public static boolean isHid(UUID uuid) {
         return hid.contains(uuid);
     }
