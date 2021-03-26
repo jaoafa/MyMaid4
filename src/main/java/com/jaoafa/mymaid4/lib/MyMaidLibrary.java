@@ -417,6 +417,45 @@ public class MyMaidLibrary {
     }
 
     /**
+     * スパムかどうかチェックを行い、状態に応じてJailします
+     *
+     * @param player [player's name]
+     */
+    public static void checkSpam(Player player) {
+        if (MyMaidData.getSpamCount(player.getUniqueId()) == null || MyMaidData.getSpamTime(player.getUniqueId()) == null) {
+            MyMaidData.setSpamCount(player.getUniqueId(), 1);
+            MyMaidData.setSpamTime(player.getUniqueId(), System.currentTimeMillis());
+            return;
+        }
+        int count = MyMaidData.getSpamCount(player.getUniqueId());
+        long time = MyMaidData.getSpamTime(player.getUniqueId());
+
+        if (System.currentTimeMillis() - time > 180000) {
+            //3分
+            MyMaidData.setSpamCount(player.getUniqueId(), 1);
+            MyMaidData.setSpamTime(player.getUniqueId(), System.currentTimeMillis());
+            return;
+        }
+
+        if (count == 2) {
+            /*Jail jail = new Jail(player);
+             *if (jail.isBanned()){
+             *   return();
+             *}
+             *jail.addBan("jaotan", "迷惑コマンドを過去3分間に3回以上実行したため");
+             * */
+            return;
+        } else if (count == 1) {
+            player.sendMessage(String.format("[AntiProblemCommand] %s短時間に複数回にわたる迷惑コマンドが実行された場合、処罰対象となる場合があります。ご注意ください。", ChatColor.GREEN));
+
+        } else {
+            player.sendMessage(String.format("[AntiProblemCommand] %sあなたが実行したコマンドは迷惑コマンドとされています。複数回実行すると、迷惑行為として処罰対象となる場合がございます。", ChatColor.GREEN));
+        }
+        MyMaidData.setSpamCount(player.getUniqueId(), count + 1);
+        MyMaidData.setSpamTime(player.getUniqueId(), System.currentTimeMillis());
+    }
+      
+    /**
      * プラグインが有効であるかどうかを取得します。
      *
      * @return プラグインが有効であるか

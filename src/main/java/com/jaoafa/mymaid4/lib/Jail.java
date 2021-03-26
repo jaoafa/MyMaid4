@@ -47,10 +47,13 @@ public class Jail {
         }
         jailData.fetchData(false);
 
+        // 既に解除されていたら紐づけも解除する
         if (!jailData.isStatus()) {
+            Map<UUID, Integer> temp = new HashMap<>();
             linkJailData.entrySet().stream()
-                .filter(entry -> entry.getValue() == jailData.getJailId())
-                .forEach(entry -> linkJailData.remove(entry.getKey()));
+                .filter(entry -> entry.getValue() != jailData.getJailId())
+                .forEach(entry -> temp.put(entry.getKey(), entry.getValue()));
+            linkJailData = temp;
         }
     }
 

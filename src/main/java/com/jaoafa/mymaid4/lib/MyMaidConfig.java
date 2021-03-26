@@ -33,7 +33,7 @@ public class MyMaidConfig {
     private Long reportChannelId = null;
     private Long serverChatChannelId = null;
 
-    public void init(){
+    public void init() {
         JavaPlugin plugin = Main.getJavaPlugin();
         if (new File(plugin.getDataFolder(), "this-server-is-development").exists()) {
             plugin.getLogger().warning("このサーバは開発サーバです。一部の機能が無効・変更される可能性があります。");
@@ -153,5 +153,4 @@ public class MyMaidConfig {
     public Long getServerChatChannelId() {
         return serverChatChannelId;
     }
-
 }
