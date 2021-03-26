@@ -24,8 +24,8 @@ public class Cmd_Chat extends MyMaidLibrary implements CommandPremise {
     @Override
     public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
-            "ded",
-            "最後に死亡した場所にテレポートします。"
+            "chat",
+            "偽のプレイヤーに喋らせます。"
         );
     }
 
@@ -33,7 +33,7 @@ public class Cmd_Chat extends MyMaidLibrary implements CommandPremise {
     public MyMaidCommand.Cmd register(Command.Builder<CommandSender> builder) {
         return new MyMaidCommand.Cmd(
             builder
-                .meta(CommandMeta.DESCRIPTION, "最後に死亡した場所にテレポートします。")
+                .meta(CommandMeta.DESCRIPTION, "偽のプレイヤーに喋らせます。")
                 .senderType(Player.class)
                 .handler(this::chatFake)
                 .build()
