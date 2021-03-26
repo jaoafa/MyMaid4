@@ -1,3 +1,14 @@
+/*
+ * jaoLicense
+ *
+ * Copyright (c) 2021 jao Minecraft Server
+ *
+ * The following license applies to this project: jaoLicense
+ *
+ * Japanese: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE.md
+ * English: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE-en.md
+ */
+
 package com.jaoafa.mymaid4.lib;
 
 import cloud.commandframework.context.CommandContext;
@@ -18,6 +29,7 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.awt.*;
 import java.io.ByteArrayInputStream;
@@ -198,7 +210,7 @@ public class MyMaidLibrary {
      *
      * @param player 判定するプレイヤー
      */
-    protected static boolean isA(Player player) {
+    protected static boolean isA(OfflinePlayer player) {
         String group = getPermissionMainGroup(player);
         if (group == null) return false;
         return group.equalsIgnoreCase("Admin");
@@ -209,7 +221,7 @@ public class MyMaidLibrary {
      *
      * @param player 判定するプレイヤー
      */
-    public static boolean isAM(Player player) {
+    public static boolean isAM(OfflinePlayer player) {
         String group = getPermissionMainGroup(player);
         if (group == null) return false;
         return isA(player) || group.equalsIgnoreCase("Moderator");
@@ -220,7 +232,7 @@ public class MyMaidLibrary {
      *
      * @param player 判定するプレイヤー
      */
-    public static boolean isAMR(Player player) {
+    public static boolean isAMR(OfflinePlayer player) {
         String group = getPermissionMainGroup(player);
         if (group == null) return false;
         return isAM(player) || group.equalsIgnoreCase("Regular");
@@ -231,7 +243,7 @@ public class MyMaidLibrary {
      *
      * @param player 判定するプレイヤー
      */
-    protected static boolean isAMRV(Player player) {
+    protected static boolean isAMRV(OfflinePlayer player) {
         String group = getPermissionMainGroup(player);
         if (group == null) return false;
         return isAMR(player) || group.equalsIgnoreCase("Verified");
@@ -376,6 +388,20 @@ public class MyMaidLibrary {
     }
 
     /**
+     * オンラインプレイヤーのサジェスト (これではなくPlayerArgumentを使うことをお勧め)
+     *
+     * @param context CommandContext
+     * @param current current String
+     * @return 該当するプレイヤー
+     */
+    public List<String> suggestOnlinePlayers(final CommandContext<CommandSender> context, final String current) {
+        return Bukkit.getServer().getOnlinePlayers().stream()
+            .map(Player::getName)
+            .filter(s -> s.toLowerCase().startsWith(current.toLowerCase()))
+            .collect(Collectors.toList());
+    }
+
+    /**
      * オフラインプレイヤーのサジェスト
      *
      * @param context CommandContext
@@ -427,5 +453,22 @@ public class MyMaidLibrary {
         }
         MyMaidData.setSpamCount(player.getUniqueId(), count + 1);
         MyMaidData.setSpamTime(player.getUniqueId(), System.currentTimeMillis());
+    }
+      
+    /**
+     * プラグインが有効であるかどうかを取得します。
+     *
+     * @return プラグインが有効であるか
+     */
+    protected boolean isEnabledPlugin(String pluginName) {
+        Plugin plugin = Main.getJavaPlugin().getServer().getPluginManager().getPlugin(pluginName);
+        return plugin != null && plugin.isEnabled();
+    }
+
+    public static void debug(String message) {
+        if (!Main.getMyMaidConfig().isDevelopmentServer()) {
+            return;
+        }
+        System.out.printf("DEBUG -> %s%n", message);
     }
 }

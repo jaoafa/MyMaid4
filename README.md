@@ -13,7 +13,7 @@ MyMaid とは、jao Minecraft Server における独自のプラグインで特�
 
 ### 開発者は誰ですか？
 
-表面上は jao Minecraft Server 開発部としていますが、実質的には [Tomachi](https://github.com/book000) が全ての開発・運用を担っています。  
+表面上は jao Minecraft Server 開発部としていますが、実質的には[Tomachi](https://github.com/book000)が全ての開発・運用を担っています。  
 但し、本プロジェクトからは有志の手によってプルリクエストによる開発が行われています。
 
 ## Development

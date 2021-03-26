@@ -1,12 +1,21 @@
+/*
+ * jaoLicense
+ *
+ * Copyright (c) 2021 jao Minecraft Server
+ *
+ * The following license applies to this project: jaoLicense
+ *
+ * Japanese: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE.md
+ * English: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE-en.md
+ */
+
 package com.jaoafa.mymaid4.lib;
 
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.bukkit.Location;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 複数のクラスを跨いで使用されるリストなどの変数をまとめるクラス
@@ -21,6 +30,7 @@ public class MyMaidData {
     private static MySQLDBManager zkrhatMySQLDBManager = null;
     private static final Map<UUID, Integer> SpamCount = new HashMap<>();
     private static final Map<UUID, Long> SpamTime = new HashMap<>();
+    private static final Set<UUID> hid = new HashSet<>();
 
     @Nullable
     public static TextChannel getReportChannel() {
@@ -104,5 +114,16 @@ public class MyMaidData {
 
     public static void setSpamTime(UUID uuid, long time) {
         SpamTime.put(uuid, time);
+      
+    public static boolean isHid(UUID uuid) {
+        return hid.contains(uuid);
+    }
+
+    public static void addHid(UUID uuid) {
+        hid.add(uuid);
+    }
+
+    public static void removeHid(UUID uuid) {
+        hid.remove(uuid);
     }
 }

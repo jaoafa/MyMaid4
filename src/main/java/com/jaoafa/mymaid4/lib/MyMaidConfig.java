@@ -18,6 +18,7 @@ import net.dv8tion.jda.api.hooks.AnnotatedEventManager;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 
@@ -26,6 +27,7 @@ import java.io.File;
  */
 public class MyMaidConfig {
     private JDA jda;
+    private boolean isDevelopmentServer = false;
     private Long generalChannelId = null;
     private Long jaotanChannelId = null;
     private Long reportChannelId = null;
@@ -57,6 +59,11 @@ public class MyMaidConfig {
 
     public void init() {
         JavaPlugin plugin = Main.getJavaPlugin();
+        if (new File(plugin.getDataFolder(), "this-server-is-development").exists()) {
+            plugin.getLogger().warning("このサーバは開発サーバです。一部の機能が無効・変更される可能性があります。");
+            isDevelopmentServer = true;
+        }
+
         if (!new File(plugin.getDataFolder(), "config.yml").exists()) {
             plugin.getLogger().warning("コンフィグファイルが見つかりませんでした。一部の機能は無効化されます。");
             return;
@@ -89,7 +96,8 @@ public class MyMaidConfig {
                         .setAutoReconnect(true)
                         .setBulkDeleteSplittingEnabled(false)
                         .setContextEnabled(false)
-                        .setEventManager(new AnnotatedEventManager());
+                        .setEventManager(new AnnotatedEventManager())
+                        .setRawEventsEnabled(false);
 
                     Main.registerDiscordEvent(jdabuilder);
 
@@ -139,5 +147,35 @@ public class MyMaidConfig {
         } else {
             plugin.getLogger().warning(notFoundConfigKey("zakurohat_database"));
         }
+    }
+
+
+    String notFoundConfigKey(String key) {
+        return String.format("%sコンフィグが見つかりませんでした。一部の機能は無効化されます。", key);
+    }
+
+    @Nullable
+    public JDA getJDA() {
+        return jda;
+    }
+
+    public boolean isDevelopmentServer() {
+        return isDevelopmentServer;
+    }
+
+    public Long getGeneralChannelId() {
+        return generalChannelId;
+    }
+
+    public Long getJaotanChannelId() {
+        return jaotanChannelId;
+    }
+
+    public Long getReportChannelId() {
+        return reportChannelId;
+    }
+
+    public Long getServerChatChannelId() {
+        return serverChatChannelId;
     }
 }

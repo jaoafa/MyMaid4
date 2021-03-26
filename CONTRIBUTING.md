@@ -62,11 +62,8 @@ MyMaid4 の動作試験を行うにあたり、サーバが必要になります
 1. [PaperMC のダウンロードページ](https://papermc.io/downloads) から `1.16.5` の最新のビルドをダウンロードする
 2. ダウンロードした jar ファイルを `server` ディレクトリに配置し、 `paper-1.16.5.jar` とリネームする
 3. IntelliJ を開き、ウィンドウ右上「実行」で `ReBuild and Reload` を実行する
-4. [Minecraft EULA](https://account.mojang.com/documents/minecraft_eula) を読み同意する場合は `eula.txt` の `eula=false`
-   を `eula=true` に変える
-5. IntelliJ
-   からプラグインをビルドした後に自動的にリロードするために、[fnetworks/mcrconapi v1.1.1](https://github.com/fnetworks/mcrconapi/releases/tag/v1.1.1)
-   の `mcrconapi-1.1.1.jar` をダウンロード、 `server/mcrconapi-1.1.1.jar` ディレクトリに移動する
+4. [Minecraft EULA](https://account.mojang.com/documents/minecraft_eula) を読み同意する場合は `eula.txt` の `eula=false` を `eula=true` に変える
+5. IntelliJ からプラグインをビルドした後に自動的にリロードするために、[fnetworks/mcrconapi v1.1.1](https://github.com/fnetworks/mcrconapi/releases/tag/v1.1.1) の `mcrconapi-1.1.1.jar` をダウンロード、 `server/mcrconapi-1.1.1.jar` ディレクトリに移動する
 6. IntelliJ を開き、ウィンドウ右上「実行」で `ReBuild and Reload` を実行する
 7. 表示されるターミナルで `op <PlayerName>` を実行し OP 権限を自身に付与する
 
@@ -85,9 +82,10 @@ MyMaid4 の動作試験を行うにあたり、サーバが必要になります
 
 ### ZakuroHat Plugin Test Server
 
-ZakuroHat 上の Docker に立てられている PaperMC 環境で動作するテストサーバです。アドレスは jMS Gamers Club#development のピン止めに記載されています。
-
+ZakuroHat 上の Docker に立てられている PaperMC 環境で動作するテストサーバです。アドレスは jMS Gamers Club#development のピン止めに記載されています。  
 ホワイトリストにて運用されています。参加するには別で規定する条件を満たした上で Tomachi に問い合わせる必要があります。
+
+データベースを使ったコマンド・機能のテストにお使いください。
 
 実際のテストは以下の手順にて行えます。
 
@@ -97,7 +95,7 @@ ZakuroHat 上の Docker に立てられている PaperMC 環境で動作する�
 4. ビルドが完了し、サーバがリロードされるまで待ってください。
 5. リロードが完了すればテストが実施できます。
 
-`/loadplugin` については以下の説明をお読みください
+`/loadplugin` については以下の説明をお読みください。
 
 - リポジトリは `jaoafa/MyMaid4` のフォークリポジトリである必要があります。
 - `<User>` にはあなたの GitHub ユーザー名を入力してください。(e.g. `book000`)
@@ -112,44 +110,51 @@ ZakuroHat 上の Docker に立てられている PaperMC 環境で動作する�
 
 ### General
 
+- 将来的に追加・修正などを行わなければならない項目がある場合は、 `// TODO <Message>` で TODO を登録してください。
 - `config.yml` で設定される設定情報は `MyMaidConfig` にあり、 `Main.getMyMaidConfig()` から取得できます。
 - 複数のクラスにわたって使用される変数は `MyMaidData` に変数を作成し、 Getter と Setter を使用して管理してください。
 - 複数のクラスにわたって多く使用される関数は `MyMaidLibrary` に関数を作成し、Javadoc を書いたうえで `extends MyMaidLibrary` して利用してください。
-- データベースは jaoMain と ZakuroHat の二つがありますが、原則 jaoMain
-  が使用されます。それぞれ `MyMaidData.getMainMySQLDBManager` `MyMaidData.getZKRHatMySQLDBManager` で取得できます。
-- 開発サーバかどうかは `MyMaidConfig.isDevelopmentServer()` で判定できます。`plugins/MyMaid4/this-server-is-development`
-  ファイルの存在有無で確認しています。
+- データベースは jaoMain と ZakuroHat の二つがありますが、原則 jaoMain が使用されます。それぞれ `MyMaidData.getMainMySQLDBManager` `MyMaidData.getZKRHatMySQLDBManager` で取得できます。
+- 開発サーバかどうかは `MyMaidConfig.isDevelopmentServer()` で判定できます。`plugins/MyMaid4/this-server-is-development` ファイルの存在有無で確認しています。
 
 ### Command
 
 - 使用しているコマンドフレームワークは [Incendo/cloud](https://github.com/Incendo/cloud) です。
-- 全てのコマンドは [`src/main/java/com/jaoafa/mymaid4/command/Cmd_<CommandName>.java`](src/main/java/com/jaoafa/mymaid4/command)
-  に配置されます。
-- また、ここに配置されるコマンドクラスは CommandPremise インターフェースを実装する必要があります（`implements CommandPremise`）
-- コマンドの情報（コマンド名・説明）は `details()` で定義します
+  - ドキュメントは [こちら](https://incendo.github.io/cloud) です。
+- 全てのコマンドは [`src/main/java/com/jaoafa/mymaid4/command/Cmd_<CommandName>.java`](src/main/java/com/jaoafa/mymaid4/command) に配置され、これらが自動で読み込まれます。
+- 同時に、クラス名は `Cmd_<CommandName>` でなければなりません。`<CommandName>` は大文字・小文字を問いません。
+- また、ここに配置されるコマンドクラスは CommandPremise インターフェースを実装する必要があります。（`implements CommandPremise`）
+- コマンドの情報（コマンド名・説明）は `details()` で定義します。
 - コマンドの内容は `register()` で定義します。このメソッドは Main クラスの `registerCommand` から呼び出され、コマンドが追加されます。（`plugin.yml` に書く必要がありません）
-- 全てのコマンドのパーミッションは小文字の `mymaid.<CommandName>` でなければなりません
+- 全てのコマンドのパーミッションは小文字の `mymaid.<CommandName>` でなければなりません。
 - コマンドを実行したユーザーにメッセージを送る場合は `MyMaidLibrary` にある `SendMessage` メソッドを利用してください。
 
 ### Event
 
-- 全てのイベント駆動の機能は [`src/main/java/com/jaoafa/mymaid4/event/Event_<FuncName>.java`](src/main/java/com/jaoafa/mymaid4/event)
-  に配置されます。
+- 全てのイベント駆動の機能は [`src/main/java/com/jaoafa/mymaid4/event/Event_<FuncName>.java`](src/main/java/com/jaoafa/mymaid4/event) に配置され、これらが自動で読み込まれます。
+- 同時に、クラス名は `Event_<FuncName>` でなければなりません。
 - `<FuncName>` は自由で構いません
 
 ## Git
 
 ### Commit
 
--
-
-コミットメッセージは **[CommitLint のルール](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional#rules)
-である以下に沿っていることを期待しますが、必須ではありません。**
-
+- コミットメッセージは **[CommitLint のルール](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional#rules) である以下に沿っていることを期待しますが、必須ではありません。**
 - 次の形式でコミットメッセージを指定してください: `type(scope): subject` (e.g. `fix(home): message`)
-- `type`, `subject` は必須、 `scope` は必須ではありません - `type-enum`: `type` は必ず次のいずれかにしなければなりません - `build`: ビルド関連 - `ci`: CI 関連
-- `chore`: いろいろ - `docs`: ドキュメント関連 - `feat`: 新機能 - `fix`: 修正 - `perf`: パフォーマンス改善 - `refactor`: リファクタリング - `revert`:
-  コミットの取り消し - `style`: コードスタイルの修正 - `test`: テストコミット - `type-case`: `type` は必ず小文字でなければなりません (NG: `FIX` / OK: `fix`)
+  - `type`, `subject` は必須、 `scope` は必須ではありません
+- `type-enum`: `type` は必ず次のいずれかにしなければなりません
+  - `build`: ビルド関連
+  - `ci`: CI 関連
+  - `chore`: いろいろ
+  - `docs`: ドキュメント関連
+  - `feat`: 新機能
+  - `fix`: 修正
+  - `perf`: パフォーマンス改善
+  - `refactor`: リファクタリング
+  - `revert`: コミットの取り消し
+  - `style`: コードスタイルの修正
+  - `test`: テストコミット
+- `type-case`: `type` は必ず小文字でなければなりません (NG: `FIX` / OK: `fix`)
 - `type-empty`: `type` は必ず含めなければなりません (NG: `test message` / OK: `test: message`)
 - `scope-case`: `scope` は必ず小文字でなければなりません (NG: `fix(HOME): message` / OK: `fix:(home): message`)
 - `subject-case`: `subject` は必ず次のいずれかの書式でなければなりません `sentence-case`, `start-case`, `pascal-case`, `upper-case`
