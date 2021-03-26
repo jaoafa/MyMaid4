@@ -27,39 +27,39 @@ import java.sql.*;
 import java.util.*;
 
 /**
- * Eban Library
+ * EBan Library
  */
-public class Eban {
-    /** Eban IdとEban情報の紐付け・キャッシュ */
-    public static Map<Integer, EbanData> cacheData = new HashMap<>();
-    /** プレイヤーとEban Idの紐付け */
-    public static Map<UUID, Integer> linkEbanData = new HashMap<>();
+public class EBan {
+    /** EBan IdとEBan情報の紐付け・キャッシュ */
+    public static Map<Integer, EBanData> cacheData = new HashMap<>();
+    /** プレイヤーとEBan Idの紐付け */
+    public static Map<UUID, Integer> linkEBanData = new HashMap<>();
 
     OfflinePlayer player;
-    EbanData ebanData;
+    EBanData ebanData;
 
-    public Eban(OfflinePlayer player) {
+    public EBan(OfflinePlayer player) {
         this.player = player;
-        if (linkEbanData.containsKey(player.getUniqueId()) && cacheData.containsKey(linkEbanData.get(player.getUniqueId()))) {
-            ebanData = cacheData.get(linkEbanData.get(player.getUniqueId()));
+        if (linkEBanData.containsKey(player.getUniqueId()) && cacheData.containsKey(linkEBanData.get(player.getUniqueId()))) {
+            ebanData = cacheData.get(linkEBanData.get(player.getUniqueId()));
         } else {
-            ebanData = new EbanData(player);
+            ebanData = new EBanData(player);
         }
         ebanData.fetchData(false);
 
-        Map<UUID, Integer> tempLinkEbanData = linkEbanData;
-        EbanData tempEbanData = ebanData;
+        Map<UUID, Integer> tempLinkEBanData = linkEBanData;
+        EBanData tempEBanData = ebanData;
         if (!ebanData.isStatus()) {
-            linkEbanData.entrySet().stream()
-                .filter(entry -> entry.getValue() == tempEbanData.getEbanId())
-                .forEach(entry -> tempLinkEbanData.remove(entry.getKey()));
+            linkEBanData.entrySet().stream()
+                .filter(entry -> entry.getValue() == tempEBanData.getEBanId())
+                .forEach(entry -> tempLinkEBanData.remove(entry.getKey()));
         }
-        ebanData = tempEbanData;
-        linkEbanData = tempLinkEbanData;
+        ebanData = tempEBanData;
+        linkEBanData = tempLinkEBanData;
     }
 
-    public static List<EbanData> getActiveEbans() {
-        List<EbanData> ebans = new ArrayList<>();
+    public static List<EBanData> getActiveEBans() {
+        List<EBanData> ebans = new ArrayList<>();
 
         try {
             Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
@@ -69,7 +69,7 @@ public class Eban {
 
                 ResultSet res = stmt.executeQuery();
                 while (res.next()) {
-                    ebans.add(new EbanData(
+                    ebans.add(new EBanData(
                         res.getInt("id"),
                         res.getString("player"),
                         UUID.fromString(res.getString("uuid")),
@@ -84,13 +84,13 @@ public class Eban {
                 return ebans;
             }
         } catch (SQLException e) {
-            MyMaidLibrary.reportError(Eban.class, e);
+            MyMaidLibrary.reportError(EBan.class, e);
             return null;
         }
     }
 
     /**
-     * このユーザーをEbanに追加します。
+     * このユーザーをEBanに追加します。
      *
      * @param banned_by Banを実行した実行者情報
      * @param reason    理由
@@ -119,25 +119,25 @@ public class Eban {
 
                 String displayName = player.getName() != null ? player.getName() : player.getUniqueId().toString();
                 Bukkit.getServer().sendMessage(Component.text().append(
-                    Component.text("[Eban]"),
+                    Component.text("[EBan]"),
                     Component.space(),
                     Component.text("プレイヤー「", NamedTextColor.GREEN),
                     Component.text(displayName, NamedTextColor.GREEN)
                         .hoverEvent(HoverEvent.showEntity(Key.key("player"), player.getUniqueId(), Component.text(displayName))),
                     Component.text("」が「", NamedTextColor.GREEN),
                     Component.text(reason, NamedTextColor.GREEN),
-                    Component.text("」という理由でEbanされました。", NamedTextColor.GREEN)
+                    Component.text("」という理由でEBanされました。", NamedTextColor.GREEN)
                 ));
 
                 TextChannel sendTo = getDiscordSendTo();
                 sendTo.sendMessage(
-                    String.format("__**Eban[追加]**__: プレイヤー「%s」が「%s」によって「%s」という理由でEbanされました。",
+                    String.format("__**EBan[追加]**__: プレイヤー「%s」が「%s」によって「%s」という理由でEBanされました。",
                         MyMaidLibrary.DiscordEscape(player.getName()),
                         MyMaidLibrary.DiscordEscape(banned_by),
                         MyMaidLibrary.DiscordEscape(reason))).queue();
                 if (MyMaidData.getServerChatChannel() != null) {
                     MyMaidData.getServerChatChannel().sendMessage(
-                        String.format("__**Eban[追加]**__: プレイヤー「%s」が「%s」によって「%s」という理由でEbanされました。",
+                        String.format("__**EBan[追加]**__: プレイヤー「%s」が「%s」によって「%s」という理由でEBanされました。",
                             MyMaidLibrary.DiscordEscape(player.getName()),
                             MyMaidLibrary.DiscordEscape(banned_by),
                             MyMaidLibrary.DiscordEscape(reason))).queue();
@@ -172,7 +172,7 @@ public class Eban {
     }
 
     /**
-     * このユーザーのEbanを解除します。
+     * このユーザーのEBanを解除します。
      *
      * @param remover 解除者
      *
@@ -199,28 +199,28 @@ public class Eban {
 
                 String displayName = player.getName() != null ? player.getName() : player.getUniqueId().toString();
                 Bukkit.getServer().sendMessage(Component.text().append(
-                    Component.text("[Eban]"),
+                    Component.text("[EBan]"),
                     Component.space(),
                     Component.text("プレイヤー「", NamedTextColor.GREEN),
                     Component.text(displayName, NamedTextColor.GREEN)
                         .hoverEvent(HoverEvent.showEntity(Key.key("player"), player.getUniqueId(), Component.text(displayName))),
-                    Component.text("」のEbanを解除しました。", NamedTextColor.GREEN)
+                    Component.text("」のEBanを解除しました。", NamedTextColor.GREEN)
                 ));
 
                 TextChannel sendTo = getDiscordSendTo();
                 sendTo.sendMessage(
-                    String.format("__**Eban[解除]**__: プレイヤー「%s」のEbanを「%s」によって解除されました。",
+                    String.format("__**EBan[解除]**__: プレイヤー「%s」のEBanを「%s」によって解除されました。",
                         MyMaidLibrary.DiscordEscape(player.getName()), MyMaidLibrary.DiscordEscape(remover)))
                     .queue();
                 if (MyMaidData.getServerChatChannel() != null) {
                     MyMaidData.getServerChatChannel().sendMessage(
-                        String.format("__**Eban[解除]**__: プレイヤー「%s」のEbanを「%s」によって解除されました。",
+                        String.format("__**EBan[解除]**__: プレイヤー「%s」のEBanを「%s」によって解除されました。",
                             MyMaidLibrary.DiscordEscape(player.getName()), MyMaidLibrary.DiscordEscape(remover))).queue();
                 }
 
                 if (player.isOnline() && player.getPlayer() != null) {
                     player.getPlayer().sendMessage(Component.text().append(
-                        Component.text("[Eban]"),
+                        Component.text("[EBan]"),
                         Component.space(),
                         Component.text("元の場所に戻るために", NamedTextColor.GREEN),
                         Component.space(),
@@ -242,16 +242,16 @@ public class Eban {
     }
 
     /**
-     * EbanDataを返します
+     * EBanDataを返します
      *
-     * @return EbanData
+     * @return EBanData
      */
-    public EbanData getEbanData() {
+    public EBanData getEBanData() {
         return ebanData;
     }
 
     /**
-     * 各種Eban通知の送信先を返します。
+     * 各種EBan通知の送信先を返します。
      *
      * @return 送信先
      */
@@ -295,8 +295,8 @@ public class Eban {
         UNKNOWN
     }
 
-    public static class EbanData {
-        /** Eban Id */
+    public static class EBanData {
+        /** EBan Id */
         private int id = -1;
         /** 処罰対象プレイヤー名 */
         private String playerName = null;
@@ -315,36 +315,36 @@ public class Eban {
         /** フェッチ日時 */
         private long dbSyncedTime = -1L;
 
-        /** 空のEbanデータを作成します。 */
-        private EbanData() {
+        /** 空のEBanデータを作成します。 */
+        private EBanData() {
         }
 
         /**
-         * 指定された情報でEbanデータを作成します。
+         * 指定された情報でEBanデータを作成します。
          *
-         * @param id Eban Id
+         * @param id EBan Id
          */
-        private EbanData(int id) {
+        private EBanData(int id) {
             this.id = id;
         }
 
         /**
-         * 指定された情報でEbanデータを作成します。
+         * 指定された情報でEBanデータを作成します。
          *
          * @param player プレイヤー
          */
-        private EbanData(OfflinePlayer player) {
+        private EBanData(OfflinePlayer player) {
             this.playerUUID = player.getUniqueId();
         }
 
         /**
-         * 指定された情報でEbanデータを作成します。
+         * 指定された情報でEBanデータを作成します。
          *
          * @param player    プレイヤー
          * @param banned_by 処罰者
          * @param reason    処罰理由
          */
-        public EbanData(OfflinePlayer player, String banned_by, String reason) {
+        public EBanData(OfflinePlayer player, String banned_by, String reason) {
             this.playerName = player.getName();
             this.playerUUID = player.getUniqueId();
             this.banned_by = banned_by;
@@ -352,7 +352,7 @@ public class Eban {
         }
 
         /**
-         * 指定された情報でEbanデータを作成します。
+         * 指定された情報でEBanデータを作成します。
          *
          * @param player     プレイヤー
          * @param banned_by  　処罰者
@@ -361,7 +361,7 @@ public class Eban {
          * @param status     処罰中か
          * @param created_at データ作成時刻
          */
-        public EbanData(OfflinePlayer player, String banned_by, String reason, String remover, boolean status, Timestamp created_at) {
+        public EBanData(OfflinePlayer player, String banned_by, String reason, String remover, boolean status, Timestamp created_at) {
             this.playerUUID = player.getUniqueId();
             this.banned_by = banned_by;
             this.reason = reason;
@@ -371,7 +371,7 @@ public class Eban {
         }
 
         /**
-         * 指定された情報でEbanデータを作成します。
+         * 指定された情報でEBanデータを作成します。
          *
          * @param playerName プレイヤー名
          * @param playerUUID プレイヤーUUID
@@ -381,7 +381,7 @@ public class Eban {
          * @param status     処罰中か
          * @param created_at データ作成時刻
          */
-        public EbanData(String playerName, UUID playerUUID, String banned_by, String reason, String remover, boolean status, Timestamp created_at) {
+        public EBanData(String playerName, UUID playerUUID, String banned_by, String reason, String remover, boolean status, Timestamp created_at) {
             this.playerName = playerName;
             this.playerUUID = playerUUID;
             this.banned_by = banned_by;
@@ -392,9 +392,9 @@ public class Eban {
         }
 
         /**
-         * 指定された情報でEbanデータを作成します。
+         * 指定された情報でEBanデータを作成します。
          *
-         * @param id         Eban Id
+         * @param id         EBan Id
          * @param playerName プレイヤー名
          * @param playerUUID プレイヤーUUID
          * @param banned_by  　処罰者
@@ -403,7 +403,7 @@ public class Eban {
          * @param status     処罰中か
          * @param created_at データ作成時刻
          */
-        public EbanData(int id, String playerName, UUID playerUUID, String banned_by, String reason, String remover, boolean status, Timestamp created_at) {
+        public EBanData(int id, String playerName, UUID playerUUID, String banned_by, String reason, String remover, boolean status, Timestamp created_at) {
             this.id = id;
             this.playerName = playerName;
             this.playerUUID = playerUUID;
@@ -416,11 +416,11 @@ public class Eban {
 
 
         /**
-         * EbanIdを取得します。-1の場合データが存在しないか、フェッチされていません。
+         * EBanIdを取得します。-1の場合データが存在しないか、フェッチされていません。
          *
-         * @return EbanId
+         * @return EBanId
          */
-        public int getEbanId() {
+        public int getEBanId() {
             return id;
         }
 
@@ -553,7 +553,7 @@ public class Eban {
                     this.dbSyncedTime = System.currentTimeMillis();
 
                     cacheData.put(id, this);
-                    linkEbanData.put(UUID.fromString(res.getString("uuid")), id);
+                    linkEBanData.put(UUID.fromString(res.getString("uuid")), id);
                 }
 
                 return FetchDataResult.SUCCESS;
