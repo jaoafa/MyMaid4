@@ -34,6 +34,25 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class Event_EBan implements Listener {
+    @EventHandler
+    public void onEvent_ChatLiquidBounce(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        EBan eban = new EBan(player);
+        eban.DBSync();
+
+        if (!eban.isBanned()) {
+            return;
+        }
+        if (!event.getMessage().contains("LiquidBounce Client | liquidbounce.net")) {
+            return;
+        }
+
+        eban.addBan("jaotan", "禁止クライアント「LiquidBounce」使用の疑い。");
+        event.setCancelled(true);
+
+        // 必要に応じて自動ChatJail。
+    }
+    
     @EventHandler(priority = EventPriority.MONITOR,
                   ignoreCancelled = true)
     public void OnEvent_LoginEBanCheck(PlayerJoinEvent event) {
@@ -280,11 +299,6 @@ public class Event_EBan implements Listener {
     @EventHandler
     public void onQuitClearCache(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        //EBan eban = new EBan(player);
-        //if (eban.isBanned()) { // EBanされてる
-        // TODO
-        // Achievementjao.getAchievement(player, new AchievementType(69)); // 脱獄者だ！
-        //}
         new BukkitRunnable() {
             public void run() {
                 EBan eban = new EBan(player);
