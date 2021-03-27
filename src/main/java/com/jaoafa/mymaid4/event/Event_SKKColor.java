@@ -31,7 +31,7 @@ public class Event_SKKColor extends MyMaidLibrary implements Listener {
                 event.getPlayer(),
                 "%1",
                 event.getFormat()
-            )
+            ).replace(SKKColorManager.getPlayerColor(event.getPlayer()).toString(), "")
         );
     }
 

@@ -75,9 +75,10 @@ public class SKKColorManager {
      * プレイヤーの四角色を取得する
      *
      * @param player プレイヤー
+     *
      * @return 四角色
      */
-    private static NamedTextColor getPlayerColor(Player player) {
+    public static NamedTextColor getPlayerColor(Player player) {
         int count = getVoteCount(player);
         return ColorList.get(calculateRank(count));
     }
@@ -107,7 +108,10 @@ public class SKKColorManager {
      * @return 追加した後のテキスト
      */
     public static String replacePlayerSKKChatColor(Player player, String str, String message) {
-        return message.replaceFirst(str, String.format("%s■%s%s", getPlayerColor(player), ChatColor.WHITE, str));
+        //player.sendMessage("str:"+str);
+        //player.sendMessage("msg:"+message);
+        return message.replaceFirst(str, getPlayerColor(player) + "■" + ChatColor.WHITE + str);
+        //return message.replaceFirst(str, String.format("%s■%s%s", getPlayerColor(player), ChatColor.WHITE, str));
     }
 
     private static String getJoinMessage(int count) {
