@@ -53,21 +53,9 @@ public class Cmd_Chat extends MyMaidLibrary implements CommandPremise {
 
     private List<String> colors(@NonNull CommandContext<CommandSender> commandSenderCommandContext, @NonNull String s) {
         ArrayList<String> colors = new ArrayList<>();
-        colors.add("color:blue");
-        colors.add("color:red");
-        colors.add("color:green");
-        colors.add("color:white");
-        colors.add("color:dark_blue");
-        colors.add("color:dark_purple");
-        colors.add("color:light_purple");
-        colors.add("color:aqua");
-        colors.add("color:dark_aqua");
-        colors.add("color:dark_gray");
-        colors.add("color:dark_green");
-        colors.add("color:dark_red");
-        colors.add("color:black");
-        colors.add("color:gold");
-        colors.add("color:yellow");
+        for (ChatColor color : ChatColor.values()) {
+            colors.add("color:" + color.name().toLowerCase());
+        }
         return colors;
     }
 
@@ -80,52 +68,11 @@ public class Cmd_Chat extends MyMaidLibrary implements CommandPremise {
         final ChatColor[] chatColor = new ChatColor[1];
         Arrays.stream(msg[0].split(" ")).forEach(s -> {
             if (s.startsWith("color:")) {
-                if (s.equals("color:blue")) {
-                    chatColor[0] = ChatColor.BLUE;
+                for (ChatColor color : ChatColor.values()) {
+                    if (s.equals("color:" + color.name().toLowerCase())) {
+                        chatColor[0] = color;
+                    }
                 }
-                if (s.equals("color:red")) {
-                    chatColor[0] = ChatColor.RED;
-                }
-                if (s.equals("color:green")) {
-                    chatColor[0] = ChatColor.GREEN;
-                }
-                if (s.equals("color:white")) {
-                    chatColor[0] = ChatColor.WHITE;
-                }
-                if (s.equals("color:dark_blue")) {
-                    chatColor[0] = ChatColor.DARK_BLUE;
-                }
-                if (s.equals("color:dark_purple")) {
-                    chatColor[0] = ChatColor.DARK_PURPLE;
-                }
-                if (s.equals("color:light_purple")) {
-                    chatColor[0] = ChatColor.LIGHT_PURPLE;
-                }
-                if (s.equals("color:aqua")) {
-                    chatColor[0] = ChatColor.AQUA;
-                }
-                if (s.equals("color:dark_aqua")) {
-                    chatColor[0] = ChatColor.DARK_AQUA;
-                }
-                if (s.equals("color:dark_gray")) {
-                    chatColor[0] = ChatColor.DARK_GRAY;
-                }
-                if (s.equals("color:dark_green")) {
-                    chatColor[0] = ChatColor.DARK_GREEN;
-                }
-                if (s.equals("color:dark_red")) {
-                    chatColor[0] = ChatColor.DARK_RED;
-                }
-                if (s.equals("color:black")) {
-                    chatColor[0] = ChatColor.BLACK;
-                }
-                if (s.equals("color:gold")) {
-                    chatColor[0] = ChatColor.GOLD;
-                }
-                if (s.equals("color:yellow")) {
-                    chatColor[0] = ChatColor.YELLOW;
-                }
-
                 msg[0] = msg[0].replaceFirst(s, "");
                 msg[0] = msg[0].trim();
             }
@@ -147,26 +94,5 @@ public class Cmd_Chat extends MyMaidLibrary implements CommandPremise {
         }
 
         chatFake(chatColor[0], fakePlayer, msg[0]);
-
-
-        /*context.getOrDefault(0)
-        ChatColor color = ChatColor.GRAY;
-        List<String> colors = Arrays.stream(args).filter(
-            arg -> arg != null && arg.startsWith("color:")).collect(Collectors.toList());
-        if (colors.size() != 0) {
-            for (ChatColor cc : ChatColor.values()) {
-                if (!cc.name().equalsIgnoreCase(colors.get(0).substring("color:".length()))) {
-                    continue;
-                }
-                color = cc;
-            }
-        }
-        List<String> texts = Arrays.stream(Arrays.copyOfRange(args, 1, args.length)).filter(
-            arg -> arg != null && !arg.startsWith("color:")).collect(Collectors.toList());
-        String text = ChatColor.translateAlternateColorCodes('&', String.join(" ", texts));
-        if (args[0].equalsIgnoreCase("jaotan")) {
-            color = ChatColor.GOLD;
-        }
-        chatFake(color, args[0], text);*/
     }
 }
