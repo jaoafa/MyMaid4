@@ -55,7 +55,7 @@ public class Cmd_Chat extends MyMaidLibrary implements CommandPremise {
         return new MyMaidCommand.Cmd(
             builder
                 .meta(CommandMeta.DESCRIPTION, "偽のプレイヤーに喋らせます。")
-                .argument(StringArrayArgument.optional("text", ((commandContext, lastString) -> colors)), ArgumentDescription.of("Colors"))
+                .argument(StringArrayArgument.optional("text", ((commandContext, lastColors) -> colors)), ArgumentDescription.of("Colors"))
                 .senderType(Player.class)
                 .handler(this::chatFake)
                 .build()
@@ -64,7 +64,7 @@ public class Cmd_Chat extends MyMaidLibrary implements CommandPremise {
 
     void chatFake(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
-        SendMessage(player, details(), context.getOrDefault("text", ""));
+        SendMessage(player, details(), context.getOrDefault("text", "").split(" ")[0]);
         /*context.getOrDefault(0)
         ChatColor color = ChatColor.GRAY;
         List<String> colors = Arrays.stream(args).filter(
