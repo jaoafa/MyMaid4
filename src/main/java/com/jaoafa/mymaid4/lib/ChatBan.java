@@ -45,14 +45,6 @@ public class ChatBan {
             chatbanData = new ChatBanData(player);
         }
         chatbanData.fetchData(false);
-
-        if (!chatbanData.isStatus()) {
-            Map<UUID, Integer> temp = new HashMap<>();
-            linkChatBanData.entrySet().stream()
-                .filter(entry -> entry.getValue() != chatbanData.getChatBanId())
-                .forEach(entry -> temp.put(entry.getKey(), entry.getValue()));
-            linkChatBanData = temp;
-        }
     }
 
     public static List<ChatBanData> getActiveChatBans() {
@@ -532,13 +524,11 @@ public class ChatBan {
                     stmt = conn.prepareStatement("SELECT * FROM chatban WHERE id = ?");
                     stmt.setInt(1, id);
                 } else if (playerName != null) {
-                    stmt = conn.prepareStatement("SELECT * FROM chatban WHERE player = ? AND status = ? ORDER BY id DESC LIMIT 1");
+                    stmt = conn.prepareStatement("SELECT * FROM chatban WHERE player = ? ORDER BY id DESC LIMIT 1");
                     stmt.setString(1, playerName);
-                    stmt.setBoolean(2, true);
                 } else if (playerUUID != null) {
-                    stmt = conn.prepareStatement("SELECT * FROM chatban WHERE uuid = ? AND status = ? ORDER BY id DESC LIMIT 1");
+                    stmt = conn.prepareStatement("SELECT * FROM chatban WHERE uuid = ? ORDER BY id DESC LIMIT 1");
                     stmt.setString(1, playerUUID.toString());
-                    stmt.setBoolean(2, true);
                 } else {
                     throw new IllegalStateException("データをフェッチするために必要な情報が足りません。");
                 }

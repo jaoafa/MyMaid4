@@ -46,15 +46,6 @@ public class Jail {
             jailData = new JailData(player);
         }
         jailData.fetchData(false);
-
-        // 既に解除されていたら紐づけも解除する
-        if (!jailData.isStatus()) {
-            Map<UUID, Integer> temp = new HashMap<>();
-            linkJailData.entrySet().stream()
-                .filter(entry -> entry.getValue() != jailData.getJailId())
-                .forEach(entry -> temp.put(entry.getKey(), entry.getValue()));
-            linkJailData = temp;
-        }
     }
 
     public static List<JailData> getActiveJails() {
@@ -608,13 +599,11 @@ public class Jail {
                     stmt = conn.prepareStatement("SELECT * FROM jail_new WHERE id = ?");
                     stmt.setInt(1, id);
                 } else if (playerName != null) {
-                    stmt = conn.prepareStatement("SELECT * FROM jail_new WHERE player = ? AND status = ? ORDER BY id DESC LIMIT 1");
+                    stmt = conn.prepareStatement("SELECT * FROM jail_new WHERE player = ? ORDER BY id DESC LIMIT 1");
                     stmt.setString(1, playerName);
-                    stmt.setBoolean(2, true);
                 } else if (playerUUID != null) {
-                    stmt = conn.prepareStatement("SELECT * FROM jail_new WHERE uuid = ? AND status = ? ORDER BY id DESC LIMIT 1");
+                    stmt = conn.prepareStatement("SELECT * FROM jail_new WHERE uuid = ? ORDER BY id DESC LIMIT 1");
                     stmt.setString(1, playerUUID.toString());
-                    stmt.setBoolean(2, true);
                 } else {
                     throw new IllegalStateException("データをフェッチするために必要な情報が足りません。");
                 }
