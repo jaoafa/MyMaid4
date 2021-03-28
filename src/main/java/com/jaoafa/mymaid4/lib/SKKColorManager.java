@@ -129,9 +129,14 @@ public class SKKColorManager {
      * @param message フォーマットテキスト
      * @return 追加した後のテキスト
      */
-    public static String replacePlayerSKKChatColor(Player player, String str, String message) {
-        return message.replaceFirst(str, getPlayerChatColor(player) + "■" + ChatColor.WHITE + str);
-    }
+    /*public static String replacePlayerSKKChatColor(Player player, String str, String message) {
+
+        Component component = Component.text().append(
+            Component.text("■", getPlayerTextColor(player)),
+            Component.text(str)
+        ).build();
+    return message.replaceFirst(str, component);
+    }*/
 
     private static String getJoinMessage(int count) {
         if (count < 20) {

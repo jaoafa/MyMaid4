@@ -15,6 +15,7 @@ import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import com.jaoafa.mymaid4.lib.SKKColorManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -27,11 +28,7 @@ public class Event_SKKColor extends MyMaidLibrary implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEvent_ChatSKK(AsyncPlayerChatEvent event) {
         event.setFormat(
-            SKKColorManager.replacePlayerSKKChatColor(
-                event.getPlayer(),
-                "%1",
-                event.getFormat()
-            )//.replace(SKKColorManager.getPlayerChatColor(event.getPlayer()).toString().split("\\$")[0], "")
+            event.getFormat().replaceFirst("%1\\$s",String.format("%s■%s%s",SKKColorManager.getPlayerChatColor(event.getPlayer()), ChatColor.WHITE,event.getPlayer().getName()))
         );
     }
 
