@@ -12,9 +12,13 @@
 package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.Main;
+import com.jaoafa.mymaid4.lib.ChatBan;
 import com.jaoafa.mymaid4.lib.EBan;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -35,21 +39,25 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class Event_EBan implements Listener {
     @EventHandler
-    public void onEvent_ChatLiquidBounce(AsyncPlayerChatEvent event) {
+    public void onEvent_ChatLiquidBounce(AsyncChatEvent event) {
         Player player = event.getPlayer();
+        Component component = event.message();
+        String message = PlainComponentSerializer.plain().serialize(component);
         EBan eban = new EBan(player);
 
         if (!eban.isBanned()) {
             return;
         }
-        if (!event.getMessage().contains("LiquidBounce Client | liquidbounce.net")) {
+        if (!message.contains("LiquidBounce Client | liquidbounce.net")) {
             return;
         }
 
         eban.addBan("jaotan", "禁止クライアント「LiquidBounce」使用の疑い。");
-        event.setCancelled(true);
 
-        // 必要に応じて自動ChatJail。
+        ChatBan chatban = new ChatBan(player);
+        chatban.addBan("jaotan", "禁止クライアント「LiquidBounce」使用の疑い。");
+
+        event.setCancelled(true);
     }
     
     @EventHandler(priority = EventPriority.MONITOR,
@@ -240,18 +248,6 @@ public class Event_EBan implements Listener {
         EBan eban = new EBan(player);
         if (!eban.isBanned()) { // EBanされてる
             return;
-        }
-        String command = event.getMessage();
-        String[] args = command.split(" ", 0);
-        if (args.length >= 2) {
-            if (args[0].equalsIgnoreCase("/testment")) {
-                return;
-            }
-        }
-        if (args.length >= 3) {
-            if (args[0].equalsIgnoreCase("/eban") && args[1].equalsIgnoreCase("testment")) {
-                return;
-            }
         }
         event.setCancelled(true);
         player.sendMessage("[EBan] " + ChatColor.GREEN + "あなたはコマンドを実行できません。");
