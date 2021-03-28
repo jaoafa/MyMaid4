@@ -19,6 +19,7 @@ import cloud.commandframework.meta.CommandMeta;
 import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.SkullType;
@@ -47,7 +48,7 @@ public class Cmd_Head extends MyMaidLibrary implements CommandPremise {
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "指定したプレイヤーの頭ブロックを入手します。" )
-                .argument(OfflinePlayerArgument.newBuilder("player" ))
+                .argument(StringArgument.newBuilder("player" ))
                 .handler(this::givePlayerHead)
                 .build()
         );
@@ -78,16 +79,16 @@ public class Cmd_Head extends MyMaidLibrary implements CommandPremise {
 
     void givePlayerHead(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
-        Player targetPlayer = context.getOrDefault("player", null);
+        String targetPlayer = context.getOrDefault("player", null);
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
-        meta.setOwningPlayer(targetPlayer);
+        meta.setOwningPlayer(Bukkit.getOfflinePlayer(targetPlayer));
         skull.setItemMeta(meta);
         PlayerInventory inv = player.getInventory();
         ItemStack main = inv.getItemInMainHand();
 
         inv.setItemInMainHand(skull);
-        SendMessage(player, details(), "「" + targetPlayer.getName() + "の頭」をメインハンドのアイテムと置きかえました。" );
+        SendMessage(player, details(), "「" + targetPlayer + "の頭」をメインハンドのアイテムと置きかえました。" );
 
         if (main != null && main.getType() != Material.AIR) {
             if (player.getInventory().firstEmpty() == -1) {
