@@ -130,10 +130,7 @@ public class SKKColorManager {
      * @return 追加した後のテキスト
      */
     public static String replacePlayerSKKChatColor(Player player, String str, String message) {
-        //player.sendMessage("str:"+str);
-        //player.sendMessage("msg:"+message);
-        return message.replaceFirst(str, getPlayerTextColor(player) + "■" + ChatColor.WHITE + str);
-        //return message.replaceFirst(str, String.format("%s■%s%s", getPlayerColor(player), ChatColor.WHITE, str));
+        return message.replaceFirst(str, getPlayerChatColor(player) + "■" + ChatColor.WHITE + str);
     }
 
     private static String getJoinMessage(int count) {
