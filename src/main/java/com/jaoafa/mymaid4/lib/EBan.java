@@ -184,7 +184,7 @@ public class EBan {
         try {
             Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
             try (PreparedStatement stmt = conn.prepareStatement(
-                "UPDATE eban_new SET status = ? AND remover = ? WHERE uuid = ? ORDER BY id DESC LIMIT 1")) {
+                "UPDATE eban_new SET status = ?, remover = ? WHERE uuid = ? ORDER BY id DESC LIMIT 1")) {
                 stmt.setBoolean(1, false);
                 stmt.setString(2, remover);
                 stmt.setString(3, player.getUniqueId().toString());
