@@ -13,12 +13,14 @@ package com.jaoafa.mymaid4.command;
 
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.StringArgument;
+import cloud.commandframework.bukkit.parsers.OfflinePlayerArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
 import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.SkullType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -45,7 +47,7 @@ public class Cmd_Head extends MyMaidLibrary implements CommandPremise {
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "指定したプレイヤーの頭ブロックを入手します。" )
-                .argument(StringArgument.newBuilder("player" ))
+                .argument(OfflinePlayerArgument.newBuilder("player" ))
                 .handler(this::givePlayerHead)
                 .build()
         );
@@ -54,9 +56,9 @@ public class Cmd_Head extends MyMaidLibrary implements CommandPremise {
     void giveMyHead(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
         String name = player.getName();
-        ItemStack skull = new ItemStack(Material.LEGACY_SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
+        ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
-        meta.setOwner(player.getName());
+        meta.setOwningPlayer(player);
         skull.setItemMeta(meta);
         PlayerInventory inv = player.getInventory();
         ItemStack main = inv.getItemInMainHand();
@@ -76,16 +78,16 @@ public class Cmd_Head extends MyMaidLibrary implements CommandPremise {
 
     void givePlayerHead(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
-        String targetPlayer = context.getOrDefault("player", null);
-        ItemStack skull = new ItemStack(Material.LEGACY_SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
+        Player targetPlayer = context.getOrDefault("player", null);
+        ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
-        meta.setOwner(targetPlayer);
+        meta.setOwningPlayer(targetPlayer);
         skull.setItemMeta(meta);
         PlayerInventory inv = player.getInventory();
         ItemStack main = inv.getItemInMainHand();
 
         inv.setItemInMainHand(skull);
-        SendMessage(player, details(), "「" + targetPlayer + "の頭」をメインハンドのアイテムと置きかえました。" );
+        SendMessage(player, details(), "「" + targetPlayer.getName() + "の頭」をメインハンドのアイテムと置きかえました。" );
 
         if (main != null && main.getType() != Material.AIR) {
             if (player.getInventory().firstEmpty() == -1) {
