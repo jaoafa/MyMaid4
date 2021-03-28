@@ -56,7 +56,7 @@ public class Cmd_Head extends MyMaidLibrary implements CommandPremise {
         Player player = (Player) context.getSender();
         String name = player.getName();
 
-        ItemStack skull = new ItemStack(Material.LEGACY_SKULL_ITEM);
+        ItemStack skull = new ItemStack(Material.LEGACY_SKULL);
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
         skull.setDurability((short) 3);
         skullMeta.setOwningPlayer(player);
@@ -79,9 +79,9 @@ public class Cmd_Head extends MyMaidLibrary implements CommandPremise {
 
     void givePlayerHead(CommandContext<CommandSender> context) {
         Player player = context.getOrDefault("player", null);
-        OfflinePlayer offplayer = Bukkit.getOfflinePlayer(context.getOrDefault("player",player.getName()));
+        OfflinePlayer offplayer = Bukkit.getOfflinePlayer(context.getOrDefault("player",""));
         String name = offplayer.getName();
-        ItemStack skull = new ItemStack(Material.LEGACY_SKULL_ITEM);
+        ItemStack skull = new ItemStack(Material.LEGACY_SKULL);
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
         skull.setDurability((short) 3);
         skullMeta.setOwningPlayer(offplayer);
