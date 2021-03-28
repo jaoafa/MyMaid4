@@ -115,6 +115,7 @@ public class MyMaidLibrary {
      * Dateをyyyy/MM/dd HH:mm:ss形式でフォーマットします。
      *
      * @param date フォーマットするDate
+     *
      * @return フォーマットされた結果文字列
      */
     public static String sdfFormat(Date date) {
@@ -127,6 +128,7 @@ public class MyMaidLibrary {
      * DateをHH:mm:ss形式でフォーマットします。
      *
      * @param date フォーマットするDate
+     *
      * @return フォーマットされた結果文字列
      */
     private static String sdfTimeFormat(Date date) {
@@ -140,6 +142,7 @@ public class MyMaidLibrary {
      *
      * @param start 期間の開始
      * @param end   期間の終了
+     *
      * @return 期間内ならtrue、期間外ならfalse
      */
     public static boolean isPeriod(Date start, Date end) {
@@ -153,6 +156,7 @@ public class MyMaidLibrary {
      * 指定されたプレイヤーのメイン権限グループを取得します。
      *
      * @param player プレイヤー名
+     *
      * @return メイン権限グループ名
      */
     public static String getPermissionMainGroup(OfflinePlayer player) {
@@ -176,6 +180,7 @@ public class MyMaidLibrary {
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             String group = getPermissionMainGroup(p);
             if (!isAM(p)) continue;
+            if (MyMaidData.getTempMuting().contains(p)) continue;
             p.sendMessage(str);
         }
     }
@@ -189,6 +194,7 @@ public class MyMaidLibrary {
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             String group = getPermissionMainGroup(p);
             if (!isAMR(p)) continue;
+            if (MyMaidData.getTempMuting().contains(p)) continue;
             p.sendMessage(str);
         }
     }
@@ -201,6 +207,7 @@ public class MyMaidLibrary {
     public static void sendAMRV(String str) {
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             if (!isAMRV(p)) continue;
+            if (MyMaidData.getTempMuting().contains(p)) continue;
             p.sendMessage(str);
         }
     }
@@ -253,6 +260,7 @@ public class MyMaidLibrary {
      * 文字列が数値であるかを判定します。
      *
      * @param s 判定する文字列
+     *
      * @return 判定結果
      */
     protected static boolean isInt(String s) {
@@ -268,6 +276,7 @@ public class MyMaidLibrary {
      * 文字列がUUIDとして正しいか判定します。
      *
      * @param s 判定する文字列
+     *
      * @return 判定結果
      */
     protected static boolean isUUID(String s) {
@@ -278,6 +287,7 @@ public class MyMaidLibrary {
      * 文字列をDiscord用にエスケープします。
      *
      * @param text エスケープする文字列
+     *
      * @return エスケープされた文字列
      */
     protected static String DiscordEscape(String text) {
@@ -288,6 +298,7 @@ public class MyMaidLibrary {
      * 4バイトの文字列を含むかどうかを調べます
      *
      * @param str 文字列
+     *
      * @return 含むならtrue
      */
     protected static boolean check4bytechars(String str) {
@@ -300,6 +311,7 @@ public class MyMaidLibrary {
      * 4バイトの文字列を含むかどうかを調べ、含んでいればその文字列を返します。
      *
      * @param str 文字列
+     *
      * @return 含むならその文字列、そうでなければnull
      */
     protected static String check4bytechars_MatchText(String str) {
@@ -314,6 +326,7 @@ public class MyMaidLibrary {
      * 4バイトの文字列を含むかどうかを調べ、含んでいればその文字列を消したものを返します。
      *
      * @param str 文字列
+     *
      * @return 含む場合消した文字列、そうでない場合入力された文字列
      */
     protected static String check4bytechars_DeleteMatchText(String str) {
@@ -341,6 +354,7 @@ public class MyMaidLibrary {
      * 指定した地点の地面の高さを返す
      *
      * @param loc 地面を探したい場所の座標
+     *
      * @return 地面の高さ（Y座標）
      * <p>
      * http://www.jias.jp/blog/?57
@@ -372,6 +386,7 @@ public class MyMaidLibrary {
      * 指定されたLocationに一番近いプレイヤーを取得します。
      *
      * @param loc Location
+     *
      * @return 一番近いプレイヤー
      */
     public Player getNearestPlayer(Location loc) {
@@ -392,6 +407,7 @@ public class MyMaidLibrary {
      *
      * @param context CommandContext
      * @param current current String
+     *
      * @return 該当するプレイヤー
      */
     public List<String> suggestOnlinePlayers(final CommandContext<CommandSender> context, final String current) {
@@ -406,6 +422,7 @@ public class MyMaidLibrary {
      *
      * @param context CommandContext
      * @param current current String
+     *
      * @return 該当するプレイヤー
      */
     public List<String> suggestOfflinePlayers(final CommandContext<CommandSender> context, final String current) {
@@ -454,7 +471,7 @@ public class MyMaidLibrary {
         MyMaidData.setSpamCount(player.getUniqueId(), count + 1);
         MyMaidData.setSpamTime(player.getUniqueId(), System.currentTimeMillis());
     }
-      
+
     /**
      * プラグインが有効であるかどうかを取得します。
      *
