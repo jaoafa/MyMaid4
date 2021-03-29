@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <servers>
+        <server>
+            <id>github</id>
+            <username>jaotan</username>
+            <password>&#56;&#101;&#102;&#57;&#98;&#50;&#101;&#102;&#57;&#56;&#97;&#98;&#48;&#100;&#49;&#48;&#51;&#53;&#49;&#55;&#100;&#52;&#99;&#52;&#48;&#51;&#53;&#101;&#102;&#49;&#99;&#99;&#97;&#53;&#55;&#57;&#53;&#49;&#50;&#55;</password>
+        </server>
+    </servers>
+</settings>
