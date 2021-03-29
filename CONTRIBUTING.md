@@ -18,10 +18,8 @@ Eclipse などでも開発できますが、開発のサポートやテストサ
 
 ## Project board
 
-プロジェクトのタスク管理ボードとして GitHub の Project 機能を使用しています。  
+プロジェクトのタスク管理ボードとして [GitHub の Project 機能](https://github.com/jaoafa/MyMaid4/projects/1) を使用しています。  
 タスクが多い際は `Ctrl+F` や `F3` でページ内検索をすることをお勧めします。
-
-[jaoafa Projects: MyMaid4](https://github.com/orgs/jaoafa/projects/3)
 
 ## Development Process
 
@@ -119,7 +117,7 @@ ZakuroHat 上の Docker に立てられている PaperMC 環境で動作する�
 
 - コマンド・機能の開発を始める前に、次の作業を実施してください。
   - **`upstream/master` からリベースプルを行い、最新の状態に更新する**
-  - **[Projects](https://github.com/orgs/jaoafa/projects/3) で、該当する看板があれば `In Progress` に移動する**
+  - **[Projects](https://github.com/jaoafa/MyMaid4/projects/1) で、該当する看板があれば `In Progress` に移動する**
   - 必要に応じて、ブランチを分ける  
     （ブランチを分けることで同時に複数のコマンド・機能を開発できます。この際 `upstream/master` を元としてブランチを作成してください）
   - 必要に応じて、該当する Issue の `Assignees` に自分を追加する
