@@ -28,7 +28,7 @@ Issue を作成する場合は [注意事項](https://github.com/jaoafa/MyMaid4/
 
 [CONTRIBUTING.md](CONTRIBUTING.md) をお読みください。
 
-また、 [GitHub の Project 機能](https://github.com/orgs/jaoafa/projects/3) を使用してタスク管理を行っています。
+また、 [GitHub の Project 機能](https://github.com/jaoafa/MyMaid4/projects/1) を使用してタスク管理を行っています。
 
 ## License
 
