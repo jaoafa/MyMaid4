@@ -11,6 +11,8 @@
 
 package com.jaoafa.mymaid4.lib;
 
+import com.jaoafa.jaosuperachievement2.api.Achievementjao;
+import com.jaoafa.jaosuperachievement2.lib.Achievement;
 import com.jaoafa.mymaid4.Main;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -143,6 +145,8 @@ public class Jail {
                     Location minami = new Location(Jao_Afa, 2856, 69, 2888);
                     player.getPlayer().teleport(minami);
                 }
+
+                Achievementjao.getAchievementAsync(player, Achievement.FIRSTJAIL); // No.22 はじめてのjail
 
                 jailData.fetchData(true);
                 return Result.SUCCESS;
