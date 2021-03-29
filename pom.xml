@@ -77,9 +77,7 @@
         <repository>
             <id>github</id>
             <name>GitHub jaoafa Apache Maven Packages</name>
-            <url>
-                https://jaotan:5112db82d6a8a56b51e01dde9ead9973bfc38adb@maven.pkg.github.com/jaoafa/jao-Super-Achievement2
-            </url>
+            <url>https://@maven.pkg.github.com/jaoafa/jao-Super-Achievement2</url>
             <!-- read:packages のみを許可した jaotan の Personal access token を使っています -->
             <releases>
                 <enabled>true</enabled>
