@@ -27,22 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SKKColorManager {
-    static List<ChatColor> ChatColorList = Arrays.asList(
-        ChatColor.GRAY,
-        ChatColor.WHITE,
-        ChatColor.DARK_BLUE,
-        ChatColor.BLUE,
-        ChatColor.AQUA,
-        ChatColor.DARK_AQUA,
-        ChatColor.DARK_GREEN,
-        ChatColor.GREEN,
-        ChatColor.YELLOW,
-        ChatColor.GOLD,
-        ChatColor.RED,
-        ChatColor.DARK_RED,
-        ChatColor.DARK_PURPLE,
-        ChatColor.LIGHT_PURPLE);
-    static List<NamedTextColor> TextColorList = Arrays.asList(
+    static List<NamedTextColor> ChatColors = Arrays.asList(
         NamedTextColor.GRAY,
         NamedTextColor.WHITE,
         NamedTextColor.DARK_BLUE,
@@ -95,12 +80,7 @@ public class SKKColorManager {
      */
     public static NamedTextColor getPlayerColor(Player player) {
         int count = getVoteCount(player);
-        return ChatColorList.get(calculateRank(count));
-    }
-
-    public static TextColor getPlayerTextColor(Player player) {
-        int count = getVoteCount(player);
-        return TextColorList.get(calculateRank(count));
+        return ChatColors.get(calculateRank(count));
     }
 
     /**
@@ -158,11 +138,11 @@ public class SKKColorManager {
 
         return team == null ?
             Component.text().append(
-                Component.text("■").color(getPlayerTextColor(player)),
+                Component.text("■").color(getPlayerColor(player)),
                 Component.text(player.getName())
             ).build() :
             Component.text().append(
-                Component.text("■").color(getPlayerTextColor(player)),
+                Component.text("■").color(getPlayerColor(player)),
                 Component.text(player.getName(), team.color())
             ).build();
     }
