@@ -141,6 +141,7 @@ public class EBan {
                     player.getPlayer().teleport(minami);
                 }
 
+                ebanData.id = -1;
                 ebanData.fetchData(true);
                 return Result.SUCCESS;
             }
@@ -206,6 +207,7 @@ public class EBan {
                             MyMaidLibrary.DiscordEscape(player.getName()), MyMaidLibrary.DiscordEscape(remover))).queue();
                 }
 
+                ebanData.id = -1;
                 ebanData.fetchData(true);
                 return Result.SUCCESS;
             }
