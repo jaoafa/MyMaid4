@@ -15,6 +15,8 @@ import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
+import com.jaoafa.jaosuperachievement2.api.Achievementjao;
+import com.jaoafa.jaosuperachievement2.lib.Achievement;
 import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.Home;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
@@ -83,6 +85,7 @@ public class Cmd_SetHome extends MyMaidLibrary implements CommandPremise {
 
         Location loc = player.getLocation();
         home.set(name, loc);
+        Achievementjao.getAchievementAsync(player, Achievement.HEREISHOUSE); // No.26 ここがおうち
 
         SendMessage(player, details(), String.format("ホーム「%s (%s %.2f %.2f %.2f %.2f %.2f)」を追加しました。",
             name,

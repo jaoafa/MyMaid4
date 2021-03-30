@@ -16,6 +16,11 @@ Eclipse などでも開発できますが、開発のサポートやテストサ
 
 原則、コミットのメッセージやプルリクエストのメッセージなどは日本語で記述してください。
 
+## Project board
+
+プロジェクトのタスク管理ボードとして [GitHub の Project 機能](https://github.com/jaoafa/MyMaid4/projects/1) を使用しています。  
+タスクが多い際は `Ctrl+F` や `F3` でページ内検索をすることをお勧めします。
+
 ## Development Process
 
 開発に参加する手順は次のとおりです。
@@ -27,11 +32,11 @@ Eclipse などでも開発できますが、開発のサポートやテストサ
 5. プッシュする
 6. `jaoafa/MyMaid4` プルリクエストを送信する
 
-プログラミングを始める前に、`jaoafa/MyMaid4` (一般的に `upstream` と呼ばれます) からリベースプルを実施することを強くお勧めします。(これをしないとコンフリクトする場合があります)
+プログラミングを始める前に、`jaoafa/MyMaid4` (一般的に `upstream` と呼ばれます) から**リベースプルを実施することを強くお勧めします**。(これをしないとコンフリクトする場合があります)
 
 `upstream` の登録は以下の方法で行えます。
 
-![](https://i.imgur.com/w1CValK.png)
+![リモート定義イメージ画像](https://i.imgur.com/w1CValK.png)
 
 1. プロジェクトを右クリックし、 `Git` -> `リモート管理` と進む
 2. `+` を押し、名前に `upstream` 、 URL に `https://github.com/jaoafa/MyMaid4.git` と打ち込む
@@ -39,7 +44,7 @@ Eclipse などでも開発できますが、開発のサポートやテストサ
 
 リベースプルは以下の方法で行えます。
 
-![](https://i.imgur.com/MqCXMrq.png)
+![リベースプルイメージ画像](https://i.imgur.com/MqCXMrq.png)
 
 1. 右下のブランチ名が表示されている欄をクリックする
 2. 表示されるウィンドウの右上 🔄(フェッチボタン) を押し、最新の情報に更新する
@@ -110,6 +115,12 @@ ZakuroHat 上の Docker に立てられている PaperMC 環境で動作する�
 
 ### General
 
+- コマンド・機能の開発を始める前に、次の作業を実施してください。
+  - **`upstream/master` からリベースプルを行い、最新の状態に更新する**
+  - **[Projects](https://github.com/jaoafa/MyMaid4/projects/1) で、該当する看板があれば `In Progress` に移動する**
+  - 必要に応じて、ブランチを分ける  
+    （ブランチを分けることで同時に複数のコマンド・機能を開発できます。この際 `upstream/master` を元としてブランチを作成してください）
+  - 必要に応じて、該当する Issue の `Assignees` に自分を追加する
 - 将来的に追加・修正などを行わなければならない項目がある場合は、 `// TODO <Message>` で TODO を登録してください。
 - `config.yml` で設定される設定情報は `MyMaidConfig` にあり、 `Main.getMyMaidConfig()` から取得できます。
 - 複数のクラスにわたって使用される変数は `MyMaidData` に変数を作成し、 Getter と Setter を使用して管理してください。
@@ -181,4 +192,4 @@ master ブランチ = メインサーバ導入ソースコード です。
 
 ## Other
 
-- 不明な点は jMS Gamers Club#development で質問してください。
+- 不明な点は jMS Gamers Club の `#development` チャンネルで質問してください。

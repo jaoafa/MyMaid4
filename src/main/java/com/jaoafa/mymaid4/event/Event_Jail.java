@@ -11,6 +11,8 @@
 
 package com.jaoafa.mymaid4.event;
 
+import com.jaoafa.jaosuperachievement2.api.Achievementjao;
+import com.jaoafa.jaosuperachievement2.lib.Achievement;
 import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.lib.Jail;
 import com.jaoafa.mymaid4.lib.MyMaidData;
@@ -280,11 +282,10 @@ public class Event_Jail implements Listener {
     @EventHandler
     public void onQuitClearCache(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        //Jail jail = new Jail(player);
-        //if (jail.isBanned()) { // Jailされてる
-        // TODO
-        // Achievementjao.getAchievement(player, new AchievementType(69)); // 脱獄者だ！
-        //}
+        Jail jail = new Jail(player);
+        if (jail.isBanned()) { // Jailされてる
+            Achievementjao.getAchievementAsync(player, Achievement.JAILBREAKER); // No.69 脱獄者だ！
+        }
         new BukkitRunnable() {
             public void run() {
                 Jail jail = new Jail(player);
