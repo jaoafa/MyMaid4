@@ -417,6 +417,21 @@ public class MyMaidLibrary {
     }
 
     /**
+     * ワールド名のサジェスト
+     *
+     * @param context CommandContext
+     * @param current current String
+     *
+     * @return 該当するワールド名
+     */
+    public static List<String> suggestWorldNames(final CommandContext<CommandSender> context, final String current) {
+        return Bukkit.getServer().getWorlds().stream()
+            .map(World::getName)
+            .filter(s -> s.toLowerCase().startsWith(current.toLowerCase()))
+            .collect(Collectors.toList());
+    }
+
+    /**
      * スパムかどうかチェックを行い、状態に応じてJailします
      *
      * @param player [player's name]
