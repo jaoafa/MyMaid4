@@ -114,7 +114,7 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
             }
         }
 
-        String permission = MyMaidLibrary.getPermissionMainGroup(Bukkit.getOfflinePlayer(uuid));
+        String permission = getPermissionMainGroup(Bukkit.getOfflinePlayer(uuid));
         if (country != null) {
             Main.getJavaPlugin().getLogger().info("Country: " + country.getName() + " (" + country.getIsoCode() + ")");
             Main.getJavaPlugin().getLogger().info("City: " + city.getName() + " (" + city.getGeoNameId() + ")");
