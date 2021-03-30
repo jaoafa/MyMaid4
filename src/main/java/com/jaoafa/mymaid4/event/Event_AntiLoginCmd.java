@@ -38,7 +38,12 @@ public class Event_AntiLoginCmd extends MyMaidLibrary implements Listener {
 
         eban.addBan("jaotan", String.format("コマンド「%s」を実行したことにより、サーバルールへの違反の可能性を検知したため", command));
         player.kickPlayer("Disconnected.");
-        MyMaidData.getJaotanChannel().sendMessage(String.format("プレイヤー「%s」がコマンド「%s」を実行したため、キックしました。", player.getName(), command)).queue();
+        if (MyMaidData.getJaotanChannel()!=null){
+            MyMaidData.getJaotanChannel().sendMessage(String.format("プレイヤー「%s」がコマンド「%s」を実行したため、キックしました。", player.getName(), command)).queue();
+        }else {
+            System.out.println("MyMaidData.getJaotanChannel is null");
+        }
+        
         event.setCancelled(true);
     }
 }
