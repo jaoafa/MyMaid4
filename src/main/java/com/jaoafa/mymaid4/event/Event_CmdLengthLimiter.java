@@ -12,23 +12,27 @@
 package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class Event_CmdLengthLimiter extends MyMaidLibrary implements Listener {
-        @EventHandler
-        public void onCommand(PlayerCommandPreprocessEvent event) {
-            String command = event.getMessage();
-            Player player = event.getPlayer();
+    @EventHandler
+    public static void onCommand(PlayerCommandPreprocessEvent event) {
+        String command = event.getMessage();
+        Player player = event.getPlayer();
 
-            if (isAMRV(player)||command.length() < 100) {
-                return;
-            }
+        if (MyMaidLibrary.isAMRV(player) || command.length() < 100) return;
 
-            event.setCancelled(true);
-            player.sendMessage(String.format("[CmdLengthLimiter] %sあなたは100文字以上のコマンドを実行することが出来ません！", ChatColor.GREEN));
-        }
+        event.setCancelled(true);
+        Component component = Component.text().append(
+            Component.text("[CmdLengthLimiter]"),
+            Component.space(),
+            Component.text("あなたは100文字以上のコマンドを実行することが出来ません！", NamedTextColor.GREEN)
+        ).build();
+        player.sendMessage(component);
+    }
 }
