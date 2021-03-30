@@ -13,6 +13,7 @@ package com.jaoafa.mymaid4.lib;
 
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -31,6 +32,7 @@ public class MyMaidData {
     private static final Map<UUID, Integer> SpamCount = new HashMap<>();
     private static final Map<UUID, Long> SpamTime = new HashMap<>();
     private static final Set<UUID> hid = new HashSet<>();
+    private static final Set<Player> tempMuting = new HashSet<>();
 
     @Nullable
     public static TextChannel getReportChannel() {
@@ -126,5 +128,17 @@ public class MyMaidData {
 
     public static void removeHid(UUID uuid) {
         hid.remove(uuid);
+    }
+
+    public static Set<Player> getTempMuting() {
+        return tempMuting;
+    }
+
+    public static void addTempMuting(Player player) {
+        tempMuting.add(player);
+    }
+
+    public static void removeTempMuting(Player player) {
+        tempMuting.remove(player);
     }
 }

@@ -13,14 +13,22 @@ MyMaid とは、jao Minecraft Server における独自のプラグインで特�
 
 ### 開発者は誰ですか？
 
-表面上は jao Minecraft Server 開発部としていますが、実質的には[Tomachi](https://github.com/book000)が全ての開発・運用を担っています。  
+表面上は jao Minecraft Server 開発部としていますが、実質的には [Tomachi](https://github.com/book000) が全ての開発・運用を担っています。  
 但し、本プロジェクトからは有志の手によってプルリクエストによる開発が行われています。
+
+### 新規機能・意見はどこへ送ればいいですか？
+
+[Issue](https://github.com/jaoafa/MyMaid4/issues) か jMS Gamers Club の `#development` チャンネルにお送りください。
+
+Issue を作成する場合は [注意事項](https://github.com/jaoafa/MyMaid4/issues/32) を事前にご確認ください。
 
 ## Development
 
 本バージョンから他者による Issue・プルリクエストを受け付けます。
 
 [CONTRIBUTING.md](CONTRIBUTING.md) をお読みください。
+
+また、 [GitHub の Project 機能](https://github.com/jaoafa/MyMaid4/projects/1) を使用してタスク管理を行っています。
 
 ## License
 

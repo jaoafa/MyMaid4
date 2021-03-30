@@ -13,8 +13,8 @@ package com.jaoafa.mymaid4.lib;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SKKColorManager {
-    static List<NamedTextColor> ColorList = Arrays.asList(
+    static List<NamedTextColor> ChatColors = Arrays.asList(
         NamedTextColor.GRAY,
         NamedTextColor.WHITE,
         NamedTextColor.DARK_BLUE,
@@ -75,17 +75,19 @@ public class SKKColorManager {
      * プレイヤーの四角色を取得する
      *
      * @param player プレイヤー
+     *
      * @return 四角色
      */
-    private static NamedTextColor getPlayerColor(Player player) {
+    public static NamedTextColor getPlayerColor(Player player) {
         int count = getVoteCount(player);
-        return ColorList.get(calculateRank(count));
+        return ChatColors.get(calculateRank(count));
     }
 
     /**
      * ランク数値を取得する
      *
      * @param vote_count 投票数
+     *
      * @return ランク数値 (0 <= n <= 13)
      */
     static int calculateRank(int vote_count) {
@@ -96,18 +98,6 @@ public class SKKColorManager {
         if (vote_count >= 160)
             return 13;
         return (vote_count - 5) / 14 + 1;
-    }
-
-    /**
-     * プレイヤー名の前に四角色を追加する
-     *
-     * @param player  プレイヤー
-     * @param str     置き換えるテキストパラメーター
-     * @param message フォーマットテキスト
-     * @return 追加した後のテキスト
-     */
-    public static String replacePlayerSKKChatColor(Player player, String str, String message) {
-        return message.replaceFirst(str, String.format("%s■%s%s", getPlayerColor(player), ChatColor.WHITE, str));
     }
 
     private static String getJoinMessage(int count) {
