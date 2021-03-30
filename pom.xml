@@ -132,5 +132,10 @@
             <artifactId>jaosuperachievement2</artifactId>
             <version>4f42a0f</version>
         </dependency>
+        <dependency>
+            <groupId>com.maxmind.geoip2</groupId>
+            <artifactId>geoip2</artifactId>
+            <version>2.14.0</version>
+        </dependency>
     </dependencies>
 </project>
