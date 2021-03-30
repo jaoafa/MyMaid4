@@ -148,6 +148,7 @@ public class Jail {
 
                 Achievementjao.getAchievementAsync(player, Achievement.FIRSTJAIL); // No.22 はじめてのjail
 
+                jailData.id = -1;
                 jailData.fetchData(true);
                 return Result.SUCCESS;
             }
@@ -226,6 +227,7 @@ public class Jail {
                     ));
                 }
 
+                jailData.id = -1;
                 jailData.fetchData(true);
                 return Result.SUCCESS;
             }
@@ -299,6 +301,7 @@ public class Jail {
                 }
 
                 linkJailData.remove(jailData.getPlayerUUID());
+                jailData.id = -1;
                 jailData.fetchData(true);
                 return Result.SUCCESS;
             }

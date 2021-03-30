@@ -1,5 +1,7 @@
 package com.jaoafa.mymaid4.event;
 
+import com.jaoafa.mymaid4.lib.EBan;
+import com.jaoafa.mymaid4.lib.Jail;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import com.jaoafa.mymaid4.lib.SelectorParser;
 import org.bukkit.ChatColor;
@@ -61,10 +63,12 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener 
         }
         String[] args = command.split(" ");
         Optional<Map.Entry<String, AntiCommand>> func = antiCommandMap.entrySet().stream().filter(cmd -> cmd.getKey().equalsIgnoreCase(args[0])).findFirst();
-        /**
-         * ここebanないから書くだけ書いといた
-         */
-        /*EBan eban = new EBan(player);
+
+        if(!func.isPresent()){
+            return;
+        }
+
+        EBan eban = new EBan(player);
         if (eban.isBanned()){
             event.setCancelled(true);
             return;
@@ -74,7 +78,6 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener 
             event.setCancelled(true);
             return;
         }
-        */
         func.get().getValue().execute(event, player, args);
     }
 
