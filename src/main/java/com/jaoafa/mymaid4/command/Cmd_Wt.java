@@ -1,0 +1,148 @@
+/*
+ * jaoLicense
+ *
+ * Copyright (c) 2021 jao Minecraft Server
+ *
+ * The following license applies to this project: jaoLicense
+ *
+ * Japanese: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE.md
+ * English: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE-en.md
+ */
+
+package com.jaoafa.mymaid4.command;
+
+import cloud.commandframework.arguments.standard.StringArgument;
+import cloud.commandframework.bukkit.parsers.PlayerArgument;
+import cloud.commandframework.context.CommandContext;
+import cloud.commandframework.meta.CommandMeta;
+import com.jaoafa.mymaid4.lib.CommandPremise;
+import com.jaoafa.mymaid4.lib.MyMaidCommand;
+import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Cmd_Wt extends MyMaidLibrary implements CommandPremise {
+
+    Map<String, String> worlds = new HashMap<String, String>() {
+        {
+            put("1", "Jao_Afa");
+            put("2", "Jao_Afa_nether");
+            put("3", "SandBox");
+        }
+    };
+
+    @Override
+    public MyMaidCommand.Detail details() {
+        return new MyMaidCommand.Detail(
+            "wt",
+            "他ワールドにテレポートします。"
+        );
+    }
+
+    @Override
+    public MyMaidCommand.Cmd register(cloud.commandframework.Command.Builder<CommandSender> builder) {
+        return new MyMaidCommand.Cmd(
+            builder
+                .meta(CommandMeta.DESCRIPTION, "指定したワールドにテレポートします。")
+                .senderType(Player.class)
+                .argument(StringArgument
+                    .<CommandSender>newBuilder("worldName")
+                    .single()
+                    .withSuggestionsProvider(MyMaidLibrary::suggestWorldNames))
+                .handler(this::worldTeleport)
+                .build(),
+
+            builder
+                .meta(CommandMeta.DESCRIPTION, "指定したプレイヤーを指定したワールドにテレポートさせます。")
+                .argument(StringArgument
+                    .<CommandSender>newBuilder("worldName")
+                    .single()
+                    .withSuggestionsProvider(MyMaidLibrary::suggestWorldNames))
+                .argument(PlayerArgument.of("player"))
+                .handler(this::worldTeleportPlayer)
+                .build()
+
+        );
+    }
+
+    void worldTeleport(CommandContext<CommandSender> context) {
+        Player player = (Player) context.getSender();
+        String worldName = context.get("worldName");
+        if (worlds.containsKey(worldName)) {
+            World world = Bukkit.getServer().getWorld(worldName);
+            if (world == null) {
+                SendMessage(player, details(), String.format("「%s」ワールドの取得に失敗しました。", worldName));
+            }
+            Location loc = new Location(world, 0, 0, 0, 0, 0);
+            int y = getGroundPos(loc);
+            loc = new Location(world, 0, y, 0, 0, 0);
+            loc.add(0.5f, 0f, 0.5f);
+            player.teleport(loc);
+            SendMessage(player, details(), String.format("「%s」ワールドにテレポートしました。", worldName));
+
+        } else {
+            World world = Bukkit.getServer().getWorld(worldName);
+            if (world == null) {
+                SendMessage(player, details(), "指定されたワールドは存在しません。");
+            } else {
+                Location loc = new Location(world, 0, 0, 0, 0, 0);
+                int y = getGroundPos(loc);
+                loc = new Location(world, 0, y, 0, 0, 0);
+                loc.add(0.5f, 0f, 0.5f);
+                player.teleport(loc);
+                SendMessage(player, details(), String.format("「%s」ワールドにテレポートしました", worldName));
+            }
+        }
+
+    }
+
+
+    void worldTeleportPlayer(CommandContext<CommandSender> context) {
+
+        Player player = context.getOrDefault("player", null);
+        if (player == null) {
+            return;
+        }
+        if (!isAMR(player)) {
+            SendMessage(player, details(), "あなたは他人をテレポートさせることはできません");
+            return;
+        }
+        Player sender = (Player) context.getSender();
+        String worldName = context.get("worldName");
+
+        if (worlds.containsKey(worldName)) {
+            World world = Bukkit.getServer().getWorld(worldName);
+            if (world == null) {
+                SendMessage(player, details(), String.format("「%s」ワールドの取得に失敗しました。", worldName));
+            }
+            Location loc = new Location(world, 0, 0, 0, 0, 0);
+            int y = getGroundPos(loc);
+            loc = new Location(world, 0, y, 0, 0, 0);
+            loc.add(0.5f, 0f, 0.5f);
+            player.teleport(loc);
+            SendMessage(player, details(), String.format("「%s」ワールドにテレポートしました。", worldName));
+            SendMessage(sender, details(), String.format("プレイヤー「%s」を「%s」ワールドにテレポートさせました。", player, worldName));
+
+        } else {
+            World world = Bukkit.getServer().getWorld(worldName);
+            if (world == null) {
+                SendMessage(sender, details(), "指定されたワールドは存在しません。");
+            } else {
+                Location loc = new Location(world, 0, 0, 0, 0, 0);
+                int y = getGroundPos(loc);
+                loc = new Location(world, 0, y, 0, 0, 0);
+                loc.add(0.5f, 0f, 0.5f);
+                player.teleport(loc);
+                SendMessage(player, details(), String.format("「%s」ワールドにテレポートしました", worldName));
+                SendMessage(sender, details(), String.format("プレイヤー「%s」を「%s」ワールドにテレポートさせました。", player, worldName));
+            }
+        }
+    }
+
+}
