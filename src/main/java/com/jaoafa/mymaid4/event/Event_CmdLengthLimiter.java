@@ -12,6 +12,7 @@
 package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,6 +29,6 @@ public class Event_CmdLengthLimiter extends MyMaidLibrary implements Listener {
             }
 
             event.setCancelled(true);
-            player.sendMessage("[CmdLengthLimiter] あなたは100文字以上のコマンドを実行することが出来ません！");
+            player.sendMessage(String.format("[CmdLengthLimiter] %sあなたは100文字以上のコマンドを実行することが出来ません！", ChatColor.GREEN));
         }
 }
