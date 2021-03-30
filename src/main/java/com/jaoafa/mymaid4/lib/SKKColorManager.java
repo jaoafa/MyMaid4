@@ -15,7 +15,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
@@ -28,22 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SKKColorManager {
-    static List<ChatColor> ChatColorList = Arrays.asList(
-        ChatColor.GRAY,
-        ChatColor.WHITE,
-        ChatColor.DARK_BLUE,
-        ChatColor.BLUE,
-        ChatColor.AQUA,
-        ChatColor.DARK_AQUA,
-        ChatColor.DARK_GREEN,
-        ChatColor.GREEN,
-        ChatColor.YELLOW,
-        ChatColor.GOLD,
-        ChatColor.RED,
-        ChatColor.DARK_RED,
-        ChatColor.DARK_PURPLE,
-        ChatColor.LIGHT_PURPLE);
-    static List<NamedTextColor> TextColorList = Arrays.asList(
+    static List<NamedTextColor> ChatColors = Arrays.asList(
         NamedTextColor.GRAY,
         NamedTextColor.WHITE,
         NamedTextColor.DARK_BLUE,
@@ -94,14 +78,9 @@ public class SKKColorManager {
      *
      * @return 四角色
      */
-    public static ChatColor getPlayerChatColor(Player player) {
+    public static NamedTextColor getPlayerColor(Player player) {
         int count = getVoteCount(player);
-        return ChatColorList.get(calculateRank(count));
-    }
-
-    public static TextColor getPlayerTextColor(Player player) {
-        int count = getVoteCount(player);
-        return TextColorList.get(calculateRank(count));
+        return ChatColors.get(calculateRank(count));
     }
 
     /**
@@ -119,21 +98,6 @@ public class SKKColorManager {
         if (vote_count >= 160)
             return 13;
         return (vote_count - 5) / 14 + 1;
-    }
-
-    /**
-     * プレイヤー名の前に四角色を追加する
-     *
-     * @param player  プレイヤー
-     * @param str     置き換えるテキストパラメーター
-     * @param message フォーマットテキスト
-     * @return 追加した後のテキスト
-     */
-    public static String replacePlayerSKKChatColor(Player player, String str, String message) {
-        //player.sendMessage("str:"+str);
-        //player.sendMessage("msg:"+message);
-        return message.replaceFirst(str, getPlayerTextColor(player) + "■" + ChatColor.WHITE + str);
-        //return message.replaceFirst(str, String.format("%s■%s%s", getPlayerColor(player), ChatColor.WHITE, str));
     }
 
     private static String getJoinMessage(int count) {
@@ -174,11 +138,11 @@ public class SKKColorManager {
 
         return team == null ?
             Component.text().append(
-                Component.text("■").color(getPlayerTextColor(player)),
+                Component.text("■").color(getPlayerColor(player)),
                 Component.text(player.getName())
             ).build() :
             Component.text().append(
-                Component.text("■").color(getPlayerTextColor(player)),
+                Component.text("■").color(getPlayerColor(player)),
                 Component.text(player.getName(), team.color())
             ).build();
     }

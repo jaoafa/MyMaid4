@@ -11,6 +11,8 @@
 
 package com.jaoafa.mymaid4.lib;
 
+import com.jaoafa.jaosuperachievement2.api.Achievementjao;
+import com.jaoafa.jaosuperachievement2.lib.Achievement;
 import com.jaoafa.mymaid4.Main;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -46,15 +48,6 @@ public class Jail {
             jailData = new JailData(player);
         }
         jailData.fetchData(false);
-
-        // 既に解除されていたら紐づけも解除する
-        if (!jailData.isStatus()) {
-            Map<UUID, Integer> temp = new HashMap<>();
-            linkJailData.entrySet().stream()
-                .filter(entry -> entry.getValue() != jailData.getJailId())
-                .forEach(entry -> temp.put(entry.getKey(), entry.getValue()));
-            linkJailData = temp;
-        }
     }
 
     public static List<JailData> getActiveJails() {
@@ -152,6 +145,8 @@ public class Jail {
                     Location minami = new Location(Jao_Afa, 2856, 69, 2888);
                     player.getPlayer().teleport(minami);
                 }
+
+                Achievementjao.getAchievementAsync(player, Achievement.FIRSTJAIL); // No.22 はじめてのjail
 
                 jailData.fetchData(true);
                 return Result.SUCCESS;
@@ -608,13 +603,11 @@ public class Jail {
                     stmt = conn.prepareStatement("SELECT * FROM jail_new WHERE id = ?");
                     stmt.setInt(1, id);
                 } else if (playerName != null) {
-                    stmt = conn.prepareStatement("SELECT * FROM jail_new WHERE player = ? AND status = ? ORDER BY id DESC LIMIT 1");
+                    stmt = conn.prepareStatement("SELECT * FROM jail_new WHERE player = ? ORDER BY id DESC LIMIT 1");
                     stmt.setString(1, playerName);
-                    stmt.setBoolean(2, true);
                 } else if (playerUUID != null) {
-                    stmt = conn.prepareStatement("SELECT * FROM jail_new WHERE uuid = ? AND status = ? ORDER BY id DESC LIMIT 1");
+                    stmt = conn.prepareStatement("SELECT * FROM jail_new WHERE uuid = ? ORDER BY id DESC LIMIT 1");
                     stmt.setString(1, playerUUID.toString());
-                    stmt.setBoolean(2, true);
                 } else {
                     throw new IllegalStateException("データをフェッチするために必要な情報が足りません。");
                 }
