@@ -29,7 +29,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class Event_ChatBan  implements Listener {
+public class Event_ChatBan implements Listener {
     @EventHandler
     public void onChat(AsyncChatEvent event) {
         Player player = event.getPlayer();
@@ -37,9 +37,7 @@ public class Event_ChatBan  implements Listener {
         String message = PlainComponentSerializer.plain().serialize(component);
         ChatBan chatban = new ChatBan(player);
 
-        if (!chatban.isBanned()) {
-            return;
-        }
+        if (!chatban.isBanned()) return;
         String reason = chatban.getChatBanData().getReason();
 
         player.sendMessage("[ChatJail] " + ChatColor.RED + "あなたは、「" + reason + "」という理由でチャット規制をされています。");
@@ -54,24 +52,17 @@ public class Event_ChatBan  implements Listener {
     public void OnEvent_LoginChatBanCheck(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (!MyMaidData.isMainDBActive()) {
-            return;
-        }
+        if (!MyMaidData.isMainDBActive()) return;
 
         new BukkitRunnable() {
+            @Override
             public void run() {
                 ChatBan chatban = new ChatBan(player);
-                if (!chatban.isBanned()) {
-                    return;
-                }
+                if (!chatban.isBanned()) return;
                 String reason = chatban.getChatBanData().getReason();
-                if (reason == null) {
-                    return;
-                }
+                if (reason == null) return;
                 for (Player p : Bukkit.getOnlinePlayers()) {
-                    if (!MyMaidLibrary.isAMR(p)) {
-                        continue;
-                    }
+                    if (!MyMaidLibrary.isAMR(p)) continue;
                     p.sendMessage(
                         String.format("[ChatBan] %sプレイヤー「%s」は、「%s」という理由でChatBanされています。", ChatColor.GREEN, player.getName(), reason));
                     p.sendMessage(
@@ -88,13 +79,10 @@ public class Event_ChatBan  implements Listener {
     public void onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
         ChatBan chatban = new ChatBan(player);
-        if (!chatban.isBanned()) { // ChatBanされてる
-            return;
-        }
+        // ChatBanされてる
+        if (!chatban.isBanned()) return;
         String command = event.getMessage();
-        if(!command.toLowerCase().startsWith("/chatban")){
-            return;
-        }
+        if (!command.toLowerCase().startsWith("/chatban")) return;
         event.setCancelled(true);
         player.sendMessage("[ChatBan] " + ChatColor.GREEN + "あなたはコマンドを実行できません。");
         Bukkit.getLogger().info("[ChatBan] " + player.getName() + "==>あなたはコマンドを実行できません。");
@@ -104,6 +92,7 @@ public class Event_ChatBan  implements Listener {
     public void onJoinClearCache(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         new BukkitRunnable() {
+            @Override
             public void run() {
                 ChatBan chatban = new ChatBan(player);
                 chatban.getChatBanData().fetchData(false);
@@ -115,6 +104,7 @@ public class Event_ChatBan  implements Listener {
     public void onQuitClearCache(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         new BukkitRunnable() {
+            @Override
             public void run() {
                 ChatBan chatban = new ChatBan(player);
                 chatban.getChatBanData().fetchData(false);

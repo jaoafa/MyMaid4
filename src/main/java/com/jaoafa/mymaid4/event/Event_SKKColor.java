@@ -17,12 +17,10 @@ import io.papermc.paper.chat.ChatComposer;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class Event_SKKColor extends MyMaidLibrary implements Listener {
@@ -40,12 +38,8 @@ public class Event_SKKColor extends MyMaidLibrary implements Listener {
     public void onEvent_JoinChangeMessage(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         Component joinMessage = SKKColorManager.getPlayerSKKJoinMessage(player);
-        if (joinMessage != null) {
-            event.joinMessage(joinMessage);
-        }
+        if (joinMessage != null) event.joinMessage(joinMessage);
 
-        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            SKKColorManager.setPlayerSKKTabList(p);
-        }
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) SKKColorManager.setPlayerSKKTabList(p);
     }
 }
