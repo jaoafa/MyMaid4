@@ -16,14 +16,11 @@ import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class Event_TempMute extends MyMaidLibrary implements Listener {
     @EventHandler
     public void onChat(AsyncChatEvent event) {
-        if (MyMaidData.getTempMuting().size() == 0) {
-            return;
-        }
+        if (MyMaidData.getTempMuting().size() == 0) return;
 
         event.recipients().removeAll(MyMaidData.getTempMuting());
     }

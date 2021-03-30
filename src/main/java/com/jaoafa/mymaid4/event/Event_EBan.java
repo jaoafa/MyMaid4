@@ -45,12 +45,8 @@ public class Event_EBan implements Listener {
         String message = PlainComponentSerializer.plain().serialize(component);
         EBan eban = new EBan(player);
 
-        if (!eban.isBanned()) {
-            return;
-        }
-        if (!message.contains("LiquidBounce Client | liquidbounce.net")) {
-            return;
-        }
+        if (!eban.isBanned()) return;
+        if (!message.contains("LiquidBounce Client | liquidbounce.net")) return;
 
         eban.addBan("jaotan", "禁止クライアント「LiquidBounce」使用の疑い。");
 
@@ -59,30 +55,23 @@ public class Event_EBan implements Listener {
 
         event.setCancelled(true);
     }
-    
+
     @EventHandler(priority = EventPriority.MONITOR,
                   ignoreCancelled = true)
     public void OnEvent_LoginEBanCheck(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (!MyMaidData.isMainDBActive()) {
-            return;
-        }
+        if (!MyMaidData.isMainDBActive()) return;
 
         new BukkitRunnable() {
+            @Override
             public void run() {
                 EBan eban = new EBan(player);
-                if (!eban.isBanned()) {
-                    return;
-                }
+                if (!eban.isBanned()) return;
                 String reason = eban.getEBanData().getReason();
-                if (reason == null) {
-                    return;
-                }
+                if (reason == null) return;
                 for (Player p : Bukkit.getOnlinePlayers()) {
-                    if (!MyMaidLibrary.isAMR(p)) {
-                        continue;
-                    }
+                    if (!MyMaidLibrary.isAMR(p)) continue;
                     p.sendMessage(
                         String.format("[EBan] %sプレイヤー「%s」は、「%s」という理由でEBanされています。", ChatColor.GREEN, player.getName(), reason));
                     p.sendMessage(
@@ -97,20 +86,15 @@ public class Event_EBan implements Listener {
 
     @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent event) { // 南の楽園外に出られるかどうか
-        if (!MyMaidData.isMainDBActive()) {
-            return;
-        }
+        if (!MyMaidData.isMainDBActive()) return;
 
         Location to = event.getTo();
         Player player = event.getPlayer();
         EBan eban = new EBan(player);
-        if (!eban.isBanned()) { // EBanされてる
-            return;
-        }
+        // EBanされてる
+        if (!eban.isBanned()) return;
         World world = Bukkit.getServer().getWorld("Jao_Afa");
-        if (world == null) {
-            return;
-        }
+        if (world == null) return;
         Location prison = new Location(world, 2856, 69, 2888);
         if (!player.getLocation().getWorld().getUID().equals(world.getUID())) {
             player.sendMessage("[EBan] " + ChatColor.GREEN + "あなたは南の楽園から出られません！");
@@ -135,9 +119,7 @@ public class Event_EBan implements Listener {
                     player.setHealth(0);
                     player.setBedSpawnLocation(oldBed, true);
                 }
-            } else {
-                event.setCancelled(true);
-            }
+            } else event.setCancelled(true);
         }
     }
 
@@ -145,9 +127,8 @@ public class Event_EBan implements Listener {
     public void onPlayerRespawnEvent(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
         EBan eban = new EBan(player);
-        if (!eban.isBanned()) { // EBanされてる
-            return;
-        }
+        // EBanされてる
+        if (!eban.isBanned()) return;
         World World = Bukkit.getServer().getWorld("Jao_Afa");
         Location prison = new Location(World, 2856, 69, 2888);
         event.setRespawnLocation(prison);
@@ -156,13 +137,10 @@ public class Event_EBan implements Listener {
     @EventHandler
     public void onBlockPlaceEvent(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        if (!player.getLocation().getWorld().getName().equalsIgnoreCase("Jao_Afa")) {
-            return;
-        }
+        if (!player.getLocation().getWorld().getName().equalsIgnoreCase("Jao_Afa")) return;
         EBan eban = new EBan(player);
-        if (!eban.isBanned()) { // EBanされてる
-            return;
-        }
+        // EBanされてる
+        if (!eban.isBanned()) return;
         event.setCancelled(true);
         player.sendMessage("[EBan] " + ChatColor.GREEN + "あなたはブロックを置けません。");
         Bukkit.getLogger().info("[EBan] " + player.getName() + "==>あなたはブロックを置けません。");
@@ -172,9 +150,8 @@ public class Event_EBan implements Listener {
     public void onBlockBreakEvent(BlockBreakEvent event) {
         Player player = event.getPlayer();
         EBan eban = new EBan(player);
-        if (!eban.isBanned()) { // EBanされてる
-            return;
-        }
+        // EBanされてる
+        if (!eban.isBanned()) return;
         event.setCancelled(true);
         player.sendMessage("[EBan] " + ChatColor.GREEN + "あなたはブロックを壊せません。");
         Bukkit.getLogger().info("[EBan] " + player.getName() + "==>あなたはブロックを壊せません。");
@@ -183,13 +160,10 @@ public class Event_EBan implements Listener {
     @EventHandler
     public void onBlockIgniteEvent(BlockIgniteEvent event) {
         Player player = event.getPlayer();
-        if (player == null) {
-            return;
-        }
+        if (player == null) return;
         EBan eban = new EBan(player);
-        if (!eban.isBanned()) { // EBanされてる
-            return;
-        }
+        // EBanされてる
+        if (!eban.isBanned()) return;
         event.setCancelled(true);
         player.sendMessage("[EBan] " + ChatColor.GREEN + "あなたはブロックを着火できません。");
         Bukkit.getLogger().info("[EBan] " + player.getName() + "==>あなたはブロックを着火できません。");
@@ -199,9 +173,8 @@ public class Event_EBan implements Listener {
     public void onPlayerBucketEmptyEvent(PlayerBucketEmptyEvent event) {
         Player player = event.getPlayer();
         EBan eban = new EBan(player);
-        if (!eban.isBanned()) { // EBanされてる
-            return;
-        }
+        // EBanされてる
+        if (!eban.isBanned()) return;
         event.setCancelled(true);
         player.sendMessage("[EBan] " + ChatColor.GREEN + "あなたは水や溶岩を撒けません。");
         Bukkit.getLogger().info("[EBan] " + player.getName() + "==>あなたは水や溶岩を撒けません。");
@@ -211,9 +184,8 @@ public class Event_EBan implements Listener {
     public void onPlayerBucketFillEvent(PlayerBucketFillEvent event) {
         Player player = event.getPlayer();
         EBan eban = new EBan(player);
-        if (!eban.isBanned()) { // EBanされてる
-            return;
-        }
+        // EBanされてる
+        if (!eban.isBanned()) return;
         event.setCancelled(true);
         player.sendMessage("[EBan] " + ChatColor.GREEN + "あなたは水や溶岩を掬うことはできません。");
         Bukkit.getLogger().info("[EBan] " + player.getName() + "==>あなたは水や溶岩を掬うことはできません。");
@@ -221,14 +193,11 @@ public class Event_EBan implements Listener {
 
     @EventHandler
     public void onPlayerPickupItemEvent(EntityPickupItemEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
-            return;
-        }
+        if (!(event.getEntity() instanceof Player)) return;
         Player player = (Player) event.getEntity();
         EBan eban = new EBan(player);
-        if (!eban.isBanned()) { // EBanされてる
-            return;
-        }
+        // EBanされてる
+        if (!eban.isBanned()) return;
         event.setCancelled(true);
     }
 
@@ -236,9 +205,8 @@ public class Event_EBan implements Listener {
     public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
         EBan eban = new EBan(player);
-        if (!eban.isBanned()) { // EBanされてる
-            return;
-        }
+        // EBanされてる
+        if (!eban.isBanned()) return;
         event.setCancelled(true);
     }
 
@@ -246,9 +214,8 @@ public class Event_EBan implements Listener {
     public void onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
         EBan eban = new EBan(player);
-        if (!eban.isBanned()) { // EBanされてる
-            return;
-        }
+        // EBanされてる
+        if (!eban.isBanned()) return;
         event.setCancelled(true);
         player.sendMessage("[EBan] " + ChatColor.GREEN + "あなたはコマンドを実行できません。");
         Bukkit.getLogger().info("[EBan] " + player.getName() + "==>あなたはコマンドを実行できません。");
@@ -256,27 +223,21 @@ public class Event_EBan implements Listener {
 
     @EventHandler
     public void onProjectileLaunchEvent(ProjectileLaunchEvent event) {
-        if (!(event.getEntity().getShooter() instanceof Player)) {
-            return;
-        }
+        if (!(event.getEntity().getShooter() instanceof Player)) return;
         Player player = (Player) event.getEntity().getShooter();
         EBan eban = new EBan(player);
-        if (!eban.isBanned()) { // EBanされてる
-            return;
-        }
+        // EBanされてる
+        if (!eban.isBanned()) return;
         event.setCancelled(true);
     }
 
     @EventHandler
     public void onPotionSplashEvent(PotionSplashEvent event) {
-        if (!(event.getEntity().getShooter() instanceof Player)) {
-            return;
-        }
+        if (!(event.getEntity().getShooter() instanceof Player)) return;
         Player player = (Player) event.getEntity().getShooter();
         EBan eban = new EBan(player);
-        if (!eban.isBanned()) { // EBanされてる
-            return;
-        }
+        // EBanされてる
+        if (!eban.isBanned()) return;
         event.setCancelled(true);
     }
 
@@ -284,6 +245,7 @@ public class Event_EBan implements Listener {
     public void onJoinClearCache(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         new BukkitRunnable() {
+            @Override
             public void run() {
                 EBan eban = new EBan(player);
                 eban.getEBanData().fetchData(false);
@@ -295,6 +257,7 @@ public class Event_EBan implements Listener {
     public void onQuitClearCache(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         new BukkitRunnable() {
+            @Override
             public void run() {
                 EBan eban = new EBan(player);
                 eban.getEBanData().fetchData(false);
