@@ -20,9 +20,7 @@ import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
 import com.maxmind.geoip2.record.City;
 import com.maxmind.geoip2.record.Country;
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.model.user.User;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -41,12 +39,6 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener {
-    private static String getPermissionGroup(UUID uuid) {
-        LuckPerms LPApi = LuckPermsProvider.get();
-        User LPplayer = LPApi.getUserManager().getUser(uuid);
-        if (LPplayer == null) return null;
-        return LPplayer.getPrimaryGroup();
-    }
 
     private static CityResponse getGeoIP(InetAddress ia) {
         JavaPlugin plugin = Main.getJavaPlugin();
@@ -122,7 +114,7 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
             }
         }
 
-        String permission = Event_PlayerCheckPreLogin.getPermissionGroup(uuid);
+        String permission = MyMaidLibrary.getPermissionMainGroup(Bukkit.getOfflinePlayer(uuid));
         if (country != null) {
             Main.getJavaPlugin().getLogger().info("Country: " + country.getName() + " (" + country.getIsoCode() + ")");
             Main.getJavaPlugin().getLogger().info("City: " + city.getName() + " (" + city.getGeoNameId() + ")");
