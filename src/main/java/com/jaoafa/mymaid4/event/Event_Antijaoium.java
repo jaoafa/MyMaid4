@@ -25,6 +25,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -185,12 +186,12 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerItemHeldEvent(PlayerItemHeldEvent event) {
-        check(event.getPlayer());
+        check(event, event.getPlayer());
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
-        check(event.getPlayer());
+        check(event, event.getPlayer());
     }
 
     @EventHandler
@@ -198,7 +199,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
         if (!(event.getEntity().getShooter() instanceof Player)) {
             return;
         }
-        check((Player) event.getEntity().getShooter());
+        check(event, (Player) event.getEntity().getShooter());
     }
 
 
@@ -207,7 +208,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
         if (!(event.getEntity().getShooter() instanceof Player)) {
             return;
         }
-        check((Player) event.getEntity().getShooter());
+        check(event, (Player) event.getEntity().getShooter());
     }
 
     @EventHandler
@@ -224,7 +225,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
         }
     }
 
-    void check(Player player){
+    void check(Cancellable event, Player player){
         Inventory inv = player.getInventory();
         Inventory ender_inv = player.getEnderChest();
 
@@ -239,6 +240,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
         if(matched.isPresent()){
             // jaoium有
             setjaoiumItemData(player, matched.get());
+            event.setCancelled(true);
             inv.clear();
             isMatched = true;
             malicious = isMalicious((PotionMeta) matched.get().getItemMeta());
@@ -252,6 +254,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
         if(ender_matched.isPresent()){
             // jaoium有
             setjaoiumItemData(player, ender_matched.get());
+            event.setCancelled(true);
             inv.clear();
             isMatched = true;
             malicious = isMalicious((PotionMeta) ender_matched.get().getItemMeta());
