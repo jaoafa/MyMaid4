@@ -29,6 +29,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -36,10 +37,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -340,9 +338,15 @@ public class MyMaidLibrary {
      * @param name  プレイヤー名
      * @param text  テキスト
      */
-    public static void chatFake(ChatColor color, String name, String text) {
-        // TODO Componentに修正する
-        Bukkit.broadcastMessage(ChatColor.GRAY + "[" + sdfTimeFormat(new Date()) + "]" + color + "■" + ChatColor.WHITE + name + ": " + text);
+    public static void chatFake(NamedTextColor color, String name, String text) {
+        Bukkit.getServer().sendMessage(Component.text().append(
+            Component.text("[" + sdfTimeFormat(new Date()) + "]", NamedTextColor.GRAY),
+            Component.text("■", color),
+            Component.text(name, NamedTextColor.WHITE),
+            Component.text(":"),
+            Component.space(),
+            Component.text(text)
+        ));
         if (MyMaidData.getServerChatChannel() != null)
             MyMaidData.getServerChatChannel()
                 .sendMessage("**" + DiscordEscape(name) + "**: " + DiscordEscape(ChatColor.stripColor(text)))
@@ -469,12 +473,11 @@ public class MyMaidLibrary {
         }
 
         if (count == 2) {
-            /*Jail jail = new Jail(player);
-             *if (jail.isBanned()){
-             *   return();
-             *}
-             *jail.addBan("jaotan", "迷惑コマンドを過去3分間に3回以上実行したため");
-             * */
+            Jail jail = new Jail(player);
+             if (jail.isBanned()){
+                return;
+             }
+             jail.addBan("jaotan", "迷惑コマンドを過去3分間に3回以上実行したため");
             return;
         } else if (count == 1) {
             player.sendMessage(String.format("[AntiProblemCommand] %s短時間に複数回にわたる迷惑コマンドが実行された場合、処罰対象となる場合があります。ご注意ください。", ChatColor.GREEN));

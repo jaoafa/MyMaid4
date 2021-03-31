@@ -18,6 +18,7 @@ import cloud.commandframework.meta.CommandMeta;
 import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -26,6 +27,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class Cmd_Chat extends MyMaidLibrary implements CommandPremise {
 
@@ -43,56 +46,38 @@ public class Cmd_Chat extends MyMaidLibrary implements CommandPremise {
         return new MyMaidCommand.Cmd(
             builder
                 .meta(CommandMeta.DESCRIPTION, "偽のプレイヤーに喋らせます。")
-                .argument(StringArgument.<CommandSender>newBuilder("text")
-                    .greedy().withSuggestionsProvider(this::colors))
+                .argument(StringArgument.single("player"))
+                .argument(StringArgument.greedy("message"))
                 .senderType(Player.class)
                 .handler(this::chatFake)
                 .build()
         );
     }
 
-    private List<String> colors(@NonNull CommandContext<CommandSender> commandSenderCommandContext, @NonNull String s) {
-        ArrayList<String> colors = new ArrayList<>();
-        for (ChatColor color : ChatColor.values()) {
-            colors.add("color:" + color.name().toLowerCase());
-        }
-        return colors;
-    }
-
 
     void chatFake(CommandContext<CommandSender> context) {
+        String player = context.get("player");
+        List<String> messages = Arrays.asList(context.<String>get("message").split(" "));
 
-        final String[] msg = {context.getOrDefault("text", "")};
+        // 定義されている場合四角色を取得
+        Optional<String> strColor = messages.stream()
+            .filter(s -> s.startsWith("color:"))
+            .map(s -> s.substring(s.indexOf(":") + 1))
+            .findFirst();
+        NamedTextColor color = strColor.isPresent() ?
+            getNamedTextColor(strColor.get()) :
+            NamedTextColor.GRAY;
 
-        //color:をchatcolorとして認識
-        final ChatColor[] chatColor = new ChatColor[1];
-        Arrays.stream(msg[0].split(" ")).forEach(s -> {
-            if (s.startsWith("color:")) {
-                for (ChatColor color : ChatColor.values()) {
-                    if (s.equals("color:" + color.name().toLowerCase())) {
-                        chatColor[0] = color;
-                    }
-                }
-                msg[0] = msg[0].replaceFirst(s, "");
-                msg[0] = msg[0].trim();
-            }
-        });
+        // 四角色指定以外のテキストを取得
+        String message = messages.stream()
+            .filter(s -> !s.startsWith("color:"))
+            .collect(Collectors.joining(" "));
 
-        //colorを抜いた最初の引数をfakePlayerをして認識
-        String fakePlayer = msg[0].split(" ")[0];
-
-        msg[0] = msg[0].replaceFirst(fakePlayer, "");
-        msg[0] = msg[0].trim();
-
-        //color null check
-        if (chatColor[0] == null) {
-            chatColor[0] = ChatColor.GRAY;
-        }
-        //player jaotan check
-        if (fakePlayer.equals("jaotan")) {
-            chatColor[0] = ChatColor.GOLD;
+        // プレイヤーがjaotanだった場合ゴールドを強制する
+        if (player.equals("jaotan")) {
+            color = NamedTextColor.GOLD;
         }
 
-        chatFake(chatColor[0], fakePlayer, msg[0]);
+        chatFake(color, player, message);
     }
 }
