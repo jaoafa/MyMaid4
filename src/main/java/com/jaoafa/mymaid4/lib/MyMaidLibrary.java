@@ -28,6 +28,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import javax.annotation.Nullable;
 import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -35,10 +36,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -339,9 +337,15 @@ public class MyMaidLibrary {
      * @param name  プレイヤー名
      * @param text  テキスト
      */
-    public static void chatFake(ChatColor color, String name, String text) {
-        // TODO Componentに修正する
-        Bukkit.broadcastMessage(ChatColor.GRAY + "[" + sdfTimeFormat(new Date()) + "]" + color + "■" + ChatColor.WHITE + name + ": " + text);
+    public static void chatFake(NamedTextColor color, String name, String text) {
+        Bukkit.getServer().sendMessage(Component.text().append(
+            Component.text("[" + sdfTimeFormat(new Date()) + "]", NamedTextColor.GRAY),
+            Component.text("■", color),
+            Component.text(name, NamedTextColor.WHITE),
+            Component.text(":"),
+            Component.space(),
+            Component.text(text)
+        ));
         if (MyMaidData.getServerChatChannel() != null)
             MyMaidData.getServerChatChannel()
                 .sendMessage("**" + DiscordEscape(name) + "**: " + DiscordEscape(ChatColor.stripColor(text)))
@@ -468,12 +472,11 @@ public class MyMaidLibrary {
         }
 
         if (count == 2) {
-            /*Jail jail = new Jail(player);
-             *if (jail.isBanned()){
-             *   return();
-             *}
-             *jail.addBan("jaotan", "迷惑コマンドを過去3分間に3回以上実行したため");
-             * */
+            Jail jail = new Jail(player);
+             if (jail.isBanned()){
+                return;
+             }
+             jail.addBan("jaotan", "迷惑コマンドを過去3分間に3回以上実行したため");
             return;
         } else if (count == 1) {
             player.sendMessage(String.format("[AntiProblemCommand] %s短時間に複数回にわたる迷惑コマンドが実行された場合、処罰対象となる場合があります。ご注意ください。", ChatColor.GREEN));
@@ -500,5 +503,49 @@ public class MyMaidLibrary {
             return;
         }
         System.out.printf("DEBUG -> %s%n", message);
+    }
+
+    public static NamedTextColor getNamedTextColor(String color) {
+        switch (color.toUpperCase()){
+            case "BLACK":
+                return NamedTextColor.BLACK;
+            case "DARK_BLUE":
+                return NamedTextColor.DARK_BLUE;
+            case "DARK_GREEN":
+                return NamedTextColor.DARK_GREEN;
+            case "DARK_AQUA":
+                return NamedTextColor.DARK_AQUA;
+            case "DARK_RED":
+                return NamedTextColor.DARK_RED;
+            case "DARK_PURPLE":
+                return NamedTextColor.DARK_PURPLE;
+            case "GOLD":
+                return NamedTextColor.GOLD;
+            case "GRAY":
+                return NamedTextColor.GRAY;
+            case "DARK_GRAY":
+                return NamedTextColor.DARK_GRAY;
+            case "BLUE":
+                return NamedTextColor.BLUE;
+            case "GREEN":
+                return NamedTextColor.GREEN;
+            case "AQUA":
+                return NamedTextColor.AQUA;
+            case "RED":
+                return NamedTextColor.RED;
+            case "LIGHT_PURPLE":
+                return NamedTextColor.LIGHT_PURPLE;
+            case "YELLOW":
+                return NamedTextColor.YELLOW;
+            case "WHITE":
+                return NamedTextColor.WHITE;
+            default:
+                return null;
+        }
+    }
+
+    @Nullable
+    public static NamedTextColor getNamedTextColor(ChatColor color) {
+        return getNamedTextColor(color.name());
     }
 }
