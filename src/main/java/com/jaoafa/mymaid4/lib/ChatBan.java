@@ -132,6 +132,7 @@ public class ChatBan {
                             MyMaidLibrary.DiscordEscape(reason))).queue();
                 }
 
+                chatbanData.id = -1;
                 chatbanData.fetchData(true);
                 return Result.SUCCESS;
             }
@@ -196,7 +197,7 @@ public class ChatBan {
                         String.format("__**ChatBan[解除]**__: プレイヤー「%s」のChatBanを「%s」によって解除されました。",
                             MyMaidLibrary.DiscordEscape(player.getName()), MyMaidLibrary.DiscordEscape(remover))).queue();
                 }
-
+                chatbanData.id = -1;
                 chatbanData.fetchData(true);
                 return Result.SUCCESS;
             }
