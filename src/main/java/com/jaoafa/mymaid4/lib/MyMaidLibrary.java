@@ -29,7 +29,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
