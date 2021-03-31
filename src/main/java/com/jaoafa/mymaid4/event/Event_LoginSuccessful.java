@@ -40,14 +40,12 @@ public class Event_LoginSuccessful extends MyMaidLibrary implements Listener {
                 if (MySQLDBManager == null) {
                     return;
                 }
-                try {
-                    Connection conn = MySQLDBManager.getConnection();
+                try (Connection conn = MySQLDBManager.getConnection()){
                     PreparedStatement statement = conn.prepareStatement(
                         "UPDATE login SET login_success = ? WHERE uuid = ? ORDER BY id DESC LIMIT 1");
                     statement.setBoolean(1, true);
                     statement.setString(2, uuid.toString());
                     statement.executeUpdate();
-                    statement.close();
                 } catch (SQLException e) {
                     reportError(getClass(), e);
                     return;
