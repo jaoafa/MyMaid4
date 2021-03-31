@@ -147,19 +147,19 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
             public void run() {
                 MySQLDBManager MySQLDBManager = MyMaidData.getMainMySQLDBManager();
                 if (MySQLDBManager == null) return;
-                try {
+                try{
                     Connection conn = MySQLDBManager.getConnection();
-                    PreparedStatement statement = conn.prepareStatement(
-                        "INSERT INTO login (player, uuid, ip, host, countryName, city, permission) VALUES (?, ?, ?, ?, ?, ?, ?);");
-                    statement.setString(1, name); // player
-                    statement.setString(2, uuid.toString()); // uuid
-                    statement.setString(3, ip); // ip
-                    statement.setString(4, host); // host
-                    statement.setString(5, finalCountry); // countryName
-                    statement.setString(6, finalCity); // city
-                    statement.setString(7, permission); // permission
-                    statement.executeUpdate();
-                    statement.close();
+                    try (PreparedStatement statement = conn.prepareStatement(
+                        "INSERT INTO login (player, uuid, ip, host, countryName, city, permission) VALUES (?, ?, ?, ?, ?, ?, ?);")) {
+                        statement.setString(1, name); // player
+                        statement.setString(2, uuid.toString()); // uuid
+                        statement.setString(3, ip); // ip
+                        statement.setString(4, host); // host
+                        statement.setString(5, finalCountry); // countryName
+                        statement.setString(6, finalCity); // city
+                        statement.setString(7, permission); // permission
+                        statement.executeUpdate();
+                    }
                 } catch (SQLException e) {
                     MyMaidLibrary.reportError(getClass(), e);
                 }
