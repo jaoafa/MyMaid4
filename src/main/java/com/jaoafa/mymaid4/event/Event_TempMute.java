@@ -26,9 +26,9 @@ public class Event_TempMute extends MyMaidLibrary implements Listener {
         });
         });*/
 
-        //if (MyMaidData.getTempMuting().size() == 0) return;
+        if (MyMaidData.getTempMuting().size() == 0) return;
 
-        //event.recipients().removeAll(MyMaidData.getTempMuting());
+        event.recipients().removeAll(MyMaidData.getTempMuting());
 
 
     }
