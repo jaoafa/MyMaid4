@@ -35,9 +35,4 @@ public class Event_SKKColor extends MyMaidLibrary implements Listener {
         ), message);
         event.composer(composer);
     }
-    /*public void onEvent_ChatSKK(AsyncPlayerChatEvent event) {
-        event.setFormat(
-            event.getFormat().replaceFirst("%1\\$s", String.format("%s■%s%s", SKKColorManager.getPlayerColor(event.getPlayer()), ChatColor.WHITE, event.getPlayer().getName()))
-        );
-    }*/
 }
