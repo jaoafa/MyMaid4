@@ -67,8 +67,9 @@
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
         <repository>
-            <id>jcenter</id>
-            <url>https://jcenter.bintray.com</url>
+            <id>dv8tion</id>
+            <name>m2-dv8tion</name>
+            <url>https://m2.dv8tion.net/releases</url>
         </repository>
         <repository>
             <id>mikeprimm-repo</id>
@@ -112,7 +113,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>4.2.0_247</version>
+            <version>4.2.0_252</version>
             <exclusions>
                 <exclusion>
                     <groupId>club.minnced</groupId>
