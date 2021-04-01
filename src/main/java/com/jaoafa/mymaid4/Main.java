@@ -24,11 +24,13 @@ import net.dv8tion.jda.api.JDABuilder;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.function.Function;
+import java.util.logging.Logger;
 
 public final class Main extends JavaPlugin {
     private static Main Main = null;
@@ -204,6 +206,10 @@ public final class Main extends JavaPlugin {
 
     public static JavaPlugin getJavaPlugin() {
         return Main;
+    }
+
+    public static Logger getMyMaidLogger() {
+        return Main.getLogger();
     }
 
     public static MyMaidConfig getMyMaidConfig() {
