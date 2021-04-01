@@ -13,18 +13,13 @@ package com.jaoafa.mymaid4.lib;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SKKColorManager {
     static List<NamedTextColor> ChatColors = Arrays.asList(
@@ -42,33 +37,17 @@ public class SKKColorManager {
         NamedTextColor.DARK_RED,
         NamedTextColor.DARK_PURPLE,
         NamedTextColor.LIGHT_PURPLE);
-    static List<String> JoinMessages = Arrays.asList(
-        "the New Generation", "- Super", "Hyper", "Ultra", "Extreme", "Insane", "Gigantic", "Epic", "Amazing", "Beautiful",
-        "Special", "Swag", "Lunatic", "Exotic", "God", "Hell", "Heaven", "Mega", "Giga", "Tera", "Refined", "Sharp",
-        "Strong", "Muscle", "Macho", "Bomber", "Blazing", "Frozen", "Legendary", "Mystical", "Tactical", "Critical",
-        "Overload", "Overclock", "Fantastic", "Criminal", "Primordial", "Genius", "Great", "Perfect", "Fearless",
-        "Ruthless", "Bold", "Void", "Millenium", "Exact", "Really", "Certainty", "Infernal", "Ender", "World", "Mad",
-        "Crazy", "Wrecked", "Elegant", "Expensive", "Rich", "Radioactive", "Automatic", "Honest", "Cosmic", "Galactic",
-        "Dimensional", "Sinister", "Evil", "Abyssal", "Hallowed", "Holy", "Sacred", "Omnipotent"
-    );
 
-    private static int getVoteCount(Player player) {
-        if (!MyMaidData.isMainDBActive()) {
-            return 0;
-        }
-        try {
-            Connection connection = MyMaidData.getMainMySQLDBManager().getConnection();
-            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM vote WHERE uuid = ?");
-            stmt.setString(1, player.getUniqueId().toString());
-            ResultSet res = stmt.executeQuery();
-            if (!res.next()) {
-                return 0;
-            }
-            return res.getInt("count");
-        } catch (SQLException e) {
-            MyMaidLibrary.reportError(SKKColorManager.class, e);
-            return 0;
-        }
+    static int getVoteCount(Player player) {
+        PlayerVoteDataMono pvd = new PlayerVoteDataMono(player);
+
+        return pvd.getVoteCount();
+    }
+
+    static NamedTextColor getCustomColor(Player player) {
+        PlayerVoteDataMono pvd = new PlayerVoteDataMono(player);
+
+        return MyMaidLibrary.getNamedTextColor(pvd.getCustomColor());
     }
 
     /**
@@ -80,7 +59,10 @@ public class SKKColorManager {
      */
     public static NamedTextColor getPlayerColor(Player player) {
         int count = getVoteCount(player);
-        return ChatColors.get(calculateRank(count));
+        NamedTextColor color = ChatColors.get(calculateRank(count));
+        NamedTextColor customColor = getCustomColor(player);
+        if(customColor != null) color = customColor;
+        return color;
     }
 
     /**
@@ -98,39 +80,6 @@ public class SKKColorManager {
         if (vote_count >= 160)
             return 13;
         return (vote_count - 5) / 14 + 1;
-    }
-
-    private static String getJoinMessage(int count) {
-        if (count < 20) {
-            return null;
-        } else if (count < 24) {
-            return "VIP";
-        } else {
-            int _count = count;
-            _count /= 4;
-            _count -= 5;
-            _count = (int) Math.floor(_count);
-
-            return "the New Generation " + JoinMessages.stream().limit(_count).collect(Collectors.joining(" ")) + " VIP";
-        }
-    }
-
-    public static Component getPlayerSKKJoinMessage(Player player) {
-        int count = getVoteCount(player);
-        if (count < 20) {
-            return Component.text().append(
-                Component.text(player.getName()),
-                Component.space(),
-                Component.text("joined the game.")
-            ).color(NamedTextColor.GREEN).build();
-        }
-        String rankText = getJoinMessage(count);
-        return Component.text(
-            String.format("%s, %s (%d) joined the game.",
-                player.getName(),
-                rankText,
-                count),
-            NamedTextColor.YELLOW);
     }
 
     public static Component getPlayerSKKTabListComponent(Player player) {

@@ -16,6 +16,7 @@ import cloud.commandframework.Command;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.meta.CommandMeta;
 import cloud.commandframework.paper.PaperCommandManager;
+import com.jaoafa.mymaid4.httpServer.MyMaidServer;
 import com.jaoafa.mymaid4.lib.ClassFinder;
 import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidConfig;
@@ -48,13 +49,18 @@ public final class Main extends JavaPlugin {
             return;
 
         registerEvent();
+
+        scheduleTasks();
     }
 
     @Override
     public void onDisable() {
-        config.getJDA().getEventManager().getRegisteredListeners()
-            .forEach(listener -> config.getJDA().getEventManager().unregister(listener));
-        config.getJDA().shutdownNow();
+        if(config.getJDA() != null) {
+            config.getJDA().getEventManager().getRegisteredListeners()
+                .forEach(listener -> config.getJDA().getEventManager().unregister(listener));
+            config.getJDA().shutdownNow();
+        }
+        MyMaidServer.stopServer();
     }
 
     private void registerCommand() {
@@ -155,6 +161,10 @@ public final class Main extends JavaPlugin {
             getLogger().warning("registerCommand failed");
             e.printStackTrace();
         }
+    }
+
+    private void scheduleTasks(){
+        new MyMaidServer().runTaskAsynchronously(this);
     }
 
     public static void registerDiscordEvent(JDABuilder d) {

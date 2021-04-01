@@ -33,13 +33,4 @@ public class Event_SKKColor extends MyMaidLibrary implements Listener {
         ), message);
         event.composer(composer);
     }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onEvent_JoinChangeMessage(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        Component joinMessage = SKKColorManager.getPlayerSKKJoinMessage(player);
-        if (joinMessage != null) event.joinMessage(joinMessage);
-
-        for (Player p : Bukkit.getServer().getOnlinePlayers()) SKKColorManager.setPlayerSKKTabList(p);
-    }
 }
