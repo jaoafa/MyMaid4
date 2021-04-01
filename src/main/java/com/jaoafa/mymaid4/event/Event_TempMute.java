@@ -26,7 +26,7 @@ public class Event_TempMute extends MyMaidLibrary implements Listener {
 
         MyMaidData.getTempMuting().forEach(s ->{
             event.recipients().forEach(p ->{
-                p.sendMessage("[TEMPMUTE] "+s);
+                p.sendMessage("[TEMPMUTE] "+s.getName());
             });
         });
     }
