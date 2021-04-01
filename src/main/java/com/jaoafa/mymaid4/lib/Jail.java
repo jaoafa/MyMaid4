@@ -56,7 +56,7 @@ public class Jail {
         try {
             Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
             try (PreparedStatement stmt = conn.prepareStatement(
-                "SELECT * FROM jail_new WHERE status = ?")) {
+                "SELECT * FROM jail WHERE status = ?")) {
                 stmt.setBoolean(1, true);
 
                 ResultSet res = stmt.executeQuery();
@@ -100,7 +100,7 @@ public class Jail {
         try {
             Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
             try (PreparedStatement stmt = conn.prepareStatement(
-                "INSERT INTO jail_new (player, uuid, banned_by, reason, created_at) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)")) {
+                "INSERT INTO jail (player, uuid, banned_by, reason, created_at) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)")) {
                 stmt.setString(1, player.getName());
                 stmt.setString(2, player.getUniqueId().toString());
                 stmt.setString(3, banned_by);
@@ -183,7 +183,7 @@ public class Jail {
         try {
             Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
             try (PreparedStatement stmt = conn.prepareStatement(
-                "UPDATE jail_new SET status = ?, remover = ? WHERE uuid = ? ORDER BY id DESC LIMIT 1")) {
+                "UPDATE jail SET status = ?, remover = ? WHERE uuid = ? ORDER BY id DESC LIMIT 1")) {
                 stmt.setBoolean(1, false);
                 stmt.setString(2, remover);
                 stmt.setString(3, player.getUniqueId().toString());
@@ -265,7 +265,7 @@ public class Jail {
         try {
             Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
             try (PreparedStatement stmt = conn.prepareStatement(
-                "UPDATE jail_new SET testment = ? WHERE uuid = ? ORDER BY id DESC LIMIT 1")) {
+                "UPDATE jail SET testment = ? WHERE uuid = ? ORDER BY id DESC LIMIT 1")) {
                 stmt.setString(1, testment);
                 stmt.setString(2, player.getUniqueId().toString());
                 boolean isSuccess = stmt.executeUpdate() == 1;
@@ -603,13 +603,13 @@ public class Jail {
                 // このへんの処理綺麗に書きたい
                 PreparedStatement stmt;
                 if (id != -1) {
-                    stmt = conn.prepareStatement("SELECT * FROM jail_new WHERE id = ?");
+                    stmt = conn.prepareStatement("SELECT * FROM jail WHERE id = ?");
                     stmt.setInt(1, id);
                 } else if (playerName != null) {
-                    stmt = conn.prepareStatement("SELECT * FROM jail_new WHERE player = ? ORDER BY id DESC LIMIT 1");
+                    stmt = conn.prepareStatement("SELECT * FROM jail WHERE player = ? ORDER BY id DESC LIMIT 1");
                     stmt.setString(1, playerName);
                 } else if (playerUUID != null) {
-                    stmt = conn.prepareStatement("SELECT * FROM jail_new WHERE uuid = ? ORDER BY id DESC LIMIT 1");
+                    stmt = conn.prepareStatement("SELECT * FROM jail WHERE uuid = ? ORDER BY id DESC LIMIT 1");
                     stmt.setString(1, playerUUID.toString());
                 } else {
                     throw new IllegalStateException("データをフェッチするために必要な情報が足りません。");
