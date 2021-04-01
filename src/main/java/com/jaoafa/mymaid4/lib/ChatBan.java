@@ -224,7 +224,7 @@ public class ChatBan {
         try {
             Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
             PreparedStatement stmt = conn
-                .prepareStatement("INSERT INTO chatjailmsg (player, uuid, message) VALUES (?, ?, ?);");
+                .prepareStatement("INSERT INTO chatbanmsg (player, uuid, message) VALUES (?, ?, ?);");
             stmt.setString(1, player.getName());
             stmt.setString(2, player.getUniqueId().toString());
             stmt.setString(3, message);
