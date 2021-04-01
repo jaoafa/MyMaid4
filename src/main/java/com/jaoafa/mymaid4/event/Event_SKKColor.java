@@ -27,17 +27,17 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class Event_SKKColor extends MyMaidLibrary implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
-    /*public void onEvent_ChatSKK(AsyncChatEvent event) {
+    public void onEvent_ChatSKK(AsyncChatEvent event) {
         Player player = event.getPlayer();
         ChatComposer composer = (_player, displayName, message) -> Component.translatable("chat.type.text", Component.text().append(
             Component.text("■", SKKColorManager.getPlayerColor(player)),
             displayName
         ), message);
         event.composer(composer);
-    }*/
-    public void onEvent_ChatSKK(AsyncPlayerChatEvent event) {
+    }
+    /*public void onEvent_ChatSKK(AsyncPlayerChatEvent event) {
         event.setFormat(
             event.getFormat().replaceFirst("%1\\$s", String.format("%s■%s%s", SKKColorManager.getPlayerColor(event.getPlayer()), ChatColor.WHITE, event.getPlayer().getName()))
         );
-    }
+    }*/
 }
