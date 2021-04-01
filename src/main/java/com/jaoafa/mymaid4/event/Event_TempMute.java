@@ -20,14 +20,16 @@ import org.bukkit.event.Listener;
 public class Event_TempMute extends MyMaidLibrary implements Listener {
     @EventHandler
     public void onChat(AsyncChatEvent event) {
+        MyMaidData.getTempMuting().forEach(s ->{
+        event.recipients().forEach(p ->{
+            p.sendMessage("[TEMPMUTE] "+s.getName());
+        });
+        });
+
         //if (MyMaidData.getTempMuting().size() == 0) return;
 
         //event.recipients().removeAll(MyMaidData.getTempMuting());
 
-        MyMaidData.getTempMuting().forEach(s ->{
-            event.recipients().forEach(p ->{
-                p.sendMessage("[TEMPMUTE] "+s.getName());
-            });
-        });
+
     }
 }
