@@ -22,8 +22,8 @@ public class Event_TempMute extends MyMaidLibrary implements Listener {
     public void onChat(AsyncChatEvent event) {
         if (MyMaidData.getTempMuting().size() == 0) return;
 
-        event.recipients().removeAll(MyMaidData.getTempMuting());
-        
+        //event.recipients().removeAll(MyMaidData.getTempMuting());
+
         MyMaidData.getTempMuting().forEach(s ->{
             event.recipients().forEach(p ->{
                 p.sendMessage("[TEMPMUTE] "+s);
