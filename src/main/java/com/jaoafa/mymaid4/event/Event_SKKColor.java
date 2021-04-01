@@ -17,20 +17,27 @@ import io.papermc.paper.chat.ChatComposer;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class Event_SKKColor extends MyMaidLibrary implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onEvent_ChatSKK(AsyncChatEvent event) {
+    /*public void onEvent_ChatSKK(AsyncChatEvent event) {
         Player player = event.getPlayer();
         ChatComposer composer = (_player, displayName, message) -> Component.translatable("chat.type.text", Component.text().append(
             Component.text("■", SKKColorManager.getPlayerColor(player)),
             displayName
         ), message);
         event.composer(composer);
+    }*/
+    public void onEvent_ChatSKK(AsyncPlayerChatEvent event) {
+        event.setFormat(
+            event.getFormat().replaceFirst("%1\\$s", String.format("%s■%s%s", SKKColorManager.getPlayerColor(event.getPlayer()), ChatColor.WHITE, event.getPlayer().getName()))
+        );
     }
 }
