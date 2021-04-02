@@ -12,6 +12,7 @@
 package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.Main;
+import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -32,7 +33,12 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener {
+public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "新規プレイヤーがログアウトした際にブロック編集情報を通知します。";
+    }
+
     Set<UUID> firstLoginer = new HashSet<>();
 
     @EventHandler

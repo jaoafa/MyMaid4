@@ -12,6 +12,7 @@
 package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.Main;
+import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import com.jaoafa.mymaid4.lib.MySQLDBManager;
@@ -38,7 +39,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener {
+public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "プレイヤーログイン前に各種チェック等を行います。";
+    }
 
     private static CityResponse getGeoIP(InetAddress ia) {
         JavaPlugin plugin = Main.getJavaPlugin();

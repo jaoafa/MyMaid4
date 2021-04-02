@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.event;
 
+import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -31,7 +32,12 @@ import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class Event_ProtectionSandBox extends MyMaidLibrary implements Listener {
+public class Event_ProtectionSandBox extends MyMaidLibrary implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "SandBoxをRegular権限グループ未満のプレイヤーが編集できないように制限します。";
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void ontoSandBox(PlayerChangedWorldEvent event) {
         Player player = event.getPlayer();

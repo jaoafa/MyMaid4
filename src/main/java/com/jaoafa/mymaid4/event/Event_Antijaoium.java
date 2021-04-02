@@ -15,6 +15,7 @@ import com.jaoafa.jaosuperachievement2.api.Achievementjao;
 import com.jaoafa.jaosuperachievement2.lib.Achievement;
 import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.lib.EBan;
+import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.Jail;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import com.jaoafa.mymaid4.tasks.Task_AutoRemoveJailByjaoium;
@@ -43,7 +44,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
 
-public class Event_Antijaoium extends MyMaidLibrary implements Listener {
+public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPremise {
     List<Integer> heal = Arrays.asList(
         -3,
         29,
@@ -54,13 +55,20 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
         -7
     );
 
+    @Override
+    public String description() {
+        return "jaoium制限に関する処理を行います。";
+    }
+
     // TODO どうやって取得したかを調べる処理を作る
 
     /**
      * jaoiumと判定されるアイテムかどうか
      *
      * @param list PotionEffectのList
+     *
      * @return jaoiumかどうか
+     *
      * @author mine_book000
      */
     private boolean isjaoium(List<PotionEffect> list) {

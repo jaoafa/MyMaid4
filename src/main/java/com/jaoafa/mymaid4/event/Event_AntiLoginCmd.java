@@ -12,6 +12,7 @@
 package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.lib.EBan;
+import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import net.kyori.adventure.text.Component;
@@ -20,7 +21,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-public class Event_AntiLoginCmd extends MyMaidLibrary implements Listener {
+public class Event_AntiLoginCmd extends MyMaidLibrary implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "ログインコマンドの使用制限を行います。";
+    }
+
     @EventHandler
     public void onOPCommand(PlayerCommandPreprocessEvent event) {
         String command = event.getMessage();

@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.event;
 
+import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import com.jaoafa.mymaid4.lib.SKKColorManager;
 import org.bukkit.ChatColor;
@@ -19,7 +20,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-public class Event_SKKColor extends MyMaidLibrary implements Listener {
+public class Event_SKKColor extends MyMaidLibrary implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "チャット欄に表示される四角色に関する処理を行います。";
+    }
+
     /*public void onEvent_ChatSKK(AsyncChatEvent event) {
         Player player = event.getPlayer();
         ChatComposer composer = (_player, displayName, message) -> Component.translatable("chat.type.text", Component.text().append(

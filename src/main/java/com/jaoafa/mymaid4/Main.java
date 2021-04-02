@@ -23,6 +23,8 @@ import net.dv8tion.jda.api.JDABuilder;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -79,6 +81,7 @@ public final class Main extends JavaPlugin {
             return;
         }
 
+        JSONArray commands = new JSONArray();
         try {
             ClassFinder classFinder = new ClassFinder(this.getClassLoader());
             for (Class<?> clazz : classFinder.findClasses("com.jaoafa.mymaid4.command")) {
@@ -106,10 +109,26 @@ public final class Main extends JavaPlugin {
                         .permission(String.format("mymaid.%s", cmdPremise.details().getName().toLowerCase()))
                         .meta(CommandMeta.DESCRIPTION, cmdPremise.details().getDescription());
 
-                    cmdPremise.register(builder).getCommands().forEach(a -> {
-                        System.out.println(a.toString());
-                        manager.command(a);
+                    JSONArray subcommands = new JSONArray();
+                    cmdPremise.register(builder).getCommands().forEach(cmd -> {
+                        System.out.println(cmd.toString());
+                        manager.command(cmd);
+                        JSONObject subcommand = new JSONObject();
+                        subcommand.put("meta", cmd.getCommandMeta().getAllValues());
+                        subcommand.put("senderType", cmd.getSenderType().isPresent() ?
+                            cmd.getSenderType().get().getName() : null);
+                        subcommand.put("toString", cmd.toString());
+                        subcommands.put(subcommand);
                     });
+
+                    JSONObject details = new JSONObject();
+                    details.put("class", instance.getClass().getName());
+                    details.put("name", commandName);
+                    details.put("command", cmdPremise.details().getName());
+                    details.put("description", cmdPremise.details().getDescription());
+                    details.put("alias", cmdPremise.details().getAliases());
+                    details.put("subcommands", subcommands);
+                    commands.put(details);
 
                     getLogger().info(String.format("%s registered", commandName));
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
@@ -117,6 +136,7 @@ public final class Main extends JavaPlugin {
                     e.printStackTrace();
                 }
             }
+            MyMaidData.putGetDocsData("commands", commands);
         } catch (ClassNotFoundException | IOException e) {
             getLogger().warning("registerCommand failed");
             e.printStackTrace();
@@ -125,6 +145,8 @@ public final class Main extends JavaPlugin {
 
     private void registerEvent() {
         getLogger().info("----- registerEvent -----");
+
+        JSONArray events = new JSONArray();
         try {
             ClassFinder classFinder = new ClassFinder(this.getClassLoader());
             for (Class<?> clazz : classFinder.findClasses("com.jaoafa.mymaid4.event")) {
@@ -142,11 +164,17 @@ public final class Main extends JavaPlugin {
                 try {
                     Constructor<?> construct = clazz.getConstructor();
                     Object instance = construct.newInstance();
+                    EventPremise eventPremise = (EventPremise) instance;
 
                     if (!(instance instanceof Listener)) {
                         getLogger().warning(clazz.getSimpleName() + ": Listener not implemented [0]");
                         return;
                     }
+
+                    JSONObject details = new JSONObject();
+                    details.put("class", instance.getClass().getName());
+                    details.put("description", eventPremise.description());
+                    events.put(details);
 
                     try {
                         Listener listener = (Listener) instance;
@@ -160,6 +188,7 @@ public final class Main extends JavaPlugin {
                     e.printStackTrace();
                 }
             }
+            MyMaidData.putGetDocsData("events", events);
         } catch (ClassNotFoundException | IOException e) {
             getLogger().warning("registerCommand failed");
             e.printStackTrace();

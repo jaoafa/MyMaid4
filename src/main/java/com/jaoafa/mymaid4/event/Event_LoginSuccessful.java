@@ -12,6 +12,7 @@
 package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.Main;
+import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import com.jaoafa.mymaid4.lib.MySQLDBManager;
@@ -27,7 +28,12 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class Event_LoginSuccessful extends MyMaidLibrary implements Listener {
+public class Event_LoginSuccessful extends MyMaidLibrary implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "ログインに成功したことをデータベースに書き込みます。";
+    }
+
     @EventHandler(priority = EventPriority.MONITOR,
                   ignoreCancelled = true)
     public void OnJoin(PlayerJoinEvent event) {

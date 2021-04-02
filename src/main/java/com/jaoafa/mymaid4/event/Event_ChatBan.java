@@ -13,6 +13,7 @@ package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.lib.ChatBan;
+import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import io.papermc.paper.event.player.AsyncChatEvent;
@@ -29,7 +30,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class Event_ChatBan implements Listener {
+public class Event_ChatBan implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "ChatBanに関する各種処理を行います。";
+    }
+
     @EventHandler
     public void onChat(AsyncChatEvent event) {
         Player player = event.getPlayer();

@@ -12,10 +12,7 @@
 package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.Main;
-import com.jaoafa.mymaid4.lib.ChatBan;
-import com.jaoafa.mymaid4.lib.EBan;
-import com.jaoafa.mymaid4.lib.MyMaidData;
-import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import com.jaoafa.mymaid4.lib.*;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
@@ -37,7 +34,12 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class Event_EBan implements Listener {
+public class Event_EBan implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "EBanに関する各種処理を行います。";
+    }
+
     @EventHandler
     public void onEvent_ChatLiquidBounce(AsyncChatEvent event) {
         Player player = event.getPlayer();

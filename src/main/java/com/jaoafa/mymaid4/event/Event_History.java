@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.event;
 
+import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.Historyjao;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
@@ -23,7 +24,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Event_History extends MyMaidLibrary implements Listener {
+public class Event_History extends MyMaidLibrary implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "historyコマンドに関する処理を行います。";
+    }
+
     @EventHandler
     public void OnEvent_JoinHistory(PlayerJoinEvent event) {
         Player player = event.getPlayer();

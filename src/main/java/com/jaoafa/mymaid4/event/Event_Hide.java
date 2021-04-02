@@ -12,6 +12,7 @@
 package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.Main;
+import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
@@ -27,7 +28,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import static com.jaoafa.mymaid4.lib.MyMaidLibrary.isAM;
 
-public class Event_Hide implements Listener {
+public class Event_Hide implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "hideコマンドに関する処理を行います。";
+    }
+
     @EventHandler(priority = EventPriority.LOW)
     public void onAsyncPlayerChatEvent(AsyncChatEvent event) {
         Player player = event.getPlayer();

@@ -33,6 +33,7 @@ public class MyMaidServer extends BukkitRunnable {
                 os.close();
             });
             server.createContext("/votefill", new HTTP_VoteFill());
+            server.createContext("/docs", new HTTP_GetDocs());
             server.start();
         } catch (IOException e) {
             e.printStackTrace();

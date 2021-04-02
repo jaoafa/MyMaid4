@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.event;
 
+import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,11 +26,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class Event_DisableConcreteTransition extends MyMaidLibrary implements Listener {
+public class Event_DisableConcreteTransition extends MyMaidLibrary implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "コンクリートパウダーの変化を無効化します。";
+    }
+
     @EventHandler
-    public void onBlockFormEvent(BlockFormEvent event){
+    public void onBlockFormEvent(BlockFormEvent event) {
         Block block = event.getBlock();
-        if(!isConcretePowder(block.getType())){
+        if (!isConcretePowder(block.getType())) {
             return;
         }
         Location loc = block.getLocation();

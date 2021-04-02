@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.event;
 
+import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -19,7 +20,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-public class Event_CmdLengthLimiter extends MyMaidLibrary implements Listener {
+public class Event_CmdLengthLimiter extends MyMaidLibrary implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "Default権限グループのプレイヤーによる100文字を超えるコマンドの実行を制限します。";
+    }
+
     @EventHandler
     public static void onCommand(PlayerCommandPreprocessEvent event) {
         String command = event.getMessage();
