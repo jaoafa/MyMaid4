@@ -118,6 +118,16 @@ public final class Main extends JavaPlugin {
                         subcommand.put("senderType", cmd.getSenderType().isPresent() ?
                             cmd.getSenderType().get().getName() : null);
                         subcommand.put("toString", cmd.toString());
+                        JSONArray args = new JSONArray();
+                        cmd.getArguments().forEach(arg -> {
+                            JSONObject obj = new JSONObject();
+                            obj.put("name", arg.getName());
+                            obj.put("isRequired", arg.isRequired());
+                            obj.put("defaultValue", arg.getDefaultValue());
+                            obj.put("defaultDescription", arg.getDefaultDescription());
+                            args.put(obj);
+                        });
+                        subcommand.put("arguments", args);
                         subcommands.put(subcommand);
                     });
 
