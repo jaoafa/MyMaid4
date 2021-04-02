@@ -50,7 +50,7 @@ public class Event_EBan implements Listener {
 
         eban.addBan("jaotan", "禁止クライアント「LiquidBounce」使用の疑い。");
 
-        ChatBan chatban = new ChatBan(player);
+        ChatBan chatban = ChatBan.getInstance(player);
         chatban.addBan("jaotan", "禁止クライアント「LiquidBounce」使用の疑い。");
 
         event.setCancelled(true);
@@ -247,7 +247,7 @@ public class Event_EBan implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                EBan eban = EBan.getInstance(player, true);
+                EBan.getInstance(player, true);
             }
         }.runTaskAsynchronously(Main.getJavaPlugin());
     }
