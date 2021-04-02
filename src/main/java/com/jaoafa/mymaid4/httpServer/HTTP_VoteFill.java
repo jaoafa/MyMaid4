@@ -114,8 +114,8 @@ public class HTTP_VoteFill implements HttpHandler {
                 createResponse(200, true, String.format("Successful. insert_time = %d", insert_time));
             } else if (service.equalsIgnoreCase("mono")) {
                 PlayerVoteDataMono pvd = new PlayerVoteDataMono(offplayer);
-                long last = pvd.getLastVoteUnixTime() * 1000;
-                long insert_time = Math.max(created_at * 1000L, last);
+                long last = pvd.getLastVoteUnixTime();
+                long insert_time = Math.max(created_at, last);
 
                 int oldVote = pvd.getVoteCount();
                 boolean isTodayFirst = PlayerVoteDataMono.isTodayFirstVote();
