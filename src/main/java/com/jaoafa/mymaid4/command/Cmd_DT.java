@@ -122,14 +122,14 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
     void teleportMarker(CommandContext<CommandSender> context) {
         CommandSender sender = context.getSender();
         Player target = context.getOrDefault("player", null);
-
-        if (MyMaidData.getLastDT(target)<System.currentTimeMillis()-3000){
-            SendMessage(target,details(),"DTには3秒のクールダウンがあります！少々お待ちください...");
+        String markerName = context.get("markerName");
+        MyMaidData.setLastDT((Player) context.getSender());
+        if (MyMaidData.getLastDT((Player) context.getSender())<System.currentTimeMillis()-3000){
+            SendMessage(context.getSender(),details(),"DTには3秒のクールダウンがあります！少々お待ちください...");
             return;
         }
-        MyMaidData.setLastDT(target);
 
-        String markerName = context.get("markerName");
+
         // /dt <Marker>
         // /dt <Player> <Marker>
         if (!isEnabledPlugin("dynmap")) {

@@ -33,7 +33,7 @@ public class MyMaidData {
     private static final Map<UUID, Long> SpamTime = new HashMap<>();
     private static final Set<UUID> hid = new HashSet<>();
     private static final Set<Player> tempMuting = new HashSet<>();
-    private static final Map<UUID, Long> DTCooldown = new HashMap<UUID, Long>();
+    private static final Map<UUID, Long> DTCooldown = new HashMap<>();
 
     @Nullable
     public static TextChannel getReportChannel() {
