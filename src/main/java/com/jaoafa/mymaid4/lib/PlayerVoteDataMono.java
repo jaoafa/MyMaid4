@@ -222,11 +222,10 @@ public class PlayerVoteDataMono extends MyMaidLibrary {
         }
         Connection conn = MySQLDBManager.getConnection();
         try (PreparedStatement statement = conn
-            .prepareStatement("UPDATE vote SET count = ?, lasttime = ?, last = ? WHERE id = ?")) {
+            .prepareStatement("UPDATE vote_monocraft SET count = ?, last = ? WHERE id = ?")) {
             statement.setInt(1, next);
-            statement.setInt(2, (int) unixtime);
-            statement.setString(3, sdf.format(new Date(unixtime * 1000L)));
-            statement.setInt(4, getID());
+            statement.setTimestamp(2, Timestamp.from(Instant.ofEpochSecond(unixtime)));
+            statement.setInt(3, getID());
             int upcount = statement.executeUpdate();
             addLog(next);
             fetchData(true);
@@ -241,7 +240,7 @@ public class PlayerVoteDataMono extends MyMaidLibrary {
         }
         Connection conn = MySQLDBManager.getConnection();
         try (PreparedStatement statement = conn
-            .prepareStatement("INSERT INTO votelog_success_mcjp (player, uuid, count, created_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP);")) {
+            .prepareStatement("INSERT INTO votelog_success_mono (player, uuid, count, created_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP);")) {
             statement.setString(1, offplayer.getName());
             statement.setString(2, offplayer.getUniqueId().toString());
             statement.setInt(3, count);
