@@ -17,14 +17,14 @@ import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.meta.CommandMeta;
 import cloud.commandframework.paper.PaperCommandManager;
 import com.jaoafa.mymaid4.httpServer.MyMaidServer;
-import com.jaoafa.mymaid4.lib.ClassFinder;
-import com.jaoafa.mymaid4.lib.CommandPremise;
-import com.jaoafa.mymaid4.lib.MyMaidConfig;
+import com.jaoafa.mymaid4.lib.*;
+import com.jaoafa.mymaid4.tasks.Task_Pigeon;
 import net.dv8tion.jda.api.JDABuilder;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -43,6 +43,9 @@ public final class Main extends JavaPlugin {
         config.init();
         if (!isEnabled())
             return;
+
+        CarrierPigeon carrierPigeon = new CarrierPigeon(new File(this.getDataFolder(), "carrierPigeon.yml"));
+        MyMaidData.setCarrierPigeon(carrierPigeon);
 
         registerCommand();
         if (!isEnabled())
@@ -165,6 +168,7 @@ public final class Main extends JavaPlugin {
 
     private void scheduleTasks(){
         new MyMaidServer().runTaskAsynchronously(this);
+        new Task_Pigeon().runTaskTimerAsynchronously(this, 10000L, 600000L); // 10秒後から10分毎
     }
 
     public static void registerDiscordEvent(JDABuilder d) {
