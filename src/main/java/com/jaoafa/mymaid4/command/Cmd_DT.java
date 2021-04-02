@@ -39,6 +39,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
+    private static final Map<UUID, Long> DTCooldown = new HashMap<>();
+    
     @Override
     public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
@@ -46,7 +48,6 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
             "DynmapのMarkerを編集・テレポートします。"
         );
     }
-
 
     @Override
     public MyMaidCommand.Cmd register(Command.Builder<CommandSender> builder) {
@@ -122,6 +123,14 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
         CommandSender sender = context.getSender();
         Player target = context.getOrDefault("player", null);
         String markerName = context.get("markerName");
+        Player sendPlayer = (Player) context.getSender();
+        if (DTCooldown.containsKey(sendPlayer.getUniqueId()) && DTCooldown.get(sendPlayer.getUniqueId()) > System.currentTimeMillis() - 3000) {
+            SendMessage(context.getSender(), details(), "DTには3秒のクールダウンがあります！少々お待ちください...");
+            return;
+        } else {
+            DTCooldown.put(sendPlayer.getUniqueId(), System.currentTimeMillis());
+        }
+
 
         // /dt <Marker>
         // /dt <Player> <Marker>
@@ -331,6 +340,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
      *
      * @param context CommandContext
      * @param current 入力されている値
+     *
      * @return サジェストする文字列一覧
      */
     List<String> suggestMarkerNames(final CommandContext<CommandSender> context, final String current) {
@@ -353,6 +363,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
      *
      * @param context CommandContext
      * @param current 入力されている値
+     *
      * @return サジェストする文字列一覧
      */
     List<String> suggestMarkerTypes(final CommandContext<CommandSender> context, final String current) {
@@ -373,6 +384,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
      *
      * @param context CommandContext
      * @param current 入力されている値
+     *
      * @return サジェストする文字列一覧
      */
     List<String> suggestMarkerIcons(final CommandContext<CommandSender> context, final String current) {
@@ -403,6 +415,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
      *
      * @param markerAPI  マーカーAPI
      * @param markerName 調べるマーカー名
+     *
      * @return 存在すればTrue
      */
     boolean isExistsMarker(MarkerAPI markerAPI, String markerName) {
