@@ -1,3 +1,14 @@
+/*
+ * jaoLicense
+ *
+ * Copyright (c) 2021 jao Minecraft Server
+ *
+ * The following license applies to this project: jaoLicense
+ *
+ * Japanese: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE.md
+ * English: https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE-en.md
+ */
+
 package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.lib.EBan;
@@ -64,17 +75,17 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener 
         String[] args = command.split(" ");
         Optional<Map.Entry<String, AntiCommand>> func = antiCommandMap.entrySet().stream().filter(cmd -> cmd.getKey().equalsIgnoreCase(args[0])).findFirst();
 
-        if(!func.isPresent()){
+        if (!func.isPresent()) {
             return;
         }
 
-        EBan eban = new EBan(player);
-        if (eban.isBanned()){
+        EBan eban = EBan.getInstance(player);
+        if (eban.isStatus()) {
             event.setCancelled(true);
             return;
         }
-        Jail jail = new Jail(player);
-        if (jail.isBanned()) {
+        Jail jail = Jail.getInstance(player);
+        if (jail.isStatus()) {
             event.setCancelled(true);
             return;
         }

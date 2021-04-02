@@ -16,10 +16,7 @@ import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.bukkit.parsers.OfflinePlayerArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
-import com.jaoafa.mymaid4.lib.CommandPremise;
-import com.jaoafa.mymaid4.lib.EBan;
-import com.jaoafa.mymaid4.lib.MyMaidCommand;
-import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import com.jaoafa.mymaid4.lib.*;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -75,7 +72,7 @@ public class Cmd_EBan extends MyMaidLibrary implements CommandPremise {
             return;
         }
 
-        EBan eban = new EBan(player);
+        EBan eban = EBan.getInstance(player);
         EBan.Result result = eban.addBan(sender.getName(), reason);
 
         String message = "原因不明のエラーが発生しました。(成功しているかもしれません)";
@@ -111,7 +108,7 @@ public class Cmd_EBan extends MyMaidLibrary implements CommandPremise {
             return;
         }
 
-        EBan eban = new EBan(player);
+        EBan eban = EBan.getInstance(player);
         EBan.Result result = eban.removeBan(sender.getName());
 
         String message = "原因不明のエラーが発生しました。(成功しているかもしれません)";
@@ -155,26 +152,27 @@ public class Cmd_EBan extends MyMaidLibrary implements CommandPremise {
     }
 
     void sendEBanedList(CommandSender sender) {
-        List<EBan.EBanData> ebans = EBan.getActiveEBans();
+        List<OfflinePlayer> ebans = EBan.getBannedPlayers();
         if (ebans == null) {
-            SendMessage(sender, details(), "EBan情報を取得できませんでした。時間をおいてもう一度お試しください。");
+            SendMessage(sender, details(), "Jail情報を取得できませんでした。時間をおいてもう一度お試しください。");
             return;
         }
 
-        SendMessage(sender, details(), "現在、" + ebans.size() + "名のプレイヤーがEBanされています。");
+        SendMessage(sender, details(), "現在、" + ebans.size() + "名のプレイヤーがJailされています。");
         int nameWidth = ebans.stream()
-            .filter(eban -> eban.getPlayerName() != null)
-            .max(Comparator.comparingInt(i -> i.getPlayerName().length()))
-            .filter(eban -> eban.getPlayerName() != null) // なんでこれが必要なのか…
-            .map(eban -> eban.getPlayerName().length())
+            .filter(jail -> jail.getName() != null)
+            .max(Comparator.comparingInt(i -> i.getName().length()))
+            .filter(jail -> jail.getName() != null) // なんでこれが必要なのか…
+            .map(jail -> jail.getName().length())
             .orElse(4);
-        for (EBan.EBanData eban : ebans) {
+        ebans.forEach(p -> {
+            Jail jail = Jail.getInstance(p);
             String displayName = "NULL";
-            if (eban.getPlayerName() != null) {
-                displayName = eban.getPlayerName();
+            if (p.getName() != null) {
+                displayName = p.getName();
             }
-            SendMessage(sender, details(), formatText(displayName, nameWidth) + " " + eban.getReason());
-        }
+            SendMessage(sender, details(), formatText(displayName, nameWidth) + " " + jail.getReason());
+        });
     }
 
     String formatText(String str, int width) {
@@ -182,18 +180,17 @@ public class Cmd_EBan extends MyMaidLibrary implements CommandPremise {
     }
 
     void sendPlayerStatus(CommandSender sender, OfflinePlayer player) {
-        EBan eban = new EBan(player);
+        EBan eban = EBan.getInstance(player);
 
-        if (!eban.isBanned()) {
+        if (!eban.isStatus()) {
             SendMessage(sender, details(), "指定されたプレイヤーはEBanされていないようです。");
             return;
         }
 
-        EBan.EBanData ebanData = eban.getEBanData();
-        int ebanId = ebanData.getEBanId();
-        String banned_by = ebanData.getBannedBy();
-        String reason = ebanData.getReason();
-        Timestamp created_at = ebanData.getCreatedAt();
+        int ebanId = eban.getEBanId();
+        String banned_by = eban.getBannedBy();
+        String reason = eban.getReason();
+        Timestamp created_at = eban.getCreatedAt();
 
         SendMessage(sender, details(), String.format("プレイヤー「%s」は現在EBanされています。", player.getName()));
         SendMessage(sender, details(), String.format("EBanId: %d", ebanId));

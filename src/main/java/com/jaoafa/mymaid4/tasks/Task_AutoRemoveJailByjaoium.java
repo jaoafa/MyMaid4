@@ -27,11 +27,11 @@ public class Task_AutoRemoveJailByjaoium extends BukkitRunnable {
         if (!player.isOnline()) {
             return;
         }
-        Jail jail = new Jail(player);
-        if (!jail.isBanned()) {
+        Jail jail = Jail.getInstance(player);
+        if (!jail.isStatus()) {
             return;
         }
-        String reason = jail.getJailData().getReason();
+        String reason = jail.getReason();
         if (reason == null || !reason.equals("jaoium所持")) {
             return;
         }

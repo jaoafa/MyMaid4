@@ -32,46 +32,61 @@ import java.util.*;
  * Jail Library
  */
 public class Jail {
-    /** Jail IdとJail情報の紐付け・キャッシュ */
-    public static Map<Integer, JailData> cacheData = new HashMap<>();
-    /** プレイヤーとJail Idの紐付け */
-    public static Map<UUID, Integer> linkJailData = new HashMap<>();
+    static Map<UUID, Jail> cache = new HashMap<>();
 
     OfflinePlayer player;
-    JailData jailData;
 
-    public Jail(OfflinePlayer player) {
+    /** Jail Id */
+    private int id = -1;
+    /** 処罰者 */
+    private String banned_by = null;
+    /** 理由 */
+    private String reason = null;
+    /** 遺言 */
+    private String testment = null;
+    /** 解除者 */
+    private String remover = null;
+    /** 処罰中か */
+    private boolean status = false;
+    /** データ作成時刻 */
+    private Timestamp created_at = null;
+    /** フェッチ日時 */
+    private long dbSyncedTime = -1L;
+
+    private Jail(OfflinePlayer player) {
         this.player = player;
-        if (linkJailData.containsKey(player.getUniqueId()) && cacheData.containsKey(linkJailData.get(player.getUniqueId()))) {
-            jailData = cacheData.get(linkJailData.get(player.getUniqueId()));
-        } else {
-            jailData = new JailData(player);
-        }
-        jailData.fetchData(false);
     }
 
-    public static List<JailData> getActiveJails() {
-        List<JailData> jails = new ArrayList<>();
+    public static Jail getInstance(OfflinePlayer player) {
+        return getInstance(player, false);
+    }
+
+    public static Jail getInstance(OfflinePlayer player, boolean force) {
+        Jail jail = cache.get(player.getUniqueId());
+        if (jail == null) {
+            jail = new Jail(player);
+        }
+        jail.fetchData(force);
+        return jail;
+    }
+
+    /**
+     * 現在Jailされているプレイヤーの一覧を返します。
+     *
+     * @return 現在Jailされているプレイヤー
+     */
+    public static List<OfflinePlayer> getBannedPlayers() {
+        List<OfflinePlayer> jails = new ArrayList<>();
 
         try {
             Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
             try (PreparedStatement stmt = conn.prepareStatement(
-                "SELECT * FROM jail WHERE status = ?")) {
+                "SELECT uuid FROM jail WHERE status = ?")) {
                 stmt.setBoolean(1, true);
 
                 ResultSet res = stmt.executeQuery();
                 while (res.next()) {
-                    jails.add(new JailData(
-                        res.getInt("id"),
-                        res.getString("player"),
-                        UUID.fromString(res.getString("uuid")),
-                        res.getString("banned_by"),
-                        res.getString("reason"),
-                        res.getString("testment"),
-                        res.getString("remover"),
-                        res.getBoolean("status"),
-                        res.getTimestamp("created_at")
-                    ));
+                    jails.add(Bukkit.getOfflinePlayer(UUID.fromString(res.getString("uuid"))));
                 }
 
                 return jails;
@@ -94,7 +109,7 @@ public class Jail {
         if (!MyMaidData.isMainDBActive()) {
             return Result.DATABASE_NOT_ACTIVE;
         }
-        if (isBanned()) {
+        if (isStatus()) {
             return Result.ALREADY;
         }
         try {
@@ -148,23 +163,13 @@ public class Jail {
 
                 Achievementjao.getAchievementAsync(player, Achievement.FIRSTJAIL); // No.22 はじめてのjail
 
-                jailData.id = -1;
-                jailData.fetchData(true);
+                fetchData(true);
                 return Result.SUCCESS;
             }
         } catch (SQLException e) {
             MyMaidLibrary.reportError(getClass(), e);
             return Result.DATABASE_ERROR;
         }
-    }
-
-    /**
-     * このユーザーが処罰済みかどうか調べます
-     *
-     * @return 処罰済みかどうか
-     */
-    public boolean isBanned() {
-        return jailData.isStatus();
     }
 
     /**
@@ -177,7 +182,7 @@ public class Jail {
         if (!MyMaidData.isMainDBActive()) {
             return Result.DATABASE_NOT_ACTIVE;
         }
-        if (!isBanned()) {
+        if (!isStatus()) {
             return Result.ALREADY;
         }
         try {
@@ -227,23 +232,13 @@ public class Jail {
                     ));
                 }
 
-                jailData.id = -1;
-                jailData.fetchData(true);
+                fetchData(true);
                 return Result.SUCCESS;
             }
         } catch (SQLException e) {
             MyMaidLibrary.reportError(getClass(), e);
             return Result.DATABASE_ERROR;
         }
-    }
-
-    /**
-     * JailDataを返します
-     *
-     * @return JailData
-     */
-    public JailData getJailData() {
-        return jailData;
     }
 
     /**
@@ -256,10 +251,10 @@ public class Jail {
         if (!MyMaidData.isMainDBActive()) {
             return Result.DATABASE_NOT_ACTIVE;
         }
-        if (!isBanned()) {
+        if (!isStatus()) {
             return Result.NOT_BANNED;
         }
-        if (jailData.getTestment() != null) {
+        if (getTestment() != null) {
             return Result.ALREADY;
         }
         try {
@@ -296,13 +291,11 @@ public class Jail {
                         .queue();
                 }
 
-                if (jailData.getReason() != null && jailData.getReason().equals("jaoium所持")) {
+                if (getReason() != null && getReason().equals("jaoium所持")) {
                     removeBan("jaotan");
                 }
 
-                linkJailData.remove(jailData.getPlayerUUID());
-                jailData.id = -1;
-                jailData.fetchData(true);
+                fetchData(true);
                 return Result.SUCCESS;
             }
         } catch (SQLException e) {
@@ -326,6 +319,142 @@ public class Jail {
         } else {
             return jda.getTextChannelById(709399145575874690L); // #jail
         }
+    }
+
+    /**
+     * データをフェッチします。forceがFalseの場合、最終情報取得から1時間経過していない場合キャッシュ情報を利用します。
+     *
+     * @param force 強制的にフェッチするか
+     *
+     * @return FetchDataResult
+     */
+    public FetchDataResult fetchData(boolean force) {
+        MyMaidLibrary.debug(String.format("fetchData(%s)", force));
+        if (!force && ((dbSyncedTime + 60 * 60 * 1000) > System.currentTimeMillis())) {
+            MyMaidLibrary.debug("fetchData: CACHED");
+            return FetchDataResult.CACHED; // 30分未経過
+        }
+        if (!MyMaidData.isMainDBActive()) {
+            MyMaidLibrary.debug("fetchData: DATABASE_NOT_ACTIVE");
+            return FetchDataResult.DATABASE_NOT_ACTIVE;
+        }
+        try {
+            Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
+
+            // このへんの処理綺麗に書きたい
+            PreparedStatement stmt;
+            if (id != -1) {
+                stmt = conn.prepareStatement("SELECT * FROM jail WHERE id = ?");
+                stmt.setInt(1, id);
+            } else {
+                stmt = conn.prepareStatement("SELECT * FROM jail WHERE uuid = ? ORDER BY id DESC LIMIT 1");
+                stmt.setString(1, player.getUniqueId().toString());
+            }
+
+            try (ResultSet res = stmt.executeQuery()) {
+                if (!res.next()) {
+                    MyMaidLibrary.debug("fetchData: NOTFOUND");
+                    return FetchDataResult.NOTFOUND;
+                }
+
+                this.id = res.getInt("id");
+                this.banned_by = res.getString("banned_by");
+                this.reason = res.getString("reason");
+                this.testment = res.getString("testment");
+                this.remover = res.getString("remover");
+                this.status = res.getBoolean("status");
+                this.created_at = res.getTimestamp("created_at");
+                this.dbSyncedTime = System.currentTimeMillis();
+
+                cache.put(player.getUniqueId(), this);
+            }
+
+            MyMaidLibrary.debug("fetchData: SUCCESS");
+            return FetchDataResult.SUCCESS;
+        } catch (SQLException e) {
+            MyMaidLibrary.reportError(getClass(), e);
+            MyMaidLibrary.debug("fetchData: DATABASE_ERROR");
+            return FetchDataResult.DATABASE_ERROR;
+        }
+    }
+
+    /**
+     * JailIdを取得します。-1の場合データが存在しないか、フェッチされていません。
+     *
+     * @return JailId
+     */
+    public int getJailId() {
+        return id;
+    }
+
+    /**
+     * プレイヤーを取得します。
+     *
+     * @return プレイヤー
+     */
+    @Nullable
+    public OfflinePlayer getPlayer() {
+        return player;
+    }
+
+
+    /**
+     * 処罰者名を取得します。
+     *
+     * @return 処罰者名
+     */
+    @Nullable
+    public String getBannedBy() {
+        return banned_by;
+    }
+
+    /**
+     * 処罰理由を取得します。
+     *
+     * @return 処罰理由
+     */
+    @Nullable
+    public String getReason() {
+        return reason;
+    }
+
+    /**
+     * 遺言を取得します。
+     *
+     * @return 遺言
+     */
+    @Nullable
+    public String getTestment() {
+        return testment;
+    }
+
+    /**
+     * 解除者名を取得します。
+     *
+     * @return 解除者名
+     */
+    @Nullable
+    public String getRemover() {
+        return remover;
+    }
+
+    /**
+     * 現在の状態を取得します。
+     *
+     * @return 現在の状態。Trueの場合処罰中。
+     */
+    public boolean isStatus() {
+        return status;
+    }
+
+    /**
+     * データ作成日時(処罰日時)を取得します。
+     *
+     * @return データ作成日時
+     */
+    @Nullable
+    public Timestamp getCreatedAt() {
+        return created_at;
     }
 
     public enum Result {
@@ -356,290 +485,5 @@ public class Jail {
         CACHED,
         /** 不明なエラー */
         UNKNOWN
-    }
-
-    public static class JailData {
-        /** Jail Id */
-        private int id = -1;
-        /** 処罰対象プレイヤー名 */
-        private String playerName = null;
-        /** 処罰対象プレイヤーUUID */
-        private UUID playerUUID = null;
-        /** 処罰者 */
-        private String banned_by = null;
-        /** 理由 */
-        private String reason = null;
-        /** 遺言 */
-        private String testment = null;
-        /** 解除者 */
-        private String remover = null;
-        /** 処罰中か */
-        private boolean status = false;
-        /** データ作成時刻 */
-        private Timestamp created_at = null;
-        /** フェッチ日時 */
-        private long dbSyncedTime = -1L;
-
-        /** 空のJailデータを作成します。 */
-        private JailData() {
-        }
-
-        /**
-         * 指定された情報でJailデータを作成します。
-         *
-         * @param id Jail Id
-         */
-        private JailData(int id) {
-            this.id = id;
-        }
-
-        /**
-         * 指定された情報でJailデータを作成します。
-         *
-         * @param player プレイヤー
-         */
-        private JailData(OfflinePlayer player) {
-            this.playerUUID = player.getUniqueId();
-        }
-
-        /**
-         * 指定された情報でJailデータを作成します。
-         *
-         * @param player    プレイヤー
-         * @param banned_by 処罰者
-         * @param reason    処罰理由
-         */
-        public JailData(OfflinePlayer player, String banned_by, String reason) {
-            this.playerName = player.getName();
-            this.playerUUID = player.getUniqueId();
-            this.banned_by = banned_by;
-            this.reason = reason;
-        }
-
-        /**
-         * 指定された情報でJailデータを作成します。
-         *
-         * @param player     プレイヤー
-         * @param banned_by  　処罰者
-         * @param reason     処罰理由
-         * @param testment   遺言
-         * @param remover    解除者
-         * @param status     処罰中か
-         * @param created_at データ作成時刻
-         */
-        public JailData(OfflinePlayer player, String banned_by, String reason, String testment, String remover, boolean status, Timestamp created_at) {
-            this.playerUUID = player.getUniqueId();
-            this.banned_by = banned_by;
-            this.reason = reason;
-            this.testment = testment;
-            this.remover = remover;
-            this.status = status;
-            this.created_at = created_at;
-        }
-
-        /**
-         * 指定された情報でJailデータを作成します。
-         *
-         * @param playerName プレイヤー名
-         * @param playerUUID プレイヤーUUID
-         * @param banned_by  　処罰者
-         * @param reason     処罰理由
-         * @param testment   遺言
-         * @param remover    解除者
-         * @param status     処罰中か
-         * @param created_at データ作成時刻
-         */
-        public JailData(String playerName, UUID playerUUID, String banned_by, String reason, String testment, String remover, boolean status, Timestamp created_at) {
-            this.playerName = playerName;
-            this.playerUUID = playerUUID;
-            this.banned_by = banned_by;
-            this.reason = reason;
-            this.testment = testment;
-            this.remover = remover;
-            this.status = status;
-            this.created_at = created_at;
-        }
-
-        /**
-         * 指定された情報でJailデータを作成します。
-         *
-         * @param id         Jail Id
-         * @param playerName プレイヤー名
-         * @param playerUUID プレイヤーUUID
-         * @param banned_by  　処罰者
-         * @param reason     処罰理由
-         * @param testment   遺言
-         * @param remover    解除者
-         * @param status     処罰中か
-         * @param created_at データ作成時刻
-         */
-        public JailData(int id, String playerName, UUID playerUUID, String banned_by, String reason, String testment, String remover, boolean status, Timestamp created_at) {
-            this.id = id;
-            this.playerName = playerName;
-            this.playerUUID = playerUUID;
-            this.banned_by = banned_by;
-            this.reason = reason;
-            this.testment = testment;
-            this.remover = remover;
-            this.status = status;
-            this.created_at = created_at;
-        }
-
-
-        /**
-         * JailIdを取得します。-1の場合データが存在しないか、フェッチされていません。
-         *
-         * @return JailId
-         */
-        public int getJailId() {
-            return id;
-        }
-
-        /**
-         * プレイヤーを取得します。
-         *
-         * @return プレイヤー
-         */
-        @Nullable
-        public OfflinePlayer getPlayer() {
-            return playerUUID != null ? Bukkit.getOfflinePlayer(playerUUID) : null;
-        }
-
-        /**
-         * プレイヤー名を取得します。
-         *
-         * @return プレイヤー名
-         */
-        @Nullable
-        public String getPlayerName() {
-            return playerName;
-        }
-
-        /**
-         * プレイヤーUUIDを取得します
-         *
-         * @return プレイヤーUUID
-         */
-        @Nullable
-        public UUID getPlayerUUID() {
-            return playerUUID;
-        }
-
-        /**
-         * 処罰者名を取得します。
-         *
-         * @return 処罰者名
-         */
-        @Nullable
-        public String getBannedBy() {
-            return banned_by;
-        }
-
-        /**
-         * 処罰理由を取得します。
-         *
-         * @return 処罰理由
-         */
-        @Nullable
-        public String getReason() {
-            return reason;
-        }
-
-        /**
-         * 遺言を取得します。
-         *
-         * @return 遺言
-         */
-        @Nullable
-        public String getTestment() {
-            return testment;
-        }
-
-        /**
-         * 解除者名を取得します。
-         *
-         * @return 解除者名
-         */
-        @Nullable
-        public String getRemover() {
-            return remover;
-        }
-
-        /**
-         * 現在の状態を取得します。
-         *
-         * @return 現在の状態。Trueの場合処罰中。
-         */
-        public boolean isStatus() {
-            return status;
-        }
-
-        /**
-         * データ作成日時(処罰日時)を取得します。
-         *
-         * @return データ作成日時
-         */
-        @Nullable
-        public Timestamp getCreatedAt() {
-            return created_at;
-        }
-
-        /**
-         * データをフェッチします。forceがFalseの場合、最終情報取得から1時間経過していない場合キャッシュ情報を利用します。
-         *
-         * @param force 強制的にフェッチするか
-         * @return FetchDataResult
-         */
-        public FetchDataResult fetchData(boolean force) {
-            if (!force && ((dbSyncedTime + 60 * 60 * 1000) > System.currentTimeMillis())) {
-                return FetchDataResult.CACHED; // 30分未経過
-            }
-            if (!MyMaidData.isMainDBActive()) {
-                return FetchDataResult.DATABASE_NOT_ACTIVE;
-            }
-            try {
-                Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
-
-                // このへんの処理綺麗に書きたい
-                PreparedStatement stmt;
-                if (id != -1) {
-                    stmt = conn.prepareStatement("SELECT * FROM jail WHERE id = ?");
-                    stmt.setInt(1, id);
-                } else if (playerName != null) {
-                    stmt = conn.prepareStatement("SELECT * FROM jail WHERE player = ? ORDER BY id DESC LIMIT 1");
-                    stmt.setString(1, playerName);
-                } else if (playerUUID != null) {
-                    stmt = conn.prepareStatement("SELECT * FROM jail WHERE uuid = ? ORDER BY id DESC LIMIT 1");
-                    stmt.setString(1, playerUUID.toString());
-                } else {
-                    throw new IllegalStateException("データをフェッチするために必要な情報が足りません。");
-                }
-
-                try (ResultSet res = stmt.executeQuery()) {
-                    if (!res.next()) {
-                        return FetchDataResult.NOTFOUND;
-                    }
-
-                    this.id = res.getInt("id");
-                    this.playerName = res.getString("player");
-                    this.playerUUID = UUID.fromString(res.getString("uuid"));
-                    this.banned_by = res.getString("banned_by");
-                    this.reason = res.getString("reason");
-                    this.testment = res.getString("testment");
-                    this.remover = res.getString("remover");
-                    this.status = res.getBoolean("status");
-                    this.created_at = res.getTimestamp("created_at");
-                    this.dbSyncedTime = System.currentTimeMillis();
-
-                    cacheData.put(id, this);
-                    linkJailData.put(UUID.fromString(res.getString("uuid")), id);
-                }
-
-                return FetchDataResult.SUCCESS;
-            } catch (SQLException e) {
-                MyMaidLibrary.reportError(getClass(), e);
-                return FetchDataResult.DATABASE_ERROR;
-            }
-        }
     }
 }
