@@ -123,10 +123,15 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
         CommandSender sender = context.getSender();
         Player target = context.getOrDefault("player", null);
         String markerName = context.get("markerName");
-        MyMaidData.setLastDT((Player) context.getSender());
+
+        if (MyMaidData.getLastDT((Player) context.getSender()) == 0){
+            MyMaidData.setLastDT((Player) context.getSender());
+        }
         if (MyMaidData.getLastDT((Player) context.getSender())<System.currentTimeMillis()-3000){
             SendMessage(context.getSender(),details(),"DTには3秒のクールダウンがあります！少々お待ちください...");
             return;
+        }else{
+            MyMaidData.setLastDT((Player) context.getSender());
         }
 
 
