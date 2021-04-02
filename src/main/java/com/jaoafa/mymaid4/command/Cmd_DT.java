@@ -128,10 +128,11 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
         if (!DTCooldown.containsKey(sendPlayer.getUniqueId())){
             DTCooldown.put(sendPlayer.getUniqueId(),System.currentTimeMillis());
         }
-        else if (DTCooldown.get(sendPlayer.getUniqueId())<System.currentTimeMillis()-3000){
+        else if (DTCooldown.get(sendPlayer.getUniqueId())>System.currentTimeMillis()-3000){
             SendMessage(context.getSender(),details(),"DTには3秒のクールダウンがあります！少々お待ちください...");
             return;
-        }else{
+        }
+        else{
             DTCooldown.put(sendPlayer.getUniqueId(),System.currentTimeMillis());
         }
 
