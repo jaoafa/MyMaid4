@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.Date;
 import java.util.*;
 
 public class PlayerVoteDataMono extends MyMaidLibrary {
@@ -304,7 +305,11 @@ public class PlayerVoteDataMono extends MyMaidLibrary {
             }
             Connection conn = MySQLDBManager.getConnection();
             try (PreparedStatement statement = conn.prepareStatement("UPDATE vote_monocraft SET color = ? WHERE uuid = ?")) {
-                statement.setString(1, color.name());
+                if (color == null) {
+                    statement.setNull(1, Types.VARCHAR);
+                } else {
+                    statement.setString(1, color.name());
+                }
                 statement.setString(2, offplayer.getUniqueId().toString());// uuid
                 statement.executeUpdate();
             }
