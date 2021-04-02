@@ -35,15 +35,15 @@ public class Event_ChatBan implements Listener {
         Player player = event.getPlayer();
         Component component = event.message();
         String message = PlainComponentSerializer.plain().serialize(component);
-        ChatBan chatban = new ChatBan(player);
+        ChatBan chatBan = ChatBan.getInstance(player);
 
-        if (!chatban.isBanned()) return;
-        String reason = chatban.getChatBanData().getReason();
+        if (!chatBan.isStatus()) return;
+        String reason = chatBan.getReason();
 
         player.sendMessage("[ChatJail] " + ChatColor.RED + "あなたは、「" + reason + "」という理由でチャット規制をされています。");
         player.sendMessage("[ChatJail] " + ChatColor.RED + "解除申請の方法や、Banの方針などは以下ページをご覧ください。");
         player.sendMessage("[ChatJail] " + ChatColor.RED + "https://jaoafa.com/rule/management/ban");
-        chatban.addMessageDB(message);
+        chatBan.addMessageDB(message);
         event.setCancelled(true);
     }
 
@@ -57,9 +57,9 @@ public class Event_ChatBan implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                ChatBan chatban = new ChatBan(player);
-                if (!chatban.isBanned()) return;
-                String reason = chatban.getChatBanData().getReason();
+                ChatBan chatBan = ChatBan.getInstance(player);
+                if (!chatBan.isStatus()) return;
+                String reason = chatBan.getReason();
                 if (reason == null) return;
                 for (Player p : Bukkit.getOnlinePlayers()) {
                     if (!MyMaidLibrary.isAMR(p)) continue;
@@ -78,9 +78,9 @@ public class Event_ChatBan implements Listener {
     @EventHandler
     public void onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
-        ChatBan chatban = new ChatBan(player);
+        ChatBan chatBan = ChatBan.getInstance(player);
         // ChatBanされてる
-        if (!chatban.isBanned()) return;
+        if (!chatBan.isStatus()) return;
         String command = event.getMessage();
         if (!command.toLowerCase().startsWith("/chatban")) return;
         event.setCancelled(true);
@@ -94,8 +94,8 @@ public class Event_ChatBan implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                ChatBan chatban = new ChatBan(player);
-                chatban.getChatBanData().fetchData(false);
+                ChatBan chatBan = ChatBan.getInstance(player);
+                chatBan.fetchData(false);
             }
         }.runTaskAsynchronously(Main.getJavaPlugin());
     }
@@ -106,8 +106,7 @@ public class Event_ChatBan implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                ChatBan chatban = new ChatBan(player);
-                chatban.getChatBanData().fetchData(false);
+                ChatBan.getInstance(player, true);
             }
         }.runTaskAsynchronously(Main.getJavaPlugin());
     }
