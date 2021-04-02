@@ -33,6 +33,7 @@ public class MyMaidData {
     private static final Map<UUID, Long> SpamTime = new HashMap<>();
     private static final Set<UUID> hid = new HashSet<>();
     private static final Set<Player> tempMuting = new HashSet<>();
+    private static final Map<UUID, Long> DTCooldown = new HashMap<UUID, Long>();
 
     @Nullable
     public static TextChannel getReportChannel() {
@@ -140,5 +141,12 @@ public class MyMaidData {
 
     public static void removeTempMuting(Player player) {
         tempMuting.remove(player);
+    }
+
+    public static long getLastDT(Player player){
+        return DTCooldown.get(player.getUniqueId());
+    }
+    public static void setLastDT(Player player){
+        DTCooldown.put(player.getUniqueId(),System.currentTimeMillis());
     }
 }
