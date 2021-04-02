@@ -130,7 +130,7 @@ public class MyMaidLibrary {
      *
      * @return フォーマットされた結果文字列
      */
-    private static String sdfTimeFormat(Date date) {
+    protected static String sdfTimeFormat(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         return sdf.format(date);
     }
