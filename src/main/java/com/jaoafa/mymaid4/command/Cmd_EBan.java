@@ -16,7 +16,10 @@ import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.bukkit.parsers.OfflinePlayerArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
-import com.jaoafa.mymaid4.lib.*;
+import com.jaoafa.mymaid4.lib.CommandPremise;
+import com.jaoafa.mymaid4.lib.EBan;
+import com.jaoafa.mymaid4.lib.MyMaidCommand;
+import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -154,11 +157,11 @@ public class Cmd_EBan extends MyMaidLibrary implements CommandPremise {
     void sendEBanedList(CommandSender sender) {
         List<OfflinePlayer> ebans = EBan.getBannedPlayers();
         if (ebans == null) {
-            SendMessage(sender, details(), "Jail情報を取得できませんでした。時間をおいてもう一度お試しください。");
+            SendMessage(sender, details(), "EBan情報を取得できませんでした。時間をおいてもう一度お試しください。");
             return;
         }
 
-        SendMessage(sender, details(), "現在、" + ebans.size() + "名のプレイヤーがJailされています。");
+        SendMessage(sender, details(), "現在、" + ebans.size() + "名のプレイヤーがEBanされています。");
         int nameWidth = ebans.stream()
             .filter(jail -> jail.getName() != null)
             .max(Comparator.comparingInt(i -> i.getName().length()))
@@ -166,7 +169,7 @@ public class Cmd_EBan extends MyMaidLibrary implements CommandPremise {
             .map(jail -> jail.getName().length())
             .orElse(4);
         ebans.forEach(p -> {
-            Jail jail = Jail.getInstance(p);
+            EBan jail = EBan.getInstance(p);
             String displayName = "NULL";
             if (p.getName() != null) {
                 displayName = p.getName();

@@ -271,7 +271,7 @@ public class Event_Jail implements Listener {
         Player player = event.getPlayer();
         new BukkitRunnable() {
             public void run() {
-                Jail jail = Jail.getInstance(player, true);
+                Jail.getInstance(player, true);
             }
         }.runTaskAsynchronously(Main.getJavaPlugin());
     }
