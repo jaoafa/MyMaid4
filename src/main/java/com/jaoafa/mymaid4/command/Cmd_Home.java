@@ -12,6 +12,7 @@
 package com.jaoafa.mymaid4.command;
 
 import cloud.commandframework.Command;
+import cloud.commandframework.arguments.standard.IntegerArgument;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
@@ -60,8 +61,8 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
                 .senderType(Player.class)
                 .literal("list")
                 .handler(this::listHome)
-                .argument(StringArgument
-                    .<CommandSender>newBuilder("Page")
+                .argument(IntegerArgument
+                    .<CommandSender>newBuilder("Page").withMin(1)
                     .asOptionalWithDefault("1"))
                 .build(),
             builder
@@ -110,14 +111,14 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
 
     void listHome(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
-        String pagenumString = context.getOrDefault("Page", "1");
-        if (pagenumString.equals("0")) {
+        int pagenumInt = context.get("Page");
+        if (pagenumInt == 0) {
             SendMessage(player, details(), "ページ数は1以上の数字を指定してください。");
             return;
         }
         int visualPagenum = 0;
         try {
-            visualPagenum = Integer.parseInt(pagenumString);
+            visualPagenum = pagenumInt;
         } catch (NumberFormatException e) {
             SendMessage(player, details(), "ページ数は半角数字で指定してください。");
             return;
