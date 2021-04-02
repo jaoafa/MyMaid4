@@ -4,19 +4,27 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.jaoafa</groupId>
+    <groupId>com.jaoafa</groupId>
     <artifactId>mymaid4</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>MyMaid4</name>
 
-    <description>Our "Maid" is here. </description>
+    <description>Our "Maid" is here.</description>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <url>https://jaoafa.com</url>
+
+    <distributionManagement>
+        <repository>
+            <id>internal.repo</id>
+            <name>Temporary Staging Repository</name>
+            <url>file://${project.build.directory}/mvn-repo</url>
+        </repository>
+    </distributionManagement>
 
     <build>
         <plugins>
