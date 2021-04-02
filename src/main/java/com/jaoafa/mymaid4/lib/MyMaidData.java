@@ -33,6 +33,7 @@ public class MyMaidData {
     private static final Map<UUID, Long> SpamTime = new HashMap<>();
     private static final Set<UUID> hid = new HashSet<>();
     private static final Set<Player> tempMuting = new HashSet<>();
+    private static CarrierPigeon carrierPigeon = null;
 
     @Nullable
     public static TextChannel getReportChannel() {
@@ -140,5 +141,13 @@ public class MyMaidData {
 
     public static void removeTempMuting(Player player) {
         tempMuting.remove(player);
+    }
+
+    public static CarrierPigeon getCarrierPigeon() {
+        return carrierPigeon;
+    }
+
+    public static void setCarrierPigeon(CarrierPigeon carrierPigeon) {
+        MyMaidData.carrierPigeon = carrierPigeon;
     }
 }
