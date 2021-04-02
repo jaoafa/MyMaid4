@@ -19,12 +19,8 @@ import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +44,6 @@ public class Cmd_Chat extends MyMaidLibrary implements CommandPremise {
                 .meta(CommandMeta.DESCRIPTION, "偽のプレイヤーに喋らせます。")
                 .argument(StringArgument.single("player"))
                 .argument(StringArgument.greedy("message"))
-                .senderType(Player.class)
                 .handler(this::chatFake)
                 .build()
         );
