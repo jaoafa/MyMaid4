@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.jaoafa</groupId>
-    <artifactId>MyMaid4</artifactId>
+    <artifactId>mymaid4</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
 
@@ -34,7 +34,7 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.4</version>
                 <configuration>
-                    <finalName>${project.artifactId}</finalName>
+                    <finalName>MyMaid4</finalName>
                 </configuration>
                 <executions>
                     <execution>
