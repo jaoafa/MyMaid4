@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.event;
 
+import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import org.bukkit.ChatColor;
@@ -20,7 +21,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
-public class Event_Ded extends MyMaidLibrary implements Listener {
+public class Event_Ded extends MyMaidLibrary implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "dedコマンドに関する処理を行います。";
+    }
+
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
         Player player = event.getEntity();

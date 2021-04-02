@@ -14,6 +14,7 @@ package com.jaoafa.mymaid4.lib;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.json.JSONObject;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -34,6 +35,7 @@ public class MyMaidData {
     private static final Set<UUID> hid = new HashSet<>();
     private static final Set<Player> tempMuting = new HashSet<>();
     private static CarrierPigeon carrierPigeon = null;
+    private static final JSONObject getDocsData = new JSONObject();
 
     @Nullable
     public static TextChannel getReportChannel() {
@@ -149,5 +151,13 @@ public class MyMaidData {
 
     public static void setCarrierPigeon(CarrierPigeon carrierPigeon) {
         MyMaidData.carrierPigeon = carrierPigeon;
+    }
+
+    public static JSONObject getGetDocsData() {
+        return getDocsData;
+    }
+
+    public static void putGetDocsData(String key, Object value) {
+        getDocsData.put(key, value);
     }
 }

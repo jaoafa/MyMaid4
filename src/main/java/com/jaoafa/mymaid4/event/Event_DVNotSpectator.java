@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.event;
 
+import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -21,7 +22,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 
-public class Event_DVNotSpectator extends MyMaidLibrary implements Listener {
+public class Event_DVNotSpectator extends MyMaidLibrary implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "DefaultとVerified権限グループのプレイヤーによるスペクテイター変更を禁止します。";
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onChangeGameMode(PlayerGameModeChangeEvent event) {
         Player player = event.getPlayer();

@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.event;
 
+import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import com.jaoafa.mymaid4.lib.PlayerVoteDataMCJP;
 import com.jaoafa.mymaid4.lib.SKKColorManager;
@@ -23,12 +24,16 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Event_CustomJoinMessage extends MyMaidLibrary implements Listener {
+public class Event_CustomJoinMessage extends MyMaidLibrary implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "独自のログインメッセージを表示するように制御します。";
+    }
+
     static List<String> JoinMessages = Arrays.asList(
         "the New Generation", "- Super", "Hyper", "Ultra", "Extreme", "Insane", "Gigantic", "Epic", "Amazing", "Beautiful",
         "Special", "Swag", "Lunatic", "Exotic", "God", "Hell", "Heaven", "Mega", "Giga", "Tera", "Refined", "Sharp",

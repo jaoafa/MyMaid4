@@ -2,6 +2,7 @@ package com.jaoafa.mymaid4;
 
 import com.jaoafa.mymaid4.lib.ClassFinder;
 import com.jaoafa.mymaid4.lib.CommandPremise;
+import com.jaoafa.mymaid4.lib.EventPremise;
 import org.bukkit.event.Listener;
 import org.junit.Test;
 
@@ -41,8 +42,6 @@ public class MainTest {
                         continue;
                     }
 
-                    CommandPremise cmdPremise = (CommandPremise) instance;
-
                     System.out.println("[" + commandName + "] registrable.");
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     System.out.println("[" + commandName + "] Register failed.");
@@ -77,6 +76,12 @@ public class MainTest {
                 try {
                     Constructor<?> construct = clazz.getConstructor();
                     Object instance = construct.newInstance();
+
+                    if (!(instance instanceof EventPremise)) {
+                        System.out.println("[" + name + "] This command class does not implement EventPremise.");
+                        fail();
+                        continue;
+                    }
 
                     if (!(instance instanceof Listener)) {
                         System.out.println("[" + name + "] This event class does not implement Listener.");

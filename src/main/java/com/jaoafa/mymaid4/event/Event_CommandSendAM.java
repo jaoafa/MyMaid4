@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.event;
 
+import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -20,7 +21,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-public class Event_CommandSendAM extends MyMaidLibrary implements Listener {
+public class Event_CommandSendAM extends MyMaidLibrary implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "実行されたコマンドをAdminとModeratorに通知します。";
+    }
+
     @EventHandler(priority = EventPriority.MONITOR)
     public void onCommand(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();

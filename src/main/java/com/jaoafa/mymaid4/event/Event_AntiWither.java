@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.event;
 
+import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -22,7 +23,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 
-public class Event_AntiWither extends MyMaidLibrary implements Listener {
+public class Event_AntiWither extends MyMaidLibrary implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "ウィザーの出現制限を行います。";
+    }
+
     @EventHandler
     public void CreatureSpawn(CreatureSpawnEvent event) {
         // 召喚されたMOBのエンティティを取得する

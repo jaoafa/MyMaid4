@@ -31,7 +31,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class Event_Vote extends MyMaidLibrary implements Listener {
+public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "各サーバリストサイトからの投票通知を受け取り、処理します。";
+    }
+
     @EventHandler
     public void onVotifierEvent(VotifierEvent event) {
         Vote vote = event.getVote();

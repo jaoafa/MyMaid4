@@ -12,6 +12,7 @@
 package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.Main;
+import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.Jail;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
@@ -33,7 +34,12 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class Event_Jail implements Listener {
+public class Event_Jail implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "Jailに関する各種処理を行います。";
+    }
+
     @EventHandler(priority = EventPriority.MONITOR,
                   ignoreCancelled = true)
     public void OnEvent_LoginJailCheck(PlayerJoinEvent event) {

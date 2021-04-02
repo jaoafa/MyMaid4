@@ -11,13 +11,19 @@
 
 package com.jaoafa.mymaid4.event;
 
+import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-public class Event_AntiTargetAllEntityCmd extends MyMaidLibrary implements Listener {
+public class Event_AntiTargetAllEntityCmd extends MyMaidLibrary implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "全てのエンティティをターゲットとするコマンドの使用を禁止します。";
+    }
+
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent event) {
         String command = event.getMessage();

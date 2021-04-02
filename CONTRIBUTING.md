@@ -134,7 +134,7 @@ ZakuroHat 上の Docker に立てられている PaperMC 環境で動作する�
   - ドキュメントは [こちら](https://incendo.github.io/cloud) です。
 - 全てのコマンドは [`src/main/java/com/jaoafa/mymaid4/command/Cmd_<CommandName>.java`](src/main/java/com/jaoafa/mymaid4/command) に配置され、これらが自動で読み込まれます。
 - 同時に、クラス名は `Cmd_<CommandName>` でなければなりません。`<CommandName>` は大文字・小文字を問いません。
-- また、ここに配置されるコマンドクラスは CommandPremise インターフェースを実装する必要があります。（`implements CommandPremise`）
+- また、ここに配置されるコマンドクラスは `com.jaoafa.mymaid4.lib.CommandPremise` インターフェースを実装する必要があります。（`implements CommandPremise`）
 - コマンドの情報（コマンド名・説明）は `details()` で定義します。
 - コマンドの内容は `register()` で定義します。このメソッドは Main クラスの `registerCommand` から呼び出され、コマンドが追加されます。（`plugin.yml` に書く必要がありません）
 - 全てのコマンドのパーミッションは小文字の `mymaid.<CommandName>` でなければなりません。
@@ -144,6 +144,8 @@ ZakuroHat 上の Docker に立てられている PaperMC 環境で動作する�
 
 - 全てのイベント駆動の機能は [`src/main/java/com/jaoafa/mymaid4/event/Event_<FuncName>.java`](src/main/java/com/jaoafa/mymaid4/event) に配置され、これらが自動で読み込まれます。
 - 同時に、クラス名は `Event_<FuncName>` でなければなりません。
+- また、ここに配置されるコマンドクラスは `org.bukkit.event.Listener` と `com.jaoafa.mymaid4.lib.EventPremise` インターフェースを実装する必要があります。（`implements Listener, EventPremise`）
+- そのクラス(イベント)が持つ機能の情報は `description()` で定義します。
 - `<FuncName>` は自由で構いません
 
 ## Git

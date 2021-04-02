@@ -11,10 +11,7 @@
 
 package com.jaoafa.mymaid4.event;
 
-import com.jaoafa.mymaid4.lib.EBan;
-import com.jaoafa.mymaid4.lib.Jail;
-import com.jaoafa.mymaid4.lib.MyMaidLibrary;
-import com.jaoafa.mymaid4.lib.SelectorParser;
+import com.jaoafa.mymaid4.lib.*;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,7 +23,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener {
+public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "迷惑コマンドの制限を行います。";
+    }
+
     static Map<String, AntiCommand> antiCommandMap = new HashMap<>();
     static String[] LeastOne = new String[]{"distance", "type", "team", "name"};
 

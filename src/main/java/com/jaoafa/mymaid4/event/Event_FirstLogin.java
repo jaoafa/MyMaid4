@@ -12,6 +12,7 @@
 package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.Main;
+import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MCBans;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
@@ -29,7 +30,12 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Event_FirstLogin extends MyMaidLibrary implements Listener {
+public class Event_FirstLogin extends MyMaidLibrary implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "初めてログインしたプレイヤーを通知します。";
+    }
+
     @EventHandler
     public void OnEvent_FirstLogin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
@@ -37,7 +43,7 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener {
             return; // 初めてではない
         }
 
-        if(Main.getMyMaidConfig().isDevelopmentServer()){
+        if (Main.getMyMaidConfig().isDevelopmentServer()) {
             Main.getMyMaidLogger().warning("開発サーバのため、新規ログイン通知機能は動作しません。");
             return;
         }
