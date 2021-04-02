@@ -352,6 +352,7 @@ public class Jail {
             }
 
             try (ResultSet res = stmt.executeQuery()) {
+                this.dbSyncedTime = System.currentTimeMillis();
                 if (!res.next()) {
                     MyMaidLibrary.debug("fetchData: NOTFOUND");
                     return FetchDataResult.NOTFOUND;
@@ -364,7 +365,6 @@ public class Jail {
                 this.remover = res.getString("remover");
                 this.status = res.getBoolean("status");
                 this.created_at = res.getTimestamp("created_at");
-                this.dbSyncedTime = System.currentTimeMillis();
 
                 cache.put(player.getUniqueId(), this);
             }
