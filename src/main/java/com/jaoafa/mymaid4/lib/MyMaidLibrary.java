@@ -36,7 +36,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -472,11 +475,11 @@ public class MyMaidLibrary {
         }
 
         if (count == 2) {
-            Jail jail = new Jail(player);
-             if (jail.isBanned()){
+            Jail jail = Jail.getInstance(player);
+            if (jail.isStatus()) {
                 return;
-             }
-             jail.addBan("jaotan", "迷惑コマンドを過去3分間に3回以上実行したため");
+            }
+            jail.addBan("jaotan", "迷惑コマンドを過去3分間に3回以上実行したため");
             return;
         } else if (count == 1) {
             player.sendMessage(String.format("[AntiProblemCommand] %s短時間に複数回にわたる迷惑コマンドが実行された場合、処罰対象となる場合があります。ご注意ください。", ChatColor.GREEN));
@@ -506,7 +509,7 @@ public class MyMaidLibrary {
     }
 
     public static NamedTextColor getNamedTextColor(String color) {
-        switch (color.toUpperCase()){
+        switch (color.toUpperCase()) {
             case "BLACK":
                 return NamedTextColor.BLACK;
             case "DARK_BLUE":

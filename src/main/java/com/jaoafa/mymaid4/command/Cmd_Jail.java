@@ -82,7 +82,7 @@ public class Cmd_Jail extends MyMaidLibrary implements CommandPremise {
             return;
         }
 
-        Jail jail = new Jail(player);
+        Jail jail = Jail.getInstance(player);
         Jail.Result result = jail.addBan(sender.getName(), reason);
 
         String message = "原因不明のエラーが発生しました。(成功しているかもしれません)";
@@ -118,7 +118,7 @@ public class Cmd_Jail extends MyMaidLibrary implements CommandPremise {
             return;
         }
 
-        Jail jail = new Jail(player);
+        Jail jail = Jail.getInstance(player);
         Jail.Result result = jail.removeBan(sender.getName());
 
         String message = "原因不明のエラーが発生しました。(成功しているかもしれません)";
@@ -162,7 +162,7 @@ public class Cmd_Jail extends MyMaidLibrary implements CommandPremise {
     }
 
     void sendJailedList(CommandSender sender) {
-        List<Jail.JailData> jails = Jail.getActiveJails();
+        List<OfflinePlayer> jails = Jail.getBannedPlayers();
         if (jails == null) {
             SendMessage(sender, details(), "Jail情報を取得できませんでした。時間をおいてもう一度お試しください。");
             return;
@@ -170,18 +170,19 @@ public class Cmd_Jail extends MyMaidLibrary implements CommandPremise {
 
         SendMessage(sender, details(), "現在、" + jails.size() + "名のプレイヤーがJailされています。");
         int nameWidth = jails.stream()
-            .filter(jail -> jail.getPlayerName() != null)
-            .max(Comparator.comparingInt(i -> i.getPlayerName().length()))
-            .filter(jail -> jail.getPlayerName() != null) // なんでこれが必要なのか…
-            .map(jail -> jail.getPlayerName().length())
+            .filter(jail -> jail.getName() != null)
+            .max(Comparator.comparingInt(i -> i.getName().length()))
+            .filter(jail -> jail.getName() != null) // なんでこれが必要なのか…
+            .map(jail -> jail.getName().length())
             .orElse(4);
-        for (Jail.JailData jail : jails) {
+        jails.forEach(p -> {
+            Jail jail = Jail.getInstance(p);
             String displayName = "NULL";
-            if (jail.getPlayerName() != null) {
-                displayName = jail.getPlayerName();
+            if (p.getName() != null) {
+                displayName = p.getName();
             }
             SendMessage(sender, details(), formatText(displayName, nameWidth) + " " + jail.getReason());
-        }
+        });
     }
 
     String formatText(String str, int width) {
@@ -189,18 +190,17 @@ public class Cmd_Jail extends MyMaidLibrary implements CommandPremise {
     }
 
     void sendPlayerStatus(CommandSender sender, OfflinePlayer player) {
-        Jail jail = new Jail(player);
+        Jail jail = Jail.getInstance(player);
 
-        if (!jail.isBanned()) {
+        if (!jail.isStatus()) {
             SendMessage(sender, details(), "指定されたプレイヤーはJailされていないようです。");
             return;
         }
 
-        Jail.JailData jailData = jail.getJailData();
-        int jailId = jailData.getJailId();
-        String banned_by = jailData.getBannedBy();
-        String reason = jailData.getReason();
-        Timestamp created_at = jailData.getCreatedAt();
+        int jailId = jail.getJailId();
+        String banned_by = jail.getBannedBy();
+        String reason = jail.getReason();
+        Timestamp created_at = jail.getCreatedAt();
 
         SendMessage(sender, details(), String.format("プレイヤー「%s」は現在Jailされています。", player.getName()));
         SendMessage(sender, details(), String.format("JailId: %d", jailId));
@@ -213,9 +213,9 @@ public class Cmd_Jail extends MyMaidLibrary implements CommandPremise {
         Player player = (Player) context.getSender();
         String testment = context.get("message");
 
-        Jail jail = new Jail(player);
+        Jail jail = Jail.getInstance(player);
 
-        if (!jail.isBanned()) {
+        if (!jail.isStatus()) {
             SendMessage(player, details(), "あなたはJailされていないようです。");
             return;
         }

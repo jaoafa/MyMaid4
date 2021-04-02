@@ -21,7 +21,6 @@ import com.jaoafa.mymaid4.tasks.Task_AutoRemoveJailByjaoium;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -160,25 +159,25 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
             malicious = isMalicious((PotionMeta) click_matched.get().getItemMeta());
         }
 
-        if(!isMatched){
+        if (!isMatched) {
             return;
         }
 
-        Jail jail = new Jail(player);
-        if (jail.isBanned()) {
+        Jail jail = Jail.getInstance(player);
+        if (jail.isStatus()) {
             return;
         }
-        EBan eban = new EBan(player);
-        if (eban.isBanned()) {
+        EBan eban = EBan.getInstance(player);
+        if (eban.isStatus()) {
             return;
         }
 
         checkjaoiumLocation(player);
         Achievementjao.getAchievementAsync(player, Achievement.DRUGADDICTION);
         player.getInventory().clear();
-        if(malicious != null){
+        if (malicious != null) {
             eban.addBan("jaotan", String.format("禁止クライアントMod「%s」使用の疑い。方針「クライアントModの導入・利用に関する規則」の「禁止事項」への違反", malicious));
-        }else{
+        } else {
             jail.addBan("jaotan", "jaoium所持");
             new Task_AutoRemoveJailByjaoium(player).runTaskLater(Main.getJavaPlugin(), 1200L); // 60s
         }
@@ -260,25 +259,25 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener {
             malicious = isMalicious((PotionMeta) ender_matched.get().getItemMeta());
         }
 
-        if(!isMatched){
+        if (!isMatched) {
             return;
         }
 
-        Jail jail = new Jail(player);
-        if (jail.isBanned()) {
+        Jail jail = Jail.getInstance(player);
+        if (jail.isStatus()) {
             return;
         }
-        EBan eban = new EBan(player);
-        if (eban.isBanned()) {
+        EBan eban = EBan.getInstance(player);
+        if (eban.isStatus()) {
             return;
         }
 
         checkjaoiumLocation(player);
         Achievementjao.getAchievementAsync(player, Achievement.DRUGADDICTION);
         player.getInventory().clear();
-        if(malicious != null){
+        if (malicious != null) {
             eban.addBan("jaotan", String.format("禁止クライアントMod「%s」使用の疑い。方針「クライアントModの導入・利用に関する規則」の「禁止事項」への違反", malicious));
-        }else{
+        } else {
             jail.addBan("jaotan", "jaoium所持");
             new Task_AutoRemoveJailByjaoium(player).runTaskLater(Main.getJavaPlugin(), 1200L); // 60s
         }
