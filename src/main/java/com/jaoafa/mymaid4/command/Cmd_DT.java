@@ -40,6 +40,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
+    private static final Map<UUID, Long> DTCooldown = new HashMap<>();
+    
     @Override
     public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
@@ -118,22 +120,20 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
                 .build()
         );
     }
-
-    private static final Map<UUID, Long> DTCooldown = new HashMap<>();
+    
     void teleportMarker(CommandContext<CommandSender> context) {
         CommandSender sender = context.getSender();
         Player target = context.getOrDefault("player", null);
         String markerName = context.get("markerName");
         Player sendPlayer = (Player) context.getSender();
+        
         if (!DTCooldown.containsKey(sendPlayer.getUniqueId())){
-            DTCooldown.put(sendPlayer.getUniqueId(),System.currentTimeMillis());
-        }
-        else if (DTCooldown.get(sendPlayer.getUniqueId())>System.currentTimeMillis()-3000){
-            SendMessage(context.getSender(),details(),"DTには3秒のクールダウンがあります！少々お待ちください...");
+            DTCooldown.put(sendPlayer.getUniqueId(), System.currentTimeMillis());
+        } else if (DTCooldown.get(sendPlayer.getUniqueId()) > System.currentTimeMillis() - 3000){
+            SendMessage(context.getSender(), details(), "DTには3秒のクールダウンがあります！少々お待ちください...");
             return;
-        }
-        else{
-            DTCooldown.put(sendPlayer.getUniqueId(),System.currentTimeMillis());
+        } else {
+            DTCooldown.put(sendPlayer.getUniqueId(), System.currentTimeMillis());
         }
 
 
