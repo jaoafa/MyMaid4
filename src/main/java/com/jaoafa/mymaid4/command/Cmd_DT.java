@@ -119,19 +119,20 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
         );
     }
 
+    private static final Map<UUID, Long> DTCooldown = new HashMap<>();
     void teleportMarker(CommandContext<CommandSender> context) {
         CommandSender sender = context.getSender();
         Player target = context.getOrDefault("player", null);
         String markerName = context.get("markerName");
-
-        if (MyMaidData.getLastDT((Player) context.getSender()) == 0){
-            MyMaidData.setLastDT((Player) context.getSender());
+        Player sendPlayer = (Player) context.getSender();
+        if (!DTCooldown.containsKey(sendPlayer.getUniqueId())){
+            DTCooldown.put(sendPlayer.getUniqueId(),System.currentTimeMillis());
         }
-        if (MyMaidData.getLastDT((Player) context.getSender())<System.currentTimeMillis()-3000){
+        else if (DTCooldown.get(sendPlayer.getUniqueId())<System.currentTimeMillis()-3000){
             SendMessage(context.getSender(),details(),"DTには3秒のクールダウンがあります！少々お待ちください...");
             return;
         }else{
-            MyMaidData.setLastDT((Player) context.getSender());
+            DTCooldown.put(sendPlayer.getUniqueId(),System.currentTimeMillis());
         }
 
 
