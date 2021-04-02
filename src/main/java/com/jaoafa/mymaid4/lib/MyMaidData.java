@@ -141,5 +141,4 @@ public class MyMaidData {
     public static void removeTempMuting(Player player) {
         tempMuting.remove(player);
     }
-
 }
