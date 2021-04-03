@@ -208,7 +208,7 @@ public final class Main extends JavaPlugin {
 
     private void scheduleTasks(){
         new MyMaidServer().runTaskAsynchronously(this);
-        new Task_Pigeon().runTaskTimerAsynchronously(this, 10000L, 600000L); // 10秒後から10分毎
+        new Task_Pigeon().runTaskTimerAsynchronously(this, 200L, 12000L); // 10秒後から10分毎
     }
 
     public static void registerDiscordEvent(JDABuilder d) {
