@@ -125,6 +125,7 @@ public final class Main extends JavaPlugin {
                             obj.put("isRequired", arg.isRequired());
                             obj.put("defaultValue", arg.getDefaultValue());
                             obj.put("defaultDescription", arg.getDefaultDescription());
+                            obj.put("class", arg.getClass().getName());
                             args.put(obj);
                         });
                         subcommand.put("arguments", args);
