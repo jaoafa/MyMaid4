@@ -281,15 +281,8 @@ public class ChatBan {
         try {
             Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
 
-            // このへんの処理綺麗に書きたい
-            PreparedStatement stmt;
-            if (id != -1) {
-                stmt = conn.prepareStatement("SELECT * FROM chatban WHERE id = ?");
-                stmt.setInt(1, id);
-            } else {
-                stmt = conn.prepareStatement("SELECT * FROM chatban WHERE uuid = ? ORDER BY id DESC LIMIT 1");
-                stmt.setString(1, player.getUniqueId().toString());
-            }
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM chatban WHERE uuid = ? ORDER BY id DESC LIMIT 1");
+            stmt.setString(1, player.getUniqueId().toString());
 
             try (ResultSet res = stmt.executeQuery()) {
                 this.dbSyncedTime = System.currentTimeMillis();
