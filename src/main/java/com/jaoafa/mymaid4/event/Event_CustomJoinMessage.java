@@ -71,11 +71,7 @@ public class Event_CustomJoinMessage extends MyMaidLibrary implements Listener, 
     Component getPlayerJoinMessage(Player player) {
         int count = getVoteCount(player);
         if (count < 20) {
-            return Component.text().append(
-                Component.text(player.getName()),
-                Component.space(),
-                Component.text("joined the game.")
-            ).color(NamedTextColor.GREEN).build();
+            return null;
         }
         String rankText = getJoinMessage(count);
         String customMessage = getCustomMessage(player);
