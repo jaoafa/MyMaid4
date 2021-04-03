@@ -349,6 +349,7 @@ public class Jail {
                 this.dbSyncedTime = System.currentTimeMillis();
                 if (!res.next()) {
                     MyMaidLibrary.debug("fetchData: NOTFOUND");
+                    cache.put(player.getUniqueId(), this);
                     return FetchDataResult.NOTFOUND;
                 }
 
