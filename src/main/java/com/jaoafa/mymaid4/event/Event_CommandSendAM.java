@@ -12,6 +12,7 @@
 package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.lib.EventPremise;
+import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -38,6 +39,9 @@ public class Event_CommandSendAM extends MyMaidLibrary implements Listener, Even
         String group = getPermissionMainGroup(player);
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             if (isAM(p) && (!player.getName().equals(p.getName()))) {
+                if (MyMaidData.getTempMuting().contains(player)) {
+                    return;
+                }
                 p.sendMessage(
                     ChatColor.GRAY + "(" + group + ") " + player.getName() + ": " + ChatColor.YELLOW + command + (event.isCancelled() ? ChatColor.RED + " (Canceled)" : ""));
             }
