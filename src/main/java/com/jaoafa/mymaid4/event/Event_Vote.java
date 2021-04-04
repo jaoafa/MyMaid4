@@ -20,6 +20,7 @@ import com.vexsoftware.votifier.model.VotifierEvent;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
@@ -63,7 +64,9 @@ public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise 
         Bukkit.getServer().sendMessage(Component.text().append(
             Component.text("[MyMaid]"),
             Component.space(),
-            Component.text("投票をよろしくお願いします！ https://jaoafa.com/vote", NamedTextColor.GREEN)
+            Component.text("投票をよろしくお願いします！", NamedTextColor.GREEN),
+            Component.space(),
+            Component.text("https://jaoafa.com/monovote", NamedTextColor.GREEN, TextDecoration.UNDERLINED)
         ));
 
         if(Main.getMyMaidConfig().getJDA() != null) {
@@ -95,7 +98,9 @@ public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise 
         Bukkit.getServer().sendMessage(Component.text().append(
             Component.text("[MyMaid]"),
             Component.space(),
-            Component.text("投票をよろしくお願いします！ https://jaoafa.com/monovote", NamedTextColor.GREEN)
+            Component.text("投票をよろしくお願いします！", NamedTextColor.GREEN),
+            Component.space(),
+            Component.text("https://jaoafa.com/monovote", NamedTextColor.GREEN, TextDecoration.UNDERLINED)
         ));
 
         if(Main.getMyMaidConfig().getJDA() != null) {
