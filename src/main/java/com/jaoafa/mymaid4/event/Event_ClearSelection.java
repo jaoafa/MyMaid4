@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.event;
 
+import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import com.jaoafa.mymaid4.lib.SelClickManager;
 import org.bukkit.GameMode;
@@ -21,7 +22,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class Event_ClearSelection extends MyMaidLibrary implements Listener {
+public class Event_ClearSelection extends MyMaidLibrary implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "走りながら空気をクリックして/selを実行します。";
+    }
     @EventHandler
     public void onAirClick(PlayerInteractEvent event) {
         Player player = event.getPlayer();
