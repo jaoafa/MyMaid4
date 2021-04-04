@@ -19,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 public class Event_SKKColor extends MyMaidLibrary implements Listener, EventPremise {
     @Override
@@ -40,5 +41,10 @@ public class Event_SKKColor extends MyMaidLibrary implements Listener, EventPrem
         event.setFormat(
             event.getFormat().replaceFirst("%1\\$s", String.format("%s■%s%s", SKKColorManager.getPlayerChatColor(event.getPlayer()), ChatColor.WHITE, event.getPlayer().getName()))
         );
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onEvent_JoinTabReload(PlayerJoinEvent event) {
+        SKKColorManager.setPlayerSKKTabList(event.getPlayer());
     }
 }
