@@ -15,14 +15,12 @@ import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.BooleanArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
-import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -53,16 +51,17 @@ public class Cmd_TempMute extends MyMaidLibrary implements CommandPremise {
         Player player = (Player) context.getSender();
         Boolean bool = context.getOrDefault("changeTo", null);
 
-        if(bool == null){
+        if (bool == null) {
             bool = !MyMaidData.getTempMuting().contains(player);
         }
 
-        if(bool){
+        if (bool) {
             MyMaidData.addTempMuting(player);
-        }else{
+        } else {
             MyMaidData.removeTempMuting(player);
         }
         SendMessage(player, details(), "一時的なミュートを " + (bool ? "オン" : "オフ") + " にしました。");
-        if(bool) SendMessage(player, details(), Component.text("ミュートしている間、自分を含む全てのチャットおよび一部のシステムメッセージは送信されなくなります。", NamedTextColor.RED));
+        if (bool)
+            SendMessage(player, details(), Component.text("ミュートしている間、自分を含む全てのチャットおよび一部のシステムメッセージは送信されなくなります。", NamedTextColor.RED));
     }
 }
