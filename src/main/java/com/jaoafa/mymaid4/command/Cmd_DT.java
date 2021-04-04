@@ -18,6 +18,7 @@ import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
 import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
+import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
@@ -464,7 +465,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
                     player.getUniqueId(),
                     Component.text(player.getName()))),
             Component.space(),
-            Component.text("は"),
+            Component.text("を", NamedTextColor.GRAY),
             Component.space(),
             Component.text(markerName, NamedTextColor.GRAY, TextDecoration.ITALIC)
                 .hoverEvent(HoverEvent.showText(Component.text().append(
@@ -480,7 +481,10 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
                 )))
                 .clickEvent(ClickEvent.suggestCommand(String.format("/dt %s", markerName))),
             Component.space(),
-            Component.text("にワープしました]", NamedTextColor.GRAY)
+            Component.text("にテレポートさせました]", NamedTextColor.GRAY)
         ));
+        if (MyMaidData.getServerChatChannel() != null) {
+            MyMaidData.getServerChatChannel().sendMessage("*[" + DiscordEscape(sender.getName()) + ": " + DiscordEscape(player.getName()) + " teleported to " + markerName + "]*").queue();
+        }
     }
 }
