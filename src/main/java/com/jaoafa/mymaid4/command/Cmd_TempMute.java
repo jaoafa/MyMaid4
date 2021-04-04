@@ -12,13 +12,15 @@
 package com.jaoafa.mymaid4.command;
 
 import cloud.commandframework.Command;
+import cloud.commandframework.arguments.standard.BooleanArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
 import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
+import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
-import org.bukkit.Location;
-import org.bukkit.World;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -26,8 +28,8 @@ public class Cmd_TempMute extends MyMaidLibrary implements CommandPremise {
     @Override
     public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
-            "spawn",
-            "スポーン地点にテレポートします。"
+            "tempmute",
+            "一時的なミュートを実施します。運営のみ使用できます。"
         );
     }
 
@@ -35,38 +37,31 @@ public class Cmd_TempMute extends MyMaidLibrary implements CommandPremise {
     public MyMaidCommand.Cmd register(Command.Builder<CommandSender> builder) {
         return new MyMaidCommand.Cmd(
             builder
-                .meta(CommandMeta.DESCRIPTION, "ワールドのスポーン地点にテレポートします。")
+                .meta(CommandMeta.DESCRIPTION, "TempMuteをオン・オフします。指定しない場合、トグルで変更します。")
                 .senderType(Player.class)
-                .handler(this::teleportWorldSpawn)
-                .build(),
-            builder
-                .meta(CommandMeta.DESCRIPTION, "あなたのスポーン地点にテレポートします。")
-                .senderType(Player.class)
-                .literal("true")
-                .handler(this::teleportYourSpawn)
+                .argument(BooleanArgument
+                    .<CommandSender>newBuilder("changeTo")
+                    .asOptional())
+                .handler(this::changeTempMute)
                 .build()
         );
     }
 
-    void teleportWorldSpawn(CommandContext<CommandSender> context) {
+    void changeTempMute(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
+        Boolean bool = context.getOrDefault("changeTo", null);
 
-        World world = player.getWorld();
-        Location loc = world.getSpawnLocation();
-        loc = loc.add(0.5f, 0f, 0.5f);
-        player.teleport(loc);
-        SendMessage(player, details(), "スポーン地点にテレポートしました。");
-    }
-
-    void teleportYourSpawn(CommandContext<CommandSender> context) {
-        Player player = (Player) context.getSender();
-
-        Location loc = player.getBedSpawnLocation();
-        if (loc == null) {
-            SendMessage(player, details(), "スポーン地点が見つかりませんでした。/spawnpointで設定しましょう。");
-            return;
+        if (bool == null) {
+            bool = !MyMaidData.getTempMuting().contains(player);
         }
-        player.teleport(loc);
-        SendMessage(player, details(), "あなたのスポーン地点にテレポートしました。");
+
+        if (bool) {
+            MyMaidData.addTempMuting(player);
+        } else {
+            MyMaidData.removeTempMuting(player);
+        }
+        SendMessage(player, details(), "一時的なミュートを " + (bool ? "オン" : "オフ") + " にしました。");
+        if (bool)
+            SendMessage(player, details(), Component.text("ミュートしている間、自分を含む全てのチャットおよび一部のシステムメッセージは送信されなくなります。", NamedTextColor.RED));
     }
 }
