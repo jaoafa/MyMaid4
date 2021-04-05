@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 複数のクラスを跨いで使用されるリストなどの変数をまとめるクラス
@@ -36,6 +37,7 @@ public class MyMaidData {
     private static final Set<Player> tempMuting = new HashSet<>();
     private static CarrierPigeon carrierPigeon = null;
     private static final JSONObject getDocsData = new JSONObject();
+    private static final Map<UUID, UUID> looking = new HashMap<>();
 
     @Nullable
     public static TextChannel getReportChannel() {
@@ -159,5 +161,29 @@ public class MyMaidData {
 
     public static void putGetDocsData(String key, Object value) {
         getDocsData.put(key, value);
+    }
+
+    public static boolean isLooking(UUID uuid) {
+        return looking.containsKey(uuid);
+    }
+
+    public static UUID getLooking(UUID uuid) {
+        return looking.get(uuid);
+    }
+
+    public static boolean isLookingMe(UUID uuid) {
+        return looking.containsValue(uuid);
+    }
+
+    public static Set<UUID> getLookingMe(UUID uuid) {
+        return looking.entrySet().stream().filter(entry -> entry.getValue() == uuid).map(Map.Entry::getKey).collect(Collectors.toSet());
+    }
+
+    public static void setLooking(UUID uuid, UUID target) {
+        looking.put(uuid, target);
+    }
+
+    public static void removeLooking(UUID uuid) {
+        looking.remove(uuid);
     }
 }
