@@ -54,7 +54,7 @@ public class Cmd_Elytra extends MyMaidLibrary implements CommandPremise {
         inv.setItemInOffHand(fireworks);
         SendMessage(player, details(), "花火をオフハンドのアイテムと置きかえました。");
 
-        if (offhand != null && offhand.getType() != Material.AIR) {
+        if (offhand.getType() != Material.AIR) {
             if (player.getInventory().firstEmpty() == -1) {
                 player.getLocation().getWorld().dropItem(player.getLocation(), offhand);
                 SendMessage(player, details(), "インベントリがいっぱいだったため、既にオフハンドに持っていたアイテムはあなたの足元にドロップしました。");
