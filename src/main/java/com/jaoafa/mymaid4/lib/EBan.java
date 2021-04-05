@@ -245,13 +245,11 @@ public class EBan {
      * @return FetchDataResult
      */
     public FetchDataResult fetchData(boolean force) {
-        MyMaidLibrary.debug(String.format("fetchData(%s)", force));
         if (!force && ((dbSyncedTime + 60 * 60 * 1000) > System.currentTimeMillis())) {
             MyMaidLibrary.debug("fetchData: CACHED");
             return FetchDataResult.CACHED; // 30分未経過
         }
         if (!MyMaidData.isMainDBActive()) {
-            MyMaidLibrary.debug("fetchData: DATABASE_NOT_ACTIVE");
             return FetchDataResult.DATABASE_NOT_ACTIVE;
         }
         try {
@@ -263,7 +261,6 @@ public class EBan {
             try (ResultSet res = stmt.executeQuery()) {
                 this.dbSyncedTime = System.currentTimeMillis();
                 if (!res.next()) {
-                    MyMaidLibrary.debug("fetchData: NOTFOUND");
                     cache.put(player.getUniqueId(), this);
                     return FetchDataResult.NOTFOUND;
                 }
@@ -278,11 +275,9 @@ public class EBan {
                 cache.put(player.getUniqueId(), this);
             }
 
-            MyMaidLibrary.debug("fetchData: SUCCESS");
             return FetchDataResult.SUCCESS;
         } catch (SQLException e) {
             MyMaidLibrary.reportError(getClass(), e);
-            MyMaidLibrary.debug("fetchData: DATABASE_ERROR");
             return FetchDataResult.DATABASE_ERROR;
         }
     }
