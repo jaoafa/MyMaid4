@@ -18,6 +18,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -26,6 +27,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
@@ -95,7 +97,7 @@ public class Event_ProtectionSandBox extends MyMaidLibrary implements Listener, 
         if (!world.getName().equalsIgnoreCase("SandBox")) {
             return; // SandBoxのみ
         }
-        if(player == null){
+        if (player == null) {
             event.setCancelled(true);
             return;
         }
@@ -168,7 +170,7 @@ public class Event_ProtectionSandBox extends MyMaidLibrary implements Listener, 
 
         if (player.getInventory().getItemInMainHand().getType() == Material.AIR ||
             player.getInventory().getItemInOffHand().getType() == Material.AIR) {
-                return;
+            return;
         }
 
         if (!world.getName().equalsIgnoreCase("SandBox")) {
@@ -201,6 +203,26 @@ public class Event_ProtectionSandBox extends MyMaidLibrary implements Listener, 
             return; // RMA除外
         }
         player.sendMessage("[SandBox] " + ChatColor.RED + "あなたの権限ではSandBoxに干渉することはできません。");
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onDamageArmorStand(EntityDamageByEntityEvent event) {
+        if (!(event.getDamager() instanceof Player)) {
+            return;
+        }
+        Player player = (Player) event.getDamager();
+        World world = player.getWorld();
+        if (event.getEntity().getType() != EntityType.ARMOR_STAND) {
+            return;
+        }
+        if (!world.getName().equalsIgnoreCase("SandBox")) {
+            return; // SandBoxのみ
+        }
+        if (isAMR(player)) {
+            return; // RMA除外
+        }
+        player.sendMessage("[SandBox] " + ChatColor.RED + "あなたの権限ではSandBoxでアーマースタンドを壊すことができません。");
         event.setCancelled(true);
     }
 }
