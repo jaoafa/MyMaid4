@@ -51,6 +51,11 @@ public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener, E
     public void OnLoginCheck(AsyncPlayerPreLoginEvent event) {
         // MCBansが落ちている場合を考慮してjaoafaデータベースからチェック
 
+        if (Main.getMyMaidConfig().isDevelopmentServer()) {
+            Main.getMyMaidLogger().warning("開発サーバのため、MCBansチェックは動作しません。");
+            return;
+        }
+
         // Reputationチェック
         String name = event.getName();
         UUID uuid = event.getUniqueId();
@@ -127,6 +132,12 @@ public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener, E
     public void OnLoginAfterCheck(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
+
+        if (Main.getMyMaidConfig().isDevelopmentServer()) {
+            Main.getMyMaidLogger().warning("開発サーバのため、MCBansチェックは動作しません。");
+            return;
+        }
+
         new BukkitRunnable() {
             public void run() {
                 try {
