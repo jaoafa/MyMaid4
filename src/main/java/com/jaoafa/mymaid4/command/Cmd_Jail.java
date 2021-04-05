@@ -209,6 +209,7 @@ public class Cmd_Jail extends MyMaidLibrary implements CommandPremise {
         SendMessage(sender, details(), "Jail日時: " + sdfFormat(created_at));
     }
 
+    // ここに何らかの修正を加える場合、Cmd_Testmentにも修正を適用するのを忘れないでください。
     void setTestment(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
         String testment = context.get("message");
