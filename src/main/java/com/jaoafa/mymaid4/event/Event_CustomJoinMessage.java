@@ -14,10 +14,8 @@ package com.jaoafa.mymaid4.event;
 import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import com.jaoafa.mymaid4.lib.PlayerVoteDataMCJP;
-import com.jaoafa.mymaid4.lib.SKKColorManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -49,8 +47,6 @@ public class Event_CustomJoinMessage extends MyMaidLibrary implements Listener, 
         Player player = event.getPlayer();
         Component joinMessage = getPlayerJoinMessage(player);
         if (joinMessage != null) event.joinMessage(joinMessage);
-
-        for (Player p : Bukkit.getServer().getOnlinePlayers()) SKKColorManager.setPlayerSKKTabList(p);
     }
 
     String getJoinMessage(int count) {
