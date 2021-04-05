@@ -129,7 +129,14 @@ public class SKKColorManager {
     public static Component getPlayerSKKTabListComponent(Player player) {
         Team team = Bukkit.getServer().getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
 
-        return team == null ?
+        boolean threwIllegalStateException = false;
+        try {
+            if (team != null) team.color();
+        } catch (IllegalStateException e) {
+            threwIllegalStateException = true;
+        }
+
+        return team == null || threwIllegalStateException ?
             Component.text().append(
                 Component.text("■").color(getPlayerColor(player)),
                 Component.text(player.getName())
