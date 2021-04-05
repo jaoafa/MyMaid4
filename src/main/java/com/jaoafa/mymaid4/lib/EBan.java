@@ -246,7 +246,6 @@ public class EBan {
      */
     public FetchDataResult fetchData(boolean force) {
         if (!force && ((dbSyncedTime + 60 * 60 * 1000) > System.currentTimeMillis())) {
-            MyMaidLibrary.debug("fetchData: CACHED");
             return FetchDataResult.CACHED; // 30分未経過
         }
         if (!MyMaidData.isMainDBActive()) {
