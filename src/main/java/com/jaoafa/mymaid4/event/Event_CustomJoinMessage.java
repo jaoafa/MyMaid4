@@ -64,7 +64,7 @@ public class Event_CustomJoinMessage extends MyMaidLibrary implements Listener, 
             _count -= 5;
             _count = (int) Math.floor(_count);
 
-            return "the New Generation " + JoinMessages.stream().limit(_count).collect(Collectors.joining(" ")) + " VIP";
+            return JoinMessages.stream().limit(_count).collect(Collectors.joining(" ")) + " VIP";
         }
     }
 
