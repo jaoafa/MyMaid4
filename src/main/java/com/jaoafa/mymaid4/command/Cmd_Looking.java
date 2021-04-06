@@ -61,6 +61,11 @@ public class Cmd_Looking extends MyMaidLibrary implements CommandPremise {
         );
     }
 
+    void debug(CommandContext<CommandSender> context) {
+        Player player = (Player) context.getSender();
+        SendMessage(player, details(), player.getName());
+    }
+
     void startNowLooking(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
         Optional<Player> target = player.getWorld().getPlayers().stream().filter(p -> getLookingAt(player, p)).findFirst();
@@ -69,6 +74,7 @@ public class Cmd_Looking extends MyMaidLibrary implements CommandPremise {
             return;
         }
         MyMaidData.setLooking(player.getUniqueId(), target.get().getUniqueId());
+        SendMessage(player, details(), target.get().getName() + " を見続けます…");
     }
 
     boolean getLookingAt(Player player, Player target) {
@@ -87,6 +93,7 @@ public class Cmd_Looking extends MyMaidLibrary implements CommandPremise {
             return;
         }
         MyMaidData.setLooking(player.getUniqueId(), target.getUniqueId());
+        SendMessage(player, details(), target.getName() + " を見続けます…");
     }
 
     void endLooking(CommandContext<CommandSender> context) {
@@ -96,5 +103,6 @@ public class Cmd_Looking extends MyMaidLibrary implements CommandPremise {
             return;
         }
         MyMaidData.removeLooking(player.getUniqueId());
+        SendMessage(player, details(), "見続けるのをやめました");
     }
 }
