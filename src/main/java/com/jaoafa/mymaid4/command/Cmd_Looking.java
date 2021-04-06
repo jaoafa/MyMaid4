@@ -57,12 +57,6 @@ public class Cmd_Looking extends MyMaidLibrary implements CommandPremise {
                 .senderType(Player.class)
                 .literal("off", "stop", "end")
                 .handler(this::endLooking)
-                .build(),
-            builder
-                .meta(CommandMeta.DESCRIPTION, "debug")
-                .senderType(Player.class)
-                .literal("debug")
-                .handler(this::debug)
                 .build()
         );
     }
@@ -80,6 +74,7 @@ public class Cmd_Looking extends MyMaidLibrary implements CommandPremise {
             return;
         }
         MyMaidData.setLooking(player.getUniqueId(), target.get().getUniqueId());
+        SendMessage(player, details(), target.get().getName() + " を見続けます…");
     }
 
     boolean getLookingAt(Player player, Player target) {
@@ -98,7 +93,7 @@ public class Cmd_Looking extends MyMaidLibrary implements CommandPremise {
             return;
         }
         MyMaidData.setLooking(player.getUniqueId(), target.getUniqueId());
-        SendMessage(player, details(), player.getName() + " を見続けます…");
+        SendMessage(player, details(), target.getName() + " を見続けます…");
     }
 
     void endLooking(CommandContext<CommandSender> context) {
