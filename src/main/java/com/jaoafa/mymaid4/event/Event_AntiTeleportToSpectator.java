@@ -37,12 +37,15 @@ public class Event_AntiTeleportToSpectator extends MyMaidLibrary implements List
         if (toPlayer == null) {
             return;
         }
+        if (toPlayer.getGameMode() != GameMode.SPECTATOR) {
+            // 相手がスペクテイター以外の場合
+            return;
+        }
         if (event.getFromPlayer().getGameMode() == GameMode.SPECTATOR) {
+            // 相手がスペクテイターかつ、自分もスペクテイターの場合
             return;
         }
-        if (toPlayer.getGameMode() == GameMode.SPECTATOR) {
-            return;
-        }
+        // -> 相手がスペクテイターで、自分がスペクテイター以外の場合
         if (!(event.getSender() instanceof Player) || isAMRV((Player) event.getSender())) {
             event.getSender().sendMessage(Component.text().append(
                 Component.text("[TELEPORT]"),
