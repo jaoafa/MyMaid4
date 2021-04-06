@@ -13,8 +13,6 @@ package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,12 +35,6 @@ public class Event_DVNotSpectator extends MyMaidLibrary implements Listener, Eve
         if (isAMR(player)) {
             return;
         }
-
-        player.sendMessage(Component.text().append(
-            Component.text("[GameMode]"),
-            Component.space(),
-            Component.text("処理に失敗しました。", NamedTextColor.GREEN)
-        ));
         event.setCancelled(true);
     }
 }
