@@ -39,7 +39,7 @@ public class TeleportCommandEvent extends Event implements Cancellable {
      */
     public TeleportCommandEvent(Player sender, Player toPlayer) {
         this.sender = sender;
-        this.fromPlayer = toPlayer;
+        this.fromPlayer = sender;
         this.toPlayer = toPlayer;
     }
 
