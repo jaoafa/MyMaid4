@@ -13,6 +13,7 @@ package com.jaoafa.mymaid4;
 
 import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
+import cloud.commandframework.CommandComponent;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.meta.CommandMeta;
 import cloud.commandframework.paper.PaperCommandManager;
@@ -30,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Iterator;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
@@ -118,6 +120,9 @@ public final class Main extends JavaPlugin {
                         subcommand.put("senderType", cmd.getSenderType().isPresent() ?
                             cmd.getSenderType().get().getName() : null);
                         subcommand.put("toString", cmd.toString());
+
+                        final Iterator<CommandComponent<CommandSender>> iterator = cmd.getComponents().iterator();
+                        iterator.next();
                         JSONArray args = new JSONArray();
                         cmd.getArguments().forEach(arg -> {
                             JSONObject obj = new JSONObject();
@@ -126,6 +131,13 @@ public final class Main extends JavaPlugin {
                             obj.put("defaultValue", arg.getDefaultValue());
                             obj.put("defaultDescription", arg.getDefaultDescription());
                             obj.put("class", arg.getClass().getName());
+
+                            if (iterator.hasNext()) {
+                                final CommandComponent<CommandSender> component = iterator.next();
+                                if (!component.getArgumentDescription().isEmpty()) {
+                                    obj.put("description", component.getArgumentDescription().getDescription());
+                                }
+                            }
                             args.put(obj);
                         });
                         subcommand.put("arguments", args);
