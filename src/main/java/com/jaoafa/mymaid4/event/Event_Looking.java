@@ -35,18 +35,20 @@ public class Event_Looking extends MyMaidLibrary implements Listener, EventPremi
         if (event.getFrom().toBlockLocation() == event.getTo().toBlockLocation()) {
             return;
         }
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (!MyMaidData.isLookingMe(player.getUniqueId())) {
+        Player player = event.getPlayer();
+        // 誰かが見ている
+        Set<Player> looking = MyMaidData.getLookingMe(player.getUniqueId()).stream()
+            .map(Bukkit::getPlayer)
+            .collect(Collectors.toSet());
+        for (Player p : looking) {
+            if (player.getWorld() != p.getWorld()) {
                 return;
             }
-            // 誰かが見ている
-            Set<Player> looking = MyMaidData.getLookingMe(player.getUniqueId()).stream()
-                .map(Bukkit::getPlayer)
-                .collect(Collectors.toSet());
-            for (Player p : looking) {
-                Vector vector = p.getLocation().toVector().subtract(player.getLocation().toVector()).normalize();
-                p.teleport(p.getLocation().setDirection(vector));
-            }
+            Vector vector = p.getLocation().toVector().subtract(player.getLocation().toVector()).normalize();
+            vector.setX(-vector.getX());
+            vector.setY(-vector.getY());
+            vector.setZ(-vector.getZ());
+            p.teleport(p.getLocation().setDirection(vector));
         }
     }
 }
