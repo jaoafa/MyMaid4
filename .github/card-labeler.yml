@@ -1,6 +1,4 @@
 Main:
-  '❓ 優先度未振り分け - Needs triage':
-    - 'Status: Pending'
   '♻️ 優先度低 - Low priority':
     - 'Status: Waiting [Low]'
   '☢️ 優先度高 - High priority':
