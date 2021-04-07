@@ -22,6 +22,7 @@ import com.jaoafa.mymaid4.lib.*;
 import com.jaoafa.mymaid4.tasks.Task_Pigeon;
 import net.dv8tion.jda.api.JDABuilder;
 import org.bukkit.command.CommandSender;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json.JSONArray;
@@ -31,9 +32,13 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.function.Function;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public final class Main extends JavaPlugin {
     private static Main Main = null;
@@ -197,7 +202,26 @@ public final class Main extends JavaPlugin {
                     JSONObject details = new JSONObject();
                     details.put("class", instance.getClass().getName());
                     details.put("description", eventPremise.description());
-                    events.put(details);
+                    try {
+                        Method[] methods = instance.getClass().getDeclaredMethods();
+                        List<Method> eventMethods = Arrays.stream(methods)
+                            .filter(m -> m.getParameterCount() == 1)
+                            .filter(m -> Arrays.stream(m.getDeclaredAnnotations())
+                                .anyMatch(a -> a.annotationType().equals(EventHandler.class)))
+                            .collect(Collectors.toList());
+
+                        JSONArray methodArray = new JSONArray();
+                        eventMethods.forEach(method -> {
+                            JSONObject obj = new JSONObject();
+                            obj.put("name", method.getName());
+                            obj.put("event", method.getParameterTypes()[0].getName());
+                            methodArray.put(obj);
+                        });
+                        details.put("methods", methodArray);
+
+                        events.put(details);
+                    } catch (NoClassDefFoundError ignored) {
+                    }
 
                     try {
                         Listener listener = (Listener) instance;
