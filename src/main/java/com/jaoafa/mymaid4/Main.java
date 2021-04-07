@@ -14,6 +14,7 @@ package com.jaoafa.mymaid4;
 import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.CommandComponent;
+import cloud.commandframework.arguments.StaticArgument;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.meta.CommandMeta;
 import cloud.commandframework.paper.PaperCommandManager;
@@ -132,6 +133,9 @@ public final class Main extends JavaPlugin {
                         cmd.getArguments().forEach(arg -> {
                             JSONObject obj = new JSONObject();
                             obj.put("name", arg.getName());
+                            if (arg instanceof StaticArgument) {
+                                obj.put("alias", ((StaticArgument<?>) arg).getAlternativeAliases());
+                            }
                             obj.put("isRequired", arg.isRequired());
                             obj.put("defaultValue", arg.getDefaultValue());
                             obj.put("defaultDescription", arg.getDefaultDescription());
