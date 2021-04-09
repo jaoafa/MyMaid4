@@ -25,6 +25,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,20 +37,6 @@ public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise 
     @Override
     public String description() {
         return "各サーバリストサイトからの投票通知を受け取り、処理します。";
-    }
-
-    @EventHandler
-    public void onVotifierEvent(VotifierEvent event) {
-        Vote vote = event.getVote();
-        String name = vote.getUsername();
-        String service = vote.getServiceName();
-        System.out.println("onVotifierEvent[MyMaid3]: " + vote.getUsername() + " " + vote.getAddress() + " "
-            + vote.getServiceName() + " " + vote.getTimeStamp());
-        if (service.equalsIgnoreCase("minecraft.jp")) {
-            VoteReceive(name);
-        } else if (service.equalsIgnoreCase("monocraft.net")) {
-            VoteReceiveMonocraftNet(name);
-        }
     }
 
     public static void successNotifyMinecraftJP(String name, int oldVote, int newVote, boolean isAutoFill) {
@@ -69,7 +56,7 @@ public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise 
             Component.text("https://jaoafa.com/monovote", NamedTextColor.GREEN, TextDecoration.UNDERLINED)
         ));
 
-        if(Main.getMyMaidConfig().getJDA() != null) {
+        if (Main.getMyMaidConfig().getJDA() != null) {
             if (MyMaidData.getServerChatChannel() != null) {
                 MyMaidData.getServerChatChannel()
                     .sendMessage("プレイヤー「" + DiscordEscape(name) + "」がminecraft.jpで投票をしました！(現在の投票数:" + newVote + "回)" + autoFillMessage)
@@ -78,7 +65,7 @@ public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise 
             }
 
             TextChannel vote_channel = Main.getMyMaidConfig().getJDA().getTextChannelById(499922840871632896L);
-            if(vote_channel != null){
+            if (vote_channel != null) {
                 vote_channel
                     .sendMessage(":o: `" + name + "`の投票特典付与処理に成功しました(minecraft.jp): " + oldVote + "回 -> " + newVote + "回" + autoFillMessage)
                     .queue();
@@ -103,7 +90,7 @@ public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise 
             Component.text("https://jaoafa.com/monovote", NamedTextColor.GREEN, TextDecoration.UNDERLINED)
         ));
 
-        if(Main.getMyMaidConfig().getJDA() != null) {
+        if (Main.getMyMaidConfig().getJDA() != null) {
             if (MyMaidData.getServerChatChannel() != null) {
                 MyMaidData.getServerChatChannel()
                     .sendMessage("プレイヤー「" + DiscordEscape(name) + "」がmonocraft.netで投票をしました！(現在の投票数:" + newVote + "回)" + autoFillMessage)
@@ -112,12 +99,30 @@ public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise 
             }
 
             TextChannel vote_channel = Main.getMyMaidConfig().getJDA().getTextChannelById(499922840871632896L);
-            if(vote_channel != null){
+            if (vote_channel != null) {
                 vote_channel
                     .sendMessage(":o: `" + name + "`の投票特典付与処理に成功しました(monocraft.net): " + oldVote + "回 -> " + newVote + "回" + autoFillMessage)
                     .queue();
             }
         }
+    }
+
+    @EventHandler
+    public void onVotifierEvent(VotifierEvent event) {
+        Vote vote = event.getVote();
+        String name = vote.getUsername();
+        String service = vote.getServiceName();
+        System.out.println("onVotifierEvent[MyMaid3]: " + vote.getUsername() + " " + vote.getAddress() + " "
+            + vote.getServiceName() + " " + vote.getTimeStamp());
+        new BukkitRunnable() {
+            public void run() {
+                if (service.equalsIgnoreCase("minecraft.jp")) {
+                    VoteReceive(name);
+                } else if (service.equalsIgnoreCase("monocraft.net")) {
+                    VoteReceiveMonocraftNet(name);
+                }
+            }
+        }.runTaskAsynchronously(Main.getJavaPlugin());
     }
 
     public static void checkjSA(OfflinePlayer offplayer, boolean isTodayFirst, int newVote) {
@@ -252,11 +257,11 @@ public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise 
     }
 
     void missedNotify(String name, String reason) {
-        if(Main.getMyMaidConfig().getJDA() == null){
+        if (Main.getMyMaidConfig().getJDA() == null) {
             return;
         }
         TextChannel vote_channel = Main.getMyMaidConfig().getJDA().getTextChannelById(499922840871632896L);
-        if(vote_channel == null){
+        if (vote_channel == null) {
             return;
         }
 
@@ -266,11 +271,11 @@ public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise 
     }
 
     void missedNotifyMinecraftJP(String name, String reason) {
-        if(Main.getMyMaidConfig().getJDA() == null){
+        if (Main.getMyMaidConfig().getJDA() == null) {
             return;
         }
         TextChannel vote_channel = Main.getMyMaidConfig().getJDA().getTextChannelById(499922840871632896L);
-        if(vote_channel == null){
+        if (vote_channel == null) {
             return;
         }
 
@@ -280,11 +285,11 @@ public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise 
     }
 
     void missedNotifyMonocraftNet(String name, String reason) {
-        if(Main.getMyMaidConfig().getJDA() == null){
+        if (Main.getMyMaidConfig().getJDA() == null) {
             return;
         }
         TextChannel vote_channel = Main.getMyMaidConfig().getJDA().getTextChannelById(499922840871632896L);
-        if(vote_channel == null){
+        if (vote_channel == null) {
             return;
         }
 
