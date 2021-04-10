@@ -200,7 +200,11 @@ public class Event_TeleportCmd extends MyMaidLibrary implements Listener, EventP
         if (args.length == 0) {
             return; // 本来発生しないと思うけど
         }
-        if (!args[0].equalsIgnoreCase("/tp") &&
+        if (!args[0].equalsIgnoreCase("tp") &&
+            !args[0].equalsIgnoreCase("minecraft:tp") &&
+            !args[0].equalsIgnoreCase("teleport") &&
+            !args[0].equalsIgnoreCase("minecraft:teleport") &&
+            !args[0].equalsIgnoreCase("/tp") &&
             !args[0].equalsIgnoreCase("/minecraft:tp") &&
             !args[0].equalsIgnoreCase("/teleport") &&
             !args[0].equalsIgnoreCase("/minecraft:teleport")) {
