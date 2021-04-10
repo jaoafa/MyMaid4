@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 public class TeleportCommandEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private final CommandSender sender;
+    @NotNull
     private final Player fromPlayer;
     private Player toPlayer;
     private Location location;
@@ -37,7 +38,7 @@ public class TeleportCommandEvent extends Event implements Cancellable {
      * @param sender   コマンド実行者
      * @param toPlayer テレポート先のプレイヤー
      */
-    public TeleportCommandEvent(Player sender, Player toPlayer) {
+    public TeleportCommandEvent(@NotNull Player sender, @NotNull Player toPlayer) {
         this.sender = sender;
         this.fromPlayer = sender;
         this.toPlayer = toPlayer;
@@ -50,7 +51,7 @@ public class TeleportCommandEvent extends Event implements Cancellable {
      * @param fromPlayer テレポートするプレイヤー
      * @param toPlayer   テレポート先のプレイヤー
      */
-    public TeleportCommandEvent(CommandSender sender, Player fromPlayer, Player toPlayer) {
+    public TeleportCommandEvent(@NotNull CommandSender sender, @NotNull Player fromPlayer, @NotNull Player toPlayer) {
         this.sender = sender;
         this.fromPlayer = fromPlayer;
         this.toPlayer = toPlayer;
@@ -62,7 +63,7 @@ public class TeleportCommandEvent extends Event implements Cancellable {
      * @param sender   コマンド実行者
      * @param location テレポート先の座標
      */
-    public TeleportCommandEvent(Player sender, Location location) {
+    public TeleportCommandEvent(@NotNull Player sender, @NotNull Location location) {
         this.sender = sender;
         this.fromPlayer = sender;
         this.location = location;
@@ -75,7 +76,7 @@ public class TeleportCommandEvent extends Event implements Cancellable {
      * @param fromPlayer テレポートするプレイヤー
      * @param location   テレポート先の座標
      */
-    public TeleportCommandEvent(CommandSender sender, Player fromPlayer, Location location) {
+    public TeleportCommandEvent(@NotNull CommandSender sender, @NotNull Player fromPlayer, @NotNull Location location) {
         this.sender = sender;
         this.fromPlayer = fromPlayer;
         this.location = location;
@@ -89,7 +90,7 @@ public class TeleportCommandEvent extends Event implements Cancellable {
      * @param location       テレポート先の座標
      * @param facingLocation 向く座標
      */
-    public TeleportCommandEvent(CommandSender sender, Player fromPlayer, Location location, Location facingLocation) {
+    public TeleportCommandEvent(@NotNull CommandSender sender, @NotNull Player fromPlayer, @NotNull Location location, @NotNull Location facingLocation) {
         this.sender = sender;
         this.fromPlayer = fromPlayer;
         this.location = location;
@@ -104,7 +105,7 @@ public class TeleportCommandEvent extends Event implements Cancellable {
      * @param location     テレポート先の座標
      * @param facingPlayer 向くプレイヤー
      */
-    public TeleportCommandEvent(CommandSender sender, Player fromPlayer, Location location, Player facingPlayer) {
+    public TeleportCommandEvent(@NotNull CommandSender sender, @NotNull Player fromPlayer, @NotNull Location location, @NotNull Player facingPlayer) {
         this.sender = sender;
         this.fromPlayer = fromPlayer;
         this.location = location;
@@ -120,7 +121,7 @@ public class TeleportCommandEvent extends Event implements Cancellable {
      * @param facingPlayer 向くプレイヤー
      * @param facingAnchor 目と足どちらを向くか
      */
-    public TeleportCommandEvent(CommandSender sender, Player fromPlayer, Location location, Player facingPlayer, FacingAnchor facingAnchor) {
+    public TeleportCommandEvent(@NotNull CommandSender sender, @NotNull Player fromPlayer, @NotNull Location location, @NotNull Player facingPlayer, @NotNull FacingAnchor facingAnchor) {
         this.sender = sender;
         this.fromPlayer = fromPlayer;
         this.location = location;
@@ -140,8 +141,7 @@ public class TeleportCommandEvent extends Event implements Cancellable {
         return sender;
     }
 
-    @Nullable
-    public Player getFromPlayer() {
+    public @NotNull Player getFromPlayer() {
         return fromPlayer;
     }
 

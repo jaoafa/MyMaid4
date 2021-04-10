@@ -89,7 +89,7 @@ public class Event_TeleportCmd extends MyMaidLibrary implements Listener, EventP
             if (tpCmdEvent.isCancelled()) event.setCancelled(true);
         } else if (args.length == 4) {
             // 3 /teleport <x> <y> <z>
-            if (!isInt(args[1]) && !isInt(args[2]) && !isInt(args[3])) {
+            if (!isInt(args[1]) || !isInt(args[2]) || !isInt(args[3])) {
                 return;
             }
             int x = Integer.parseInt(args[1]);
@@ -104,7 +104,7 @@ public class Event_TeleportCmd extends MyMaidLibrary implements Listener, EventP
             // 4 /teleport <targets> <locX> <locY> <locZ>
             Player fromPlayer = Bukkit.getPlayerExact(args[1]);
             if (fromPlayer == null) return;
-            if (!isInt(args[2]) && !isInt(args[3]) && !isInt(args[4])) {
+            if (!isInt(args[2]) || !isInt(args[3]) || !isInt(args[4])) {
                 return;
             }
             int x = Integer.parseInt(args[2]);
@@ -119,7 +119,7 @@ public class Event_TeleportCmd extends MyMaidLibrary implements Listener, EventP
             // 6 /teleport <targets> <locX> <locY> <locZ> <yaw> <pitch>
             Player fromPlayer = Bukkit.getPlayerExact(args[1]);
             if (fromPlayer == null) return;
-            if (!isInt(args[2]) && !isInt(args[3]) && !isInt(args[4]) && !isInt(args[5]) && !isInt(args[6])) {
+            if (!isInt(args[2]) || !isInt(args[3]) || !isInt(args[4]) || !isInt(args[5]) || !isInt(args[6])) {
                 return;
             }
             int x = Integer.parseInt(args[2]);
@@ -136,7 +136,7 @@ public class Event_TeleportCmd extends MyMaidLibrary implements Listener, EventP
             // 7 /teleport <targets> <locX> <locY> <locZ> facing entity <facingEntity>
             Player fromPlayer = Bukkit.getPlayerExact(args[1]);
             if (fromPlayer == null) return;
-            if (!isInt(args[2]) && !isInt(args[3]) && !isInt(args[4]) && !isInt(args[5])) {
+            if (!isInt(args[2]) || !isInt(args[3]) || !isInt(args[4]) || !isInt(args[5])) {
                 return;
             }
             int x = Integer.parseInt(args[2]);
@@ -154,7 +154,7 @@ public class Event_TeleportCmd extends MyMaidLibrary implements Listener, EventP
         } else if (args.length == 9) {
             Player fromPlayer = Bukkit.getPlayerExact(args[1]);
             if (fromPlayer == null) return;
-            if (!isInt(args[2]) && !isInt(args[3]) && !isInt(args[4])) {
+            if (!isInt(args[2]) || !isInt(args[3]) || !isInt(args[4])) {
                 return;
             }
             int x = Integer.parseInt(args[2]);
@@ -163,7 +163,7 @@ public class Event_TeleportCmd extends MyMaidLibrary implements Listener, EventP
             Location loc = new Location(sender.getWorld(), x, y, z);
             String facing = args[5];
             if (!facing.equals("facing")) return;
-            if (isInt(args[6]) && isInt(args[7]) && isInt(args[8])) {
+            if (isInt(args[6]) || isInt(args[7]) || isInt(args[8])) {
                 // 8 /teleport <targets> <locX> <locY> <locZ> facing <facingX> <facingY> <facingZ>
                 int facingX = Integer.parseInt(args[6]);
                 int facingY = Integer.parseInt(args[7]);
@@ -200,7 +200,11 @@ public class Event_TeleportCmd extends MyMaidLibrary implements Listener, EventP
         if (args.length == 0) {
             return; // 本来発生しないと思うけど
         }
-        if (!args[0].equalsIgnoreCase("/tp") &&
+        if (!args[0].equalsIgnoreCase("tp") &&
+            !args[0].equalsIgnoreCase("minecraft:tp") &&
+            !args[0].equalsIgnoreCase("teleport") &&
+            !args[0].equalsIgnoreCase("minecraft:teleport") &&
+            !args[0].equalsIgnoreCase("/tp") &&
             !args[0].equalsIgnoreCase("/minecraft:tp") &&
             !args[0].equalsIgnoreCase("/teleport") &&
             !args[0].equalsIgnoreCase("/minecraft:teleport")) {
@@ -221,7 +225,7 @@ public class Event_TeleportCmd extends MyMaidLibrary implements Listener, EventP
             // 4 /teleport <targets> <locX> <locY> <locZ>
             Player fromPlayer = Bukkit.getPlayerExact(args[1]);
             if (fromPlayer == null) return;
-            if (!isInt(args[2]) && !isInt(args[3]) && !isInt(args[4])) {
+            if (!isInt(args[2]) || !isInt(args[3]) || !isInt(args[4])) {
                 return;
             }
             int x = Integer.parseInt(args[2]);
@@ -236,7 +240,7 @@ public class Event_TeleportCmd extends MyMaidLibrary implements Listener, EventP
             // 6 /teleport <targets> <locX> <locY> <locZ> <yaw> <pitch>
             Player fromPlayer = Bukkit.getPlayerExact(args[1]);
             if (fromPlayer == null) return;
-            if (!isInt(args[2]) && !isInt(args[3]) && !isInt(args[4]) && !isInt(args[5]) && !isInt(args[6])) {
+            if (!isInt(args[2]) || !isInt(args[3]) || !isInt(args[4]) || !isInt(args[5]) || !isInt(args[6])) {
                 return;
             }
             int x = Integer.parseInt(args[2]);
@@ -253,7 +257,7 @@ public class Event_TeleportCmd extends MyMaidLibrary implements Listener, EventP
             // 7 /teleport <targets> <locX> <locY> <locZ> facing entity <facingEntity>
             Player fromPlayer = Bukkit.getPlayerExact(args[1]);
             if (fromPlayer == null) return;
-            if (!isInt(args[2]) && !isInt(args[3]) && !isInt(args[4]) && !isInt(args[5])) {
+            if (!isInt(args[2]) || !isInt(args[3]) || !isInt(args[4]) || !isInt(args[5])) {
                 return;
             }
             int x = Integer.parseInt(args[2]);
@@ -271,7 +275,7 @@ public class Event_TeleportCmd extends MyMaidLibrary implements Listener, EventP
         } else if (args.length == 9) {
             Player fromPlayer = Bukkit.getPlayerExact(args[1]);
             if (fromPlayer == null) return;
-            if (!isInt(args[2]) && !isInt(args[3]) && !isInt(args[4])) {
+            if (!isInt(args[2]) || !isInt(args[3]) || !isInt(args[4])) {
                 return;
             }
             int x = Integer.parseInt(args[2]);
@@ -280,7 +284,7 @@ public class Event_TeleportCmd extends MyMaidLibrary implements Listener, EventP
             Location loc = new Location(world, x, y, z);
             String facing = args[5];
             if (!facing.equals("facing")) return;
-            if (isInt(args[6]) && isInt(args[7]) && isInt(args[8])) {
+            if (isInt(args[6]) || isInt(args[7]) || isInt(args[8])) {
                 // 8 /teleport <targets> <locX> <locY> <locZ> facing <facingX> <facingY> <facingZ>
                 int facingX = Integer.parseInt(args[6]);
                 int facingY = Integer.parseInt(args[7]);
