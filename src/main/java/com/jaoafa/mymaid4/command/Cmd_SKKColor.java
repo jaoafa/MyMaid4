@@ -19,6 +19,8 @@ import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import com.jaoafa.mymaid4.lib.PlayerVoteDataMono;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -27,6 +29,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class Cmd_SKKColor extends MyMaidLibrary implements CommandPremise {
@@ -60,9 +63,14 @@ public class Cmd_SKKColor extends MyMaidLibrary implements CommandPremise {
         Player player = (Player) context.getSender();
         String strColor = context.getOrDefault("color", null);
 
-        if (strColor != null && !existsColor(strColor)) {
+        if (strColor != null && !strColor.equalsIgnoreCase("random") && !existsColor(strColor)) {
             SendMessage(player, details(), "指定された色は見つかりませんでした。");
             return;
+        }
+
+        if (strColor != null && strColor.equalsIgnoreCase("random")) {
+            Random Rand = new Random();
+            strColor = TextColor.color(Rand.nextInt(255), Rand.nextInt(255), Rand.nextInt(255)).asHexString();
         }
 
         PlayerVoteDataMono pvd = new PlayerVoteDataMono(player);
@@ -75,20 +83,30 @@ public class Cmd_SKKColor extends MyMaidLibrary implements CommandPremise {
         }
 
         pvd.setCustomColor(strColor != null ? strColor.toUpperCase() : null);
-        SendMessage(player, details(), "四角色を" + (strColor != null ? "設定" : "リセット") + "しました！");
+
+        Component component;
+        if (strColor != null) {
+            component = Component.text().append(
+                Component.text("四角色を「", NamedTextColor.GREEN),
+                Component.text(strColor, getColor(strColor)),
+                Component.text("」に設定しました！", NamedTextColor.GREEN)
+            ).build();
+        } else {
+            component = Component.text("四角色をリセットしました！", NamedTextColor.GREEN);
+        }
+        SendMessage(player, details(), component);
     }
 
     boolean existsColor(String str) {
+        return getColor(str) != null;
+    }
+
+    TextColor getColor(String str) {
         if (str.startsWith("#")) {
             // hex
-            return TextColor.fromCSSHexString(str) != null;
+            return TextColor.fromCSSHexString(str);
         } else {
-            try {
-                ChatColor.valueOf(str);
-                return true;
-            } catch (IllegalArgumentException e) {
-                return false;
-            }
+            return getNamedTextColor(str);
         }
     }
 
