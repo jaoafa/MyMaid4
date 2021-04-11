@@ -14,14 +14,18 @@ package com.jaoafa.mymaid4.event;
 import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import com.jaoafa.mymaid4.lib.SKKColorManager;
+import io.papermc.paper.chat.ChatComposer;
+import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+
+import java.util.Date;
 
 public class Event_SKKColor extends MyMaidLibrary implements Listener, EventPremise {
     @Override
@@ -29,20 +33,21 @@ public class Event_SKKColor extends MyMaidLibrary implements Listener, EventPrem
         return "チャット欄に表示される四角色に関する処理を行います。";
     }
 
-    /*public void onEvent_ChatSKK(AsyncChatEvent event) {
-        Player player = event.getPlayer();
-        ChatComposer composer = (_player, displayName, message) -> Component.translatable("chat.type.text", Component.text().append(
-            Component.text("■", SKKColorManager.getPlayerColor(player)),
-            displayName
-        ), message);
-        event.composer(composer);
-    }*/
-
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onEvent_ChatSKK(AsyncPlayerChatEvent event) {
-        event.setFormat(
-            event.getFormat().replaceFirst("%1\\$s", String.format("%s■%s%s", SKKColorManager.getPlayerChatColor(event.getPlayer()), ChatColor.WHITE, event.getPlayer().getName()))
-        );
+    public void onEvent_ChatSKK(AsyncChatEvent event) {
+        Player player = event.getPlayer();
+
+        // これでいいのだろうか…
+        ChatComposer composer = (_player, displayName, message) ->
+            Component.text().append(
+                Component.text("[", NamedTextColor.GRAY),
+                Component.text(sdfTimeFormat(new Date()), NamedTextColor.GRAY),
+                Component.text("]", NamedTextColor.GRAY),
+                Component.text("■", SKKColorManager.getPlayerColor(player)),
+                displayName,
+                Component.text(": "),
+                message).build();
+        event.composer(composer);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

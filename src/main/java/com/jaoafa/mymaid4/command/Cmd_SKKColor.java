@@ -15,13 +15,16 @@ import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
-import com.jaoafa.mymaid4.lib.*;
+import com.jaoafa.mymaid4.lib.CommandPremise;
+import com.jaoafa.mymaid4.lib.MyMaidCommand;
+import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import com.jaoafa.mymaid4.lib.PlayerVoteDataMono;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,10 +59,8 @@ public class Cmd_SKKColor extends MyMaidLibrary implements CommandPremise {
     void setSKKColor(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
         String strColor = context.getOrDefault("color", null);
-        ChatColor color;
-        try {
-            color = strColor != null ? ChatColor.valueOf(strColor) : null;
-        }catch (IllegalArgumentException e){
+
+        if (strColor != null && !existsColor(strColor)) {
             SendMessage(player, details(), "指定された色は見つかりませんでした。");
             return;
         }
@@ -67,14 +68,28 @@ public class Cmd_SKKColor extends MyMaidLibrary implements CommandPremise {
         PlayerVoteDataMono pvd = new PlayerVoteDataMono(player);
         int count = pvd.getVoteCount();
 
-        if(count < 200){
+        if (count < 200) {
             // 200未満の場合カスタムメッセージ変更不可
             SendMessage(player, details(), "あなたの投票数では四角色の変更ができません。monocraft.netで200投票を目指しましょう！");
             return;
         }
 
-        pvd.setCustomColor(color);
-        SendMessage(player, details(), "四角色を" + (color != null ? "設定" : "リセット") + "しました！");
+        pvd.setCustomColor(strColor != null ? strColor.toUpperCase() : null);
+        SendMessage(player, details(), "四角色を" + (strColor != null ? "設定" : "リセット") + "しました！");
+    }
+
+    boolean existsColor(String str) {
+        if (str.startsWith("#")) {
+            // hex
+            return TextColor.fromCSSHexString(str) != null;
+        } else {
+            try {
+                ChatColor.valueOf(str);
+                return true;
+            } catch (IllegalArgumentException e) {
+                return false;
+            }
+        }
     }
 
     private List<String> suggestColors(@NonNull CommandContext<CommandSender> context, String current) {
