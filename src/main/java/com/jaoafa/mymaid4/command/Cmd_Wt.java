@@ -74,37 +74,21 @@ public class Cmd_Wt extends MyMaidLibrary implements CommandPremise {
     void worldTeleport(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
         String worldName = context.get("worldName");
-        if (worlds.containsKey(worldName)) {
-            World world = Bukkit.getServer().getWorld(worldName);
-            if (world == null) {
-                SendMessage(player, details(), String.format("「%s」ワールドの取得に失敗しました。", worldName));
-            }
-            Location loc = new Location(world, 0, 0, 0, 0, 0);
-            int y = getGroundPos(loc);
-            loc = new Location(world, 0, y, 0, 0, 0);
-            loc.add(0.5f, 0f, 0.5f);
-            player.teleport(loc);
-            SendMessage(player, details(), String.format("「%s」ワールドにテレポートしました。", worldName));
-
-        } else {
-            World world = Bukkit.getServer().getWorld(worldName);
-            if (world == null) {
-                SendMessage(player, details(), "指定されたワールドは存在しません。");
-            } else {
-                Location loc = new Location(world, 0, 0, 0, 0, 0);
-                int y = getGroundPos(loc);
-                loc = new Location(world, 0, y, 0, 0, 0);
-                loc.add(0.5f, 0f, 0.5f);
-                player.teleport(loc);
-                SendMessage(player, details(), String.format("「%s」ワールドにテレポートしました", worldName));
-            }
+        World world = Bukkit.getWorld(worlds.getOrDefault(worldName, worldName));
+        if (world == null) {
+            SendMessage(player, details(), String.format("「%s」ワールドの取得に失敗しました。", worldName));
+            return;
         }
-
+        Location loc = new Location(world, 0, 0, 0, 0, 0);
+        int y = getGroundPos(loc);
+        loc = new Location(world, 0, y, 0, 0, 0);
+        loc.add(0.5f, 0f, 0.5f);
+        player.teleport(loc);
+        SendMessage(player, details(), String.format("「%s」ワールドにテレポートしました。", worldName));
     }
 
 
     void worldTeleportPlayer(CommandContext<CommandSender> context) {
-
         Player player = context.getOrDefault("player", null);
         if (player == null) {
             return;
@@ -115,34 +99,17 @@ public class Cmd_Wt extends MyMaidLibrary implements CommandPremise {
         }
         Player sender = (Player) context.getSender();
         String worldName = context.get("worldName");
-
-        if (worlds.containsKey(worldName)) {
-            World world = Bukkit.getServer().getWorld(worldName);
-            if (world == null) {
-                SendMessage(player, details(), String.format("「%s」ワールドの取得に失敗しました。", worldName));
-            }
-            Location loc = new Location(world, 0, 0, 0, 0, 0);
-            int y = getGroundPos(loc);
-            loc = new Location(world, 0, y, 0, 0, 0);
-            loc.add(0.5f, 0f, 0.5f);
-            player.teleport(loc);
-            SendMessage(player, details(), String.format("「%s」ワールドにテレポートしました。", worldName));
-            SendMessage(sender, details(), String.format("プレイヤー「%s」を「%s」ワールドにテレポートさせました。", player, worldName));
-
-        } else {
-            World world = Bukkit.getServer().getWorld(worldName);
-            if (world == null) {
-                SendMessage(sender, details(), "指定されたワールドは存在しません。");
-            } else {
-                Location loc = new Location(world, 0, 0, 0, 0, 0);
-                int y = getGroundPos(loc);
-                loc = new Location(world, 0, y, 0, 0, 0);
-                loc.add(0.5f, 0f, 0.5f);
-                player.teleport(loc);
-                SendMessage(player, details(), String.format("「%s」ワールドにテレポートしました", worldName));
-                SendMessage(sender, details(), String.format("プレイヤー「%s」を「%s」ワールドにテレポートさせました。", player, worldName));
-            }
+        World world = Bukkit.getWorld(worlds.getOrDefault(worldName, worldName));
+        if (world == null) {
+            SendMessage(player, details(), String.format("「%s」ワールドの取得に失敗しました。", worldName));
+            return;
         }
+        Location loc = new Location(world, 0, 0, 0, 0, 0);
+        int y = getGroundPos(loc);
+        loc = new Location(world, 0, y, 0, 0, 0);
+        loc.add(0.5f, 0f, 0.5f);
+        player.teleport(loc);
+        SendMessage(player, details(), String.format("「%s」ワールドにテレポートしました。", worldName));
+        SendMessage(sender, details(), String.format("プレイヤー「%s」を「%s」ワールドにテレポートさせました。", player, worldName));
     }
-
 }
