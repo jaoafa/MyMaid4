@@ -19,10 +19,8 @@ import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -75,14 +73,6 @@ public class Cmd_Looking extends MyMaidLibrary implements CommandPremise {
         }
         MyMaidData.setLooking(player.getUniqueId(), target.get().getUniqueId());
         SendMessage(player, details(), target.get().getName() + " を見続けます…");
-    }
-
-    boolean getLookingAt(Player player, Player target) {
-        Location eye = player.getEyeLocation();
-        Vector toEntity = target.getEyeLocation().toVector().subtract(eye.toVector());
-        double dot = toEntity.normalize().dot(eye.getDirection());
-
-        return dot > 0.99D;
     }
 
     void startLooking(CommandContext<CommandSender> context) {
