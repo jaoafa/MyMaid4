@@ -13,14 +13,12 @@ package com.jaoafa.mymaid4.lib;
 
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.Date;
 import java.util.*;
 
 public class PlayerVoteDataMono extends MyMaidLibrary {
@@ -294,7 +292,7 @@ public class PlayerVoteDataMono extends MyMaidLibrary {
      *
      * @param color カスタムカラー
      */
-    public void setCustomColor(ChatColor color) {
+    public void setCustomColor(String color) {
         try {
             if (!exists())
                 return;
@@ -308,7 +306,7 @@ public class PlayerVoteDataMono extends MyMaidLibrary {
                 if (color == null) {
                     statement.setNull(1, Types.VARCHAR);
                 } else {
-                    statement.setString(1, color.name());
+                    statement.setString(1, color);
                 }
                 statement.setString(2, offplayer.getUniqueId().toString());// uuid
                 statement.executeUpdate();

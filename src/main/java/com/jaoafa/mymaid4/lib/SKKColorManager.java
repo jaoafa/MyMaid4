@@ -13,8 +13,8 @@ package com.jaoafa.mymaid4.lib;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
@@ -38,45 +38,22 @@ public class SKKColorManager {
         NamedTextColor.DARK_PURPLE,
         NamedTextColor.LIGHT_PURPLE);
 
-    static List<ChatColor> ChatColors = Arrays.asList(
-        ChatColor.GRAY,
-        ChatColor.WHITE,
-        ChatColor.DARK_BLUE,
-        ChatColor.BLUE,
-        ChatColor.AQUA,
-        ChatColor.DARK_AQUA,
-        ChatColor.DARK_GREEN,
-        ChatColor.GREEN,
-        ChatColor.YELLOW,
-        ChatColor.GOLD,
-        ChatColor.RED,
-        ChatColor.DARK_RED,
-        ChatColor.DARK_PURPLE,
-        ChatColor.LIGHT_PURPLE);
-
     static int getVoteCount(Player player) {
         PlayerVoteDataMono pvd = new PlayerVoteDataMono(player);
 
         return pvd.getVoteCount();
     }
 
-    static NamedTextColor getCustomColor(Player player) {
+    static TextColor getCustomColor(Player player) {
         PlayerVoteDataMono pvd = new PlayerVoteDataMono(player);
         String color = pvd.getCustomColor();
         if (color == null) return null;
 
-        return MyMaidLibrary.getNamedTextColor(color);
-    }
-
-    static ChatColor getCustomChatColor(Player player) {
-        PlayerVoteDataMono pvd = new PlayerVoteDataMono(player);
-        String color = pvd.getCustomColor();
-        if (color == null) return null;
-        try {
-            return ChatColor.valueOf(color);
-        } catch (IllegalArgumentException e) {
-            return null;
+        TextColor textColor = MyMaidLibrary.getNamedTextColor(color);
+        if (textColor == null && color.startsWith("#")) {
+            textColor = TextColor.fromCSSHexString(color);
         }
+        return textColor;
     }
 
     /**
@@ -86,27 +63,12 @@ public class SKKColorManager {
      *
      * @return 四角色
      */
-    public static NamedTextColor getPlayerColor(Player player) {
+    public static TextColor getPlayerColor(Player player) {
         int count = getVoteCount(player);
         NamedTextColor color = TextColors.get(calculateRank(count));
-        NamedTextColor customColor = getCustomColor(player);
-        if (customColor != null) color = customColor;
-        return color;
-    }
+        TextColor customColor = getCustomColor(player);
 
-    /**
-     * プレイヤーの四角色を取得する
-     *
-     * @param player プレイヤー
-     *
-     * @return 四角色
-     */
-    public static ChatColor getPlayerChatColor(Player player) {
-        int count = getVoteCount(player);
-        ChatColor color = ChatColors.get(calculateRank(count));
-        ChatColor customColor = getCustomChatColor(player);
-        if (customColor != null) color = customColor;
-        return color;
+        return customColor != null ? customColor : color;
     }
 
     /**
