@@ -27,6 +27,7 @@ import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.Color;
@@ -550,5 +551,13 @@ public class MyMaidLibrary {
     @Nullable
     public static NamedTextColor getNamedTextColor(ChatColor color) {
         return getNamedTextColor(color.name());
+    }
+
+    protected boolean getLookingAt(Player player, Player target) {
+        Location eye = player.getEyeLocation();
+        Vector toEntity = target.getEyeLocation().toVector().subtract(eye.toVector());
+        double dot = toEntity.normalize().dot(eye.getDirection());
+
+        return dot > 0.99D;
     }
 }
