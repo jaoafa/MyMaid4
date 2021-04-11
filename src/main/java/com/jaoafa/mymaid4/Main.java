@@ -128,7 +128,6 @@ public final class Main extends JavaPlugin {
                         subcommand.put("toString", cmd.toString());
 
                         final Iterator<CommandComponent<CommandSender>> iterator = cmd.getComponents().iterator();
-                        iterator.next();
                         JSONArray args = new JSONArray();
                         cmd.getArguments().forEach(arg -> {
                             JSONObject obj = new JSONObject();
