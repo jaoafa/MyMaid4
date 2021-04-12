@@ -23,7 +23,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -86,7 +85,15 @@ public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener, E
                             return;
                         }
                         if (reputation != 10) {
-                            sendAMR(ChatColor.RED + "[MCBansChecker] " + ChatColor.GREEN + name + " reputation: " + reputation);
+                            sendAMR(Component.text().append(
+                                Component.text("[MCBansChecker]", NamedTextColor.RED),
+                                Component.space(),
+                                Component.text(name, NamedTextColor.GREEN),
+                                Component.space(),
+                                Component.text("reputation: ", NamedTextColor.GREEN),
+                                Component.space(),
+                                Component.text(reputation, NamedTextColor.GREEN)
+                            ).build());
                         }
                     }
                 }
@@ -141,7 +148,7 @@ public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener, E
         new BukkitRunnable() {
             public void run() {
                 try {
-                    String url = String.format("https://api.jaoafa.com/users/mcbans/%s", uuid.toString());
+                    String url = String.format("https://api.jaoafa.com/users/mcbans/%s", uuid);
 
                     System.out.println(MessageFormat.format("OnLoginAfterCheck: APIサーバへの接続を開始: {0} -> {1}", player.getName(), url));
                     OkHttpClient client = new OkHttpClient();
@@ -182,7 +189,11 @@ public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener, E
                     int globalCount = data.getInt("global");
                     int localCount = data.getInt("local");
 
-                    MyMaidLibrary.sendAMR(String.format("[MCBans] %s%s -> %s (G:%d | L:%d)", ChatColor.GRAY, player.getName(), reputation, globalCount, localCount));
+                    sendAMR(Component.text().append(
+                        Component.text("[MCBans]"),
+                        Component.space(),
+                        Component.text(String.format("%s -> %s (G:%d | L:%d)", player.getName(), reputation, globalCount, localCount), NamedTextColor.GRAY)
+                    ).build());
                     if (reputation < 3) {
                         // 3未満はキック
                         Component component = Component.text().append(

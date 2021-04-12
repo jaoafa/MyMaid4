@@ -99,6 +99,10 @@
             <id>bintray-repo</id>
             <url>https://dl.bintray.com/ichbinjoe/public/</url>
         </repository>
+        <repository>
+            <id>viaversion-repo</id>
+            <url>https://repo.viaversion.com</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -160,6 +164,12 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20210307</version>
+        </dependency>
+        <dependency>
+            <groupId>us.myles</groupId>
+            <artifactId>viaversion</artifactId>
+            <version>3.2.1</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

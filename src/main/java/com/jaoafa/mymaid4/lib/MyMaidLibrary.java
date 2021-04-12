@@ -174,41 +174,39 @@ public class MyMaidLibrary {
     /**
      * Admin・Moderatorにメッセージを送信します。
      *
-     * @param str 送信するメッセージ文字列
+     * @param component 送信するメッセージコンポーネント
      */
-    public static void sendAM(String str) {
+    public static void sendAM(Component component) {
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            String group = getPermissionMainGroup(p);
             if (!isAM(p)) continue;
             if (MyMaidData.getTempMuting().contains(p)) continue;
-            p.sendMessage(str);
+            p.sendMessage(component);
         }
     }
 
     /**
      * Admin・Moderator・Regularにメッセージを送信します。
      *
-     * @param str 送信するメッセージ文字列
+     * @param component 送信するメッセージコンポーネント
      */
-    public static void sendAMR(String str) {
+    public static void sendAMR(Component component) {
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            String group = getPermissionMainGroup(p);
             if (!isAMR(p)) continue;
             if (MyMaidData.getTempMuting().contains(p)) continue;
-            p.sendMessage(str);
+            p.sendMessage(component);
         }
     }
 
     /**
      * Admin・Moderator・Regular・Verifiedにメッセージを送信します。
      *
-     * @param str 送信するメッセージ文字列
+     * @param component 送信するメッセージコンポーネント
      */
-    public static void sendAMRV(String str) {
+    public static void sendAMRV(Component component) {
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             if (!isAMRV(p)) continue;
             if (MyMaidData.getTempMuting().contains(p)) continue;
-            p.sendMessage(str);
+            p.sendMessage(component);
         }
     }
 
