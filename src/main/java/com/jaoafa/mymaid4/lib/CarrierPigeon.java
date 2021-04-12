@@ -15,7 +15,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -46,7 +45,7 @@ public class CarrierPigeon {
     static final Pattern URL_PATTERN = Pattern.compile(
         //              schema                          ipv4            OR        namespace                 port     path         ends
         //        |-----------------|        |-------------------------|  |-------------------------|    |---------| |--|   |---------------|
-        "((?:[a-z0-9]{2,}://)?(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}|(?:[-\\w_]{1,}\\.[a-z]{2,}?))(?::[0-9]{1,5})?.*?(?=[!\"\u00A7 \n]|$))",
+        "((?:[a-z0-9]{2,}://)?(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}|(?:[-\\w_]+\\.[a-z]{2,}?))(?::[0-9]{1,5})?.*?(?=[!\"\u00A7 \n]|$))",
         Pattern.CASE_INSENSITIVE);
 
     public static void speakBird(CommandSender sender, String message) {
@@ -63,12 +62,33 @@ public class CarrierPigeon {
         String speaker = carrierPigeon.getRandomSpeaker();
         sender.sendMessage(Component.text().append(
             Component.text("[" + MyMaidLibrary.sdfTimeFormat(new Date()) + "]", NamedTextColor.GRAY),
-            Component.text("■", TextColor.color(173, 255, 47)),
+            Component.text("■", getRandomColor()),
             Component.text(speaker, NamedTextColor.WHITE),
             Component.text(" < ", NamedTextColor.WHITE),
             Component.space(),
             component
         ));
+    }
+
+    private static NamedTextColor getRandomColor() {
+        List<NamedTextColor> colors = Arrays.asList(NamedTextColor.BLACK,
+            NamedTextColor.DARK_BLUE,
+            NamedTextColor.DARK_GREEN,
+            NamedTextColor.DARK_AQUA,
+            NamedTextColor.DARK_RED,
+            NamedTextColor.DARK_PURPLE,
+            NamedTextColor.GOLD,
+            NamedTextColor.GRAY,
+            NamedTextColor.DARK_GRAY,
+            NamedTextColor.BLUE,
+            NamedTextColor.GREEN,
+            NamedTextColor.AQUA,
+            NamedTextColor.RED,
+            NamedTextColor.LIGHT_PURPLE,
+            NamedTextColor.YELLOW,
+            NamedTextColor.WHITE);
+        Collections.shuffle(colors);
+        return colors.get(0);
     }
 
     /**
