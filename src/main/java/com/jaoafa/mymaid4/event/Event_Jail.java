@@ -11,6 +11,8 @@
 
 package com.jaoafa.mymaid4.event;
 
+import com.jaoafa.jaosuperachievement2.api.Achievementjao;
+import com.jaoafa.jaosuperachievement2.lib.Achievement;
 import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.Jail;
@@ -278,6 +280,20 @@ public class Event_Jail implements Listener, EventPremise {
         new BukkitRunnable() {
             public void run() {
                 Jail.getInstance(player, true);
+            }
+        }.runTaskAsynchronously(Main.getJavaPlugin());
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        new BukkitRunnable() {
+            public void run() {
+                Jail jail = Jail.getInstance(player);
+                if (!jail.isStatus()) {
+                    return;
+                }
+                Achievementjao.getAchievementAsync(player, Achievement.JAILBREAKER);
             }
         }.runTaskAsynchronously(Main.getJavaPlugin());
     }
