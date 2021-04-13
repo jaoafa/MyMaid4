@@ -12,10 +12,7 @@
 package com.jaoafa.mymaid4.lib;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextReplacementConfig;
-import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -25,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.regex.Pattern;
 
 /**
  * 伝書鳩ちゃん！
@@ -41,20 +37,8 @@ public class CarrierPigeon {
         loadSettings();
     }
 
-    // https://github.com/ErdbeerbaerLP/DiscordIntegration-Core/blob/564b32d29605322f927853ee62a6af938a0af7d3/src/main/java/de/erdbeerbaerlp/dcintegration/common/util/MessageUtils.java#L31-L35
-    static final Pattern URL_PATTERN = Pattern.compile(
-        //              schema                          ipv4            OR        namespace                 port     path         ends
-        //        |-----------------|        |-------------------------|  |-------------------------|    |---------| |--|   |---------------|
-        "((?:[a-z0-9]{2,}://)?(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}|(?:[-\\w_]+\\.[a-z]{2,}?))(?::[0-9]{1,5})?.*?(?=[!\"\u00A7 \n]|$))",
-        Pattern.CASE_INSENSITIVE);
-
     public static void speakBird(CommandSender sender, String message) {
-        speakBird(sender, Component.text(message, NamedTextColor.GRAY)
-            .replaceText(TextReplacementConfig.builder()
-                .match(URL_PATTERN)
-                .replacement(url -> url
-                    .decorate(TextDecoration.UNDERLINED)
-                    .clickEvent(ClickEvent.openUrl(url.content()))).build()));
+        speakBird(sender, MyMaidLibrary.replaceComponentURL(Component.text(message, NamedTextColor.GRAY)));
     }
 
     public static void speakBird(CommandSender sender, Component component) {
