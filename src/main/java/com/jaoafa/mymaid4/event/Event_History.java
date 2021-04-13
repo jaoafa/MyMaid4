@@ -32,6 +32,10 @@ public class Event_History extends MyMaidLibrary implements Listener, EventPremi
 
     @EventHandler
     public void OnEvent_JoinHistory(PlayerJoinEvent event) {
+        if (!MyMaidData.isMainDBActive()) {
+            return;
+        }
+
         Player player = event.getPlayer();
         Historyjao histjao = Historyjao.getHistoryjao(player);
 

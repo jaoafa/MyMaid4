@@ -17,8 +17,12 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextReplacementConfig;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;
@@ -557,5 +561,21 @@ public class MyMaidLibrary {
         double dot = toEntity.normalize().dot(eye.getDirection());
 
         return dot > 0.99D;
+    }
+
+    // https://github.com/ErdbeerbaerLP/DiscordIntegration-Core/blob/564b32d29605322f927853ee62a6af938a0af7d3/src/main/java/de/erdbeerbaerlp/dcintegration/common/util/MessageUtils.java#L31-L35
+    static final Pattern URL_PATTERN = Pattern.compile(
+        //              schema                          ipv4            OR        namespace                 port     path         ends
+        //        |-----------------|        |-------------------------|  |-------------------------|    |---------| |--|   |---------------|
+        "((?:[a-z0-9]{2,}://)?(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}|(?:[-\\w_]+\\.[a-z]{2,}?))(?::[0-9]{1,5})?.*?(?=[!\"\u00A7 \n]|$))",
+        Pattern.CASE_INSENSITIVE);
+
+    public static Component replaceComponentURL(Component component) {
+        return component.replaceText(TextReplacementConfig.builder()
+            .match(URL_PATTERN)
+            .replacement(url -> url
+                .decorate(TextDecoration.UNDERLINED)
+                .hoverEvent(HoverEvent.showText(Component.text("クリックすると「" + url.content() + "」にアクセスします。")))
+                .clickEvent(ClickEvent.openUrl(url.content()))).build());
     }
 }
