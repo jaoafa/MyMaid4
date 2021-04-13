@@ -60,17 +60,14 @@ MyMaid4 の動作試験を行うにあたり、サーバが必要になります
 
 ### Local Test Server
 
-開発者のローカル PC にて動作するサーバです。 PaperMC の環境構築などが必要です。強くお勧めします。
+開発者のローカル PC にて動作するサーバです。 PaperMC の環境構築などは自動で行われます。こちらの環境で動作確認することを強くお勧めします。
 
 環境構築・初期設定は以下の手順にて行ってください。
 
-1. [PaperMC のダウンロードページ](https://papermc.io/downloads) から `1.16.5` の最新のビルドをダウンロードする
-2. ダウンロードした jar ファイルを `server` ディレクトリに配置し、 `paper-1.16.5.jar` とリネームする
-3. IntelliJ を開き、ウィンドウ右上「実行」で `ReBuild and Reload` を実行する
-4. [Minecraft EULA](https://account.mojang.com/documents/minecraft_eula) を読み同意する場合は `eula.txt` の `eula=false` を `eula=true` に変える
-5. IntelliJ からプラグインをビルドした後に自動的にリロードするために、[fnetworks/mcrconapi v1.1.1](https://github.com/fnetworks/mcrconapi/releases/tag/v1.1.1) の `mcrconapi-1.1.1.jar` をダウンロード、 `server/mcrconapi-1.1.1.jar` ディレクトリに移動する
-6. IntelliJ を開き、ウィンドウ右上「実行」で `ReBuild and Reload` を実行する
-7. 表示されるターミナルで `op <PlayerName>` を実行し OP 権限を自身に付与する
+1. [Minecraft EULA](https://account.mojang.com/documents/minecraft_eula) を読む
+2. IntelliJ を開き、右上「実行」で `ReBuild And Reload` を選ぶ (開発端末に応じて Win と Mac を選んでください)
+3. 実行ボタン(`▶`)を押す
+4. 表示されるターミナルで `op <PlayerName>` を実行し OP 権限を自身に付与する
 
 実際のテストは以下の手順にて行えます。
 
