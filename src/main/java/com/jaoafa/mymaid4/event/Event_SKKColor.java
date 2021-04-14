@@ -46,7 +46,7 @@ public class Event_SKKColor extends MyMaidLibrary implements Listener, EventPrem
                 Component.text("■", SKKColorManager.getPlayerColor(player)),
                 displayName,
                 Component.text(": "),
-                message).build();
+                MyMaidLibrary.replaceComponentURL(message)).build();
         event.composer(composer);
     }
 
