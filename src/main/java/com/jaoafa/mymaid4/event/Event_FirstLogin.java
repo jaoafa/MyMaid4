@@ -73,7 +73,7 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener, EventPr
             }
 
             EmbedBuilder builder = new EmbedBuilder();
-            builder.setTitle("NEW PLAYER JOIN", "https://user.jaoafa.com/" + player.getUniqueId());
+            builder.setTitle("NEW PLAYER JOIN", "https://users.jaoafa.com/" + player.getUniqueId());
             builder.appendDescription("新規プレイヤー(`" + player.getName() + "`)がサーバにログインしました！");
             builder.setColor(Color.GREEN);
             builder.addField("プレイヤーID", "`" + player.getName() + "`", false);
