@@ -73,7 +73,7 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener, EventPr
             }
 
             EmbedBuilder builder = new EmbedBuilder();
-            builder.setTitle("NEW PLAYER JOIN", "https://jaoafa.com/user/" + player.getUniqueId().toString());
+            builder.setTitle("NEW PLAYER JOIN", "https://user.jaoafa.com/" + player.getUniqueId());
             builder.appendDescription("新規プレイヤー(`" + player.getName() + "`)がサーバにログインしました！");
             builder.setColor(Color.GREEN);
             builder.addField("プレイヤーID", "`" + player.getName() + "`", false);
@@ -82,7 +82,7 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener, EventPr
             builder.addField("プレイヤー", "`" + String.join(", ", players) + "`", false);
             builder.setTimestamp(Instant.now());
             builder.setThumbnail(
-                "https://crafatar.com/renders/body/" + player.getUniqueId().toString() + ".png?overlay=true&scale=10");
+                "https://crafatar.com/renders/body/" + player.getUniqueId() + ".png?overlay=true&scale=10");
             builder.setAuthor(Main.getMyMaidConfig().getJDA().getSelfUser().getName(), null,
                 Main.getMyMaidConfig().getJDA().getSelfUser().getAvatarUrl());
             jaotan.sendMessage(builder.build()).queue();
