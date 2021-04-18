@@ -19,6 +19,7 @@ import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
 import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
+import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -65,7 +66,7 @@ public class Cmd_FlySpeed extends MyMaidLibrary implements CommandPremise {
             SendMessage(sender, details(), "ターゲットプレイヤーが指定されていません。");
             return;
         }
-        float speed = target.getFlySpeed() * 1000;
+        float speed = MyMaidData.getFlySpeed(target.getUniqueId()) * 1000;
         SendMessage(sender, details(), Component.text().append(
             Component.text(sender == target ? "あなた" : target.getName(), NamedTextColor.GREEN),
             Component.text("のクリエイティブ飛行速度は", NamedTextColor.GREEN),
@@ -84,7 +85,7 @@ public class Cmd_FlySpeed extends MyMaidLibrary implements CommandPremise {
             SendMessage(player, details(), "値は 1000% から -1000% を指定できます。");
             return;
         }
-        player.setFlySpeed(speed);
+        MyMaidData.setFlySpeed(player.getUniqueId(), speed);
         SendMessage(player, details(), Component.text().append(
             Component.text("あなたのクリエイティブ飛行速度を", NamedTextColor.GREEN),
             Component.space(),
