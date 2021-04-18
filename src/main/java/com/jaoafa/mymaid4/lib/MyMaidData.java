@@ -38,6 +38,7 @@ public class MyMaidData {
     private static CarrierPigeon carrierPigeon = null;
     private static final JSONObject getDocsData = new JSONObject();
     private static final Map<UUID, UUID> looking = new HashMap<>();
+    private static final Map<UUID, Float> flyspeed = new HashMap<>();
 
     @Nullable
     public static TextChannel getReportChannel() {
@@ -185,5 +186,20 @@ public class MyMaidData {
 
     public static void removeLooking(UUID uuid) {
         looking.remove(uuid);
+    }
+
+    public static boolean isSetFlySpeed(UUID uuid) {
+        return flyspeed.containsKey(uuid);
+    }
+
+    public static float getFlySpeed(UUID uuid) {
+        if (!isSetFlySpeed(uuid)) {
+            return 0.1f; // Default
+        }
+        return flyspeed.get(uuid);
+    }
+
+    public static void setFlySpeed(UUID uuid, float speed) {
+        flyspeed.put(uuid, speed);
     }
 }
