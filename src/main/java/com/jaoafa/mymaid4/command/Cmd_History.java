@@ -12,6 +12,7 @@
 package com.jaoafa.mymaid4.command;
 
 import cloud.commandframework.Command;
+import cloud.commandframework.arguments.standard.BooleanArgument;
 import cloud.commandframework.arguments.standard.IntegerArgument;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.bukkit.parsers.OfflinePlayerArgument;
@@ -29,6 +30,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Cmd_History extends MyMaidLibrary implements CommandPremise {
     @Override
@@ -56,6 +58,15 @@ public class Cmd_History extends MyMaidLibrary implements CommandPremise {
                 .argument(IntegerArgument.<CommandSender>newBuilder("item")
                     .withSuggestionsProvider(this::suggestHistoryIds))
                 .handler(this::disableItem)
+                .build(),
+            builder
+                .meta(CommandMeta.DESCRIPTION, "指定したプレイヤーのjaoHistory項目の通知設定を行います。")
+                .literal("notify")
+                .argument(OfflinePlayerArgument.of("target"))
+                .argument(IntegerArgument.<CommandSender>newBuilder("item")
+                    .withSuggestionsProvider(this::suggestHistoryIds))
+                .argument(BooleanArgument.<CommandSender>newBuilder("changeTo").withLiberal(true))
+                .handler(this::notifyItem)
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "指定したプレイヤーのjaoHistory情報を表示します。")
@@ -102,6 +113,26 @@ public class Cmd_History extends MyMaidLibrary implements CommandPremise {
         SendMessage(sender, details(), String.format("%s の jaoHistory のアイテム %d の無効化に%sしました。", target.getName(), id, bool ? "成功" : "失敗"));
     }
 
+    void notifyItem(CommandContext<CommandSender> context) {
+        CommandSender sender = context.getSender();
+        SendMessage(sender, details(), "changeTo: " + context.get("changeTo"));
+        if (sender instanceof Player && !isAM((Player) sender)) {
+            SendMessage(sender, details(), "あなたの権限ではこのコマンドを実行することができません！");
+            return;
+        }
+        if (sender instanceof BlockCommandSender) {
+            SendMessage(sender, details(), "コマンドブロックからではこのコマンドを実行することができません！");
+            return;
+        }
+        OfflinePlayer target = context.get("target");
+        int id = context.get("item");
+        boolean changeTo = context.get("changeTo");
+
+        Historyjao histjao = Historyjao.getHistoryjao(target);
+        boolean bool = histjao.setNotify(id, changeTo);
+        SendMessage(sender, details(), String.format("%s の jaoHistory のアイテム %d の通知設定を%sにするのに%sしました。", target.getName(), id, changeTo ? "オン" : "オフ", bool ? "成功" : "失敗"));
+    }
+
     void viewStatus(CommandContext<CommandSender> context) {
         CommandSender sender = context.getSender();
         if (sender instanceof Player && !isAM((Player) sender)) {
@@ -132,6 +163,12 @@ public class Cmd_History extends MyMaidLibrary implements CommandPremise {
         return Historyjao.getHistoryjao(player).getDataList().stream()
             .map(item -> String.valueOf(item.id))
             .filter(s -> s.startsWith(current.toLowerCase()))
+            .collect(Collectors.toList());
+    }
+
+    List<String> suggestBoolean(final CommandContext<CommandSender> context, final String current) {
+        return Stream.of("TRUE", "YES", "ON", "FALSE", "NO", "OFF")
+            .filter(s -> s.startsWith(current.toUpperCase()))
             .collect(Collectors.toList());
     }
 }

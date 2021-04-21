@@ -47,6 +47,10 @@ public class Event_History extends MyMaidLibrary implements Listener, EventPremi
             return;
         }
 
+        if (!histjao.isNotify()) {
+            return;
+        }
+
         List<String> data = new ArrayList<>();
         for (Historyjao.Data hist : histjao.getDataList()) {
             data.add("[" + hist.id + "] " + hist.message + " - " + sdfFormat(hist.getCreatedAt()));
