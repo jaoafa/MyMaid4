@@ -26,6 +26,7 @@ public class Historyjao {
     String name;
     UUID uuid;
     boolean found = false;
+    boolean notify = true;
     List<Data> data = new ArrayList<>();
 
     long DBSyncTime = -1L;
@@ -50,13 +51,13 @@ public class Historyjao {
         }
         try {
             Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
-            PreparedStatement statement = conn.prepareStatement(
-                "INSERT INTO jaoHistory (player, uuid, message, created_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP);");
-            statement.setString(1, player.getName());
-            statement.setString(2, player.getUniqueId().toString());
-            statement.setString(3, message);
-            statement.executeUpdate();
-            statement.close();
+            try (PreparedStatement statement = conn.prepareStatement(
+                "INSERT INTO jaoHistory (player, uuid, message, created_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP);")) {
+                statement.setString(1, player.getName());
+                statement.setString(2, player.getUniqueId().toString());
+                statement.setString(3, message);
+                statement.executeUpdate();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -71,13 +72,35 @@ public class Historyjao {
         }
         try {
             Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
-            PreparedStatement statement = conn.prepareStatement(
-                "UPDATE jaoHistory SET disabled = ? WHERE uuid = ? AND id = ? ORDER BY id DESC");
-            statement.setBoolean(1, true);
-            statement.setString(2, player.getUniqueId().toString());
-            statement.setInt(3, id);
-            statement.executeUpdate();
-            statement.close();
+            try (PreparedStatement statement = conn.prepareStatement(
+                "UPDATE jaoHistory SET disabled = ? WHERE uuid = ? AND id = ? ORDER BY id DESC")) {
+                statement.setBoolean(1, true);
+                statement.setString(2, player.getUniqueId().toString());
+                statement.setInt(3, id);
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        DBSync(true);
+
+        return true;
+    }
+
+    public boolean setNotify(int id, boolean changeTo) {
+        if (MyMaidData.getMainMySQLDBManager() == null) {
+            throw new IllegalStateException("Main.MySQLDBManager == null");
+        }
+        try {
+            Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
+            try (PreparedStatement statement = conn.prepareStatement(
+                "UPDATE jaoHistory SET notify = ? WHERE uuid = ? AND id = ? ORDER BY id DESC")) {
+                statement.setBoolean(1, changeTo);
+                statement.setString(2, player.getUniqueId().toString());
+                statement.setInt(3, id);
+                statement.executeUpdate();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -100,32 +123,33 @@ public class Historyjao {
         }
         try {
             Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
-            PreparedStatement statement = conn
-                .prepareStatement("SELECT * FROM jaoHistory WHERE uuid = ?");
-            statement.setString(1, player.getUniqueId().toString());
-            ResultSet res = statement.executeQuery();
-            this.data.clear();
-            while (res.next()) {
-                this.name = res.getString("player");
-                this.uuid = UUID.fromString(res.getString("uuid"));
+            try (PreparedStatement statement = conn
+                .prepareStatement("SELECT * FROM jaoHistory WHERE uuid = ?")) {
+                statement.setString(1, player.getUniqueId().toString());
+                try (ResultSet res = statement.executeQuery()) {
+                    this.data.clear();
+                    while (res.next()) {
+                        this.name = res.getString("player");
+                        this.uuid = UUID.fromString(res.getString("uuid"));
 
-                if (res.getBoolean("disabled")) {
-                    continue;
+                        if (res.getBoolean("disabled")) {
+                            continue;
+                        }
+
+                        Data d = new Data();
+                        d.id = res.getInt("id");
+                        d.player = res.getString("player");
+                        d.message = res.getString("message");
+                        d.disabled = res.getBoolean("disabled");
+                        d.notify = res.getBoolean("notify");
+                        d.created_at = res.getTimestamp("created_at").getTime() / 1000;
+                        d.updated_at = res.getTimestamp("updated_at").getTime() / 1000;
+                        this.data.add(d);
+
+                        this.found = true;
+                    }
                 }
-
-                Data d = new Data();
-                d.id = res.getInt("id");
-                d.player = res.getString("player");
-                d.message = res.getString("message");
-                d.disabled = res.getBoolean("disabled");
-                d.created_at = res.getTimestamp("created_at").getTime() / 1000;
-                d.updated_at = res.getTimestamp("updated_at").getTime() / 1000;
-                this.data.add(d);
-
-                this.found = true;
             }
-            res.close();
-            statement.close();
 
             DBSyncTime = System.currentTimeMillis();
         } catch (SQLException e) {
@@ -158,11 +182,16 @@ public class Historyjao {
         return found;
     }
 
+    public boolean isNotify() {
+        return notify;
+    }
+
     public static class Data {
         public int id;
         public String player;
         public String message;
         public boolean disabled;
+        public boolean notify;
         public long created_at;
         public long updated_at;
 
