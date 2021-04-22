@@ -147,7 +147,7 @@
         <dependency>
             <groupId>com.jaoafa</groupId>
             <artifactId>jaosuperachievement2</artifactId>
-            <version>ea05986</version>
+            <version>e98fce0</version>
         </dependency>
         <dependency>
             <groupId>com.maxmind.geoip2</groupId>
