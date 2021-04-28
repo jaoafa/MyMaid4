@@ -21,6 +21,7 @@ import cloud.commandframework.paper.PaperCommandManager;
 import com.jaoafa.mymaid4.httpServer.MyMaidServer;
 import com.jaoafa.mymaid4.lib.*;
 import com.jaoafa.mymaid4.tasks.Task_Pigeon;
+import com.jaoafa.mymaid4.tasks.Task_TabList;
 import net.dv8tion.jda.api.JDABuilder;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
@@ -248,6 +249,7 @@ public final class Main extends JavaPlugin {
     private void scheduleTasks(){
         new MyMaidServer().runTaskAsynchronously(this);
         new Task_Pigeon().runTaskTimerAsynchronously(this, 200L, 12000L); // 10秒後から10分毎
+        new Task_TabList().runTaskTimerAsynchronously(this, 200L, 1200L); // 10秒後から1分毎
     }
 
     public static void registerDiscordEvent(JDABuilder d) {
