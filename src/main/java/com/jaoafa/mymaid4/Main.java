@@ -84,6 +84,14 @@ public final class Main extends JavaPlugin {
             manager = new PaperCommandManager<>(this, CommandExecutionCoordinator.SimpleCoordinator.simpleCoordinator(),
                 Function.identity(), Function.identity());
             manager.registerBrigadier();
+
+            // case-insensitive support (大文字小文字を区別しない)
+            manager.setCommandSuggestionProcessor((context, strings) -> {
+                String input = context.getInputQueue().isEmpty() ? "" : context.getInputQueue().peek().toLowerCase();
+                return strings.stream()
+                    .filter(s -> s.toLowerCase().startsWith(input))
+                    .collect(Collectors.toList());
+            });
         } catch (Exception e) {
             getLogger().warning("コマンドの登録に失敗しました。PaperCommandManagerを取得できません。");
             e.printStackTrace();
