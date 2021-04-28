@@ -12,6 +12,7 @@
 package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.lib.*;
+import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -65,6 +66,7 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
         antiCommandMap.put("/minecraft:stop", new AntiCmd_StopCmd());
         antiCommandMap.put("/advancement", new AntiCmd_Advancement());
         antiCommandMap.put("/minecraft:advancement", new AntiCmd_Advancement());
+        antiCommandMap.put("/login", new AntiCmd_Login());
     }
 
     @EventHandler
@@ -498,6 +500,27 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
             player.chat("まぁでも幸せなら……OKです！");
             player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             checkSpam(player);
+            event.setCancelled(true);
+        }
+    }
+
+    static class AntiCmd_Login implements AntiCommand {
+        @Override
+        public void execute(PlayerCommandPreprocessEvent event, Player player, String[] args) {
+            String command = event.getMessage();
+            EBan eban = EBan.getInstance(player);
+            if (eban.isStatus()) {
+                event.setCancelled(true);
+                return;
+            }
+            eban.addBan("jaotan", String.format("コマンド「%s」を実行したことにより、サーバルールへの違反の可能性を検知したため", command));
+            player.kick(Component.text("Disconnected."));
+            if (MyMaidData.getJaotanChannel() != null) {
+                MyMaidData.getJaotanChannel().sendMessage(String.format("プレイヤー「%s」がコマンド「%s」を実行したため、キックしました。", player.getName(), command)).queue();
+            } else {
+                System.out.println("MyMaidData.getJaotanChannel is null");
+            }
+
             event.setCancelled(true);
         }
     }
