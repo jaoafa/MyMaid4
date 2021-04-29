@@ -11,18 +11,19 @@
 
 package com.jaoafa.mymaid4.event;
 
+import com.google.common.io.Files;
 import com.jaoafa.jaosuperachievement2.api.Achievementjao;
 import com.jaoafa.jaosuperachievement2.lib.Achievement;
 import com.jaoafa.mymaid4.Main;
-import com.jaoafa.mymaid4.lib.EBan;
-import com.jaoafa.mymaid4.lib.EventPremise;
-import com.jaoafa.mymaid4.lib.Jail;
-import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import com.jaoafa.mymaid4.lib.*;
 import com.jaoafa.mymaid4.tasks.Task_AutoRemoveJailByjaoium;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -42,6 +43,9 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.*;
 
 public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPremise {
@@ -59,8 +63,6 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
     public String description() {
         return "jaoium制限に関する処理を行います。";
     }
-
-    // TODO どうやって取得したかを調べる処理を作る
 
     /**
      * jaoiumと判定されるアイテムかどうか
@@ -94,6 +96,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
      * 悪意のあるアイテムかどうか
      *
      * @param potion PotionMeta
+     *
      * @return 悪意のあるアイテムかどうか
      */
     private String isMalicious(PotionMeta potion) {
@@ -107,6 +110,45 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
             return "Wurst";
         }
         return null;
+    }
+
+    void saveItem(Player player, ItemStack is) {
+        YamlConfiguration yaml = new YamlConfiguration();
+        yaml.set("data", is);
+        String yamlString = yaml.saveToString();
+        String nbt = NMSManager.getNBT(is);
+        String output = nbt + "\n\n" + yamlString;
+
+        File saveDir = new File(Main.getJavaPlugin().getDataFolder(), "jaoium");
+        if (!saveDir.exists()) {
+            boolean bool = saveDir.mkdirs();
+            System.out.println("Create jaoium data directory: " + bool);
+            if (!bool) return;
+        }
+
+        String hash = DigestUtils.md5Hex(output);
+        File file = new File(saveDir, hash + ".txt");
+        boolean exists = file.exists();
+        if (!file.exists()) {
+            try {
+                //noinspection UnstableApiUsage
+                Files.write(output, file, Charset.defaultCharset());
+            } catch (IOException e) {
+                reportError(getClass(), e);
+            }
+        }
+
+        if (Main.getMyMaidConfig().getJDA() == null) {
+            return;
+        }
+
+        TextChannel channel = Main.getMyMaidConfig().getJDA().getTextChannelById(837137823177768990L); // #jaoium-items
+        if (channel == null) {
+            return;
+        }
+
+        channel.sendMessage("`" + player.getName() + "` - " + sdfFormat(new Date()) + " | `" + hash + "` (exists: `" + exists + "`)").queue();
+        channel.sendFile(file, hash + ".txt").queue();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -146,9 +188,9 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
             .filter(i -> i.getType() == Material.SPLASH_POTION || i.getType() == Material.LINGERING_POTION)
             .filter(i -> isjaoium(((PotionMeta) i.getItemMeta()).getCustomEffects()))
             .findFirst();
-        if(matched.isPresent()){
-           // jaoium有
-            setjaoiumItemData(player, matched.get());
+        if (matched.isPresent()) {
+            // jaoium有
+            saveItem(player, matched.get());
             inv.clear();
             isMatched = true;
             malicious = isMalicious((PotionMeta) matched.get().getItemMeta());
@@ -159,9 +201,9 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
             .filter(i -> i.getType() == Material.SPLASH_POTION || i.getType() == Material.LINGERING_POTION)
             .filter(i -> isjaoium(((PotionMeta) i.getItemMeta()).getCustomEffects()))
             .findFirst();
-        if(click_matched.isPresent()){
+        if (click_matched.isPresent()) {
             // jaoium有
-            setjaoiumItemData(player, click_matched.get());
+            saveItem(player, click_matched.get());
             click_inv.clear();
             isMatched = true;
             malicious = isMalicious((PotionMeta) click_matched.get().getItemMeta());
@@ -222,7 +264,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
     public void OnBlockDispenseEvent(BlockDispenseEvent event) {
         ItemStack is = event.getItem();
 
-        if(is.getType() != Material.SPLASH_POTION && is.getType() != Material.LINGERING_POTION){
+        if (is.getType() != Material.SPLASH_POTION && is.getType() != Material.LINGERING_POTION) {
             return;
         }
 
@@ -232,7 +274,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
         }
     }
 
-    void check(Cancellable event, Player player){
+    void check(Cancellable event, Player player) {
         Inventory inv = player.getInventory();
         Inventory ender_inv = player.getEnderChest();
 
@@ -244,9 +286,9 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
             .filter(i -> i.getType() == Material.SPLASH_POTION || i.getType() == Material.LINGERING_POTION)
             .filter(i -> isjaoium(((PotionMeta) i.getItemMeta()).getCustomEffects()))
             .findFirst();
-        if(matched.isPresent()){
+        if (matched.isPresent()) {
             // jaoium有
-            setjaoiumItemData(player, matched.get());
+            saveItem(player, matched.get());
             event.setCancelled(true);
             inv.clear();
             isMatched = true;
@@ -258,9 +300,9 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
             .filter(i -> i.getType() == Material.SPLASH_POTION || i.getType() == Material.LINGERING_POTION)
             .filter(i -> isjaoium(((PotionMeta) i.getItemMeta()).getCustomEffects()))
             .findFirst();
-        if(ender_matched.isPresent()){
+        if (ender_matched.isPresent()) {
             // jaoium有
-            setjaoiumItemData(player, ender_matched.get());
+            saveItem(player, ender_matched.get());
             event.setCancelled(true);
             inv.clear();
             isMatched = true;
@@ -290,11 +332,8 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
             new Task_AutoRemoveJailByjaoium(player).runTaskLater(Main.getJavaPlugin(), 1200L); // 60s
         }
     }
-    private void setjaoiumItemData(Player player, ItemStack is) {
-        // TODO いつか作る
-    }
 
-    private void checkjaoiumLocation(Player player){
+    private void checkjaoiumLocation(Player player) {
         // TODO いつか作る
     }
 }
