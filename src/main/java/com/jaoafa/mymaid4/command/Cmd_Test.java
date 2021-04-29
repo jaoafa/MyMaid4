@@ -14,11 +14,9 @@ package com.jaoafa.mymaid4.command;
 import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import com.jaoafa.mymaid4.Main;
-import com.jaoafa.mymaid4.lib.CommandPremise;
-import com.jaoafa.mymaid4.lib.MyMaidCommand;
-import com.jaoafa.mymaid4.lib.MyMaidData;
-import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import com.jaoafa.mymaid4.lib.*;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
 
@@ -57,6 +55,18 @@ public class Cmd_Test extends MyMaidLibrary implements CommandPremise {
                     } catch (SQLException e) {
                         SendMessage(sender, details(), "ZakuroHat: 接続失敗");
                     }
+                })
+                .build(),
+            builder
+                .literal("nbt", ArgumentDescription.of("NBTタグを取得します。"))
+                .handler(context -> {
+                    final CommandSender sender = context.getSender();
+                    Player player = (Player) sender;
+                    SendMessage(sender, details(),
+                        NMSManager.getNBT(
+                            player.getInventory().getItemInMainHand()
+                        )
+                    );
                 })
                 .build()
         );
