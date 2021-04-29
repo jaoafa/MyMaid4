@@ -79,7 +79,7 @@ public class Cmd_Time extends MyMaidLibrary implements CommandPremise {
         timeNameToInt.put("night",13000);
         timeNameToInt.put("midnight",18000);
 
-        if (!timeNameToInt.containsKey(timeName)){
+        if (!getTimeByNumber&&!timeNameToInt.containsKey(timeName)){
             //変換Mapに存在しなかった場合
             SendMessage(player,details(),"そのような名前の時間は存在しません！");
             return;
