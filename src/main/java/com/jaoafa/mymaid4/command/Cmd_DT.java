@@ -111,7 +111,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
                 .meta(CommandMeta.DESCRIPTION, "近くのマーカーにテレポートします。")
                 .senderType(Player.class)
                 .literal("neartp")
-                .handler(this::getNearMarker)
+                .handler(this::getNearTpMarker)
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "マーカーの一覧を表示します。")
