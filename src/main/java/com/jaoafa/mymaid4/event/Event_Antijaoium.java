@@ -65,6 +65,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
     List<Integer> health_boost = Collections.singletonList(
         -7
     );
+    Set<String> sendHashes = new HashSet<>();
     Map<String, String> Reason = new HashMap<>(); // プレイヤー : 理由
 
     @Override
@@ -135,6 +136,10 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
         }
 
         String hash = DigestUtils.md5Hex(output);
+        if (sendHashes.contains(hash)) {
+            return;
+        }
+        sendHashes.add(hash);
         File file = new File(saveDir, hash + ".txt");
         boolean exists = file.exists();
         if (!file.exists()) {
