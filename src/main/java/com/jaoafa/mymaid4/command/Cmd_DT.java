@@ -108,6 +108,12 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
                 .handler(this::getNearMarker)
                 .build(),
             builder
+                .meta(CommandMeta.DESCRIPTION, "近くのマーカーにテレポートします。")
+                .senderType(Player.class)
+                .literal("neartp")
+                .handler(this::getNearTpMarker)
+                .build(),
+            builder
                 .meta(CommandMeta.DESCRIPTION, "マーカーの一覧を表示します。")
                 .senderType(Player.class)
                 .literal("list")
@@ -259,6 +265,35 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
     }
 
     void getNearMarker(CommandContext<CommandSender> context) {
+        Player player = (Player) context.getSender();
+        Location loc = player.getLocation();
+
+        DynmapAPI dynmapAPI = getDynmapAPI();
+        MarkerAPI markerAPI = dynmapAPI.getMarkerAPI();
+
+        Optional<Marker> marker = markerAPI.getMarkerSets().stream()
+            .flatMap(sets -> sets.getMarkers().stream())
+            .filter(m -> m.getWorld().equals(player.getLocation().getWorld().getName())).min((e1, e2) -> {
+                double distance1 = new Location(Bukkit.getWorld(e1.getWorld()), e1.getX(), e1.getY(), e1.getZ()).distance(loc);
+                double distance2 = new Location(Bukkit.getWorld(e2.getWorld()), e2.getX(), e2.getY(), e2.getZ()).distance(loc);
+                return (int) (distance1 - distance2);
+            });
+        if (!marker.isPresent()) {
+            SendMessage(player, details(), "ワールドにマーカーがひとつもありませんでした。");
+            return;
+        }
+        double distance = player.getLocation().distance(new Location(Bukkit.getWorld(marker.get().getWorld()), marker.get().getX(), marker.get().getY(), marker.get().getZ()));
+
+        SendMessage(player, details(), String.format("あなたから一番近い場所にあるマーカーは約%.3fブロック程度のところにある「%s」というマーカーです。", distance, marker.get().getLabel()));
+        SendMessage(player, details(), Component.text().append(
+            Component.text("/dt neartp", NamedTextColor.AQUA, TextDecoration.UNDERLINED)
+                .hoverEvent(HoverEvent.showText(Component.text("/dt neartp を実行します。")))
+                .clickEvent(ClickEvent.runCommand("/dt neartp")),
+            Component.text(" でテレポートできます。", NamedTextColor.GREEN)
+        ).build());
+    }
+
+    void getNearTpMarker(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
         Location loc = player.getLocation();
 
