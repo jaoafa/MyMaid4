@@ -42,7 +42,7 @@ public class Cmd_Time extends MyMaidLibrary implements CommandPremise {
                 .meta(CommandMeta.DESCRIPTION, "自分だけに適用される時間を設定します。")
                 .literal("set")
                 .argument(StringArgument.of("timeName"))
-                .argument(BooleanArgument.of("isRelative"))
+                .argument(BooleanArgument.optional("isRelative"))
                 .senderType(Player.class)
                 .handler(this::timeSetByName)
                 .build(),
@@ -50,7 +50,7 @@ public class Cmd_Time extends MyMaidLibrary implements CommandPremise {
                 .meta(CommandMeta.DESCRIPTION, "自分だけに適用される時間を進めます。")
                 .literal("add")
                 .argument(IntegerArgument.of("timeInt"))
-                .argument(BooleanArgument.of("isRelative"))
+                .argument(BooleanArgument.optional("isRelative"))
                 .senderType(Player.class)
                 .handler(this::timeAddByInt)
                 .build()
@@ -60,7 +60,7 @@ public class Cmd_Time extends MyMaidLibrary implements CommandPremise {
     void timeSetByName(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
         String timeName = context.get("timeName"); //day or 1000 どれが入ってるかわからない
-        boolean isRelative = context.get("isRelative"); //時間固定するかどうか
+        boolean isRelative = context.getOrDefault("isRelative", false); //時間固定するかどうか
         int timeInt = 0; //1000とかで指定された場合に代入
         boolean getTimeByNumber; //数値指定かどうか
 
@@ -100,7 +100,7 @@ public class Cmd_Time extends MyMaidLibrary implements CommandPremise {
     void timeAddByInt(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
         int myTimeInt = context.get("timeInt");
-        boolean isRelative = context.get("isRelative");
+        boolean isRelative = context.getOrDefault("isRelative", false); //時間固定するかどうか
         long myCurrentTime = player.getPlayerTime();
         player.setPlayerTime(myCurrentTime + myTimeInt, isRelative);
         SendMessage(player, details(), String.format("あなたの時間を%s進めました！", myTimeInt));
