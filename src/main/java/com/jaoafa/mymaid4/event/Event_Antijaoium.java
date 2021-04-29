@@ -21,8 +21,12 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.CommandBlock;
+import org.bukkit.command.BlockCommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -35,8 +39,11 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCreativeEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -58,6 +65,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
     List<Integer> health_boost = Collections.singletonList(
         -7
     );
+    Map<String, String> Reason = new HashMap<>(); // プレイヤー : 理由
 
     @Override
     public String description() {
@@ -251,7 +259,6 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
         check(event, (Player) event.getEntity().getShooter());
     }
 
-
     @EventHandler
     public void onPotionSplashEvent(PotionSplashEvent event) {
         if (!(event.getEntity().getShooter() instanceof Player)) {
@@ -334,6 +341,194 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
     }
 
     private void checkjaoiumLocation(Player player) {
-        // TODO いつか作る
+        Location loc = player.getLocation();
+        String reason = "null";
+        if (Reason.containsKey(player.getName())) {
+            reason = Reason.get(player.getName());
+            Reason.remove(player.getName());
+        }
+
+        if (Main.getMyMaidConfig().getJDA() == null) {
+            return;
+        }
+
+        TextChannel channel = Main.getMyMaidConfig().getJDA().getTextChannelById(837137823177768990L); // #jaoium-items
+        if (channel == null) {
+            return;
+        }
+
+        channel.sendMessage("**jaoium Location & Reason Notice**\n"
+            + "Player: " + player.getName() + "\n"
+            + "Location: " + loc.getWorld().getName() + " " + loc.getBlockX() + " " + loc.getBlockY() + " "
+            + loc.getBlockZ() + "\n"
+            + "Reason: `" + reason + "`").queue();
+    }
+
+    /* ---------------- どうやって入手した？ ---------------- */
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void ByPlayerCommand(PlayerCommandPreprocessEvent event) {
+        Player player = event.getPlayer();
+        String command = event.getMessage();
+
+        if (!command.startsWith("/give")) {
+            return;
+        }
+        if (command.equalsIgnoreCase("/give")) {
+            return;
+        }
+        String[] commands = command.split(" ", 0);
+        if (commands.length < 3) {
+            return;
+        }
+
+        String item = commands[2];
+        if (!item.startsWith("splash_potion") && !item.startsWith("minecraft:splash_potion")) {
+            return;
+        }
+
+        String selector = commands[1];
+        boolean SelectorToMe = false;
+        boolean ALLPlayer = false;
+        String ToPlayer = "";
+        if (selector.equalsIgnoreCase("@p")) {
+            // 自分
+            SelectorToMe = true;
+        } else if (selector.equalsIgnoreCase(player.getName())) {
+            // 自分
+            SelectorToMe = true;
+        } else if (selector.equalsIgnoreCase("@a")) {
+            // 自分(プレイヤーすべて)
+            SelectorToMe = true;
+            ALLPlayer = true;
+        } else if (selector.equalsIgnoreCase("@e")) {
+            // 自分(エンティティすべて)
+            SelectorToMe = true;
+            ALLPlayer = true;
+        } else if (selector.equalsIgnoreCase("@s")) {
+            // 自分(実行者)
+            SelectorToMe = true;
+        } else {
+            Player p = Bukkit.getPlayer(selector);
+            if (p != null) {
+                ToPlayer = selector;
+            }
+        }
+        if (SelectorToMe) {
+            Reason.put(player.getName(), player.getName() + "の実行したコマンド : " + command);
+        }
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (ToPlayer.equalsIgnoreCase(p.getName())) {
+                Reason.put(p.getName(), player.getName() + "の実行したコマンド : " + command);
+                continue;
+            }
+            if (ALLPlayer) {
+                Reason.put(p.getName(), player.getName() + "の実行したコマンド : " + command);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void ByCommandBlock(ServerCommandEvent event) {
+        if (!(event.getSender() instanceof BlockCommandSender))
+            return;
+        BlockCommandSender sender = (BlockCommandSender) event.getSender();
+
+        if (!(sender.getBlock().getState() instanceof CommandBlock))
+            return;
+        CommandBlock cmdb = (CommandBlock) sender.getBlock().getState();
+
+        String command = cmdb.getCommand();
+        if (!command.startsWith("/give") && !command.startsWith("give")) {
+            return;
+        }
+        if (command.equalsIgnoreCase("/give") || command.equalsIgnoreCase("give")) {
+            return;
+        }
+        String[] commands = command.split(" ", 0);
+        if (commands.length < 3) {
+            return;
+        }
+
+        String item = commands[2];
+        if (!item.startsWith("splash_potion") && !item.startsWith("minecraft:splash_potion")) {
+            return;
+        }
+
+        String selector = commands[1];
+        boolean ALLPlayer = false;
+        String ToPlayer = null;
+        if (selector.equalsIgnoreCase("@p")) {
+            // 一番近い
+            Player p = getNearestPlayer(cmdb.getLocation());
+            if (p == null) {
+                return;
+            }
+            ToPlayer = p.getName();
+        } else if (selector.equalsIgnoreCase("@a")) {
+            // プレイヤーすべて
+            ALLPlayer = true;
+        } else if (selector.equalsIgnoreCase("@e")) {
+            // エンティティすべて
+            ALLPlayer = true;
+        } else {
+            Player p = Bukkit.getPlayer(selector);
+            if (p != null) {
+                ToPlayer = selector;
+            }
+        }
+        if (ToPlayer == null && !ALLPlayer) {
+            return;
+        }
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (ToPlayer != null && ToPlayer.equalsIgnoreCase(p.getName())) {
+                Reason.put(p.getName(),
+                    "コマンドブロック(" + cmdb.getLocation().getWorld().getName() + " " + cmdb.getLocation().getBlockX()
+                        + " " + cmdb.getLocation().getBlockY() + " " + cmdb.getLocation().getBlockZ()
+                        + ")の実行したコマンド : " + command);
+                continue;
+            }
+            if (ALLPlayer) {
+                Reason.put(p.getName(),
+                    "コマンドブロック(" + cmdb.getLocation().getWorld().getName() + " " + cmdb.getLocation().getBlockX()
+                        + " " + cmdb.getLocation().getBlockY() + " " + cmdb.getLocation().getBlockZ()
+                        + ")の実行したコマンド : " + command);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void ByItemPickup(EntityPickupItemEvent event) {
+        if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
+        Player player = (Player) event.getEntity();
+        Item item = event.getItem();
+        ItemStack hand = item.getItemStack();
+        if (hand.getType() == Material.SPLASH_POTION || hand.getType() == Material.LINGERING_POTION) {
+            PotionMeta potion = (PotionMeta) hand.getItemMeta();
+            if (isjaoium(potion.getCustomEffects())) {
+                Reason.put(player.getName(),
+                    player.getLocation().getWorld().getName() + " " + player.getLocation().getBlockX() + " "
+                        + player.getLocation().getBlockY() + " " + player.getLocation().getBlockZ()
+                        + "にて拾ったアイテム");
+            }
+        }
+    }
+
+    @EventHandler
+    public void PlayerCreativeInv(InventoryCreativeEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        ItemStack hand = event.getCurrentItem();
+        if (hand == null) {
+            return;
+        }
+        if (hand.getType() == Material.SPLASH_POTION || hand.getType() == Material.LINGERING_POTION) {
+            PotionMeta potion = (PotionMeta) hand.getItemMeta();
+            if (isjaoium(potion.getCustomEffects())) {
+                Reason.put(player.getName(), "クリエイティブインベントリから取得したアイテム(保存したツールバーからの可能性あり)　DebugDATA: "
+                    + event.getAction().name() + " / " + event.getClick().name() + " / " + event.getHotbarButton());
+            }
+        }
     }
 }
