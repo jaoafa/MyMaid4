@@ -15,26 +15,22 @@ import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.BooleanArgument;
 import cloud.commandframework.arguments.standard.IntegerArgument;
 import cloud.commandframework.arguments.standard.StringArgument;
-import cloud.commandframework.bukkit.parsers.PlayerArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
 import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Cmd_MyTime extends MyMaidLibrary implements CommandPremise {
+public class Cmd_Time extends MyMaidLibrary implements CommandPremise {
     @Override
     public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
-            "mytime",
+            "time",
             "自分だけに適用される時間を設定します。"
         );
     }
@@ -45,18 +41,10 @@ public class Cmd_MyTime extends MyMaidLibrary implements CommandPremise {
             builder
                 .meta(CommandMeta.DESCRIPTION, "自分だけに適用される時間を設定します。")
                 .literal("set")
-                .argument(IntegerArgument.of("timeInt"))
-                .argument(BooleanArgument.of("isRelative"))
-                .senderType(Player.class)
-                .handler(this::myTimeSetByInt)
-                .build(),
-            builder
-                .meta(CommandMeta.DESCRIPTION, "自分だけに適用される時間を設定します。")
-                .literal("set")
                 .argument(StringArgument.of("timeName"))
                 .argument(BooleanArgument.of("isRelative"))
                 .senderType(Player.class)
-                .handler(this::myTimeSetByName)
+                .handler(this::timeSetByName)
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "自分だけに適用される時間を進めます。")
@@ -64,37 +52,50 @@ public class Cmd_MyTime extends MyMaidLibrary implements CommandPremise {
                 .argument(IntegerArgument.of("timeInt"))
                 .argument(BooleanArgument.of("isRelative"))
                 .senderType(Player.class)
-                .handler(this::myTimeAddByInt)
+                .handler(this::timeAddByInt)
                 .build()
         );
     }
-
-    void myTimeSetByInt(CommandContext<CommandSender> context) {
+    void timeSetByName(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
-        int myTimeInt = context.get("timeInt");
-        boolean isRelative = context.get("isRelative");
-        player.setPlayerTime(myTimeInt,isRelative);
-        SendMessage(player,details(), String.format("あなたの時間を%sに設定しました！", myTimeInt));
-    }
-    void myTimeSetByName(CommandContext<CommandSender> context) {
-        Player player = (Player) context.getSender();
-        String myTimeName = context.get("timeName");
-        boolean isRelative = context.get("isRelative");
+        String timeName = context.get("timeName"); //day or 1000 どれが入ってるかわからない
+        boolean isRelative = context.get("isRelative"); //時間固定するかどうか
+        int timeInt = 0; //1000とかで指定された場合に代入
+        boolean getTimeByNumber; //数値指定かどうか
 
+        try{
+            //とりあえずパースしてみる。成功したら数値指定をtrueに
+            timeInt = Integer.parseInt(timeName);
+            getTimeByNumber = true;
+        } catch (NumberFormatException e){
+            //出来なかったら文字指定なので数値指定はfalse
+            getTimeByNumber = false;
+        }
+
+        //文字指定->数値への変換Map
         Map<String, Integer> timeNameToInt = new HashMap<>();
         timeNameToInt.put("day",1000);
         timeNameToInt.put("noon",6000);
         timeNameToInt.put("night",13000);
         timeNameToInt.put("midnight",18000);
 
-        if (!timeNameToInt.containsKey(myTimeName)){
+        if (!timeNameToInt.containsKey(timeName)){
+            //変換Mapに存在しなかった場合
             SendMessage(player,details(),"そのような名前の時間は存在しません！");
             return;
         }
-        player.setPlayerTime(timeNameToInt.get(myTimeName),isRelative);
-        SendMessage(player,details(), String.format("あなたの時間を%sに設定しました！", timeNameToInt.get(myTimeName)));
+
+        //最終的に設定する時間
+        int resultTime = getTimeByNumber
+            ? timeInt
+            : timeNameToInt.get(timeName);
+
+        //設定
+        player.setPlayerTime(resultTime,isRelative);
+        //お知らせ
+        SendMessage(player,details(), String.format("あなたの時間を%sに設定しました！", resultTime));
     }
-    void myTimeAddByInt(CommandContext<CommandSender> context) {
+    void timeAddByInt(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
         int myTimeInt = context.get("timeInt");
         boolean isRelative = context.get("isRelative");
