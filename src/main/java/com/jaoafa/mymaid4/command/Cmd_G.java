@@ -128,7 +128,7 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
         }
         GameMode gamemode = getGameModeStartWith(gamemodeName);
         if (gamemode == null) {
-            SendMessage(player, details(), "指定されたゲームモード葉見つかりませんでした。");
+            SendMessage(player, details(), "指定されたゲームモードは見つかりませんでした。");
             return;
         }
 
@@ -168,7 +168,7 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
 
         GameMode gamemode = getGameModeStartWith(gamemodeName);
         if (gamemode == null) {
-            SendMessage(player, details(), "指定されたゲームモード葉見つかりませんでした。");
+            SendMessage(player, details(), "指定されたゲームモードは見つかりませんでした。");
             return;
         }
 
