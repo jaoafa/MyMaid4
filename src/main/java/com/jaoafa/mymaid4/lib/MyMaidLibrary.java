@@ -69,20 +69,10 @@ public class MyMaidLibrary {
         ).build());
     }
 
-    /**
-     * CommandSenderに対してメッセージを送信します。
-     *
-     * @param sender    CommandSender
-     * @param detail    MyMaidCommand.Detail
-     * @param component メッセージComponent
-     */
-    public static void SendMessage(CommandSender sender, MyMaidCommand.Detail detail, Component component) {
-        sender.sendMessage(Component.text().append(
-            Component.text("[" + detail.getName().toUpperCase() + "]"),
-            Component.space(),
-            component.replaceText(builder -> builder.match("\n").replacement("\n" + "[" + detail.getName().toUpperCase() + "] "))
-        ).build());
-    }
+    // https://github.com/ErdbeerbaerLP/DiscordIntegration-Core/blob/564b32d29605322f927853ee62a6af938a0af7d3/src/main/java/de/erdbeerbaerlp/dcintegration/common/util/MessageUtils.java#L31-L35
+    static final Pattern URL_PATTERN = Pattern.compile(
+        "((?:[a-z0-9]{2,}://)?(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}|[-\\w_]+\\.[a-z]{2,}?)(?::[0-9]{1,5})?.*?(?=[!\"\u00A7 \n]|$))",
+        Pattern.CASE_INSENSITIVE);
 
     /**
      * エラーをDiscordのreportチャンネルへ報告します。
@@ -563,12 +553,26 @@ public class MyMaidLibrary {
         return dot > 0.99D;
     }
 
-    // https://github.com/ErdbeerbaerLP/DiscordIntegration-Core/blob/564b32d29605322f927853ee62a6af938a0af7d3/src/main/java/de/erdbeerbaerlp/dcintegration/common/util/MessageUtils.java#L31-L35
-    static final Pattern URL_PATTERN = Pattern.compile(
-        //              schema                          ipv4            OR        namespace                 port     path         ends
-        //        |-----------------|        |-------------------------|  |-------------------------|    |---------| |--|   |---------------|
-        "((?:[a-z0-9]{2,}://)?(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}|(?:[-\\w_]+\\.[a-z]{2,}?))(?::[0-9]{1,5})?.*?(?=[!\"\u00A7 \n]|$))",
-        Pattern.CASE_INSENSITIVE);
+    /**
+     * CommandSenderに対してメッセージを送信します。
+     *
+     * @param sender    CommandSender
+     * @param detail    MyMaidCommand.Detail
+     * @param component メッセージComponent
+     */
+    public static void SendMessage(CommandSender sender, MyMaidCommand.Detail detail, Component component) {
+        sender.sendMessage(Component.text().append(
+            Component.text("[" + detail.getName().toUpperCase() + "]"),
+            Component.space(),
+            component
+                .replaceText(builder ->
+                    builder
+                        .match("\n")
+                        .replacement("\n" + "[" + detail.getName().toUpperCase() + "] ")
+                )
+                .colorIfAbsent(NamedTextColor.GREEN)
+        ).build());
+    }
 
     public static Component replaceComponentURL(Component component) {
         return component.replaceText(TextReplacementConfig.builder()
