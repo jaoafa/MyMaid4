@@ -39,6 +39,8 @@ public class MyMaidData {
     private static final JSONObject getDocsData = new JSONObject();
     private static final Map<UUID, UUID> looking = new HashMap<>();
     private static final Map<UUID, Float> flyspeed = new HashMap<>();
+    private static final Set<UUID> signEditing = new HashSet<>();
+    private static final Map<UUID, Location> selectedSign = new HashMap<>();
 
     @Nullable
     public static TextChannel getReportChannel() {
@@ -84,7 +86,7 @@ public class MyMaidData {
         lastDed.put(name, loc);
     }
 
-    public static boolean isMainDBActive(){
+    public static boolean isMainDBActive() {
         return mainMySQLDBManager != null;
     }
 
@@ -96,7 +98,7 @@ public class MyMaidData {
         MyMaidData.mainMySQLDBManager = mainMySQLDBManager;
     }
 
-    public static boolean isZKRHatDBActive(){
+    public static boolean isZKRHatDBActive() {
         return zkrhatMySQLDBManager != null;
     }
 
@@ -123,7 +125,7 @@ public class MyMaidData {
     public static void setSpamTime(UUID uuid, long time) {
         SpamTime.put(uuid, time);
     }
-    
+
     public static boolean isHid(UUID uuid) {
         return hid.contains(uuid);
     }
@@ -201,5 +203,26 @@ public class MyMaidData {
 
     public static void setFlySpeed(UUID uuid, float speed) {
         flyspeed.put(uuid, speed);
+    }
+
+    public static boolean isSignEditing(UUID uuid) {
+        return signEditing.contains(uuid);
+    }
+
+    public static void setSignEditing(UUID uuid, boolean isEditing) {
+        if (isEditing) {
+            signEditing.add(uuid);
+        } else {
+            signEditing.remove(uuid);
+        }
+    }
+
+    @Nullable
+    public static Location getSelectedSign(UUID uuid) {
+        return selectedSign.get(uuid);
+    }
+
+    public static void setSelectedSign(UUID uuid, Location loc) {
+        selectedSign.put(uuid, loc);
     }
 }

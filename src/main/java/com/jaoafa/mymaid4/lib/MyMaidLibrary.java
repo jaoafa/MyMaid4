@@ -29,6 +29,8 @@ import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import org.bukkit.*;
+import org.bukkit.block.data.type.Sign;
+import org.bukkit.block.data.type.WallSign;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -592,5 +594,11 @@ public class MyMaidLibrary {
         }
 
         return (WorldEditPlugin) plugin;
+    }
+
+    public static boolean isSign(Material material) {
+        return Arrays.stream(Material.values())
+            .filter(m -> m.data == Sign.class || m.data == WallSign.class)
+            .anyMatch(m -> m == material);
     }
 }
