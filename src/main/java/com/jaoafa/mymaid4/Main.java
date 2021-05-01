@@ -216,17 +216,18 @@ public final class Main extends JavaPlugin {
         // コマンドのエラーハンドラー
         new MinecraftExceptionHandler<CommandSender>()
             .withHandler(MinecraftExceptionHandler.ExceptionType.INVALID_SYNTAX, e ->
-                Component.text("コマンドの構文が正しくありません。正しい構文は次の通りです: ", NamedTextColor.RED)
-                    .append(
-                        Component.text(
-                            String.format(
-                                "/%s",
-                                ((InvalidSyntaxException) e).getCorrectSyntax())
-                        ).replaceText(config -> {
-                            config.match(Pattern.compile("[^\\s\\w\\-]"));
-                            config.replacement(match -> match.color(NamedTextColor.WHITE));
-                        })
-                    )
+                Component.text().append(
+                    Component.text("コマンドの構文が正しくありません。正しい構文は次の通りです: ", NamedTextColor.RED),
+                    Component.text(
+                        String.format(
+                            "/%s",
+                            ((InvalidSyntaxException) e).getCorrectSyntax()),
+                        NamedTextColor.GRAY
+                    ).replaceText(config -> {
+                        config.match(Pattern.compile("[^\\s\\w\\-]"));
+                        config.replacement(match -> match.color(NamedTextColor.WHITE));
+                    })
+                ).build()
             )
             .withHandler(MinecraftExceptionHandler.ExceptionType.INVALID_SENDER, e ->
                 Component.text("あなたはこのコマンドを実行できません。実行できるのは次の種別の実行者のみです: ", NamedTextColor.RED)
