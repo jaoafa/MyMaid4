@@ -23,6 +23,7 @@ import com.sk89q.worldguard.protection.regions.RegionQuery;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -46,6 +47,10 @@ public class Event_Sign extends MyMaidLibrary implements Listener, EventPremise 
         Block block = event.getClickedBlock();
 
         if (action != Action.RIGHT_CLICK_BLOCK) {
+            return;
+        }
+
+        if (player.getInventory().getItemInMainHand().getType() != Material.STICK) {
             return;
         }
 
