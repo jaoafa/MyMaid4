@@ -84,6 +84,8 @@ public final class Main extends JavaPlugin {
         registerEvent();
 
         scheduleTasks();
+
+        MyMaidData.setBlacklist(new Blacklist());
     }
 
     private static Component convertCause(final Throwable throwable) {

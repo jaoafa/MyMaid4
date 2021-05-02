@@ -41,6 +41,7 @@ public class MyMaidData {
     private static final Map<UUID, Float> flyspeed = new HashMap<>();
     private static final Set<UUID> signEditing = new HashSet<>();
     private static final Map<UUID, Location> selectedSign = new HashMap<>();
+    private static Blacklist blacklist;
 
     @Nullable
     public static TextChannel getReportChannel() {
@@ -224,5 +225,14 @@ public class MyMaidData {
 
     public static void setSelectedSign(UUID uuid, Location loc) {
         selectedSign.put(uuid, loc);
+    }
+
+    @Nullable
+    public static Blacklist getBlacklist() {
+        return blacklist;
+    }
+
+    public static void setBlacklist(Blacklist blacklist) {
+        MyMaidData.blacklist = blacklist;
     }
 }
