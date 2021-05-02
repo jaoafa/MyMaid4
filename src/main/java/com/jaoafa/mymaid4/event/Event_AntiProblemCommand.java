@@ -13,16 +13,18 @@ package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.lib.*;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener, EventPremise {
     @Override
@@ -150,8 +152,7 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
                 String text = args[0].equalsIgnoreCase("/kill")
                     ? String.format("%sさんが%sを殺すとか調子に乗ってると思うので%sさんを殺しておきますね^^", player.getName(), args[1], player.getName())
                     : String.format("%sごときが%sを殺そうだなんて図が高いわ！ %sが死にな！", player.getName(), args[1], player.getName());
-                //MyMaidLibrary.chatFake(ChatColor.GOLD, "jaotan", text);
-                player.sendMessage(text);
+                chatFake(NamedTextColor.GOLD, "jaotan", text);
                 player.setHealth(0);
                 event.setCancelled(true);
                 MyMaidLibrary.checkSpam(player);
@@ -159,58 +160,20 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
             }
             if (args[1].startsWith("@e")) {
                 try {
-                    SelectorParser parser = new SelectorParser(args[1]);
-                    if (!parser.isValidValues()) {
-                        player.sendMessage(String.format("[Command] %s指定されたセレクターは適切でありません。", ChatColor.GREEN));
-                        Set<String> invalids = parser.getInvalidValues();
-                        player.sendMessage(String.format("[COMMAND] %s不適切だったセレクター引数: %s", ChatColor.GREEN, String.join(", ", invalids)));
+                    List<Entity> entities = Bukkit.selectEntities(player, args[1]);
+                    if (entities.size() > 10) {
+                        player.sendMessage(Component.text().append(
+                            Component.text("[KILL] "),
+                            Component.text("ターゲットとなるエンティティ数が10以内ではないため、このコマンドを実行できません。(ターゲットエンティティ数: " + entities.size() + ")", NamedTextColor.GREEN)
+                        ));
                         event.setCancelled(true);
-                        MyMaidLibrary.checkSpam(player);
-                        return;
-                    }
-                    if (!parser.getArgs().containsKey("distance")) {
-                        boolean exist = false;
-                        for (String one : LeastOne) {
-                            if (parser.getArgs().containsKey(one)) {
-                                exist = true;
-                                break;
-                            }
-                        }
-                        if (!exist) {
-                            player.sendMessage(String.format("[COMMAND] %s指定されたセレクターは適切でありません。", ChatColor.GREEN));
-                            player.sendMessage(String.format("[COMMAND] %s理由: @eセレクターで引数「%s」のいずれかを指定せずに実行することはできません。", ChatColor.GREEN, String.join("」・「", LeastOne)));
-                            event.setCancelled(true);
-                            MyMaidLibrary.checkSpam(player);
-                            return;
-                        }
-                    } else {
-                        player.sendMessage(String.format("[COMMAND] %s指定されたセレクターは適切でありません。", ChatColor.GREEN));
-                        player.sendMessage(String.format("[COMMAND] %s理由: @eセレクターで引数「r」を指定せずに実行することはできません。", ChatColor.GREEN));
-                        event.setCancelled(true);
-                        MyMaidLibrary.checkSpam(player);
-                        return;
                     }
                 } catch (IllegalArgumentException e) {
-                    player.sendMessage(String.format("[COMMAND] %s指定されたセレクターは適切でありません。", ChatColor.GREEN));
-                    player.sendMessage(String.format("[COMMAND] %s理由: %s", ChatColor.GREEN, e.getMessage()));
+                    player.sendMessage(Component.text().append(
+                        Component.text("[KILL] "),
+                        Component.text("ターゲットセレクターが正しくないため、このコマンドを実行できません。", NamedTextColor.GREEN)
+                    ));
                     event.setCancelled(true);
-                    MyMaidLibrary.checkSpam(player);
-                    return;
-                }
-            }
-            if (args[1].startsWith("@a")) {
-                try {
-                    SelectorParser parser = new SelectorParser(args[1]);
-                    if (!parser.isValidValues()) {
-                        player.sendMessage(String.format("[COMMAND] %s指定されたセレクターは適切でありません。", ChatColor.GREEN));
-                        event.setCancelled(true);
-                        MyMaidLibrary.checkSpam(player);
-                    }
-                } catch (IllegalArgumentException e) {
-                    player.sendMessage(String.format("[COMMAND] %s指定されたセレクターは適切でありません。", ChatColor.GREEN));
-                    player.sendMessage(String.format("[COMMAND] %s理由: %s", ChatColor.GREEN, e.getMessage()));
-                    event.setCancelled(true);
-                    MyMaidLibrary.checkSpam(player);
                 }
             }
         }
