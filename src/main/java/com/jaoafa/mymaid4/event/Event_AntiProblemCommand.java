@@ -257,7 +257,8 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
     static class AntiCmd_BanCmd implements AntiCommand {
         @Override
         public void execute(PlayerCommandPreprocessEvent event, Player player, String[] args) {
-            if (args[1].equalsIgnoreCase(player.getName()) ||
+            if (args.length != 0 &&
+                args[1].equalsIgnoreCase(player.getName()) ||
                 args[1].equalsIgnoreCase("me") ||
                 args[1].equalsIgnoreCase("@p") ||
                 args[1].equalsIgnoreCase("@s")) {
@@ -283,7 +284,8 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
     static class AntiCmd_KickCmd implements AntiCommand {
         @Override
         public void execute(PlayerCommandPreprocessEvent event, Player player, String[] args) {
-            if (args[1].equalsIgnoreCase(player.getName()) ||
+            if (args.length != 0 &&
+                args[1].equalsIgnoreCase(player.getName()) ||
                 args[1].equalsIgnoreCase("me") ||
                 args[1].equalsIgnoreCase("@p") ||
                 args[1].equalsIgnoreCase("@s")) {
