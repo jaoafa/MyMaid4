@@ -45,7 +45,7 @@ public class Cmd_Elytra extends MyMaidLibrary implements CommandPremise {
 
     void giveElytra(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
-        ItemStack elytra = new ItemStack(Material.ELYTRA,1);
+        ItemStack elytra = new ItemStack(Material.ELYTRA);
         ItemStack fireworks = new ItemStack(Material.FIREWORK_ROCKET, 64);
 
         PlayerInventory inv = player.getInventory();
