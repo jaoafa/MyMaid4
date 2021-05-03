@@ -38,12 +38,7 @@ public class Event_AutoSetHandFacing extends MyMaidLibrary implements Listener, 
             return; //set hand[facing=look]コマンド以外
         }
         if (isAMRV(player)) {
-            player.performCommand(String.format("//set hand[facing=%s]", player.getFacing().name()));
-            player.sendMessage(Component.text().append(
-                Component.text("[AutoFacing]"),
-                Component.space(),
-                Component.text(player.getFacing().name()+"にSETしました。", NamedTextColor.GREEN)
-            ));
+            event.setMessage(command.replace("look",player.getFacing().name()));
         }
         event.setCancelled(true);
     }
