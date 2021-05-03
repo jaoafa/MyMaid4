@@ -40,6 +40,5 @@ public class Event_AutoSetHandFacing extends MyMaidLibrary implements Listener, 
         if (isAMRV(player)) {
             event.setMessage(command.replace("look",player.getFacing().name()));
         }
-        event.setCancelled(true);
     }
 }
