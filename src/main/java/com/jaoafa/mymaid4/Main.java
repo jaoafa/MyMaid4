@@ -263,8 +263,6 @@ public final class Main extends JavaPlugin {
                     final HoverEvent<Component> hover = HoverEvent.showText(
                         Component.text()
                             .append(convertCause(cause))
-                            .append(Component.text(stackTrace))
-                            .append(Component.newline())
                             .append(Component.text(
                                 "エラー情報をコピーします。",
                                 NamedTextColor.GRAY,
