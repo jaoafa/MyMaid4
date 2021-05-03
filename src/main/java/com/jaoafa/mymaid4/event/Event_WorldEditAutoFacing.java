@@ -29,7 +29,7 @@ public class Event_WorldEditAutoFacing extends MyMaidLibrary implements Listener
         String command = event.getMessage();
         Player player = event.getPlayer();
         if (!command.contains("[facing=look]")) {
-            return; //set hand[facing=look]コマンド以外
+            return; //[facing=look]以外
         }
         if (isAMRV(player)) {
             event.setMessage(command.replace("look", player.getFacing().name()));
