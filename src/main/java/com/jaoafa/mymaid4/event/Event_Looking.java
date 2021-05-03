@@ -15,6 +15,7 @@ import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -48,7 +49,11 @@ public class Event_Looking extends MyMaidLibrary implements Listener, EventPremi
             vector.setX(-vector.getX());
             vector.setY(-vector.getY());
             vector.setZ(-vector.getZ());
-            p.teleport(p.getLocation().setDirection(vector));
+            Location teleportTo = p.getLocation().setDirection(vector);
+            if (Float.isFinite(teleportTo.getPitch()) || Float.isFinite(teleportTo.getYaw())) {
+                return;
+            }
+            p.teleport(teleportTo);
         }
     }
 }
