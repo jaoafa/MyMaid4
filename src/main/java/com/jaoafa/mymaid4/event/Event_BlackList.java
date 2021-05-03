@@ -144,7 +144,7 @@ public class Event_BlackList extends MyMaidLibrary implements Listener, EventPre
         if (!bool) event.setCancelled(true);
 
         if (Materials.isArmor(target.getType()) &&
-            checkBlacklist(Blacklist.BlacklistEvent.EQUIP, target.getType(), player, player.getLocation())) {
+            !checkBlacklist(Blacklist.BlacklistEvent.EQUIP, target.getType(), player, player.getLocation())) {
             event.setCancelled(true);
         }
     }
@@ -183,7 +183,7 @@ public class Event_BlackList extends MyMaidLibrary implements Listener, EventPre
 
             ItemStack equipped = checkEquipped(event);
             if (equipped != null &&
-                checkBlacklist(Blacklist.BlacklistEvent.EQUIP, item.getType(), player, player.getLocation())) {
+                !checkBlacklist(Blacklist.BlacklistEvent.EQUIP, item.getType(), player, player.getLocation())) {
                 event.setCancelled(true);
             }
         }
