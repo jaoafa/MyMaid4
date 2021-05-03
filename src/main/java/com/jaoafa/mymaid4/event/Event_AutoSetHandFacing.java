@@ -34,7 +34,7 @@ public class Event_AutoSetHandFacing extends MyMaidLibrary implements Listener, 
         if (args.length == 0) {
             return;
         }
-        if (!args[0].equalsIgnoreCase("//set hand[facing=look]")) {
+        if (!command.equalsIgnoreCase("//set hand[facing=look]")) {
             return; //set hand[facing=look]コマンド以外
         }
         if (isAMRV(player)) {
