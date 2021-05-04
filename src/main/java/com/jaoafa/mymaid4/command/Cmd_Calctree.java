@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.BooleanArgument;
 import cloud.commandframework.context.CommandContext;
@@ -44,7 +45,7 @@ public class Cmd_Calctree extends MyMaidLibrary implements CommandPremise {
         return new MyMaidCommand.Cmd(
             builder
                 .meta(CommandMeta.DESCRIPTION, "WorldEditの選択範囲で植木算を行います。")
-                .argument(BooleanArgument.optional("placeEdgeTree", true))
+                .argument(BooleanArgument.optional("placeEdgeTree", true), ArgumentDescription.of("両端に木を置くかどうか。"))
                 .senderType(Player.class)
                 .handler(this::calcTree)
                 .build()
