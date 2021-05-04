@@ -108,13 +108,13 @@ public class Cmd_Calctree extends MyMaidLibrary implements CommandPremise {
             if (placeEdgeTree){
                 int kankaku;
                 int amari;
-                kankaku = length/(currentTreeNum-1);
-                amari = length-(kankaku*currentTreeNum+1+currentTreeNum);
+                kankaku = (length-currentTreeNum)/(currentTreeNum-1);
+                amari = length-(kankaku*(currentTreeNum-1)+currentTreeNum);
                 result.put(kankaku,amari);
             }else {
                 int kankaku;
                 int amari;
-                kankaku = length/(currentTreeNum+1);
+                kankaku = (length-currentTreeNum)/(currentTreeNum+1);
                 amari = length-(kankaku*(currentTreeNum+1)+currentTreeNum);
                 result.put(kankaku,amari);
             }
