@@ -100,8 +100,8 @@
             </snapshots>
         </repository>
         <repository>
-            <id>bintray-repo</id>
-            <url>https://dl.bintray.com/ichbinjoe/public/</url>
+            <id>tomacheese-repo</id>
+            <url>https://repo.tomacheese.com</url>
         </repository>
         <repository>
             <id>viaversion-repo</id>
