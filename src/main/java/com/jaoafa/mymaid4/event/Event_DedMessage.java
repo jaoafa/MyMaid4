@@ -26,12 +26,11 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 public class Event_DedMessage extends MyMaidLibrary implements Listener, EventPremise {
     @Override
     public String description() {
-        return "コンクリートパウダーの変化を無効化します。";
+        return "dedmessageコマンドに関する処理を行います。";
     }
 
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
-        System.out.println("PlayerDeathEvent");
         Player player = event.getEntity();
         Location loc = player.getLocation();
         Player killer = player.getKiller();

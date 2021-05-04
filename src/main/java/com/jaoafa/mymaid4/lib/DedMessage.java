@@ -126,7 +126,7 @@ public class DedMessage {
             ), Vector.getMaximum(
                 details.getFirstLocation(),
                 details.getSecondLocation()
-            ))) {
+            ).add(new Vector(1, 1, 1)))) {
                 return details;
             }
         }
