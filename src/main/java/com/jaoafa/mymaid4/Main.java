@@ -36,6 +36,7 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.util.ComponentMessageThrowable;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -50,10 +51,11 @@ import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.MessageFormat;
+import java.util.*;
 import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -86,11 +88,8 @@ public final class Main extends JavaPlugin {
         scheduleTasks();
 
         MyMaidData.setBlacklist(new Blacklist());
-    }
 
-    private static Component convertCause(final Throwable throwable) {
-        final Component msg = ComponentMessageThrowable.getOrConvertMessage(throwable);
-        return msg != null ? msg : Component.text("null");
+        initCreativeInventoryItems();
     }
 
     @Override
@@ -105,77 +104,6 @@ public final class Main extends JavaPlugin {
             this.adventure = null;
         }
         MyMaidServer.stopServer();
-    }
-
-    private void registerEvent() {
-        getLogger().info("----- registerEvent -----");
-
-        JSONArray events = new JSONArray();
-        try {
-            ClassFinder classFinder = new ClassFinder(this.getClassLoader());
-            for (Class<?> clazz : classFinder.findClasses("com.jaoafa.mymaid4.event")) {
-                if (!clazz.getName().startsWith("com.jaoafa.mymaid4.event.Event_")) {
-                    continue;
-                }
-                if (clazz.getEnclosingClass() != null) {
-                    continue;
-                }
-                if (clazz.getName().contains("$")) {
-                    continue;
-                }
-                String name = clazz.getName().substring("com.jaoafa.mymaid4.event.Event_".length())
-                    .toLowerCase();
-                try {
-                    Constructor<?> construct = clazz.getConstructor();
-                    Object instance = construct.newInstance();
-                    EventPremise eventPremise = (EventPremise) instance;
-
-                    if (!(instance instanceof Listener)) {
-                        getLogger().warning(clazz.getSimpleName() + ": Listener not implemented [0]");
-                        return;
-                    }
-
-                    JSONObject details = new JSONObject();
-                    details.put("class", instance.getClass().getName());
-                    details.put("description", eventPremise.description());
-                    try {
-                        Method[] methods = instance.getClass().getDeclaredMethods();
-                        List<Method> eventMethods = Arrays.stream(methods)
-                            .filter(m -> m.getParameterCount() == 1)
-                            .filter(m -> Arrays.stream(m.getDeclaredAnnotations())
-                                .anyMatch(a -> a.annotationType().equals(EventHandler.class)))
-                            .collect(Collectors.toList());
-
-                        JSONArray methodArray = new JSONArray();
-                        eventMethods.forEach(method -> {
-                            JSONObject obj = new JSONObject();
-                            obj.put("name", method.getName());
-                            obj.put("event", method.getParameterTypes()[0].getName());
-                            methodArray.put(obj);
-                        });
-                        details.put("methods", methodArray);
-
-                        events.put(details);
-                    } catch (NoClassDefFoundError ignored) {
-                    }
-
-                    try {
-                        Listener listener = (Listener) instance;
-                        getServer().getPluginManager().registerEvents(listener, this);
-                        getLogger().info(String.format("%s registered", clazz.getSimpleName()));
-                    } catch (ClassCastException e) {
-                        getLogger().warning(String.format("%s: Listener not implemented [1]", clazz.getSimpleName()));
-                    }
-                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                    getLogger().warning(String.format("%s register failed", name));
-                    e.printStackTrace();
-                }
-            }
-            MyMaidData.putGetDocsData("events", events);
-        } catch (ClassNotFoundException | IOException e) {
-            getLogger().warning("registerCommand failed");
-            e.printStackTrace();
-        }
     }
 
     private void registerCommand() {
@@ -375,6 +303,77 @@ public final class Main extends JavaPlugin {
         }
     }
 
+    private void registerEvent() {
+        getLogger().info("----- registerEvent -----");
+
+        JSONArray events = new JSONArray();
+        try {
+            ClassFinder classFinder = new ClassFinder(this.getClassLoader());
+            for (Class<?> clazz : classFinder.findClasses("com.jaoafa.mymaid4.event")) {
+                if (!clazz.getName().startsWith("com.jaoafa.mymaid4.event.Event_")) {
+                    continue;
+                }
+                if (clazz.getEnclosingClass() != null) {
+                    continue;
+                }
+                if (clazz.getName().contains("$")) {
+                    continue;
+                }
+                String name = clazz.getName().substring("com.jaoafa.mymaid4.event.Event_".length())
+                    .toLowerCase();
+                try {
+                    Constructor<?> construct = clazz.getConstructor();
+                    Object instance = construct.newInstance();
+                    EventPremise eventPremise = (EventPremise) instance;
+
+                    if (!(instance instanceof Listener)) {
+                        getLogger().warning(clazz.getSimpleName() + ": Listener not implemented [0]");
+                        return;
+                    }
+
+                    JSONObject details = new JSONObject();
+                    details.put("class", instance.getClass().getName());
+                    details.put("description", eventPremise.description());
+                    try {
+                        Method[] methods = instance.getClass().getDeclaredMethods();
+                        List<Method> eventMethods = Arrays.stream(methods)
+                            .filter(m -> m.getParameterCount() == 1)
+                            .filter(m -> Arrays.stream(m.getDeclaredAnnotations())
+                                .anyMatch(a -> a.annotationType().equals(EventHandler.class)))
+                            .collect(Collectors.toList());
+
+                        JSONArray methodArray = new JSONArray();
+                        eventMethods.forEach(method -> {
+                            JSONObject obj = new JSONObject();
+                            obj.put("name", method.getName());
+                            obj.put("event", method.getParameterTypes()[0].getName());
+                            methodArray.put(obj);
+                        });
+                        details.put("methods", methodArray);
+
+                        events.put(details);
+                    } catch (NoClassDefFoundError ignored) {
+                    }
+
+                    try {
+                        Listener listener = (Listener) instance;
+                        getServer().getPluginManager().registerEvents(listener, this);
+                        getLogger().info(String.format("%s registered", clazz.getSimpleName()));
+                    } catch (ClassCastException e) {
+                        getLogger().warning(String.format("%s: Listener not implemented [1]", clazz.getSimpleName()));
+                    }
+                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                    getLogger().warning(String.format("%s register failed", name));
+                    e.printStackTrace();
+                }
+            }
+            MyMaidData.putGetDocsData("events", events);
+        } catch (ClassNotFoundException | IOException e) {
+            getLogger().warning("registerEvent failed");
+            e.printStackTrace();
+        }
+    }
+
     public static void registerDiscordEvent(JDABuilder d) {
         getJavaPlugin().getLogger().info("----- registerDiscordEvent -----");
         try {
@@ -402,7 +401,41 @@ public final class Main extends JavaPlugin {
                 }
             }
         } catch (ClassNotFoundException | IOException e) {
-            getJavaPlugin().getLogger().warning("registerCommand failed");
+            getJavaPlugin().getLogger().warning("registerDiscordEvent failed");
+            e.printStackTrace();
+        }
+    }
+
+    private void initCreativeInventoryItems() {
+        try {
+            Path path = Paths.get(getDataFolder().getAbsolutePath(), "creative-items.tsv");
+            if (!Files.exists(path)) {
+                getLogger().warning("initCreativeInventoryItems: creative-items.tsv が見つかりません。ツールバー利用制限機能は動作しません。");
+                return;
+            }
+            List<String> lines = Files.readAllLines(path);
+
+            Map<Material, List<String>> items = new HashMap<>();
+            for (String line : lines) {
+                String[] material_nbt = line.split("\t");
+                if (material_nbt.length != 2) {
+                    continue;
+                }
+
+                String materialName = material_nbt[0];
+                String nbt = material_nbt[1];
+                try {
+                    Material material = Material.valueOf(materialName);
+
+                    List<String> nbts = items.containsKey(material) ? items.get(material) : new ArrayList<>();
+                    nbts.add(nbt);
+                    items.put(material, nbts);
+                } catch (IllegalArgumentException e) {
+                    getLogger().warning(MessageFormat.format("initCreativeInventoryItems: {0} がMaterialに見つかりません。", materialName));
+                }
+            }
+            MyMaidData.setCreativeInventoryWithNBTs(items);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -411,6 +444,11 @@ public final class Main extends JavaPlugin {
         new MyMaidServer().runTaskAsynchronously(this);
         new Task_Pigeon().runTaskTimerAsynchronously(this, 200L, 12000L); // 10秒後から10分毎
         new Task_TabList().runTaskTimerAsynchronously(this, 200L, 1200L); // 10秒後から1分毎
+    }
+
+    private static Component convertCause(final Throwable throwable) {
+        final Component msg = ComponentMessageThrowable.getOrConvertMessage(throwable);
+        return msg != null ? msg : Component.text("null");
     }
 
     public static Main getMain() {
