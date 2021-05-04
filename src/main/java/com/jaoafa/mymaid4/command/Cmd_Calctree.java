@@ -44,7 +44,7 @@ public class Cmd_Calctree extends MyMaidLibrary implements CommandPremise {
         return new MyMaidCommand.Cmd(
             builder
                 .meta(CommandMeta.DESCRIPTION, "WorldEditの選択範囲で植木算を行います。")
-                .argument(BooleanArgument.optional("placeEdgeTree",true))
+                .argument(BooleanArgument.optional("placeEdgeTree", true))
                 .senderType(Player.class)
                 .handler(this::calcTree)
                 .build()
@@ -55,7 +55,7 @@ public class Cmd_Calctree extends MyMaidLibrary implements CommandPremise {
         Player player = (Player) context.getSender();
         WorldEditPlugin we = getWorldEdit();
         Region region = null;
-        boolean placeEdgeTree = context.getOrDefault("placeEdgeTree",true);
+        boolean placeEdgeTree = context.getOrDefault("placeEdgeTree", true);
         try {
             World selectionWorld = we.getSession(player).getSelectionWorld();
             region = we.getSession(player).getSelection(selectionWorld);
@@ -74,49 +74,53 @@ public class Cmd_Calctree extends MyMaidLibrary implements CommandPremise {
             SendMessage(player, details(), "一列で選択してください。");
             return;
         }
-        int length = height*width;
+        int length = height * width;
         int currentTreeNum = 2;
-        int maxTreeNum = length/2;
+        int maxTreeNum = length / 2;
 
-        Map<Integer, Integer> result = calc(length,currentTreeNum,maxTreeNum,placeEdgeTree);
+        Map<Integer, Integer> result = calc(length, currentTreeNum, maxTreeNum, placeEdgeTree);
         //50行以上になりそうなら余りを削る
-        if (result.values().size()>50){
-            result.forEach((k,v) -> {
-                if (v!=0){
-                    result.remove(k,v);
+        if (result.values().size() > 50) {
+            result.forEach((k, v) -> {
+                if (v != 0) {
+                    result.remove(k, v);
                 }
             });
         }
 
-        result.forEach((k,v) ->{
-            if (v == 0){
+        result.forEach((k, v) -> {
+            if (v == 0) {
                 SendMessage(player, details(), Component.text().append(
-                    Component.text(String.format("[余剰無し] 間隔:%s",k),NamedTextColor.GREEN)
+                    Component.text(String.format("[余剰無し] 間隔:%s", k), NamedTextColor.GREEN)
                 ).build());
-            }else {
+            } else {
                 SendMessage(player, details(), Component.text().append(
-                    Component.text(String.format("[余剰有り] 間隔:%s 余剰:%s",k,v),NamedTextColor.RED)
+                    Component.text(String.format("[余剰有り] 間隔:%s 余剰:%s", k, v), NamedTextColor.RED)
                 ).build());
             }
         });
 
     }
 
-    Map<Integer,Integer> calc(int length, int currentTreeNum,int maxTreeNum, boolean placeEdgeTree) {
-        Map<Integer,Integer> result = new HashMap<>();
-        for(;currentTreeNum<maxTreeNum;currentTreeNum++){
-            if (placeEdgeTree){
+    Map<Integer, Integer> calc(int length, int currentTreeNum, int maxTreeNum, boolean placeEdgeTree) {
+        Map<Integer, Integer> result = new HashMap<>();
+        for (; currentTreeNum < maxTreeNum; currentTreeNum++) {
+            if (placeEdgeTree) {
                 int kankaku;
-                int amari;
-                kankaku = (length-currentTreeNum)/(currentTreeNum-1);
-                amari = length-(kankaku*(currentTreeNum-1)+currentTreeNum);
-                result.put(kankaku,amari);
-            }else {
+                int amari = 0;
+                kankaku = (length - currentTreeNum) / (currentTreeNum - 1);
+                if (length != (kankaku * (currentTreeNum - 1) + currentTreeNum)) {
+                    amari = length - (kankaku * (currentTreeNum - 1) + currentTreeNum);
+                }
+                result.put(kankaku, amari);
+            } else {
                 int kankaku;
-                int amari;
-                kankaku = (length-currentTreeNum)/(currentTreeNum+1);
-                amari = length-(kankaku*(currentTreeNum+1)+currentTreeNum);
-                result.put(kankaku,amari);
+                int amari = 0;
+                kankaku = (length - currentTreeNum) / (currentTreeNum + 1);
+                if (length != (kankaku * (currentTreeNum + 1) + currentTreeNum)) {
+                    amari = length - (kankaku * (currentTreeNum + 1) + currentTreeNum);
+                }
+                result.put(kankaku, amari);
             }
         }
         return result;
