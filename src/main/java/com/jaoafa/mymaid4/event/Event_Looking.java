@@ -50,7 +50,7 @@ public class Event_Looking extends MyMaidLibrary implements Listener, EventPremi
             vector.setY(-vector.getY());
             vector.setZ(-vector.getZ());
             Location teleportTo = p.getLocation().setDirection(vector);
-            if (Float.isFinite(teleportTo.getPitch()) || Float.isFinite(teleportTo.getYaw())) {
+            if (Float.isInfinite(teleportTo.getPitch()) || Float.isInfinite(teleportTo.getYaw())) {
                 return;
             }
             p.teleport(teleportTo);
