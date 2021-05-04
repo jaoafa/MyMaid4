@@ -57,13 +57,10 @@ import java.util.*;
 
 public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPremise {
     List<Integer> heal = Arrays.asList(
-        -3,
         29,
-        125,
-        253
-    );
-    List<Integer> health_boost = Collections.singletonList(
-        -7
+        61,
+        93,
+        125
     );
     Set<String> sendHashes = new HashSet<>();
     Map<String, String> Reason = new HashMap<>(); // プレイヤー : 理由
@@ -79,20 +76,12 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
      * @param list PotionEffectのList
      *
      * @return jaoiumかどうか
-     *
-     * @author mine_book000
      */
     private boolean isjaoium(List<PotionEffect> list) {
         boolean jaoium = false;
         for (PotionEffect po : list) {
             if (po.getType().equals(PotionEffectType.HEAL)) {
                 if (heal.contains(po.getAmplifier())) {
-                    // アウト
-                    jaoium = true;
-                }
-            }
-            if (po.getType().equals(PotionEffectType.HEALTH_BOOST)) {
-                if (health_boost.contains(po.getAmplifier())) {
                     // アウト
                     jaoium = true;
                 }
