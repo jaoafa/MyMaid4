@@ -17,6 +17,7 @@ import cloud.commandframework.CommandComponent;
 import cloud.commandframework.arguments.StaticArgument;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.bukkit.CloudBukkitCapabilities;
+import cloud.commandframework.exceptions.AmbiguousNodeException;
 import cloud.commandframework.exceptions.InvalidCommandSenderException;
 import cloud.commandframework.exceptions.InvalidSyntaxException;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
@@ -244,37 +245,41 @@ public final class Main extends JavaPlugin {
 
                     JSONArray subcommands = new JSONArray();
                     cmdPremise.register(builder).getCommands().forEach(cmd -> {
-                        System.out.println(cmd.toString());
-                        manager.command(cmd);
-                        JSONObject subcommand = new JSONObject();
-                        subcommand.put("meta", cmd.getCommandMeta().getAllValues());
-                        subcommand.put("senderType", cmd.getSenderType().isPresent() ?
-                            cmd.getSenderType().get().getName() : null);
-                        subcommand.put("toString", cmd.toString());
+                        try {
+                            manager.command(cmd);
+                            JSONObject subcommand = new JSONObject();
+                            subcommand.put("meta", cmd.getCommandMeta().getAllValues());
+                            subcommand.put("senderType", cmd.getSenderType().isPresent() ?
+                                cmd.getSenderType().get().getName() : null);
+                            subcommand.put("toString", cmd.toString());
 
-                        final Iterator<CommandComponent<CommandSender>> iterator = cmd.getComponents().iterator();
-                        JSONArray args = new JSONArray();
-                        cmd.getArguments().forEach(arg -> {
-                            JSONObject obj = new JSONObject();
-                            obj.put("name", arg.getName());
-                            if (arg instanceof StaticArgument) {
-                                obj.put("alias", ((StaticArgument<?>) arg).getAlternativeAliases());
-                            }
-                            obj.put("isRequired", arg.isRequired());
-                            obj.put("defaultValue", arg.getDefaultValue());
-                            obj.put("defaultDescription", arg.getDefaultDescription());
-                            obj.put("class", arg.getClass().getName());
-
-                            if (iterator.hasNext()) {
-                                final CommandComponent<CommandSender> component = iterator.next();
-                                if (!component.getArgumentDescription().isEmpty()) {
-                                    obj.put("description", component.getArgumentDescription().getDescription());
+                            final Iterator<CommandComponent<CommandSender>> iterator = cmd.getComponents().iterator();
+                            JSONArray args = new JSONArray();
+                            cmd.getArguments().forEach(arg -> {
+                                JSONObject obj = new JSONObject();
+                                obj.put("name", arg.getName());
+                                if (arg instanceof StaticArgument) {
+                                    obj.put("alias", ((StaticArgument<?>) arg).getAlternativeAliases());
                                 }
-                            }
-                            args.put(obj);
-                        });
-                        subcommand.put("arguments", args);
-                        subcommands.put(subcommand);
+                                obj.put("isRequired", arg.isRequired());
+                                obj.put("defaultValue", arg.getDefaultValue());
+                                obj.put("defaultDescription", arg.getDefaultDescription());
+                                obj.put("class", arg.getClass().getName());
+
+                                if (iterator.hasNext()) {
+                                    final CommandComponent<CommandSender> component = iterator.next();
+                                    if (!component.getArgumentDescription().isEmpty()) {
+                                        obj.put("description", component.getArgumentDescription().getDescription());
+                                    }
+                                }
+                                args.put(obj);
+                            });
+                            subcommand.put("arguments", args);
+                            subcommands.put(subcommand);
+                        } catch (AmbiguousNodeException e) {
+                            getLogger().warning(String.format("%s: コマンドの登録に失敗したため、このコマンドは使用できません: AmbiguousNodeException", cmd.toString()));
+                            getLogger().warning("このエラーは、コマンドフレームワークがコマンドの引数を見分けられないエラーによるものです。literalを追加して固有なコマンドと見なせるように修正してください。");
+                        }
                     });
 
                     manager.command(builder
@@ -290,15 +295,15 @@ public final class Main extends JavaPlugin {
                     details.put("subcommands", subcommands);
                     commands.put(details);
 
-                    getLogger().info(String.format("%s registered", commandName));
+                    getLogger().info(String.format("%s: コマンドの登録に成功しました。", commandName));
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                    getLogger().warning(String.format("%s register failed", commandName));
+                    getLogger().warning(String.format("%s: コマンドの登録に失敗しました。", commandName));
                     e.printStackTrace();
                 }
             }
             MyMaidData.putGetDocsData("commands", commands);
         } catch (ClassNotFoundException | IOException e) {
-            getLogger().warning("registerCommand failed");
+            getLogger().warning("コマンドの登録に失敗しました。");
             e.printStackTrace();
         }
     }
@@ -327,7 +332,7 @@ public final class Main extends JavaPlugin {
                     EventPremise eventPremise = (EventPremise) instance;
 
                     if (!(instance instanceof Listener)) {
-                        getLogger().warning(clazz.getSimpleName() + ": Listener not implemented [0]");
+                        getLogger().warning(String.format("%s: Listener を実装していないため、登録できませんでした。[0]", clazz.getSimpleName()));
                         return;
                     }
 
@@ -358,18 +363,18 @@ public final class Main extends JavaPlugin {
                     try {
                         Listener listener = (Listener) instance;
                         getServer().getPluginManager().registerEvents(listener, this);
-                        getLogger().info(String.format("%s registered", clazz.getSimpleName()));
+                        getLogger().info(String.format("%s: イベントの登録に成功しました。", clazz.getSimpleName()));
                     } catch (ClassCastException e) {
-                        getLogger().warning(String.format("%s: Listener not implemented [1]", clazz.getSimpleName()));
+                        getLogger().warning(String.format("%s: Listener を実装していないため、登録できませんでした。[1]", clazz.getSimpleName()));
                     }
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                    getLogger().warning(String.format("%s register failed", name));
+                    getLogger().warning(String.format("%s: イベントの登録に失敗しました。", name));
                     e.printStackTrace();
                 }
             }
             MyMaidData.putGetDocsData("events", events);
         } catch (ClassNotFoundException | IOException e) {
-            getLogger().warning("registerEvent failed");
+            getLogger().warning("イベントの登録に失敗しました。");
             e.printStackTrace();
         }
     }
@@ -395,13 +400,14 @@ public final class Main extends JavaPlugin {
                     Object instance = construct.newInstance();
 
                     d.addEventListeners(instance);
+                    getJavaPlugin().getLogger().info(String.format("%s: Discordイベントの登録に成功しました。", clazz.getSimpleName()));
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                    getJavaPlugin().getLogger().warning(String.format("%s register failed", name));
+                    getJavaPlugin().getLogger().warning(String.format("%s: Discordイベントの登録に成功しました。", name));
                     e.printStackTrace();
                 }
             }
         } catch (ClassNotFoundException | IOException e) {
-            getJavaPlugin().getLogger().warning("registerDiscordEvent failed");
+            getJavaPlugin().getLogger().warning("Discordイベントの登録に失敗しました。");
             e.printStackTrace();
         }
     }
