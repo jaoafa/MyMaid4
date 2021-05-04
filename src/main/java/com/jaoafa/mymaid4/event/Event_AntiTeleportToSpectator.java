@@ -30,9 +30,6 @@ public class Event_AntiTeleportToSpectator extends MyMaidLibrary implements List
 
     @EventHandler
     public void onTeleportCommand(TeleportCommandEvent event) {
-        if (event.getFromPlayer() == null) {
-            return;
-        }
         Player toPlayer = event.getToPlayer();
         if (toPlayer == null) {
             return;

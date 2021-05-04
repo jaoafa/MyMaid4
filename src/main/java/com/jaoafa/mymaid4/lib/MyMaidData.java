@@ -13,6 +13,7 @@ package com.jaoafa.mymaid4.lib;
 
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.json.JSONObject;
 
@@ -42,6 +43,7 @@ public class MyMaidData {
     private static final Set<UUID> signEditing = new HashSet<>();
     private static final Map<UUID, Location> selectedSign = new HashMap<>();
     private static Blacklist blacklist;
+    private static Map<Material, List<String>> creativeInventoryWithNBTs = new HashMap<>(); // material : nbt
 
     @Nullable
     public static TextChannel getReportChannel() {
@@ -234,5 +236,13 @@ public class MyMaidData {
 
     public static void setBlacklist(Blacklist blacklist) {
         MyMaidData.blacklist = blacklist;
+    }
+
+    public static Map<Material, List<String>> getCreativeInventoryWithNBTs() {
+        return creativeInventoryWithNBTs;
+    }
+
+    public static void setCreativeInventoryWithNBTs(Map<Material, List<String>> creativeInventoryWithNBTs) {
+        MyMaidData.creativeInventoryWithNBTs = creativeInventoryWithNBTs;
     }
 }
