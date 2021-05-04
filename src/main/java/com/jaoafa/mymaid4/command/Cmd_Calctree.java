@@ -66,16 +66,11 @@ public class Cmd_Calctree extends MyMaidLibrary implements CommandPremise {
         }
         int height = region.getHeight();
         int width = region.getWidth();
-
-        if (height != 1 && width != 1) {
-            SendMessage(player, details(), "一列で選択してください。");
-            return;
-        }
         if (height <= 3 || width <= 3) {
             SendMessage(player, details(), "狭すぎるので植木算出来ません。");
             return;
         }
-        int length = height * width;
+        int length = Math.max(height, width);
         int currentTreeNum = 2;
         int maxTreeNum = length / 2;
 
