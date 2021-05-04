@@ -64,17 +64,17 @@ public class Cmd_Calctree extends MyMaidLibrary implements CommandPremise {
             SendMessage(player, details(), "WorldEditで範囲を指定してください。");
             return;
         }
-        int height = region.getHeight();
+        int length = region.getLength();
         int width = region.getWidth();
-        if (height <= 3 || width <= 3) {
+        if (length <= 3 || width <= 3) {
             SendMessage(player, details(), "狭すぎるので植木算出来ません。");
             return;
         }
-        int length = Math.max(height, width);
+        int lengthFinal = Math.max(length, width);
         int currentTreeNum = 2;
-        int maxTreeNum = length / 2;
+        int maxTreeNum = lengthFinal / 2;
 
-        Map<Integer, Integer> result = calc(length, currentTreeNum, maxTreeNum, placeEdgeTree);
+        Map<Integer, Integer> result = calc(lengthFinal, currentTreeNum, maxTreeNum, placeEdgeTree);
         //50行以上になりそうなら余りを削る
         if (result.values().size() > 50) {
             result.forEach((k, v) -> {
