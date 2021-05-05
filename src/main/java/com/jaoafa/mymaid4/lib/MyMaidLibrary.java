@@ -29,6 +29,8 @@ import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
@@ -556,6 +558,14 @@ public class MyMaidLibrary {
     }
 
     protected boolean getLookingAt(Player player, Player target) {
+        Location eye = player.getEyeLocation();
+        Vector toEntity = target.getEyeLocation().toVector().subtract(eye.toVector());
+        double dot = toEntity.normalize().dot(eye.getDirection());
+
+        return dot > 0.99D;
+    }
+
+    protected boolean isEntityLooking(Player player, LivingEntity target) {
         Location eye = player.getEyeLocation();
         Vector toEntity = target.getEyeLocation().toVector().subtract(eye.toVector());
         double dot = toEntity.normalize().dot(eye.getDirection());
