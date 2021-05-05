@@ -32,7 +32,7 @@ public class Event_LookingBlock extends MyMaidLibrary implements Listener, Event
             return; //LookingBlock以外
         }
         if (isAMRV(player)) {
-            if (player.getTargetBlock(15) == null){
+            if (player.getTargetBlock(15) == null) {
                 player.sendMessage("[LookingBlock]あなたは何も見ていません！");
                 return;
             }
