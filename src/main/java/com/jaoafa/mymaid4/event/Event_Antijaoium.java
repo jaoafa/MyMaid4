@@ -107,6 +107,11 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
             // Wurst?
             return "Wurst";
         }
+        if (displayName.contains("§4§lINSTANT DEATH")) {
+            // Wurst
+            // https://github.com/Wurst-Imperium/Wurst7/blob/8572e76dfe6851cc88156aab9e4d41fa2d4aa272/src/main/java/net/wurstclient/hacks/KillPotionHack.java#L57
+            return "Wurst";
+        }
         return null;
     }
 
