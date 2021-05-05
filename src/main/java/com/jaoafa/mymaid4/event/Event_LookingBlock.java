@@ -13,6 +13,7 @@ package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,15 +29,16 @@ public class Event_LookingBlock extends MyMaidLibrary implements Listener, Event
     public void onSetHandFacingCommand(PlayerCommandPreprocessEvent event) {
         String command = event.getMessage();
         Player player = event.getPlayer();
-        if (!command.contains("LookingBlock")) {
+        if (!command.contains("lookb")) {
             return; //LookingBlock以外
         }
+        Block lookingBlock = player.getTargetBlock(15);
         if (isAMRV(player)) {
-            if (player.getTargetBlock(15) == null) {
-                player.sendMessage("[LookingBlock]あなたは何も見ていません！");
+            if (lookingBlock == null) {
+                player.sendMessage("[LookB] あなたは何も見ていません！");
                 return;
             }
-            event.setMessage(command.replace("LookingBlock", player.getTargetBlock(15).getBlockData().getMaterial().getKey().getKey()));
+            event.setMessage(command.replace("lookb", lookingBlock.getBlockData().getMaterial().getKey().getKey()));
         }
     }
 }
