@@ -12,7 +12,6 @@
 package com.jaoafa.mymaid4.command;
 
 import cloud.commandframework.Command;
-import cloud.commandframework.arguments.standard.BooleanArgument;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
@@ -22,6 +21,11 @@ import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import org.bukkit.WeatherType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Cmd_Weather extends MyMaidLibrary implements CommandPremise {
     @Override
@@ -38,7 +42,7 @@ public class Cmd_Weather extends MyMaidLibrary implements CommandPremise {
             builder
                 .meta(CommandMeta.DESCRIPTION, "自分だけに適用される天気を設定します。")
                 .literal("set")
-                .argument(StringArgument.newBuilder("weatherName")/*.withSuggestionsProvider(this::suggestWeatherName)*/)
+                .argument(StringArgument.<CommandSender>newBuilder("weatherName").withSuggestionsProvider(this::suggestWeatherName))
                 .senderType(Player.class)
                 .handler(this::weatherSetByName)
                 .build()
@@ -48,6 +52,9 @@ public class Cmd_Weather extends MyMaidLibrary implements CommandPremise {
     void weatherSetByName(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
         String weatherName = context.get("weatherName");
+        if (weatherName.equalsIgnoreCase("rain")) {
+            weatherName = "downfall";
+        }
 
         WeatherType weatherType = WeatherType.valueOf(weatherName.toUpperCase());
         //設定
@@ -55,7 +62,8 @@ public class Cmd_Weather extends MyMaidLibrary implements CommandPremise {
         //お知らせ
         SendMessage(player, details(), String.format("あなたの天気を%sに設定しました！", weatherType.name()));
     }
-    /*List<String> suggestWeatherName(final CommandContext<CommandSender> context, final String current) {
+
+    List<String> suggestWeatherName(final CommandContext<CommandSender> context, final String current) {
         List<String> list = new ArrayList<>();
         list.addAll(Arrays.stream(WeatherType.values())
             .map(Enum::name)
@@ -64,5 +72,5 @@ public class Cmd_Weather extends MyMaidLibrary implements CommandPremise {
         return list.stream()
             .filter(s -> s.toLowerCase().startsWith(current.toLowerCase()))
             .collect(Collectors.toList());
-    }*/
+    }
 }
