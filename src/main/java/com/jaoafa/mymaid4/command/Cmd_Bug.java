@@ -210,7 +210,7 @@ public class Cmd_Bug extends MyMaidLibrary implements CommandPremise {
 
                 try {
                     OkHttpClient client = new OkHttpClient();
-                    RequestBody requestBody = RequestBody.create(json.toString(), MediaType.parse("application/json; charset=UTF-8"));
+                    RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=UTF-8"), json.toString());
                     Request request = new Request.Builder()
                         .url(url)
                         .header("Authorization", String.format("token %s", accessToken))
