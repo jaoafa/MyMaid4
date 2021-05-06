@@ -177,7 +177,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
             sdfFormat(new Date()),
             hash,
             exists,
-            isWarning ? String.format("\n[警告] jaoiumという文字列が含まれていません: `%s`", displayName) : "")).queue();
+            isWarning ? String.format("\n**[警告]** jaoiumという文字列が含まれていません: `%s`", displayName) : "")).queue();
         channel.sendFile(file, hash + ".txt").queue();
     }
 
