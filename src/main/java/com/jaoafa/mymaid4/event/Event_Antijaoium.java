@@ -53,7 +53,9 @@ import org.bukkit.potion.PotionEffectType;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.text.MessageFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPremise {
     List<Integer> heal = Arrays.asList(
@@ -136,13 +138,29 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
         sendHashes.add(hash);
         File file = new File(saveDir, hash + ".txt");
         boolean exists = file.exists();
-        if (!file.exists()) {
+        if (!exists) {
             try {
                 //noinspection UnstableApiUsage
                 Files.write(output, file, Charset.defaultCharset());
             } catch (IOException e) {
                 reportError(getClass(), e);
             }
+        }
+
+        boolean isWarning = false;
+        String displayName = null;
+        if (is.getType() == Material.SPLASH_POTION || is.getType() == Material.LINGERING_POTION) {
+            PotionMeta meta = (PotionMeta) is.getItemMeta();
+            Component componentDisplayName = meta.displayName();
+            displayName = componentDisplayName != null ? PlainComponentSerializer.plain().serialize(componentDisplayName) : "";
+            List<Component> componentLore = meta.lore();
+            String lore = componentLore != null ? componentLore.stream().map(c -> PlainComponentSerializer.plain().serialize(c)).collect(Collectors.joining()) : "";
+            if ((displayName.contains("jaoium") || lore.contains("jaoium")) && exists) {
+                return;
+            }
+
+            // jaoiumという文字列が含まれていない
+            isWarning = true;
         }
 
         if (Main.getMyMaidConfig().getJDA() == null) {
@@ -154,7 +172,12 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
             return;
         }
 
-        channel.sendMessage("`" + player.getName() + "` - " + sdfFormat(new Date()) + " | `" + hash + "` (exists: `" + exists + "`)").queue();
+        channel.sendMessage(MessageFormat.format("`{0}` - {1} | `{2}` (exists: `{3}`){4}",
+            player.getName(),
+            sdfFormat(new Date()),
+            hash,
+            exists,
+            isWarning ? String.format("\n[警告] jaoiumという文字列が含まれていません: `%s`", displayName) : "")).queue();
         channel.sendFile(file, hash + ".txt").queue();
     }
 
