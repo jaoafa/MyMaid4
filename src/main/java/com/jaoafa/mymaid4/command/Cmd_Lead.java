@@ -41,7 +41,7 @@ public class Cmd_Lead extends MyMaidLibrary implements CommandPremise {
     public MyMaidCommand.Cmd register(Command.Builder<CommandSender> builder) {
         return new MyMaidCommand.Cmd(
             builder
-                .meta(CommandMeta.DESCRIPTION, "1辺30ブロックの立方体内にある指定された名前のエンティティにリードを付けます。")
+                .meta(CommandMeta.DESCRIPTION, "1辺30ブロックの立方体内にある指定された名前のエンティティにリードを付けます。a")
                 .literal("set")
                 .argument(SingleEntitySelectorArgument.optional("target"),
                     ArgumentDescription.of("対象のプレイヤー・エンティティ。指定しない場合実行者"))
