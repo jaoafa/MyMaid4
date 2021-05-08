@@ -41,6 +41,7 @@ public class Event_DisableConcreteTransition extends MyMaidLibrary implements Li
         Location loc = block.getLocation();
         List<Particle> particles = new ArrayList<>(Arrays.asList(Particle.values()));
         particles.remove(Particle.MOB_APPEARANCE);
+        particles.remove(Particle.BLOCK_DUST);
 
         Random rnd = new Random();
         int i = rnd.nextInt(particles.size());
