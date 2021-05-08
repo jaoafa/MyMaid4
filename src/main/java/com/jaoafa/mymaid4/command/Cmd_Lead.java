@@ -33,7 +33,7 @@ public class Cmd_Lead extends MyMaidLibrary implements CommandPremise {
     @Override
     public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
-            "Lead",
+            "lead",
             "プレイヤー・エンティティにリードを付けます。"
         );
     }

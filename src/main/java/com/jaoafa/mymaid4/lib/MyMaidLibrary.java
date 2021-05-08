@@ -13,6 +13,7 @@ package com.jaoafa.mymaid4.lib;
 
 import cloud.commandframework.context.CommandContext;
 import com.jaoafa.mymaid4.Main;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -28,6 +29,8 @@ import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import org.bukkit.*;
+import org.bukkit.block.data.type.Sign;
+import org.bukkit.block.data.type.WallSign;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -588,4 +591,22 @@ public class MyMaidLibrary {
                 .hoverEvent(HoverEvent.showText(Component.text("クリックすると「" + url.content() + "」にアクセスします。")))
                 .clickEvent(ClickEvent.openUrl(url.content()))).build());
     }
+
+    public static WorldEditPlugin getWorldEdit() {
+        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
+
+        if (!(plugin instanceof WorldEditPlugin)) {
+            return null;
+        }
+
+        return (WorldEditPlugin) plugin;
+    }
+
+
+    public static boolean isSign(Material material) {
+        return Arrays.stream(Material.values())
+            .filter(m -> m.data == Sign.class || m.data == WallSign.class)
+            .anyMatch(m -> m == material);
+    }
 }
+
