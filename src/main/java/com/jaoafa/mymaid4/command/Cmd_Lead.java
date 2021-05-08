@@ -155,9 +155,6 @@ public class Cmd_Lead extends MyMaidLibrary implements CommandPremise {
                 if (!(e instanceof LivingEntity)) {
                     continue;
                 }
-                if (e == player) {
-                    continue;
-                }
                 if (isEntityLooking(player, (LivingEntity) e)) {
                     looking = (LivingEntity) e;
                     break;
@@ -167,6 +164,11 @@ public class Cmd_Lead extends MyMaidLibrary implements CommandPremise {
                 looking = player;
             }
             target = looking;
+        }
+
+        if (target instanceof Player && target != player) {
+            SendMessage(player, details(), "他のプレイヤーを対象にすることはできません。");
+            return;
         }
 
         if (target.setLeashHolder(null)) {
