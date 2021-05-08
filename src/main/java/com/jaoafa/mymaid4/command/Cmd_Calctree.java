@@ -16,6 +16,7 @@ import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.BooleanArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
+import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
@@ -54,9 +55,15 @@ public class Cmd_Calctree extends MyMaidLibrary implements CommandPremise {
 
     void calcTree(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
-        WorldEditPlugin we = getWorldEdit();
-        Region region = null;
-        boolean placeEdgeTree = context.getOrDefault("placeEdgeTree", true);
+        WorldEditPlugin we = Main.getWorldEdit();
+
+        if (we == null) {
+            SendMessage(player, details(), "WorldEditプラグインが動作していないため、このコマンドを使用できません。");
+            return;
+        }
+
+        Region region;
+        boolean placeEdgeTree = context.get("placeEdgeTree");
         try {
             World selectionWorld = we.getSession(player).getSelectionWorld();
             region = we.getSession(player).getSelection(selectionWorld);

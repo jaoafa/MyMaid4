@@ -17,6 +17,7 @@ import cloud.commandframework.arguments.standard.IntegerArgument;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
+import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.lib.*;
 import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
@@ -118,7 +119,7 @@ public class Cmd_DedMessage extends MyMaidLibrary implements CommandPremise {
 
     void addCustomDeathMessage(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
-        WorldEditPlugin we = getWorldEdit();
+        WorldEditPlugin we = Main.getWorldEdit();
 
         if (we == null) {
             SendMessage(player, details(), "WorldEditプラグインが動作していないため、このコマンドを使用できません。");
