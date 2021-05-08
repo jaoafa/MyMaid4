@@ -13,7 +13,6 @@ package com.jaoafa.mymaid4.lib;
 
 import cloud.commandframework.context.CommandContext;
 import com.jaoafa.mymaid4.Main;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -32,8 +31,6 @@ import org.bukkit.*;
 import org.bukkit.block.data.type.Sign;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
@@ -74,20 +71,10 @@ public class MyMaidLibrary {
         ).build());
     }
 
-    /**
-     * CommandSenderに対してメッセージを送信します。
-     *
-     * @param sender    CommandSender
-     * @param detail    MyMaidCommand.Detail
-     * @param component メッセージComponent
-     */
-    public static void SendMessage(CommandSender sender, MyMaidCommand.Detail detail, Component component) {
-        sender.sendMessage(Component.text().append(
-            Component.text("[" + detail.getName().toUpperCase() + "]"),
-            Component.space(),
-            component.replaceText(builder -> builder.match("\n").replacement("\n" + "[" + detail.getName().toUpperCase() + "] "))
-        ).build());
-    }
+    // https://github.com/ErdbeerbaerLP/DiscordIntegration-Core/blob/564b32d29605322f927853ee62a6af938a0af7d3/src/main/java/de/erdbeerbaerlp/dcintegration/common/util/MessageUtils.java#L31-L35
+    static final Pattern URL_PATTERN = Pattern.compile(
+        "((?:[a-z0-9]{2,}://)?(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}|[-\\w_]+\\.[a-z]{2,}?)(?::[0-9]{1,5})?.*?(?=[!\"\u00A7 \n]|$))",
+        Pattern.CASE_INSENSITIVE);
 
     /**
      * エラーをDiscordのreportチャンネルへ報告します。
@@ -568,20 +555,26 @@ public class MyMaidLibrary {
         return dot > 0.99D;
     }
 
-    protected boolean isEntityLooking(Player player, LivingEntity target) {
-        Location eye = player.getEyeLocation();
-        Vector toEntity = target.getEyeLocation().toVector().subtract(eye.toVector());
-        double dot = toEntity.normalize().dot(eye.getDirection());
-
-        return dot > 0.99D;
+    /**
+     * CommandSenderに対してメッセージを送信します。
+     *
+     * @param sender    CommandSender
+     * @param detail    MyMaidCommand.Detail
+     * @param component メッセージComponent
+     */
+    public static void SendMessage(CommandSender sender, MyMaidCommand.Detail detail, Component component) {
+        sender.sendMessage(Component.text().append(
+            Component.text("[" + detail.getName().toUpperCase() + "]"),
+            Component.space(),
+            component
+                .replaceText(builder ->
+                    builder
+                        .match("\n")
+                        .replacement("\n" + "[" + detail.getName().toUpperCase() + "] ")
+                )
+                .colorIfAbsent(NamedTextColor.GREEN)
+        ).build());
     }
-
-    // https://github.com/ErdbeerbaerLP/DiscordIntegration-Core/blob/564b32d29605322f927853ee62a6af938a0af7d3/src/main/java/de/erdbeerbaerlp/dcintegration/common/util/MessageUtils.java#L31-L35
-    static final Pattern URL_PATTERN = Pattern.compile(
-        //              schema                          ipv4            OR        namespace                 port     path         ends
-        //        |-----------------|        |-------------------------|  |-------------------------|    |---------| |--|   |---------------|
-        "((?:[a-z0-9]{2,}://)?(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}|(?:[-\\w_]+\\.[a-z]{2,}?))(?::[0-9]{1,5})?.*?(?=[!\"\u00A7 \n]|$))",
-        Pattern.CASE_INSENSITIVE);
 
     public static Component replaceComponentURL(Component component) {
         return component.replaceText(TextReplacementConfig.builder()
@@ -592,21 +585,9 @@ public class MyMaidLibrary {
                 .clickEvent(ClickEvent.openUrl(url.content()))).build());
     }
 
-    public static WorldEditPlugin getWorldEdit() {
-        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
-
-        if (!(plugin instanceof WorldEditPlugin)) {
-            return null;
-        }
-
-        return (WorldEditPlugin) plugin;
-    }
-
-
     public static boolean isSign(Material material) {
         return Arrays.stream(Material.values())
             .filter(m -> m.data == Sign.class || m.data == WallSign.class)
             .anyMatch(m -> m == material);
     }
 }
-
