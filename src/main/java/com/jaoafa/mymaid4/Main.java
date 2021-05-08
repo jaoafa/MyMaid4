@@ -296,7 +296,7 @@ public final class Main extends JavaPlugin {
                     commands.put(details);
 
                     getLogger().info(String.format("%s: コマンドの登録に成功しました。", commandName));
-                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | NoClassDefFoundError e) {
                     getLogger().warning(String.format("%s: コマンドの登録に失敗しました。", commandName));
                     e.printStackTrace();
                 }
@@ -367,7 +367,7 @@ public final class Main extends JavaPlugin {
                     } catch (ClassCastException e) {
                         getLogger().warning(String.format("%s: Listener を実装していないため、登録できませんでした。[1]", clazz.getSimpleName()));
                     }
-                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | NoClassDefFoundError e) {
                     getLogger().warning(String.format("%s: イベントの登録に失敗しました。", name));
                     e.printStackTrace();
                 }
