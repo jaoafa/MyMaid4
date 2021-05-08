@@ -57,11 +57,11 @@ public class Cmd_Lead extends MyMaidLibrary implements CommandPremise {
                 .handler(this::leadEntityToEntity)
                 .build(),
             builder
-                .meta(CommandMeta.DESCRIPTION, "[Mob（またはプレイヤー）]が付けられているか、持っているリードを外します。両方の場合は付けられているリードを優先します")
+                .meta(CommandMeta.DESCRIPTION, "[Mob（または実行者）]が付けられているか、持っているリードを外します。両方の場合は付けられているリードを優先します")
                 .senderType(Player.class)
                 .literal("leave")
                 .argument(SingleEntitySelectorArgument.optional("target"),
-                    ArgumentDescription.of("対象のMob（またはプレイヤー）。対象を指定しない場合見ているMob、何も見ていない場合実行者"))
+                    ArgumentDescription.of("対象のMob（または実行者）。対象を指定しない場合見ているMob、何も見ていない場合実行者"))
                 .handler(this::unLeadEntity)
                 .build()
         );
@@ -153,6 +153,9 @@ public class Cmd_Lead extends MyMaidLibrary implements CommandPremise {
             LivingEntity looking = null;
             for (Entity e : entities) {
                 if (!(e instanceof LivingEntity)) {
+                    continue;
+                }
+                if (e == player) {
                     continue;
                 }
                 if (isEntityLooking(player, (LivingEntity) e)) {
