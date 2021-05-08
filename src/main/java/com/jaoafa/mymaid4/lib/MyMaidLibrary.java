@@ -13,7 +13,6 @@ package com.jaoafa.mymaid4.lib;
 
 import cloud.commandframework.context.CommandContext;
 import com.jaoafa.mymaid4.Main;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -584,16 +583,6 @@ public class MyMaidLibrary {
                 .decorate(TextDecoration.UNDERLINED)
                 .hoverEvent(HoverEvent.showText(Component.text("クリックすると「" + url.content() + "」にアクセスします。")))
                 .clickEvent(ClickEvent.openUrl(url.content()))).build());
-    }
-
-    public static WorldEditPlugin getWorldEdit() {
-        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
-
-        if (!(plugin instanceof WorldEditPlugin)) {
-            return null;
-        }
-
-        return (WorldEditPlugin) plugin;
     }
 
     public static boolean isSign(Material material) {
