@@ -33,7 +33,7 @@ public class Cmd_Lead extends MyMaidLibrary implements CommandPremise {
     public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
             "lead",
-            "プレイヤー・エンティティにリードを付けます。"
+            "Mob（またはプレイヤー）にリードを付けます。"
         );
     }
 
@@ -41,26 +41,27 @@ public class Cmd_Lead extends MyMaidLibrary implements CommandPremise {
     public MyMaidCommand.Cmd register(Command.Builder<CommandSender> builder) {
         return new MyMaidCommand.Cmd(
             builder
-                .meta(CommandMeta.DESCRIPTION, "1辺30ブロックの立方体内にある指定された名前の[エンティティ]にリードを付けます。プレイヤーは指定できません")
+                .meta(CommandMeta.DESCRIPTION, "1辺30ブロックの立方体内にある指定されたターゲットセレクターの[Mob]にリードを付けます。")
                 .literal("set")
                 .argument(SingleEntitySelectorArgument.optional("target"),
-                    ArgumentDescription.of("対象のエンティティ。指定しない場合見ているエンティティ"))
+                    ArgumentDescription.of("対象のMob。指定しない場合見ているMob"))
                 .handler(this::leadEntity)
                 .build(),
             builder
-                .meta(CommandMeta.DESCRIPTION, "[プレイヤーもしくはエンティティ(付ける側)]から、[エンティティ(付けられる側)]にリードを付けます。")
+                .meta(CommandMeta.DESCRIPTION, "[Mob（またはプレイヤー）]から、[Mob]にリードを付けます。")
                 .literal("connect")
                 .argument(SingleEntitySelectorArgument.of("from"),
-                    ArgumentDescription.of("リードを持っている側のプレイヤー・エンティティ"))
+                    ArgumentDescription.of("リードを持っている側のMob（またはプレイヤー）"))
                 .argument(SingleEntitySelectorArgument.of("to"),
-                    ArgumentDescription.of("リードを付けられる側のエンティティ。プレイヤーは指定できません"))
+                    ArgumentDescription.of("リードを付けられる側のMob"))
                 .handler(this::leadEntityToEntity)
                 .build(),
             builder
-                .meta(CommandMeta.DESCRIPTION, "[エンティティ]に付いているリードを外します。")
+                .meta(CommandMeta.DESCRIPTION, "[Mob（またはプレイヤー）]が付けられているか、持っているリードを外します。両方の場合は付けられているリードを優先します")
+                .senderType(Player.class)
                 .literal("leave")
                 .argument(SingleEntitySelectorArgument.optional("target"),
-                    ArgumentDescription.of("対象のエンティティ"))
+                    ArgumentDescription.of("対象のMob（またはプレイヤー）。対象を指定しない場合見ているMob、何も見ていない場合実行者"))
                 .handler(this::unLeadEntity)
                 .build()
         );
@@ -88,7 +89,7 @@ public class Cmd_Lead extends MyMaidLibrary implements CommandPremise {
                 }
             }
             if (looking == null) {
-                SendMessage(player, details(), "あなたはどのエンティティも見ていません...");
+                SendMessage(player, details(), "あなたはどのMobも見ていません...");
                 return;
             }
             target = looking;
@@ -118,15 +119,15 @@ public class Cmd_Lead extends MyMaidLibrary implements CommandPremise {
         }
 
         if (from == null) {
-            SendMessage(sender, details(), "リードを付ける側のプレイヤー・エンティティが指定されていません");
+            SendMessage(sender, details(), "リードを付ける側のMob（またはプレイヤー）が指定されていません");
             return;
         }
         if (to == null) {
-            SendMessage(sender, details(), "リードを付けられる側のプレイヤー・エンティティが指定されていません");
+            SendMessage(sender, details(), "リードを付けられる側のMobが指定されていません");
             return;
         }
         if (from.getUniqueId() == to.getUniqueId()) {
-            SendMessage(sender, details(), "リードを付ける側のプレイヤー・エンティティとリードを付けられる側のプレイヤー・エンティティが同じです。");
+            SendMessage(sender, details(), "リードを付ける側のMob（またはプレイヤー）と、リードを付けられる側のMob（またはプレイヤー）が同じです。");
             return;
         }
         boolean bool = to.setLeashHolder(from);
@@ -139,7 +140,7 @@ public class Cmd_Lead extends MyMaidLibrary implements CommandPremise {
     }
 
     void unLeadEntity(CommandContext<CommandSender> context) {
-        CommandSender sender = context.getSender();
+        Player player = (Player) context.getSender();
         SingleEntitySelector targetSelector = context.getOrDefault("target", null);
         LivingEntity target = null;
 
@@ -148,17 +149,40 @@ public class Cmd_Lead extends MyMaidLibrary implements CommandPremise {
         }
 
         if (target == null) {
-            if (!(context.getSender() instanceof Player)) {
-                SendMessage(context.getSender(), details(), "targetが必要です。");
-                return;
+            @NotNull List<Entity> entities = player.getNearbyEntities(30, 30, 30);
+            LivingEntity looking = null;
+            for (Entity e : entities) {
+                if (!(e instanceof LivingEntity)) {
+                    continue;
+                }
+                if (isEntityLooking(player, (LivingEntity) e)) {
+                    looking = (LivingEntity) e;
+                    break;
+                }
             }
-            target = (Player) context.getSender();
+            if (looking == null) {
+                looking = player;
+            }
+            target = looking;
         }
 
         if (target.setLeashHolder(null)) {
-            SendMessage(sender, details(), String.format("プレイヤー・エンティティ「%s(%s)」からリードを外しました。", target.getName(), target.getType().name()));
+            SendMessage(player, details(), String.format("Mob「%s(%s)」からリードを外しました。", target.getName(), target.getType().name()));
         } else {
-            SendMessage(sender, details(), String.format("プレイヤー・エンティティ「%s(%s)」からリードを外せませんでした。外そうとしたエンティティがすでに他のエンティティとリードで結ばれている場合は、もう一方のエンティティの方を指定するとリードを外せます。", target.getName(), target.getType().name()));
+            int successUnLeashCount = 0, unLeashCount = 0;
+            @NotNull List<Entity> entities = target.getNearbyEntities(30, 30, 30);
+            for (Entity e : entities) {
+                if (!(e instanceof LivingEntity)) {
+                    continue;
+                }
+                if (((LivingEntity) e).isLeashed() && ((LivingEntity) e).getLeashHolder() == target) {
+                    if (((LivingEntity) e).setLeashHolder(null)) {
+                        successUnLeashCount++;
+                    }
+                    unLeashCount++;
+                }
+            }
+            SendMessage(player, details(), String.format("「%s(%s)」が持っていたリードのうち、%d本中%d本を外すことに成功しました。", target.getName(), target.getType().name(), unLeashCount, successUnLeashCount));
         }
     }
 }
