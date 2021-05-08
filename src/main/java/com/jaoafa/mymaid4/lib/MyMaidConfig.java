@@ -32,6 +32,7 @@ public class MyMaidConfig {
     private Long jaotanChannelId = null;
     private Long reportChannelId = null;
     private Long serverChatChannelId = null;
+    private String githubAccessToken = null;
 
     public void init() {
         JavaPlugin plugin = Main.getJavaPlugin();
@@ -123,6 +124,12 @@ public class MyMaidConfig {
         } else {
             plugin.getLogger().warning(notFoundConfigKey("zakurohat_database"));
         }
+
+        if (config.contains("githubAccessToken")) {
+            githubAccessToken = config.getString("githubAccessToken");
+        } else {
+            plugin.getLogger().warning(notFoundConfigKey("githubAccessToken"));
+        }
     }
 
     String notFoundConfigKey(String key) {
@@ -152,5 +159,9 @@ public class MyMaidConfig {
 
     public Long getServerChatChannelId() {
         return serverChatChannelId;
+    }
+
+    public String getGithubAccessToken() {
+        return githubAccessToken;
     }
 }

@@ -57,14 +57,12 @@ import java.util.*;
 
 public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPremise {
     List<Integer> heal = Arrays.asList(
-        -3,
         29,
-        125,
-        253
+        61,
+        93,
+        125
     );
-    List<Integer> health_boost = Collections.singletonList(
-        -7
-    );
+    Set<String> sendHashes = new HashSet<>();
     Map<String, String> Reason = new HashMap<>(); // プレイヤー : 理由
 
     @Override
@@ -78,20 +76,12 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
      * @param list PotionEffectのList
      *
      * @return jaoiumかどうか
-     *
-     * @author mine_book000
      */
     private boolean isjaoium(List<PotionEffect> list) {
         boolean jaoium = false;
         for (PotionEffect po : list) {
             if (po.getType().equals(PotionEffectType.HEAL)) {
                 if (heal.contains(po.getAmplifier())) {
-                    // アウト
-                    jaoium = true;
-                }
-            }
-            if (po.getType().equals(PotionEffectType.HEALTH_BOOST)) {
-                if (health_boost.contains(po.getAmplifier())) {
                     // アウト
                     jaoium = true;
                 }
@@ -117,6 +107,11 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
             // Wurst?
             return "Wurst";
         }
+        if (displayName.contains("§4§lINSTANT DEATH")) {
+            // Wurst
+            // https://github.com/Wurst-Imperium/Wurst7/blob/8572e76dfe6851cc88156aab9e4d41fa2d4aa272/src/main/java/net/wurstclient/hacks/KillPotionHack.java#L57
+            return "Wurst";
+        }
         return null;
     }
 
@@ -135,6 +130,10 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
         }
 
         String hash = DigestUtils.md5Hex(output);
+        if (sendHashes.contains(hash)) {
+            return;
+        }
+        sendHashes.add(hash);
         File file = new File(saveDir, hash + ".txt");
         boolean exists = file.exists();
         if (!file.exists()) {

@@ -31,9 +31,6 @@ public class Event_AntiTeleportToNewPlayers extends MyMaidLibrary implements Lis
 
     @EventHandler
     public void onTeleportCommand(TeleportCommandEvent event) {
-        if (event.getFromPlayer() == null) {
-            return;
-        }
         if (!isAMR(event.getFromPlayer())) {
             return;
         }

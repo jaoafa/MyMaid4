@@ -15,14 +15,29 @@ import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.CommandComponent;
 import cloud.commandframework.arguments.StaticArgument;
+import cloud.commandframework.arguments.standard.StringArgument;
+import cloud.commandframework.bukkit.CloudBukkitCapabilities;
+import cloud.commandframework.exceptions.AmbiguousNodeException;
+import cloud.commandframework.exceptions.InvalidCommandSenderException;
+import cloud.commandframework.exceptions.InvalidSyntaxException;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.meta.CommandMeta;
+import cloud.commandframework.minecraft.extras.MinecraftExceptionHandler;
+import cloud.commandframework.minecraft.extras.MinecraftHelp;
 import cloud.commandframework.paper.PaperCommandManager;
 import com.jaoafa.mymaid4.httpServer.MyMaidServer;
 import com.jaoafa.mymaid4.lib.*;
 import com.jaoafa.mymaid4.tasks.Task_Pigeon;
 import com.jaoafa.mymaid4.tasks.Task_TabList;
 import net.dv8tion.jda.api.JDABuilder;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.util.ComponentMessageThrowable;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,19 +47,26 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.MessageFormat;
+import java.util.*;
 import java.util.function.Function;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public final class Main extends JavaPlugin {
     private static Main Main = null;
     private static MyMaidConfig config = null;
+    private BukkitAudiences adventure;
+    private MinecraftHelp<CommandSender> minecraftHelp;
 
     @Override
     public void onEnable() {
@@ -65,14 +87,22 @@ public final class Main extends JavaPlugin {
         registerEvent();
 
         scheduleTasks();
+
+        MyMaidData.setBlacklist(new Blacklist());
+
+        initCreativeInventoryItems();
     }
 
     @Override
     public void onDisable() {
-        if(config.getJDA() != null) {
+        if (config.getJDA() != null) {
             config.getJDA().getEventManager().getRegisteredListeners()
                 .forEach(listener -> config.getJDA().getEventManager().unregister(listener));
             config.getJDA().shutdownNow();
+        }
+        if (this.adventure != null) {
+            this.adventure.close();
+            this.adventure = null;
         }
         MyMaidServer.stopServer();
     }
@@ -83,7 +113,6 @@ public final class Main extends JavaPlugin {
         try {
             manager = new PaperCommandManager<>(this, CommandExecutionCoordinator.SimpleCoordinator.simpleCoordinator(),
                 Function.identity(), Function.identity());
-            manager.registerBrigadier();
 
             // case-insensitive support (大文字小文字を区別しない)
             manager.setCommandSuggestionProcessor((context, strings) -> {
@@ -97,6 +126,94 @@ public final class Main extends JavaPlugin {
             e.printStackTrace();
             return;
         }
+
+        this.adventure = BukkitAudiences.create(this);
+        this.minecraftHelp = new MinecraftHelp<>(
+            "/mymaidhelp",
+            this.adventure::sender,
+            manager
+        );
+
+        // Mojangのコマンドパーサー、Brigadierを登録する
+        if (manager.queryCapability(CloudBukkitCapabilities.BRIGADIER)) {
+            manager.registerBrigadier();
+        }
+
+        // 非同期の引数補完
+        if (manager.queryCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
+            manager.registerAsynchronousCompletions();
+        }
+
+        // コマンドのエラーハンドラー
+        new MinecraftExceptionHandler<CommandSender>()
+            .withHandler(MinecraftExceptionHandler.ExceptionType.INVALID_SYNTAX, e ->
+                Component.text().append(
+                    Component.text("コマンドの構文が正しくありません。正しい構文は次の通りです: ", NamedTextColor.RED),
+                    Component.text(
+                        String.format(
+                            "/%s",
+                            ((InvalidSyntaxException) e).getCorrectSyntax()),
+                        NamedTextColor.GRAY
+                    ).replaceText(config -> {
+                        config.match(Pattern.compile("[^\\s\\w\\-]"));
+                        config.replacement(match -> match.color(NamedTextColor.WHITE));
+                    })
+                ).build()
+            )
+            .withHandler(MinecraftExceptionHandler.ExceptionType.INVALID_SENDER, e ->
+                Component.text("あなたはこのコマンドを実行できません。実行できるのは次の種別の実行者のみです: ", NamedTextColor.RED)
+                    .append(Component.text(
+                        ((InvalidCommandSenderException) e).getRequiredSender().getSimpleName(),
+                        NamedTextColor.GRAY
+                    ))
+            )
+            .withHandler(MinecraftExceptionHandler.ExceptionType.NO_PERMISSION, e ->
+                Component.text(
+                    "申し訳ありませんが、このコマンドを実行する権限がありません。\n"
+                        + "このコマンドを使いたい場合は、公式Discordサーバ#supportにて運営に申請してください。",
+                    NamedTextColor.RED
+                )
+            )
+            .withHandler(MinecraftExceptionHandler.ExceptionType.ARGUMENT_PARSING, e ->
+                Component.text("コマンドの引数が不正です: ", NamedTextColor.RED)
+                    .append(convertCause(e.getCause())
+                        .colorIfAbsent(NamedTextColor.GRAY))
+            )
+            .withHandler(MinecraftExceptionHandler.ExceptionType.COMMAND_EXECUTION, e ->
+                {
+                    final Throwable cause = e.getCause();
+                    cause.printStackTrace();
+
+                    MyMaidLibrary.reportError(getClass(), e);
+
+                    final StringWriter writer = new StringWriter();
+                    cause.printStackTrace(new PrintWriter(writer));
+                    final String stackTrace = writer.toString().replaceAll("\t", "    ");
+                    final HoverEvent<Component> hover = HoverEvent.showText(
+                        Component.text()
+                            .append(convertCause(cause))
+                            .append(Component.text(
+                                "エラー情報をコピーします。",
+                                NamedTextColor.GRAY,
+                                TextDecoration.ITALIC
+                            ))
+                    );
+                    final ClickEvent click = ClickEvent.copyToClipboard(stackTrace);
+                    return Component.text()
+                        .content("コマンドを実行中に内部エラーが発生しました。ここをクリックして、内部エラーを運営にお知らせください。")
+                        .color(NamedTextColor.RED)
+                        .hoverEvent(hover)
+                        .clickEvent(click)
+                        .build();
+                }
+            )
+            .apply(manager, adventure::sender);
+
+        manager.command(
+            manager.commandBuilder("mymaidhelp")
+                .argument(StringArgument.optional("query", StringArgument.StringMode.GREEDY))
+                .handler(context -> minecraftHelp.queryCommands(Objects.requireNonNull(context.getOrDefault("query", "")), context.getSender()))
+        );
 
         JSONArray commands = new JSONArray();
         try {
@@ -128,38 +245,46 @@ public final class Main extends JavaPlugin {
 
                     JSONArray subcommands = new JSONArray();
                     cmdPremise.register(builder).getCommands().forEach(cmd -> {
-                        System.out.println(cmd.toString());
-                        manager.command(cmd);
-                        JSONObject subcommand = new JSONObject();
-                        subcommand.put("meta", cmd.getCommandMeta().getAllValues());
-                        subcommand.put("senderType", cmd.getSenderType().isPresent() ?
-                            cmd.getSenderType().get().getName() : null);
-                        subcommand.put("toString", cmd.toString());
+                        try {
+                            manager.command(cmd);
+                            JSONObject subcommand = new JSONObject();
+                            subcommand.put("meta", cmd.getCommandMeta().getAllValues());
+                            subcommand.put("senderType", cmd.getSenderType().isPresent() ?
+                                cmd.getSenderType().get().getName() : null);
+                            subcommand.put("toString", cmd.toString());
 
-                        final Iterator<CommandComponent<CommandSender>> iterator = cmd.getComponents().iterator();
-                        JSONArray args = new JSONArray();
-                        cmd.getArguments().forEach(arg -> {
-                            JSONObject obj = new JSONObject();
-                            obj.put("name", arg.getName());
-                            if (arg instanceof StaticArgument) {
-                                obj.put("alias", ((StaticArgument<?>) arg).getAlternativeAliases());
-                            }
-                            obj.put("isRequired", arg.isRequired());
-                            obj.put("defaultValue", arg.getDefaultValue());
-                            obj.put("defaultDescription", arg.getDefaultDescription());
-                            obj.put("class", arg.getClass().getName());
-
-                            if (iterator.hasNext()) {
-                                final CommandComponent<CommandSender> component = iterator.next();
-                                if (!component.getArgumentDescription().isEmpty()) {
-                                    obj.put("description", component.getArgumentDescription().getDescription());
+                            final Iterator<CommandComponent<CommandSender>> iterator = cmd.getComponents().iterator();
+                            JSONArray args = new JSONArray();
+                            cmd.getArguments().forEach(arg -> {
+                                JSONObject obj = new JSONObject();
+                                obj.put("name", arg.getName());
+                                if (arg instanceof StaticArgument) {
+                                    obj.put("alias", ((StaticArgument<?>) arg).getAlternativeAliases());
                                 }
-                            }
-                            args.put(obj);
-                        });
-                        subcommand.put("arguments", args);
-                        subcommands.put(subcommand);
+                                obj.put("isRequired", arg.isRequired());
+                                obj.put("defaultValue", arg.getDefaultValue());
+                                obj.put("defaultDescription", arg.getDefaultDescription());
+                                obj.put("class", arg.getClass().getName());
+
+                                if (iterator.hasNext()) {
+                                    final CommandComponent<CommandSender> component = iterator.next();
+                                    if (!component.getArgumentDescription().isEmpty()) {
+                                        obj.put("description", component.getArgumentDescription().getDescription());
+                                    }
+                                }
+                                args.put(obj);
+                            });
+                            subcommand.put("arguments", args);
+                            subcommands.put(subcommand);
+                        } catch (AmbiguousNodeException e) {
+                            getLogger().warning(String.format("%s: コマンドの登録に失敗したため、このコマンドは使用できません: AmbiguousNodeException", cmd.toString()));
+                            getLogger().warning("このエラーは、コマンドフレームワークがコマンドの引数を見分けられないエラーによるものです。literalを追加して固有なコマンドと見なせるように修正してください。");
+                        }
                     });
+
+                    manager.command(builder
+                        .literal("help")
+                        .handler(context -> minecraftHelp.queryCommands(cmdPremise.details().getName(), context.getSender())));
 
                     JSONObject details = new JSONObject();
                     details.put("class", instance.getClass().getName());
@@ -170,15 +295,15 @@ public final class Main extends JavaPlugin {
                     details.put("subcommands", subcommands);
                     commands.put(details);
 
-                    getLogger().info(String.format("%s registered", commandName));
+                    getLogger().info(String.format("%s: コマンドの登録に成功しました。", commandName));
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                    getLogger().warning(String.format("%s register failed", commandName));
+                    getLogger().warning(String.format("%s: コマンドの登録に失敗しました。", commandName));
                     e.printStackTrace();
                 }
             }
             MyMaidData.putGetDocsData("commands", commands);
         } catch (ClassNotFoundException | IOException e) {
-            getLogger().warning("registerCommand failed");
+            getLogger().warning("コマンドの登録に失敗しました。");
             e.printStackTrace();
         }
     }
@@ -207,7 +332,7 @@ public final class Main extends JavaPlugin {
                     EventPremise eventPremise = (EventPremise) instance;
 
                     if (!(instance instanceof Listener)) {
-                        getLogger().warning(clazz.getSimpleName() + ": Listener not implemented [0]");
+                        getLogger().warning(String.format("%s: Listener を実装していないため、登録できませんでした。[0]", clazz.getSimpleName()));
                         return;
                     }
 
@@ -238,26 +363,20 @@ public final class Main extends JavaPlugin {
                     try {
                         Listener listener = (Listener) instance;
                         getServer().getPluginManager().registerEvents(listener, this);
-                        getLogger().info(String.format("%s registered", clazz.getSimpleName()));
+                        getLogger().info(String.format("%s: イベントの登録に成功しました。", clazz.getSimpleName()));
                     } catch (ClassCastException e) {
-                        getLogger().warning(String.format("%s: Listener not implemented [1]", clazz.getSimpleName()));
+                        getLogger().warning(String.format("%s: Listener を実装していないため、登録できませんでした。[1]", clazz.getSimpleName()));
                     }
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                    getLogger().warning(String.format("%s register failed", name));
+                    getLogger().warning(String.format("%s: イベントの登録に失敗しました。", name));
                     e.printStackTrace();
                 }
             }
             MyMaidData.putGetDocsData("events", events);
         } catch (ClassNotFoundException | IOException e) {
-            getLogger().warning("registerCommand failed");
+            getLogger().warning("イベントの登録に失敗しました。");
             e.printStackTrace();
         }
-    }
-
-    private void scheduleTasks(){
-        new MyMaidServer().runTaskAsynchronously(this);
-        new Task_Pigeon().runTaskTimerAsynchronously(this, 200L, 12000L); // 10秒後から10分毎
-        new Task_TabList().runTaskTimerAsynchronously(this, 200L, 1200L); // 10秒後から1分毎
     }
 
     public static void registerDiscordEvent(JDABuilder d) {
@@ -281,15 +400,61 @@ public final class Main extends JavaPlugin {
                     Object instance = construct.newInstance();
 
                     d.addEventListeners(instance);
+                    getJavaPlugin().getLogger().info(String.format("%s: Discordイベントの登録に成功しました。", clazz.getSimpleName()));
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                    getJavaPlugin().getLogger().warning(String.format("%s register failed", name));
+                    getJavaPlugin().getLogger().warning(String.format("%s: Discordイベントの登録に成功しました。", name));
                     e.printStackTrace();
                 }
             }
         } catch (ClassNotFoundException | IOException e) {
-            getJavaPlugin().getLogger().warning("registerCommand failed");
+            getJavaPlugin().getLogger().warning("Discordイベントの登録に失敗しました。");
             e.printStackTrace();
         }
+    }
+
+    private void initCreativeInventoryItems() {
+        try {
+            Path path = Paths.get(getDataFolder().getAbsolutePath(), "creative-items.tsv");
+            if (!Files.exists(path)) {
+                getLogger().warning("initCreativeInventoryItems: creative-items.tsv が見つかりません。ツールバー利用制限機能は動作しません。");
+                return;
+            }
+            List<String> lines = Files.readAllLines(path);
+
+            Map<Material, List<String>> items = new HashMap<>();
+            for (String line : lines) {
+                String[] material_nbt = line.split("\t");
+                if (material_nbt.length != 2) {
+                    continue;
+                }
+
+                String materialName = material_nbt[0];
+                String nbt = material_nbt[1];
+                try {
+                    Material material = Material.valueOf(materialName);
+
+                    List<String> nbts = items.containsKey(material) ? items.get(material) : new ArrayList<>();
+                    nbts.add(nbt);
+                    items.put(material, nbts);
+                } catch (IllegalArgumentException e) {
+                    getLogger().warning(MessageFormat.format("initCreativeInventoryItems: {0} がMaterialに見つかりません。", materialName));
+                }
+            }
+            MyMaidData.setCreativeInventoryWithNBTs(items);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void scheduleTasks() {
+        new MyMaidServer().runTaskAsynchronously(this);
+        new Task_Pigeon().runTaskTimerAsynchronously(this, 200L, 12000L); // 10秒後から10分毎
+        new Task_TabList().runTaskTimerAsynchronously(this, 200L, 1200L); // 10秒後から1分毎
+    }
+
+    private static Component convertCause(final Throwable throwable) {
+        final Component msg = ComponentMessageThrowable.getOrConvertMessage(throwable);
+        return msg != null ? msg : Component.text("null");
     }
 
     public static Main getMain() {

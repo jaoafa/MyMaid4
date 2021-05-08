@@ -119,6 +119,7 @@ ZakuroHat 上の Docker に立てられている PaperMC 環境で動作する�
     （ブランチを分けることで同時に複数のコマンド・機能を開発できます。この際 `upstream/master` を元としてブランチを作成してください）
   - 必要に応じて、該当する Issue の `Assignees` に自分を追加する
 - 将来的に追加・修正などを行わなければならない項目がある場合は、 `// TODO <Message>` で TODO を登録してください。
+- ローカル変数はなにかしらの理由がある場合を除き小文字で始めてください。
 - `config.yml` で設定される設定情報は `MyMaidConfig` にあり、 `Main.getMyMaidConfig()` から取得できます。
 - 複数のクラスにわたって使用される変数は `MyMaidData` に変数を作成し、 Getter と Setter を使用して管理してください。
 - 複数のクラスにわたって多く使用される関数は `MyMaidLibrary` に関数を作成し、Javadoc を書いたうえで `extends MyMaidLibrary` して利用してください。
@@ -149,6 +150,7 @@ ZakuroHat 上の Docker に立てられている PaperMC 環境で動作する�
 
 ### Commit
 
+- 発生しているエラーなどはコミット・プルリクエスト前にすべて修正してください。
 - コミットメッセージは **[CommitLint のルール](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional#rules) である以下に沿っていることを期待しますが、必須ではありません。**
 - 次の形式でコミットメッセージを指定してください: `type(scope): subject` (e.g. `fix(home): message`)
   - `type`, `subject` は必須、 `scope` は必須ではありません
