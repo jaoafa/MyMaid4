@@ -13,20 +13,28 @@ MyMaid とは、jao Minecraft Server における独自のプラグインで特�
 
 ### 開発者は誰ですか？
 
-表面上は jao Minecraft Server 開発部としていますが、実質的には [Tomachi](https://github.com/book000) が全ての開発・運用を担っています。  
-但し、本プロジェクトからは有志の手によってプルリクエストによる開発が行われています。
+[プロジェクトページ](https://github.com/jaoafa/MyMaid4) の `Contributors` をご覧ください。
 
-### 新規機能・意見はどこへ送ればいいですか？
+現在、全てのコード管理とプルリクエストのレビューは [book000](https://github.com/book000) が受け持っています。
+
+### 新規機能・意見はどこへ送れば良いですか？
 
 [Issue](https://github.com/jaoafa/MyMaid4/issues) か jMS Gamers Club の `#development` チャンネルにお送りください。
 
 Issue を作成する場合は [注意事項](https://github.com/jaoafa/MyMaid4/issues/32) を事前にご確認ください。
 
+### バグを見つけました。どのように報告すれば良いですか？
+
+jao Minecraft Server内で `/bug` と実行し、取得した本に書き込んだあと署名することで報告できます。  
+GitHubアカウントを持っている場合は [Issue](https://github.com/jaoafa/MyMaid4/issues) から報告してください。
+
+機密性の高い情報を含んだり、被害が拡大する可能性のある問題報告に関しては [jao Minecraft Server のお問い合わせ](https://jaoafa.com/support/inquiry) もしくはメールアドレス `info@jaoafa.com` にお送りください。
+
 ## Development
 
-本バージョンから他者による Issue・プルリクエストを受け付けます。
+本バージョンから他者による Issue・プルリクエストを受け付けています。
 
-[CONTRIBUTING.md](CONTRIBUTING.md) をお読みください。
+[CONTRIBUTING](CONTRIBUTING.md) と [Wiki の開発者向け記事](https://github.com/jaoafa/MyMaid4/wiki/For-Developers) をお読みください。
 
 また、 [GitHub の Project 機能](https://github.com/jaoafa/MyMaid4/projects/1) を使用してタスク管理を行っています。
 
@@ -34,7 +42,10 @@ Issue を作成する場合は [注意事項](https://github.com/jaoafa/MyMaid4/
 
 ライセンスは**独自のライセンスである [jaoLicense](https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE.md) を適用**します。
 
+依存ライブラリを除くプロジェクトの全てのコードには上記ライセンスが適用され、権利は jao Minecraft Server に帰属します。
+
 ### プログラムについて
 
-ここで公開されているプログラムのソースコードには、多分なにかしらの瑕疵やバグが存在します。しかし、開発者および jao Minecraft Server の管理部・開発部はそれらの瑕疵やバグをなるべく除去する努力義務を負いますが、それらによって生じた一切の問題についての**責任を負いません。**  
-また、利用者はこのプラグインに実装されている全ての機能及びプログラムなどを jao Minecraft Server の管理部・開発部の許可なく他の場所において、一部もしくは全部を使用することはできません。Discord などを通じて、明確に許可を取った上で、許可された範囲内で利用してください。
+ここで公開されているプログラムのソースコードには、多少なにかしらの瑕疵やバグが存在します。jao Minecraft Server の運営およびコントリビュータはそれらの瑕疵やバグをなるべく除去する努力義務を負いますが、それらによって生じた一切の問題についての**責任を負いません。**  
+
+また、利用者はこのプラグインに実装されている全ての機能及びプログラムなどを jao Minecraft Server の運営の許可なく他の場所において、一部もしくは全部を使用することはできません。Discord などを通じて、明確に許可を取った上で、許可された範囲内で利用してください。
