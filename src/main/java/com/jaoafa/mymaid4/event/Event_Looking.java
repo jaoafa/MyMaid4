@@ -45,6 +45,9 @@ public class Event_Looking extends MyMaidLibrary implements Listener, EventPremi
             if (player.getWorld() != p.getWorld()) {
                 return;
             }
+            if (player.getLocation().toBlockLocation().equals(p.getLocation().toBlockLocation())) {
+                return;
+            }
             Vector vector = p.getLocation().toVector().subtract(player.getLocation().toVector()).normalize();
             vector.setX(-vector.getX());
             vector.setY(-vector.getY());
