@@ -34,12 +34,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventPremise {
     @Override
     public String description() {
         return "ツールバーの利用を制限します。";
     }
+
+    Pattern damagePattern = Pattern.compile("\\{Damage:[0-9]+}");
 
     @EventHandler
     public void onInventoryCreative(InventoryCreativeEvent event) {
@@ -70,6 +73,7 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
             return;
         }
 
+        event.setCurrentItem(null);
         player.sendMessage(Component.text().append(
             Component.text("[AntiToolbar] "),
             Component.text("ツールバーからの取得と思われるアイテムが見つかったため、規制しました。この事象は報告されます。", NamedTextColor.RED)
@@ -91,9 +95,13 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
 
         Map<Material, List<String>> creativeInventoryWithNBTs = MyMaidData.getCreativeInventoryWithNBTs();
         if (!creativeInventoryWithNBTs.containsKey(material)) {
+            if (damagePattern.matcher(nbt).matches()) {
+                return false; // ダメージ値のみの場合
+            }
             return !nbt.equals("{}");
         }
         List<String> registeredNBT = creativeInventoryWithNBTs.get(material);
+        if (damagePattern.matcher(nbt).matches()) return false;
         return !registeredNBT.contains(nbt);
     }
 
