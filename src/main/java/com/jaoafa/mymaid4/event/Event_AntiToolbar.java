@@ -23,6 +23,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCreativeEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
@@ -30,10 +31,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventPremise {
@@ -67,6 +65,10 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
         if (!isDeny) {
             isDeny = isDenyItemStack(event.getCursor());
             if (isDeny) is = event.getCursor();
+        }
+
+        if (isExistsInventory(player.getInventory(), is)) {
+            return;
         }
 
         if (!isDeny) {
@@ -115,5 +117,14 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
         }
         lines.add(messageNonTime + "\t" + sdfFormat(new Date()));
         Files.write(path, lines, StandardCharsets.UTF_8);
+    }
+
+    boolean isExistsInventory(Inventory inv, ItemStack is) {
+        return Arrays
+            .stream(inv.getContents())
+            .filter(Objects::nonNull)
+            .anyMatch(item ->
+                item.getType() == is.getType() && item.getItemMeta().equals(is.getItemMeta())
+            );
     }
 }
