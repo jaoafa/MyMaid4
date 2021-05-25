@@ -25,6 +25,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCreativeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -67,11 +68,11 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
             if (isDeny) is = event.getCursor();
         }
 
-        if (isExistsInventory(player.getInventory(), is)) {
+        if (!isDeny) {
             return;
         }
 
-        if (!isDeny) {
+        if (isExistsInventory(player.getInventory(), is)) {
             return;
         }
 
@@ -119,12 +120,12 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
         Files.write(path, lines, StandardCharsets.UTF_8);
     }
 
-    boolean isExistsInventory(Inventory inv, ItemStack is) {
+    boolean isExistsInventory(Inventory inv, @NotNull ItemStack is) {
         return Arrays
             .stream(inv.getContents())
             .filter(Objects::nonNull)
             .anyMatch(item ->
-                item.getType() == is.getType() && item.getItemMeta().equals(is.getItemMeta())
+                item.getType() == is.getType() && item.getItemMeta() != null && item.getItemMeta().equals(is.getItemMeta())
             );
     }
 }
