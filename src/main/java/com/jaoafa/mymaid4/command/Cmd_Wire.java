@@ -162,6 +162,7 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             batnbt1.setAwake(true);
             batnbt1.setSilent(true);
             batnbt1.setPersistent(true);
+            batnbt1.setInvulnerable(true);
             batnbt1.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, true, false, true));
 //            batnbt1.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Integer.MAX_VALUE, 1, true, false, true)); //確認用
             batnbt1.addScoreboardTag("wireUnit");
@@ -172,6 +173,7 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             batnbt2.setAwake(true);
             batnbt2.setSilent(true);
             batnbt2.setPersistent(true);
+            batnbt2.setInvulnerable(true);
             batnbt2.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, true, false, true));
 //            batnbt2.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Integer.MAX_VALUE, 1, true, false, true)); //確認用
             batnbt2.addScoreboardTag("wireUnit");
