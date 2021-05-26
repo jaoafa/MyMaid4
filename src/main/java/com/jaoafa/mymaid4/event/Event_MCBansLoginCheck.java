@@ -33,6 +33,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -209,6 +210,8 @@ public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener, E
                             }
                         }.runTask(Main.getJavaPlugin());
                     }
+                } catch (SocketTimeoutException e) {
+                    System.out.println("OnLoginAfterCheck: Timeout");
                 } catch (IOException e) {
                     System.out.println("OnLoginAfterCheck: IOException Error...");
                     e.printStackTrace();
