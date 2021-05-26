@@ -23,23 +23,25 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCreativeEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Pattern;
 
 public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventPremise {
     @Override
     public String description() {
         return "ツールバーの利用を制限します。";
     }
+
+    Pattern damagePattern = Pattern.compile("\\{Damage:[0-9]+}");
 
     @EventHandler
     public void onInventoryCreative(InventoryCreativeEvent event) {
@@ -70,6 +72,11 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
             return;
         }
 
+        if (isExistsInventory(player.getInventory(), is)) {
+            return;
+        }
+
+        event.setCurrentItem(null);
         player.sendMessage(Component.text().append(
             Component.text("[AntiToolbar] "),
             Component.text("ツールバーからの取得と思われるアイテムが見つかったため、規制しました。この事象は報告されます。", NamedTextColor.RED)
@@ -91,9 +98,13 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
 
         Map<Material, List<String>> creativeInventoryWithNBTs = MyMaidData.getCreativeInventoryWithNBTs();
         if (!creativeInventoryWithNBTs.containsKey(material)) {
+            if (damagePattern.matcher(nbt).matches()) {
+                return false; // ダメージ値のみの場合
+            }
             return !nbt.equals("{}");
         }
         List<String> registeredNBT = creativeInventoryWithNBTs.get(material);
+        if (damagePattern.matcher(nbt).matches()) return false;
         return !registeredNBT.contains(nbt);
     }
 
@@ -107,5 +118,14 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
         }
         lines.add(messageNonTime + "\t" + sdfFormat(new Date()));
         Files.write(path, lines, StandardCharsets.UTF_8);
+    }
+
+    boolean isExistsInventory(Inventory inv, @NotNull ItemStack is) {
+        return Arrays
+            .stream(inv.getContents())
+            .filter(Objects::nonNull)
+            .anyMatch(item ->
+                item.getType() == is.getType() && item.getItemMeta() != null && item.getItemMeta().equals(is.getItemMeta())
+            );
     }
 }
