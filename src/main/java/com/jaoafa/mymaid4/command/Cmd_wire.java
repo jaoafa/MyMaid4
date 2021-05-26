@@ -39,11 +39,11 @@ import java.util.Collections;
 
 import static com.jaoafa.mymaid4.Main.getWorldEdit;
 
-public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
+public class Cmd_wire extends MyMaidLibrary implements CommandPremise {
     @Override
     public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
-            "Wire",
+            "wire",
             Collections.singletonList("leadunit"),
             "指定した2点間にリードを張ったり、撤去したりします。"
         );
@@ -54,7 +54,8 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
         return new MyMaidCommand.Cmd(
 
             builder
-                .meta(CommandMeta.DESCRIPTION, "指定した2点間にリードを張ります。座標を指定しない場合、WorldEditで選択した2点間にリードを張ります。")
+                .meta(CommandMeta.DESCRIPTION, "指定した2点間にリードを張ります。")
+                .senderType(Player.class)
                 .literal("set", "add", "connect")
                 .argumentTriplet(
                     "pos1",
@@ -77,6 +78,7 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
 
             builder
                 .meta(CommandMeta.DESCRIPTION, "WorldEditで選択した2点間にリードを張ります。1座標目がリードを付けられている側、2座標目がリードを持っている側。")
+                .senderType(Player.class)
                 .literal("setwe", "we", "weset")
                 .handler(this::setWireWe)
 //                .build(),
