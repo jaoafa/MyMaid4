@@ -129,6 +129,7 @@ public class Blacklist {
                     return true; // 30 sec
                 }
             }
+            notifySendTime.put(context.getBlacklistItem(), System.currentTimeMillis());
 
             Bukkit.getOnlinePlayers().stream()
                 .filter(p -> p.hasPermission("worldguard.notify"))
