@@ -373,6 +373,18 @@ public class MyMaidLibrary {
      * @param text  テキスト
      */
     public static void chatFake(NamedTextColor color, String name, String text) {
+        chatFake(color, name, text, true);
+    }
+
+    /**
+     * フェイクのチャットを送信します。
+     *
+     * @param color         四角色
+     * @param name          プレイヤー名
+     * @param text          テキスト
+     * @param sendToDiscord Discordにも送信するか
+     */
+    public static void chatFake(NamedTextColor color, String name, String text, boolean sendToDiscord) {
         Bukkit.getServer().sendMessage(Component.text().append(
             Component.text("[" + sdfTimeFormat(new Date()) + "]", NamedTextColor.GRAY),
             Component.text("■", color),
@@ -381,7 +393,7 @@ public class MyMaidLibrary {
             Component.space(),
             Component.text(text)
         ));
-        if (MyMaidData.getServerChatChannel() != null)
+        if (sendToDiscord && MyMaidData.getServerChatChannel() != null)
             MyMaidData.getServerChatChannel()
                 .sendMessage("**" + DiscordEscape(name) + "**: " + DiscordEscape(ChatColor.stripColor(text)))
                 .queue();

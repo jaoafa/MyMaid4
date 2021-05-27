@@ -32,7 +32,7 @@ public class Event_PlayerCountNotify extends MyMaidLibrary implements Listener, 
         int count = Bukkit.getOnlinePlayers().size();
         int countExcludeHide = Math.toIntExact(Bukkit.getOnlinePlayers().stream().filter(p -> !MyMaidData.isHid(p.getUniqueId())).count());
         if (count == countExcludeHide) {
-            chatFake(NamedTextColor.GOLD, "jaotan", "現在『" + count + "人』がログインしています");
+            chatFake(NamedTextColor.GOLD, "jaotan", "現在『" + count + "人』がログインしています", false);
             return;
         }
         sendAMR(getChatFake(NamedTextColor.GOLD, "jaotan", "現在『" + count + "人』がログインしています"));
@@ -44,7 +44,7 @@ public class Event_PlayerCountNotify extends MyMaidLibrary implements Listener, 
         int count = Bukkit.getOnlinePlayers().size() - 1;
         int countExcludeHide = Math.toIntExact(Bukkit.getOnlinePlayers().stream().filter(p -> !MyMaidData.isHid(p.getUniqueId())).count()) - 1;
         if (count == countExcludeHide) {
-            chatFake(NamedTextColor.GOLD, "jaotan", "現在『" + count + "人』がログインしています");
+            chatFake(NamedTextColor.GOLD, "jaotan", "現在『" + count + "人』がログインしています", false);
             return;
         }
         sendAMR(getChatFake(NamedTextColor.GOLD, "jaotan", "現在『" + count + "人』がログインしています"));
