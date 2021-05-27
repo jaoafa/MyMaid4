@@ -228,7 +228,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
         Achievementjao.getAchievementAsync(player, Achievement.DRUGADDICTION);
         player.getInventory().clear();
         if (malicious != null) {
-            eban.addBan("jaotan", String.format("禁止クライアントMod「%s」使用の疑い。方針「クライアントModの導入・利用に関する規則」の「禁止事項」への違反", malicious));
+            eban.addBan("jaotan", String.format("禁止クライアントMod「%s」使用の疑い。サーバルール内「Modについて」の「禁止事項」への違反", malicious));
         } else {
             jail.addBan("jaotan", "jaoium所持");
             new Task_AutoRemoveJailByjaoium(player).runTaskLater(Main.getJavaPlugin(), 1200L); // 60s
@@ -327,7 +327,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
         Achievementjao.getAchievementAsync(player, Achievement.DRUGADDICTION);
         player.getInventory().clear();
         if (malicious != null) {
-            eban.addBan("jaotan", String.format("禁止クライアントMod「%s」使用の疑い。方針「クライアントModの導入・利用に関する規則」の「禁止事項」への違反", malicious));
+            eban.addBan("jaotan", String.format("禁止クライアントMod「%s」使用の疑い。サーバルール内「Modについて」の「禁止事項」への違反", malicious));
         } else {
             jail.addBan("jaotan", "jaoium所持");
             new Task_AutoRemoveJailByjaoium(player).runTaskLater(Main.getJavaPlugin(), 1200L); // 60s
