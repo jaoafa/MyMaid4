@@ -21,10 +21,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFormEvent;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Event_DisableConcreteTransition extends MyMaidLibrary implements Listener, EventPremise {
     @Override
@@ -39,9 +39,10 @@ public class Event_DisableConcreteTransition extends MyMaidLibrary implements Li
             return;
         }
         Location loc = block.getLocation();
-        List<Particle> particles = new ArrayList<>(Arrays.asList(Particle.values()));
-        particles.remove(Particle.MOB_APPEARANCE);
-        particles.remove(Particle.BLOCK_DUST);
+        List<Particle> particles = Arrays.stream(Particle.values())
+            .filter(p -> p.getDataType() == Void.class)
+            .filter(p -> !p.name().startsWith("LEGACY_"))
+            .collect(Collectors.toList());
 
         Random rnd = new Random();
         int i = rnd.nextInt(particles.size());
