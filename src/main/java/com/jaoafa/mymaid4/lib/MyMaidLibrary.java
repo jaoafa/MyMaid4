@@ -17,6 +17,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -208,6 +209,19 @@ public class MyMaidLibrary {
     }
 
     /**
+     * Verified・Defaultにメッセージを送信します。
+     *
+     * @param component 送信するメッセージコンポーネント
+     */
+    public static void sendVD(Component component) {
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            if (!isD(p) && !isV(p)) continue;
+            if (MyMaidData.getTempMuting().contains(p)) continue;
+            p.sendMessage(component);
+        }
+    }
+
+    /**
      * プレイヤーがAdminであるかを判定します。
      *
      * @param player 判定するプレイヤー
@@ -248,7 +262,29 @@ public class MyMaidLibrary {
     protected static boolean isAMRV(OfflinePlayer player) {
         String group = getPermissionMainGroup(player);
         if (group == null) return false;
-        return isAMR(player) || group.equalsIgnoreCase("Verified");
+        return isAMR(player) || isV(player);
+    }
+
+    /**
+     * プレイヤーがVerifiedであるかを判定します。
+     *
+     * @param player 判定するプレイヤー
+     */
+    protected static boolean isV(OfflinePlayer player) {
+        String group = getPermissionMainGroup(player);
+        if (group == null) return false;
+        return group.equalsIgnoreCase("Verified");
+    }
+
+    /**
+     * プレイヤーがDefaultであるかを判定します。
+     *
+     * @param player 判定するプレイヤー
+     */
+    protected static boolean isD(OfflinePlayer player) {
+        String group = getPermissionMainGroup(player);
+        if (group == null) return false;
+        return group.equalsIgnoreCase("Default");
     }
 
     /**
@@ -349,6 +385,26 @@ public class MyMaidLibrary {
             MyMaidData.getServerChatChannel()
                 .sendMessage("**" + DiscordEscape(name) + "**: " + DiscordEscape(ChatColor.stripColor(text)))
                 .queue();
+    }
+
+    /**
+     * フェイクのチャットを取得します。
+     *
+     * @param color 四角色
+     * @param name  プレイヤー名
+     * @param text  テキスト
+     *
+     * @return TextComponent
+     */
+    public static TextComponent getChatFake(NamedTextColor color, String name, String text) {
+        return Component.text().append(
+            Component.text("[" + sdfTimeFormat(new Date()) + "]", NamedTextColor.GRAY),
+            Component.text("■", color),
+            Component.text(name, NamedTextColor.WHITE),
+            Component.text(":"),
+            Component.space(),
+            Component.text(text)
+        ).build();
     }
 
     /**
