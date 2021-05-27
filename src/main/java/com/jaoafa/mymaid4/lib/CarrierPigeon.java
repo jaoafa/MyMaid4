@@ -225,6 +225,7 @@ public class CarrierPigeon {
 
         String message = getRandomMessage();
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            if (MyMaidData.getTempMuting().contains(p)) continue;
             String msg = message.replaceAll("%player%", p.getName());
             speakBird(p, msg);
         }
@@ -242,6 +243,7 @@ public class CarrierPigeon {
         String message = Messages.get(index);
 
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            if (MyMaidData.getTempMuting().contains(p)) continue;
             String msg = message.replaceAll("%player%", p.getName());
             speakBird(p, msg);
         }
