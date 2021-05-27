@@ -35,6 +35,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.Nullable;
 
@@ -666,5 +668,30 @@ public class MyMaidLibrary {
         return Arrays.stream(Material.values())
             .filter(m -> m.data == Sign.class || m.data == WallSign.class)
             .anyMatch(m -> m == material);
+    }
+
+    /**
+     * jaoiumと判定されるアイテムかどうか
+     *
+     * @param list PotionEffectのList
+     *
+     * @return jaoiumかどうか
+     */
+    public boolean isjaoium(List<PotionEffect> list) {
+        boolean jaoium = false;
+        for (PotionEffect po : list) {
+            if (po.getType().equals(PotionEffectType.HEAL)) {
+                if (Arrays.asList(
+                    29,
+                    61,
+                    93,
+                    125
+                ).contains(po.getAmplifier())) {
+                    // アウト
+                    jaoium = true;
+                }
+            }
+        }
+        return jaoium;
     }
 }
