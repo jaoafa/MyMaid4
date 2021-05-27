@@ -79,7 +79,7 @@ public class Cmd_wire extends MyMaidLibrary implements CommandPremise {
             builder
                 .meta(CommandMeta.DESCRIPTION, "WorldEditで選択した2点間にリードを張ります。1座標目がリードを付けられている側、2座標目がリードを持っている側。")
                 .senderType(Player.class)
-                .literal("setwe", "we", "weset")
+                .literal("setwe", "addwe", "connectwe", "we")
                 .handler(this::setWireWe)
 //                .build(),
 //
@@ -92,14 +92,11 @@ public class Cmd_wire extends MyMaidLibrary implements CommandPremise {
 //                    ArgumentDescription.of("リードを付けられる側のMob"))
 //                .handler(this::delWire)
 //                .build(),
-
+//
 //            builder
-//                .meta(CommandMeta.DESCRIPTION, "指定した2点間のリードを撤去します。座標を指定しない場合、WorldEditで選択した2点間のリードを撤去します。")
-//                .literal("del", "delete", "remove")
-//                .argument(SingleEntitySelectorArgument.of("from"),
-//                    ArgumentDescription.of("リードを持っている側のMob（またはプレイヤー）"))
-//                .argument(SingleEntitySelectorArgument.of("to"),
-//                    ArgumentDescription.of("リードを付けられる側のMob"))
+//                .meta(CommandMeta.DESCRIPTION, "WorldEditで選択した2点間にリードを張ります。1座標目がリードを付けられている側、2座標目がリードを持っている側。")
+//                .senderType(Player.class)
+//                .literal("delwe", "deletewe", "removewe")
 //                .handler(this::delWireWe)
 //                .build(),
 //
@@ -152,6 +149,33 @@ public class Cmd_wire extends MyMaidLibrary implements CommandPremise {
         }
     }
 
+//    void delWireWe(CommandContext<CommandSender> context) {
+//        Player player = (Player) context.getSender();
+//
+//        WorldEditPlugin we = getWorldEdit();
+//
+//        if (we == null) {
+//            SendMessage(player, details(), "WorldEditと連携できないため、このコマンドを使用できません。");
+//            return;
+//        }
+//
+//        try {
+//            World selectionWorld = we.getSession(player).getSelectionWorld();
+//            CuboidRegion cuboidRegion = (CuboidRegion) we.getSession(player).getSelection(selectionWorld);
+//
+//            BlockVector3 locationArgumentWePos1 = cuboidRegion.getPos1();
+//            BlockVector3 locationArgumentWePos2 = cuboidRegion.getPos2();
+//            Location loc1 = new Location(player.getWorld(), locationArgumentWePos1.getX() + 0.5, locationArgumentWePos1.getY(), locationArgumentWePos1.getZ() + 0.5);
+//            Location loc2 = new Location(player.getWorld(), locationArgumentWePos2.getX() + 0.5, locationArgumentWePos2.getY(), locationArgumentWePos2.getZ() + 0.5);
+//
+//            summonBat(player, loc1, loc2);
+//
+//        } catch (IncompleteRegionException e) {
+//            SendMessage(player, details(), "WorldEditで範囲を指定してください。");
+//
+//        }
+//    }
+
     void delWireUnit(CommandContext<CommandSender> context) {
         CommandSender sender = context.getSender();
         SendMessage(sender, details(), "このコマンドは未実装です。");
@@ -163,10 +187,10 @@ public class Cmd_wire extends MyMaidLibrary implements CommandPremise {
             batnbt1.setAI(false);
             batnbt1.setAwake(true);
             batnbt1.setSilent(true);
-            batnbt1.setPersistent(true);
             batnbt1.setInvulnerable(true);
+            batnbt1.setRemoveWhenFarAway(false);
             batnbt1.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, true, false, true));
-//            batnbt1.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Integer.MAX_VALUE, 1, true, false, true)); //確認用
+            batnbt1.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Integer.MAX_VALUE, 1, true, false, true)); //確認用
             batnbt1.addScoreboardTag("wireUnit");
         });
 
@@ -174,10 +198,10 @@ public class Cmd_wire extends MyMaidLibrary implements CommandPremise {
             batnbt2.setAI(false);
             batnbt2.setAwake(true);
             batnbt2.setSilent(true);
-            batnbt2.setPersistent(true);
             batnbt2.setInvulnerable(true);
+            batnbt2.setRemoveWhenFarAway(false);
             batnbt2.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, true, false, true));
-//            batnbt2.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Integer.MAX_VALUE, 1, true, false, true)); //確認用
+            batnbt2.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Integer.MAX_VALUE, 1, true, false, true)); //確認用
             batnbt2.addScoreboardTag("wireUnit");
         });
 
