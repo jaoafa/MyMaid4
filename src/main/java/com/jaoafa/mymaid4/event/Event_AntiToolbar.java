@@ -25,6 +25,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCreativeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -73,6 +74,13 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
         }
 
         if (isExistsInventory(player.getInventory(), is)) {
+            return;
+        }
+
+        if (is.getType() == Material.SPLASH_POTION &&
+            is.getType() == Material.LINGERING_POTION &&
+            isjaoium(((PotionMeta) is.getItemMeta()).getCustomEffects())) {
+            // jaoiumだったらどうせ処罰されることになるので
             return;
         }
 
