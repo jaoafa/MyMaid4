@@ -12,6 +12,7 @@
 package com.jaoafa.mymaid4.lib;
 
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -26,12 +27,9 @@ public class NMSManager {
      *
      * @return 文字列NBTタグ
      */
+    @Nullable
     public static String getNBT(ItemStack is) {
         try {
-            Class<?> CraftItemStack = getNMSClass("org.bukkit.craftbukkit.%s.inventory.CraftItemStack");
-            assert CraftItemStack != null;
-            Method asNMSCopy = CraftItemStack.getDeclaredMethod("asNMSCopy", ItemStack.class);
-
             Class<?> ItemStack = getNMSClass("net.minecraft.server.%s.ItemStack");
             assert ItemStack != null;
             Method getTag = ItemStack.getDeclaredMethod("getTag");
@@ -40,10 +38,142 @@ public class NMSManager {
             assert NBTTagCompound != null;
             Method toString = NBTTagCompound.getDeclaredMethod("toString");
 
-            Object ItemStackObj = asNMSCopy.invoke(null, is);
+            Object ItemStackObj = getNMSItem(is);
             Object NBTTagCompoundObj = getTag.invoke(ItemStackObj);
             if (NBTTagCompoundObj == null) return "{}";
             return (String) toString.invoke(NBTTagCompoundObj);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | NullPointerException e) {
+            MyMaidLibrary.reportError(NMSManager.class, e);
+        }
+        return null;
+    }
+
+    /**
+     * ItemStackに指定されたNBTタグをつけたItemStackを返します
+     *
+     * @param is    ItemStack
+     * @param key   NBTタグのキー
+     * @param value NBTタグの値
+     *
+     * @return 指定されたNBTタグをつけたItemStack
+     */
+    @Nullable
+    public static ItemStack setNBTString(ItemStack is, String key, String value) {
+        try {
+            Class<?> ItemStack = getNMSClass("net.minecraft.server.%s.ItemStack");
+            assert ItemStack != null;
+            Method getTag = ItemStack.getDeclaredMethod("getTag");
+
+            Class<?> NBTTagCompound = getNMSClass("net.minecraft.server.%s.NBTTagCompound");
+            assert NBTTagCompound != null;
+            Method setString = NBTTagCompound.getDeclaredMethod("setString", String.class, String.class);
+
+            Method setTag = ItemStack.getDeclaredMethod("setTag", NBTTagCompound);
+
+            Object ItemStackObj = getNMSItem(is);
+            Object NBTTagCompoundObj = getTag.invoke(ItemStackObj);
+            if (NBTTagCompoundObj == null) return null;
+            setString.invoke(NBTTagCompoundObj, key, value);
+            setTag.invoke(ItemStackObj, NBTTagCompoundObj);
+            return getItemStack(ItemStackObj);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | NullPointerException e) {
+            MyMaidLibrary.reportError(NMSManager.class, e);
+        }
+        return null;
+    }
+
+    /**
+     * ItemStackに指定されたNBTタグがついているかどうかを判定します
+     *
+     * @param is  ItemStack
+     * @param key NBTタグのキー
+     *
+     * @return NBTタグがついているか
+     */
+    public static boolean hasNBT(ItemStack is, String key) {
+        try {
+            Class<?> ItemStack = getNMSClass("net.minecraft.server.%s.ItemStack");
+            assert ItemStack != null;
+            Method getTag = ItemStack.getDeclaredMethod("getTag");
+
+            Class<?> NBTTagCompound = getNMSClass("net.minecraft.server.%s.NBTTagCompound");
+            assert NBTTagCompound != null;
+            Method hasKey = NBTTagCompound.getDeclaredMethod("hasKey", String.class);
+
+            Object ItemStackObj = getNMSItem(is);
+            Object NBTTagCompoundObj = getTag.invoke(ItemStackObj);
+            if (NBTTagCompoundObj == null) return false;
+            return (boolean) hasKey.invoke(NBTTagCompoundObj, key);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | NullPointerException e) {
+            MyMaidLibrary.reportError(NMSManager.class, e);
+        }
+        return false;
+    }
+
+    /**
+     * ItemStackから指定されたNBTタグの値を取得します
+     *
+     * @param is  ItemStack
+     * @param key NBTタグのキー
+     *
+     * @return NBTタグの値
+     */
+    public static String getNBTString(ItemStack is, String key) {
+        try {
+            Class<?> ItemStack = getNMSClass("net.minecraft.server.%s.ItemStack");
+            assert ItemStack != null;
+            Method getTag = ItemStack.getDeclaredMethod("getTag");
+
+            Class<?> NBTTagCompound = getNMSClass("net.minecraft.server.%s.NBTTagCompound");
+            assert NBTTagCompound != null;
+            Method getString = NBTTagCompound.getDeclaredMethod("getString", String.class);
+
+            Object ItemStackObj = getNMSItem(is);
+            Object NBTTagCompoundObj = getTag.invoke(ItemStackObj);
+            if (NBTTagCompoundObj == null) return null;
+            return (String) getString.invoke(NBTTagCompoundObj, key);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | NullPointerException e) {
+            MyMaidLibrary.reportError(NMSManager.class, e);
+        }
+        return null;
+    }
+
+    /**
+     * ItemStackから変換したNMSのアイテムを返します。
+     *
+     * @param is ItemStack
+     *
+     * @return NMSのアイテム
+     */
+    @Nullable
+    public static Object getNMSItem(ItemStack is) {
+        try {
+            Class<?> CraftItemStack = getNMSClass("org.bukkit.craftbukkit.%s.inventory.CraftItemStack");
+            assert CraftItemStack != null;
+            Method asNMSCopy = CraftItemStack.getDeclaredMethod("asNMSCopy", ItemStack.class);
+            return asNMSCopy.invoke(null, is);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | NullPointerException e) {
+            MyMaidLibrary.reportError(NMSManager.class, e);
+        }
+        return null;
+    }
+
+    /**
+     * NMSのアイテムから変換したItemStackを返します。
+     *
+     * @param nmsItem NMSのアイテム
+     *
+     * @return ItemStack
+     */
+    @Nullable
+    public static ItemStack getItemStack(Object nmsItem) {
+        try {
+            Class<?> ItemStack = getNMSClass("net.minecraft.server.%s.ItemStack");
+            assert ItemStack != null;
+            Class<?> CraftItemStack = getNMSClass("org.bukkit.craftbukkit.%s.inventory.CraftItemStack");
+            assert CraftItemStack != null;
+            Method asNMSCopy = CraftItemStack.getDeclaredMethod("asBukkitCopy", ItemStack);
+            return (ItemStack) asNMSCopy.invoke(null, nmsItem);
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | NullPointerException e) {
             MyMaidLibrary.reportError(NMSManager.class, e);
         }

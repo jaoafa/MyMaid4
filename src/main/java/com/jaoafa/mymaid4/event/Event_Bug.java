@@ -13,16 +13,18 @@ package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import com.jaoafa.mymaid4.lib.NMSManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerEditBookEvent;
-import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.ItemStack;
 
 public class Event_Bug extends MyMaidLibrary implements Listener, EventPremise {
     @Override
@@ -33,12 +35,11 @@ public class Event_Bug extends MyMaidLibrary implements Listener, EventPremise {
     @EventHandler(ignoreCancelled = true)
     public void onEditedBook(PlayerEditBookEvent event) {
         Player player = event.getPlayer();
-        BookMeta meta = event.getNewBookMeta();
-        Component rawTitle = meta.title();
-        if (rawTitle == null) {
+        if (player.getInventory().getItemInMainHand().getType() != Material.WRITABLE_BOOK) {
             return;
         }
-        if (rawTitle.equals(Component.text("MyMaid4 Issue Book", NamedTextColor.GOLD))) {
+        ItemStack is = player.getInventory().getItemInMainHand();
+        if (!NMSManager.hasNBT(is, "MyMaidBugBook")) {
             return;
         }
 
