@@ -13,8 +13,8 @@ package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -39,28 +39,22 @@ public class Event_AntiWither extends MyMaidLibrary implements Listener, EventPr
             return;
         }
         Location location = event.getLocation();
-        double min = 1.79769313486231570E+308;
-        Player min_player = null;
-        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-            org.bukkit.Location location_p = player.getLocation();
-            if (location.getWorld().getName().equals(location_p.getWorld().getName())) {
-                double distance = location.distance(location_p);
-                if (distance < min) {
-                    min = distance;
-                    min_player = player;
-                }
-            }
-        }
-        if (min_player == null) {
-            event.setCancelled(true);
+        Player nearPlayer = getNearestPlayer(location);
+        event.setCancelled(true);
+        if (nearPlayer == null) {
             return;
         }
-        event.setCancelled(true);
-        min_player.sendMessage("[AntiWither] " + ChatColor.GREEN + "負荷対策の為にウィザーの召喚を禁止しています。ご協力をお願いします。");
-        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            if (isAM(p)) {
-                p.sendMessage("[" + ChatColor.RED + "NoWither" + ChatColor.WHITE + "] " + ChatColor.GREEN + min_player.getName() + "の近くでウィザーが発生しましたが、発生を規制されました。");
-            }
-        }
+        nearPlayer.sendMessage(Component.text().append(
+            Component.text("[AntiWither]"),
+            Component.space(),
+            Component.text("負荷対策の為にウィザーの召喚を禁止しています。ご協力をお願いします。", NamedTextColor.GREEN)
+        ));
+        sendAM(Component.text().append(
+            Component.text("["),
+            Component.text("AntiWither", NamedTextColor.RED),
+            Component.text("]"),
+            Component.space(),
+            Component.text(nearPlayer.getName() + "の近くでウィザーが発生しましたが、発生を規制されました。", NamedTextColor.GREEN)
+        ).build());
     }
 }
