@@ -137,7 +137,6 @@ public class Cmd_wire extends MyMaidLibrary implements CommandPremise {
         }
 
         World selectionWorld = we.getSession(player).getSelectionWorld();
-
         Region region;
 
         try {
@@ -151,7 +150,6 @@ public class Cmd_wire extends MyMaidLibrary implements CommandPremise {
         if (region instanceof CuboidRegion) {
 
             CuboidRegion cuboidRegion = (CuboidRegion) region;
-
             BlockVector3 locationArgumentWePos1 = cuboidRegion.getPos1();
             BlockVector3 locationArgumentWePos2 = cuboidRegion.getPos2();
             Location loc1 = new Location(player.getWorld(), locationArgumentWePos1.getX() + 0.5, locationArgumentWePos1.getY(), locationArgumentWePos1.getZ() + 0.5);
@@ -167,10 +165,7 @@ public class Cmd_wire extends MyMaidLibrary implements CommandPremise {
             }
 
             Polygonal2DRegion polyRegion = (Polygonal2DRegion) region;
-            SendMessage(player, details(), String.format("polyRegion：%s", polyRegion));
-
             List<BlockVector2> polylist = polyRegion.getPoints();
-
             int polyPosY = polyRegion.getMaximumY();
 
             for (int i = 0; i < polylist.size() - 1; i++) {
