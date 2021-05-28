@@ -47,8 +47,6 @@ import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,38 +56,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPremise {
-    List<Integer> heal = Arrays.asList(
-        29,
-        61,
-        93,
-        125
-    );
     Set<String> sendHashes = new HashSet<>();
     Map<String, String> Reason = new HashMap<>(); // プレイヤー : 理由
 
     @Override
     public String description() {
         return "jaoium制限に関する処理を行います。";
-    }
-
-    /**
-     * jaoiumと判定されるアイテムかどうか
-     *
-     * @param list PotionEffectのList
-     *
-     * @return jaoiumかどうか
-     */
-    private boolean isjaoium(List<PotionEffect> list) {
-        boolean jaoium = false;
-        for (PotionEffect po : list) {
-            if (po.getType().equals(PotionEffectType.HEAL)) {
-                if (heal.contains(po.getAmplifier())) {
-                    // アウト
-                    jaoium = true;
-                }
-            }
-        }
-        return jaoium;
     }
 
     /**
@@ -256,7 +228,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
         Achievementjao.getAchievementAsync(player, Achievement.DRUGADDICTION);
         player.getInventory().clear();
         if (malicious != null) {
-            eban.addBan("jaotan", String.format("禁止クライアントMod「%s」使用の疑い。方針「クライアントModの導入・利用に関する規則」の「禁止事項」への違反", malicious));
+            eban.addBan("jaotan", String.format("禁止クライアントMod「%s」使用の疑い。サーバルール内「Modについて」の「禁止事項」への違反", malicious));
         } else {
             jail.addBan("jaotan", "jaoium所持");
             new Task_AutoRemoveJailByjaoium(player).runTaskLater(Main.getJavaPlugin(), 1200L); // 60s
@@ -355,7 +327,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
         Achievementjao.getAchievementAsync(player, Achievement.DRUGADDICTION);
         player.getInventory().clear();
         if (malicious != null) {
-            eban.addBan("jaotan", String.format("禁止クライアントMod「%s」使用の疑い。方針「クライアントModの導入・利用に関する規則」の「禁止事項」への違反", malicious));
+            eban.addBan("jaotan", String.format("禁止クライアントMod「%s」使用の疑い。サーバルール内「Modについて」の「禁止事項」への違反", malicious));
         } else {
             jail.addBan("jaotan", "jaoium所持");
             new Task_AutoRemoveJailByjaoium(player).runTaskLater(Main.getJavaPlugin(), 1200L); // 60s

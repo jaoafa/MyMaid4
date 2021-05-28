@@ -17,6 +17,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -34,6 +35,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.Nullable;
 
@@ -208,6 +211,19 @@ public class MyMaidLibrary {
     }
 
     /**
+     * Verified・Defaultにメッセージを送信します。
+     *
+     * @param component 送信するメッセージコンポーネント
+     */
+    public static void sendVD(Component component) {
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            if (!isD(p) && !isV(p)) continue;
+            if (MyMaidData.getTempMuting().contains(p)) continue;
+            p.sendMessage(component);
+        }
+    }
+
+    /**
      * プレイヤーがAdminであるかを判定します。
      *
      * @param player 判定するプレイヤー
@@ -248,7 +264,29 @@ public class MyMaidLibrary {
     protected static boolean isAMRV(OfflinePlayer player) {
         String group = getPermissionMainGroup(player);
         if (group == null) return false;
-        return isAMR(player) || group.equalsIgnoreCase("Verified");
+        return isAMR(player) || isV(player);
+    }
+
+    /**
+     * プレイヤーがVerifiedであるかを判定します。
+     *
+     * @param player 判定するプレイヤー
+     */
+    protected static boolean isV(OfflinePlayer player) {
+        String group = getPermissionMainGroup(player);
+        if (group == null) return false;
+        return group.equalsIgnoreCase("Verified");
+    }
+
+    /**
+     * プレイヤーがDefaultであるかを判定します。
+     *
+     * @param player 判定するプレイヤー
+     */
+    protected static boolean isD(OfflinePlayer player) {
+        String group = getPermissionMainGroup(player);
+        if (group == null) return false;
+        return group.equalsIgnoreCase("Default");
     }
 
     /**
@@ -337,6 +375,18 @@ public class MyMaidLibrary {
      * @param text  テキスト
      */
     public static void chatFake(NamedTextColor color, String name, String text) {
+        chatFake(color, name, text, true);
+    }
+
+    /**
+     * フェイクのチャットを送信します。
+     *
+     * @param color         四角色
+     * @param name          プレイヤー名
+     * @param text          テキスト
+     * @param sendToDiscord Discordにも送信するか
+     */
+    public static void chatFake(NamedTextColor color, String name, String text, boolean sendToDiscord) {
         Bukkit.getServer().sendMessage(Component.text().append(
             Component.text("[" + sdfTimeFormat(new Date()) + "]", NamedTextColor.GRAY),
             Component.text("■", color),
@@ -345,10 +395,30 @@ public class MyMaidLibrary {
             Component.space(),
             Component.text(text)
         ));
-        if (MyMaidData.getServerChatChannel() != null)
+        if (sendToDiscord && MyMaidData.getServerChatChannel() != null)
             MyMaidData.getServerChatChannel()
                 .sendMessage("**" + DiscordEscape(name) + "**: " + DiscordEscape(ChatColor.stripColor(text)))
                 .queue();
+    }
+
+    /**
+     * フェイクのチャットを取得します。
+     *
+     * @param color 四角色
+     * @param name  プレイヤー名
+     * @param text  テキスト
+     *
+     * @return TextComponent
+     */
+    public static TextComponent getChatFake(NamedTextColor color, String name, String text) {
+        return Component.text().append(
+            Component.text("[" + sdfTimeFormat(new Date()) + "]", NamedTextColor.GRAY),
+            Component.text("■", color),
+            Component.text(name, NamedTextColor.WHITE),
+            Component.text(":"),
+            Component.space(),
+            Component.text(text)
+        ).build();
     }
 
     /**
@@ -390,6 +460,7 @@ public class MyMaidLibrary {
      *
      * @return 一番近いプレイヤー
      */
+    @Nullable
     public Player getNearestPlayer(Location loc) {
         double closest = Double.MAX_VALUE;
         Player closestp = null;
@@ -598,5 +669,30 @@ public class MyMaidLibrary {
         return Arrays.stream(Material.values())
             .filter(m -> m.data == Sign.class || m.data == WallSign.class)
             .anyMatch(m -> m == material);
+    }
+
+    /**
+     * jaoiumと判定されるアイテムかどうか
+     *
+     * @param list PotionEffectのList
+     *
+     * @return jaoiumかどうか
+     */
+    public boolean isjaoium(List<PotionEffect> list) {
+        boolean jaoium = false;
+        for (PotionEffect po : list) {
+            if (po.getType().equals(PotionEffectType.HEAL)) {
+                if (Arrays.asList(
+                    29,
+                    61,
+                    93,
+                    125
+                ).contains(po.getAmplifier())) {
+                    // アウト
+                    jaoium = true;
+                }
+            }
+        }
+        return jaoium;
     }
 }
