@@ -460,6 +460,7 @@ public class MyMaidLibrary {
      *
      * @return 一番近いプレイヤー
      */
+    @Nullable
     public Player getNearestPlayer(Location loc) {
         double closest = Double.MAX_VALUE;
         Player closestp = null;
