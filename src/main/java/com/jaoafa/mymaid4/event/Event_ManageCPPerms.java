@@ -78,6 +78,9 @@ public class Event_ManageCPPerms extends MyMaidLibrary implements Listener, Even
             !args[0].equalsIgnoreCase("/co")) {
             return;
         }
+        if (args.length == 1) {
+            return;
+        }
 
         Optional<Map.Entry<String, String>> func = cpSubCommands.entrySet().stream()
             .filter(cmd -> cmd.getKey().equalsIgnoreCase(args[1]))

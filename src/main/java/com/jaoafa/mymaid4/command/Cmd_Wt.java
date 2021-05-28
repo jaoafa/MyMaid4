@@ -93,11 +93,11 @@ public class Cmd_Wt extends MyMaidLibrary implements CommandPremise {
         if (player == null) {
             return;
         }
-        if (!isAMR(player)) {
+        CommandSender sender = context.getSender();
+        if (sender instanceof Player && !isAMR((Player) sender)) {
             SendMessage(player, details(), "あなたは他人をテレポートさせることはできません");
             return;
         }
-        Player sender = (Player) context.getSender();
         String worldName = context.get("worldName");
         World world = Bukkit.getWorld(worlds.getOrDefault(worldName, worldName));
         if (world == null) {
