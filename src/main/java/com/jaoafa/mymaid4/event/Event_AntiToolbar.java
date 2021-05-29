@@ -44,7 +44,9 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
 
     Pattern damagePattern = Pattern.compile("\\{Damage:[0-9]+}");
 
-    @EventHandler
+    Map<UUID, ItemStack> pickupItems = new HashMap<>();
+
+    @EventHandler(ignoreCancelled = true)
     public void onInventoryCreative(InventoryCreativeEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
@@ -58,22 +60,24 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
             return;
         }
 
-        boolean isDeny = false;
-        ItemStack is = null;
-        if (event.getCurrentItem() != null) {
-            isDeny = isDenyItemStack(event.getCurrentItem());
-            if (isDeny) is = event.getCurrentItem();
+        if (event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
+            pickupItems.put(player.getUniqueId(), event.getCurrentItem());
         }
-        if (!isDeny) {
-            isDeny = isDenyItemStack(event.getCursor());
-            if (isDeny) is = event.getCursor();
-        }
+
+        boolean isDeny = isDenyItemStack(event.getCursor());
+        ItemStack is = event.getCursor();
 
         if (!isDeny) {
             return;
         }
 
         if (isExistsInventory(player.getInventory(), is)) {
+            return;
+        }
+
+        if (pickupItems.containsKey(player.getUniqueId()) &&
+            pickupItems.get(player.getUniqueId()).equals(is) &&
+            pickupItems.get(player.getUniqueId()).getItemMeta().equals(is.getItemMeta())) {
             return;
         }
 
@@ -85,6 +89,7 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
         }
 
         event.setCurrentItem(null);
+        event.setCursor(new ItemStack(Material.AIR));
         player.sendMessage(Component.text().append(
             Component.text("[AntiToolbar] "),
             Component.text("ツールバーからの取得と思われるアイテムが見つかったため、規制しました。この事象は報告されます。", NamedTextColor.RED)
