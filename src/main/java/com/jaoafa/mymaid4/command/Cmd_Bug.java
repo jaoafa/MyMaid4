@@ -18,6 +18,7 @@ import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import com.jaoafa.mymaid4.lib.NMSManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -137,6 +138,7 @@ public class Cmd_Bug extends MyMaidLibrary implements CommandPremise {
             ).build()
         );
         is.setItemMeta(book);
+        is = NMSManager.setNBTString(is, "MyMaidBugBook", String.valueOf(System.currentTimeMillis()));
 
         ItemStack main = inv.getItemInMainHand();
         inv.setItemInMainHand(is);
