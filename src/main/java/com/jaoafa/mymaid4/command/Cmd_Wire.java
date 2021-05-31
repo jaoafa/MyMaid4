@@ -47,7 +47,7 @@ import java.util.List;
 import static com.jaoafa.mymaid4.Main.getWorldEdit;
 import static org.bukkit.entity.EntityType.BAT;
 
-public class Cmd_wire extends MyMaidLibrary implements CommandPremise {
+public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
     @Override
     public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
