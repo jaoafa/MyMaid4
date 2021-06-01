@@ -123,7 +123,7 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
         );
     }
 
-    double maxDistance = 64.0;
+    double maxDistance = 128.0;
     int searchBatRadius = 2;
 
     void setWire(CommandContext<CommandSender> context) {
