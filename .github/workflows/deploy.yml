@@ -32,11 +32,11 @@ jobs:
       with:
         issue-number: ${{ github.event.pull_request.number }}
         body: |
-          :white_check_mark: デプロイが完了しました
+          # :white_check_mark: デプロイが完了しました
 
           プルリクエストがマージされたため、本番環境へのデプロイを行いました。
           バージョンは `${{ fromJson(steps.deployRequest.outputs.response).version }}` です。稼働中バージョンの確認は Minecraft サーバ内で `/ver MyMaid4` を実行することで確認できます。
-          反映は本番環境の再起動後ですので、アクティブログインユーザーの同意を得て再起動するか、3時の自動再起動を待ってください。"
+          反映は本番環境の再起動後ですので、アクティブログインユーザーの同意を得て再起動するか、3時の自動再起動を待ってください。
 
     - name: Is Failed Deploy
       if: ${{ fromJson(steps.deployRequest.outputs.response).status == 'ERROR' }}
@@ -44,7 +44,7 @@ jobs:
       with:
         issue-number: ${{ github.event.pull_request.number }}
         body: |
-          :x: デプロイに失敗しました
+          # :x: デプロイに失敗しました
 
           プルリクエストがマージされたため、本番環境へのデプロイを行おうとしましたが失敗しました。
           エラー内容は以下の通りです。
