@@ -26,7 +26,7 @@ jobs:
       run: echo ${{ steps.deployRequest.outputs.response }}
 
     - name: Is Successful Deploy
-      if: fromJson(steps.deployRequest.outputs.response).status == "SUCCESSFUL"
+      if: ${{ fromJson(steps.deployRequest.outputs.response).status == "SUCCESSFUL" }}
       uses: peter-evans/create-or-update-comment@v1
       with:
         issue-number: ${{ github.event.pull_request.number }}
@@ -38,7 +38,7 @@ jobs:
           反映は本番環境の再起動後ですので、アクティブログインユーザーの同意を得て再起動するか、3時の自動再起動を待ってください。"
 
     - name: Is Failed Deploy
-      if: fromJson(steps.deployRequest.outputs.response).status == "ERROR"
+      if: ${{ fromJson(steps.deployRequest.outputs.response).status == "ERROR" }}
       uses: peter-evans/create-or-update-comment@v1
       with:
         issue-number: ${{ github.event.pull_request.number }}
