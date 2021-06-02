@@ -123,7 +123,8 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
         );
     }
 
-    double maxDistance = 64.0;
+    double maxDistance = 128.0;
+    int searchBatRadius = 2;
 
     void setWire(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
@@ -214,8 +215,8 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
         Location loc1 = new Location(player.getWorld(), locationArgumentPos1.getX() + 0.5, locationArgumentPos1.getY(), locationArgumentPos1.getZ() + 0.5);
         Location loc2 = new Location(player.getWorld(), locationArgumentPos2.getX() + 0.5, locationArgumentPos2.getY(), locationArgumentPos2.getZ() + 0.5);
 
-        @NotNull Collection<Entity> loc1entities = loc1.getNearbyEntities(1, 1, 1);
-        @NotNull Collection<Entity> loc2entities = loc2.getNearbyEntities(1, 1, 1);
+        @NotNull Collection<Entity> loc1entities = loc1.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
+        @NotNull Collection<Entity> loc2entities = loc2.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
 
         int wireRemoveCount = removeBat(loc1entities, loc2entities);
         if (wireRemoveCount > 0) {
@@ -250,8 +251,8 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             BlockVector3 locationArgumentWePos2 = cuboidRegion.getPos2();
             Location loc1 = new Location(player.getWorld(), locationArgumentWePos1.getX() + 0.5, locationArgumentWePos1.getY(), locationArgumentWePos1.getZ() + 0.5);
             Location loc2 = new Location(player.getWorld(), locationArgumentWePos2.getX() + 0.5, locationArgumentWePos2.getY(), locationArgumentWePos2.getZ() + 0.5);
-            @NotNull Collection<Entity> loc1entities = loc1.getNearbyEntities(1, 1, 1);
-            @NotNull Collection<Entity> loc2entities = loc2.getNearbyEntities(1, 1, 1);
+            @NotNull Collection<Entity> loc1entities = loc1.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
+            @NotNull Collection<Entity> loc2entities = loc2.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
 
             int wireRemoveCount = removeBat(loc1entities, loc2entities);
             if (wireRemoveCount > 0) {
@@ -276,8 +277,8 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             for (int i = 0; i < polylist.size() - 1; i++) {
                 Location loc1 = new Location(player.getWorld(), polylist.get(i).getX() + 0.5, polyPosY, polylist.get(i).getZ() + 0.5);
                 Location loc2 = new Location(player.getWorld(), polylist.get(i + 1).getX() + 0.5, polyPosY, polylist.get(i + 1).getZ() + 0.5);
-                @NotNull Collection<Entity> loc1entities = loc1.getNearbyEntities(1, 1, 1);
-                @NotNull Collection<Entity> loc2entities = loc2.getNearbyEntities(1, 1, 1);
+                @NotNull Collection<Entity> loc1entities = loc1.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
+                @NotNull Collection<Entity> loc2entities = loc2.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
 
                 wireRemoveCount += removeBat(loc1entities, loc2entities);
             }
