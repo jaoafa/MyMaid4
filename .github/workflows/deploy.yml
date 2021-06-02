@@ -21,6 +21,7 @@ jobs:
         method: 'POST'
         bearerToken: ${{ secrets.DEPLOY_KEY }}
         ignoreStatusCodes: '500'
+        timeout: 600000
 
     - name: Show Response
       run: echo ${{ steps.deployRequest.outputs.response }}
