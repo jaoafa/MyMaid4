@@ -127,12 +127,12 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
             displayName = componentDisplayName != null ? PlainComponentSerializer.plain().serialize(componentDisplayName) : "";
             List<Component> componentLore = meta.lore();
             String lore = componentLore != null ? componentLore.stream().map(c -> PlainComponentSerializer.plain().serialize(c)).collect(Collectors.joining()) : "";
-            if ((displayName.contains("jaoium") || lore.contains("jaoium")) && exists) {
+            if (!displayName.contains("jaoium") && !lore.contains("jaoium")) {
+                isWarning = true;
+            }
+            if (exists) {
                 return;
             }
-
-            // jaoiumという文字列が含まれていない
-            isWarning = true;
         }
 
         if (Main.getMyMaidConfig().getJDA() == null) {
@@ -178,71 +178,19 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
             return;
         }
         Player player = (Player) event.getWhoClicked();
-        Inventory inv = event.getInventory();
         Inventory click_inv = event.getClickedInventory();
-        ItemStack[] click_is = click_inv != null ? click_inv.getContents() : new ItemStack[]{};
 
-        boolean isMatched = false;
-        String malicious = null;
-
-        Optional<ItemStack> matched = Arrays.stream(inv.getContents())
-            .filter(Objects::nonNull)
-            .filter(i -> i.getType() == Material.SPLASH_POTION || i.getType() == Material.LINGERING_POTION)
-            .filter(i -> isjaoium(((PotionMeta) i.getItemMeta()).getCustomEffects()))
-            .findFirst();
-        if (matched.isPresent()) {
-            // jaoium有
-            saveItem(player, matched.get());
-            inv.clear();
-            isMatched = true;
-            malicious = isMalicious((PotionMeta) matched.get().getItemMeta());
-        }
-
-        Optional<ItemStack> click_matched = Arrays.stream(click_is)
-            .filter(Objects::nonNull)
-            .filter(i -> i.getType() == Material.SPLASH_POTION || i.getType() == Material.LINGERING_POTION)
-            .filter(i -> isjaoium(((PotionMeta) i.getItemMeta()).getCustomEffects()))
-            .findFirst();
-        if (click_matched.isPresent()) {
-            // jaoium有
-            saveItem(player, click_matched.get());
-            click_inv.clear();
-            isMatched = true;
-            malicious = isMalicious((PotionMeta) click_matched.get().getItemMeta());
-        }
-
-        if (!isMatched) {
-            return;
-        }
-
-        Jail jail = Jail.getInstance(player);
-        if (jail.isStatus()) {
-            return;
-        }
-        EBan eban = EBan.getInstance(player);
-        if (eban.isStatus()) {
-            return;
-        }
-
-        checkjaoiumLocation(player);
-        Achievementjao.getAchievementAsync(player, Achievement.DRUGADDICTION);
-        player.getInventory().clear();
-        if (malicious != null) {
-            eban.addBan("jaotan", String.format("禁止クライアントMod「%s」使用の疑い。サーバルール内「Modについて」の「禁止事項」への違反", malicious));
-        } else {
-            jail.addBan("jaotan", "jaoium所持");
-            new Task_AutoRemoveJailByjaoium(player).runTaskLater(Main.getJavaPlugin(), 1200L); // 60s
-        }
+        check(event, player, click_inv, false);
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerItemHeldEvent(PlayerItemHeldEvent event) {
-        check(event, event.getPlayer());
+        check(event, event.getPlayer(), null, true);
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
-        check(event, event.getPlayer());
+        check(event, event.getPlayer(), null, true);
     }
 
     @EventHandler
@@ -250,7 +198,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
         if (!(event.getEntity().getShooter() instanceof Player)) {
             return;
         }
-        check(event, (Player) event.getEntity().getShooter());
+        check(event, (Player) event.getEntity().getShooter(), null, true);
     }
 
     @EventHandler
@@ -258,7 +206,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
         if (!(event.getEntity().getShooter() instanceof Player)) {
             return;
         }
-        check(event, (Player) event.getEntity().getShooter());
+        check(event, (Player) event.getEntity().getShooter(), null, true);
     }
 
     @EventHandler
@@ -275,12 +223,13 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
         }
     }
 
-    void check(Cancellable event, Player player) {
+    void check(Cancellable event, Player player, Inventory clickedChest, boolean checkEnderChest) {
         Inventory inv = player.getInventory();
         Inventory ender_inv = player.getEnderChest();
 
         boolean isMatched = false;
         String malicious = null;
+        ItemStack is = null;
 
         Optional<ItemStack> matched = Arrays.stream(inv.getContents())
             .filter(Objects::nonNull)
@@ -290,24 +239,45 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
         if (matched.isPresent()) {
             // jaoium有
             saveItem(player, matched.get());
+            is = matched.get();
             event.setCancelled(true);
             inv.clear();
             isMatched = true;
             malicious = isMalicious((PotionMeta) matched.get().getItemMeta());
         }
 
-        Optional<ItemStack> ender_matched = Arrays.stream(ender_inv.getContents())
-            .filter(Objects::nonNull)
-            .filter(i -> i.getType() == Material.SPLASH_POTION || i.getType() == Material.LINGERING_POTION)
-            .filter(i -> isjaoium(((PotionMeta) i.getItemMeta()).getCustomEffects()))
-            .findFirst();
-        if (ender_matched.isPresent()) {
-            // jaoium有
-            saveItem(player, ender_matched.get());
-            event.setCancelled(true);
-            inv.clear();
-            isMatched = true;
-            malicious = isMalicious((PotionMeta) ender_matched.get().getItemMeta());
+        if (clickedChest != null) {
+            Optional<ItemStack> clicked_matched = Arrays.stream(clickedChest.getContents())
+                .filter(Objects::nonNull)
+                .filter(i -> i.getType() == Material.SPLASH_POTION || i.getType() == Material.LINGERING_POTION)
+                .filter(i -> isjaoium(((PotionMeta) i.getItemMeta()).getCustomEffects()))
+                .findFirst();
+            if (clicked_matched.isPresent()) {
+                // jaoium有
+                saveItem(player, clicked_matched.get());
+                is = clicked_matched.get();
+                event.setCancelled(true);
+                clickedChest.clear();
+                isMatched = true;
+                malicious = isMalicious((PotionMeta) clicked_matched.get().getItemMeta());
+            }
+        }
+
+        if (checkEnderChest) {
+            Optional<ItemStack> ender_matched = Arrays.stream(ender_inv.getContents())
+                .filter(Objects::nonNull)
+                .filter(i -> i.getType() == Material.SPLASH_POTION || i.getType() == Material.LINGERING_POTION)
+                .filter(i -> isjaoium(((PotionMeta) i.getItemMeta()).getCustomEffects()))
+                .findFirst();
+            if (ender_matched.isPresent()) {
+                // jaoium有
+                saveItem(player, ender_matched.get());
+                is = ender_matched.get();
+                event.setCancelled(true);
+                ender_inv.clear();
+                isMatched = true;
+                malicious = isMalicious((PotionMeta) ender_matched.get().getItemMeta());
+            }
         }
 
         if (!isMatched) {
@@ -321,6 +291,15 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
         EBan eban = EBan.getInstance(player);
         if (eban.isStatus()) {
             return;
+        }
+
+        PotionMeta meta = (PotionMeta) is.getItemMeta();
+        Component componentDisplayName = meta.displayName();
+        String displayName = componentDisplayName != null ? PlainComponentSerializer.plain().serialize(componentDisplayName) : "";
+        List<Component> componentLore = meta.lore();
+        String lore = componentLore != null ? componentLore.stream().map(c -> PlainComponentSerializer.plain().serialize(c)).collect(Collectors.joining()) : "";
+        if (!displayName.contains("jaoium") && !lore.contains("jaoium") && !isAMRV(player)) {
+            Historyjao.getHistoryjao(player).autoAdd("jaoiumの所持・使用", "(" + displayName + ")");
         }
 
         checkjaoiumLocation(player);

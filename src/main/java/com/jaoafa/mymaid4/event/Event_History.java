@@ -21,13 +21,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Event_History extends MyMaidLibrary implements Listener, EventPremise {
     @Override
     public String description() {
-        return "historyコマンドに関する処理を行います。";
+        return "historyコマンド(jaoHistory)に関する処理を行います。";
     }
 
     @EventHandler
@@ -53,7 +54,7 @@ public class Event_History extends MyMaidLibrary implements Listener, EventPremi
 
         List<String> data = new ArrayList<>();
         for (Historyjao.Data hist : histjao.getDataList()) {
-            data.add("[" + hist.id + "] " + hist.message + " - " + sdfFormat(hist.getCreatedAt()));
+            data.add(MessageFormat.format("[{0}] {1} - {2}", hist.id, hist.message, sdfFormat(hist.getCreatedAt())));
         }
 
         if (data.isEmpty()) {
@@ -62,7 +63,6 @@ public class Event_History extends MyMaidLibrary implements Listener, EventPremi
 
         TextChannel jaotan = MyMaidData.getJaotanChannel();
         if (jaotan == null) return;
-        jaotan.sendMessage("**-----: Historyjao DATA / `" + player.getName() + "` :-----**\n"
-            + "```" + String.join("\n", data) + "```").queue();
+        jaotan.sendMessage(MessageFormat.format("**-----: Historyjao DATA / `{0}` :-----**\n```{1}```", player.getName(), String.join("\n", data))).queue();
     }
 }
