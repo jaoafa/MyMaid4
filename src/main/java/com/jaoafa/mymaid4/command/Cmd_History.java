@@ -65,7 +65,10 @@ public class Cmd_History extends MyMaidLibrary implements CommandPremise {
                 .argument(OfflinePlayerArgument.of("target"))
                 .argument(IntegerArgument.<CommandSender>newBuilder("item")
                     .withSuggestionsProvider(this::suggestHistoryIds))
-                .argument(BooleanArgument.<CommandSender>newBuilder("changeTo").withLiberal(true))
+                .argument(BooleanArgument
+                    .<CommandSender>newBuilder("changeTo")
+                    .withLiberal(true)
+                    .withSuggestionsProvider(this::suggestBoolean))
                 .handler(this::notifyItem)
                 .build(),
             builder
@@ -79,7 +82,7 @@ public class Cmd_History extends MyMaidLibrary implements CommandPremise {
 
     void addItem(CommandContext<CommandSender> context) {
         CommandSender sender = context.getSender();
-        if (sender instanceof Player && !isAM((Player) sender)) {
+        if (sender instanceof Player && !isAMR((Player) sender)) {
             SendMessage(sender, details(), "あなたの権限ではこのコマンドを実行することができません！");
             return;
         }
@@ -135,7 +138,7 @@ public class Cmd_History extends MyMaidLibrary implements CommandPremise {
 
     void viewStatus(CommandContext<CommandSender> context) {
         CommandSender sender = context.getSender();
-        if (sender instanceof Player && !isAM((Player) sender)) {
+        if (sender instanceof Player && !isAMR((Player) sender)) {
             SendMessage(sender, details(), "あなたの権限ではこのコマンドを実行することができません！");
             return;
         }
