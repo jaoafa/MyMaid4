@@ -66,6 +66,13 @@ public class Historyjao {
         return true;
     }
 
+    public boolean autoAdd(String prefix, String details) {
+        if (getDataList().stream().anyMatch(d -> d.message.startsWith(prefix))) {
+            return false;
+        }
+        return add(prefix + " " + details);
+    }
+
     public boolean disable(int id) {
         if (MyMaidData.getMainMySQLDBManager() == null) {
             throw new IllegalStateException("Main.MySQLDBManager == null");
