@@ -16,6 +16,7 @@ import com.jaoafa.mymaid4.lib.Historyjao;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import net.dv8tion.jda.api.entities.TextChannel;
+import org.apache.commons.lang.time.DateUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,6 +24,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Event_History extends MyMaidLibrary implements Listener, EventPremise {
@@ -54,6 +56,7 @@ public class Event_History extends MyMaidLibrary implements Listener, EventPremi
 
         List<String> data = new ArrayList<>();
         for (Historyjao.Data hist : histjao.getDataList()) {
+            if (!hist.notify) continue;
             data.add(MessageFormat.format("[{0}] {1} - {2}", hist.id, hist.message, sdfFormat(hist.getCreatedAt())));
         }
 
@@ -61,8 +64,16 @@ public class Event_History extends MyMaidLibrary implements Listener, EventPremi
             return;
         }
 
+        Date whenNotified = histjao.getWhenNotified();
+        if (whenNotified != null && DateUtils.isSameDay(new Date(), whenNotified)) {
+            return;
+        }
+
         TextChannel jaotan = MyMaidData.getJaotanChannel();
         if (jaotan == null) return;
-        jaotan.sendMessage(MessageFormat.format("**-----: Historyjao DATA / `{0}` :-----**\n```{1}```", player.getName(), String.join("\n", data))).queue();
+        jaotan.sendMessage(MessageFormat.format("**-----: Historyjao DATA / `{0}` :-----**\n```{1}```",
+            player.getName(),
+            String.join("\n", data))).queue();
+        histjao.setNotified();
     }
 }
