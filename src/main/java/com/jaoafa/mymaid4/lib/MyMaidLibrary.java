@@ -695,4 +695,15 @@ public class MyMaidLibrary {
         }
         return jaoium;
     }
+
+    /**
+     * Locationオブジェクトを「ワールド X Y Z」の文字列形式で返します。
+     *
+     * @param loc Locationオブジェクト
+     *
+     * @return 「ワールド X Y Z」の文字列形式
+     */
+    public static String formatLocation(Location loc) {
+        return loc.getWorld().getName() + " " + loc.getBlockX() + " " + loc.getBlockY() + " " + loc.getBlockZ();
+    }
 }
