@@ -42,7 +42,9 @@ public class Event_AntiEndPortal extends MyMaidLibrary implements Listener, Even
             return;
         }
         event.getPlayer().sendMessage(Component.text().append(
-            Component.text("[AntiEndPortal]"),
+            Component.text("["),
+            Component.text("AntiEndPortal", NamedTextColor.RED),
+            Component.text("]"),
             Component.space(),
             Component.text("エンドラの息がくさすぎて死者が出るので、このサーバにはエンドはありません。ジ・エンドってね。", NamedTextColor.GREEN)
         ));

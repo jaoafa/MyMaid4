@@ -138,7 +138,7 @@ public class Blacklist {
                     Component.text(MessageFormat.format("{0} が {1} を {2} で{3}しました",
                         context.getPlayer().getName(),
                         context.getBlacklistItem().getMaterial().name(),
-                        formatLocation(context.getLocation()),
+                        MyMaidLibrary.formatLocation(context.getLocation()),
                         context.getBlacklistEvent().getName()), NamedTextColor.GRAY)
                 )));
             return true;
@@ -148,7 +148,7 @@ public class Blacklist {
                 .info("[BLACKLIST] " + MessageFormat.format("{0} が {1} を {2} で{3}しました",
                     context.getPlayer().getName(),
                     context.getBlacklistItem().getMaterial().name(),
-                    formatLocation(context.getLocation()),
+                    MyMaidLibrary.formatLocation(context.getLocation()),
                     context.getBlacklistEvent().getName()));
             return true;
         }),
@@ -181,10 +181,6 @@ public class Blacklist {
 
         BlacklistAction(ActionHandler handler) {
             this.handler = handler;
-        }
-
-        static String formatLocation(Location loc) {
-            return loc.getWorld().getName() + " " + loc.getBlockX() + " " + loc.getBlockY() + " " + loc.getBlockZ();
         }
 
         public ActionHandler getHandler() {
