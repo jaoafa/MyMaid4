@@ -12,11 +12,11 @@
 package com.jaoafa.mymaid4.lib;
 
 import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.Nullable;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.Instant;
+import java.util.Date;
 import java.util.*;
 
 public class Historyjao {
@@ -66,6 +66,13 @@ public class Historyjao {
         return true;
     }
 
+    public boolean autoAdd(String prefix, String details) {
+        if (getDataList().stream().anyMatch(d -> d.message.startsWith(prefix))) {
+            return false;
+        }
+        return add(prefix + " " + details);
+    }
+
     public boolean disable(int id) {
         if (MyMaidData.getMainMySQLDBManager() == null) {
             throw new IllegalStateException("Main.MySQLDBManager == null");
@@ -95,7 +102,7 @@ public class Historyjao {
         try {
             Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
             try (PreparedStatement statement = conn.prepareStatement(
-                "UPDATE jaoHistory SET notify = ? WHERE uuid = ? AND id = ? ORDER BY id DESC")) {
+                "UPDATE jaoHistory SET notify = ? WHERE uuid = ? AND id = ?")) {
                 statement.setBoolean(1, changeTo);
                 statement.setString(2, player.getUniqueId().toString());
                 statement.setInt(3, id);
@@ -107,6 +114,37 @@ public class Historyjao {
         }
         DBSync(true);
 
+        return true;
+    }
+
+    @Nullable
+    public Date getWhenNotified() {
+        return this.data.stream()
+            .filter(d -> d.notified_at != null)
+            .max(Comparator.comparingLong(d -> d.notified_at))
+            .map(Data::getNotifiedAt)
+            .orElse(null);
+    }
+
+    public boolean setNotified() {
+        if (MyMaidData.getMainMySQLDBManager() == null) {
+            throw new IllegalStateException("Main.MySQLDBManager == null");
+        }
+        try {
+            Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
+            try (PreparedStatement statement = conn.prepareStatement(
+                "UPDATE jaoHistory SET notified_at = ? WHERE uuid = ? AND notify = ? AND disabled = ?")) {
+                statement.setTimestamp(1, Timestamp.from(Instant.now()));
+                statement.setString(2, player.getUniqueId().toString());
+                statement.setBoolean(3, true);
+                statement.setBoolean(4, false);
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        DBSync(true);
         return true;
     }
 
@@ -142,6 +180,7 @@ public class Historyjao {
                         d.message = res.getString("message");
                         d.disabled = res.getBoolean("disabled");
                         d.notify = res.getBoolean("notify");
+                        d.notified_at = res.getTimestamp("notified_at") != null ? res.getTimestamp("notified_at").getTime() / 1000 : null;
                         d.created_at = res.getTimestamp("created_at").getTime() / 1000;
                         d.updated_at = res.getTimestamp("updated_at").getTime() / 1000;
                         this.data.add(d);
@@ -192,8 +231,13 @@ public class Historyjao {
         public String message;
         public boolean disabled;
         public boolean notify;
+        public Long notified_at;
         public long created_at;
         public long updated_at;
+
+        public Date getNotifiedAt() {
+            return new Date(updated_at * 1000);
+        }
 
         public Date getCreatedAt() {
             return new Date(created_at * 1000);

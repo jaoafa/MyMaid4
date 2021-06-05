@@ -33,7 +33,6 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
     }
 
     static Map<String, AntiCommand> antiCommandMap = new HashMap<>();
-    static String[] LeastOne = new String[]{"distance", "type", "team", "name"};
 
     static {
         antiCommandMap.put("/kill", new AntiCmd_Kill());
@@ -122,6 +121,7 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
                 player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
                 event.setCancelled(true);
                 MyMaidLibrary.checkSpam(player);
+                autoHistoryAdd(player, "killコマンドの実行", "(" + String.join(" ", args) + ")");
                 return;
             }
             if (args[1].equalsIgnoreCase("@a")) {
@@ -132,6 +132,7 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
                 player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
                 event.setCancelled(true);
                 MyMaidLibrary.checkSpam(player);
+                autoHistoryAdd(player, "killコマンドの実行", "(" + String.join(" ", args) + ")");
                 return;
             }
             if (args[1].startsWith("@e") && !MyMaidLibrary.isAMR(player)) {
@@ -142,6 +143,7 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
                 player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
                 event.setCancelled(true);
                 MyMaidLibrary.checkSpam(player);
+                autoHistoryAdd(player, "killコマンドの実行", "(" + String.join(" ", args) + ")");
                 return;
             }
             if (!MyMaidLibrary.isAMR(player)) {
@@ -156,6 +158,7 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
                 player.setHealth(0);
                 event.setCancelled(true);
                 MyMaidLibrary.checkSpam(player);
+                autoHistoryAdd(player, "killコマンドの実行", "(" + String.join(" ", args) + ")");
                 return;
             }
             if (args[1].startsWith("@e")) {
@@ -186,6 +189,7 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
             player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             checkSpam(player);
             event.setCancelled(true);
+            autoHistoryAdd(player, "pex promoteコマンドの実行", "(" + String.join(" ", args) + ")");
         }
     }
 
@@ -196,6 +200,7 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
             player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             checkSpam(player);
             event.setCancelled(true);
+            autoHistoryAdd(player, "calcコマンドの実行", "(" + String.join(" ", args) + ")");
         }
     }
 
@@ -206,6 +211,7 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
             player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             checkSpam(player);
             event.setCancelled(true);
+            autoHistoryAdd(player, "evalコマンドの実行", "(" + String.join(" ", args) + ")");
         }
     }
 
@@ -216,6 +222,7 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
             player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             checkSpam(player);
             event.setCancelled(true);
+            autoHistoryAdd(player, "godコマンドの実行", "(" + String.join(" ", args) + ")");
         }
     }
 
@@ -232,6 +239,7 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
             player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             checkSpam(player);
             event.setCancelled(true);
+            autoHistoryAdd(player, "pluginsコマンドの実行", "(" + String.join(" ", args) + ")");
         }
     }
 
@@ -251,6 +259,7 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
             player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             checkSpam(player);
             event.setCancelled(true);
+            autoHistoryAdd(player, "reloadコマンドの実行", "(" + String.join(" ", args) + ")");
         }
     }
 
@@ -278,6 +287,7 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
             player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             checkSpam(player);
             event.setCancelled(true);
+            autoHistoryAdd(player, "banコマンドの実行", "(" + String.join(" ", args) + ")");
         }
     }
 
@@ -305,6 +315,7 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
             player.setHealth(0.0D);
             checkSpam(player);
             event.setCancelled(true);
+            autoHistoryAdd(player, "kickコマンドの実行", "(" + String.join(" ", args) + ")");
         }
     }
 
@@ -318,6 +329,7 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
             player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             checkSpam(player);
             event.setCancelled(true);
+            autoHistoryAdd(player, "versionコマンドの実行", "(" + String.join(" ", args) + ")");
         }
     }
 
@@ -335,6 +347,7 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
 
             player.kick(Component.translatable("multiplayer.disconnect.server_shutdown"));
             event.setCancelled(true);
+            autoHistoryAdd(player, "stopコマンドの実行", "(" + String.join(" ", args) + ")");
         }
     }
 
@@ -351,6 +364,7 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
             player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             checkSpam(player);
             event.setCancelled(true);
+            autoHistoryAdd(player, "advancementコマンドの実行", "(" + String.join(" ", args) + ")");
         }
     }
 
@@ -368,7 +382,14 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
             }
 
             event.setCancelled(true);
+            autoHistoryAdd(player, "loginコマンドの実行", "(" + String.join(" ", args) + ")");
         }
     }
 
+    static void autoHistoryAdd(Player player, String prefix, String details) {
+        if (isAMRV(player)) {
+            return;
+        }
+        Historyjao.getHistoryjao(player).autoAdd(prefix, details);
+    }
 }
