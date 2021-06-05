@@ -130,8 +130,8 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
         Player player = (Player) context.getSender();
         Vector locationArgumentPos1 = context.get("pos1");
         Vector locationArgumentPos2 = context.get("pos2");
-        Location loc1 = new Location(player.getWorld(), locationArgumentPos1.getX() + 0.5, locationArgumentPos1.getY(), locationArgumentPos1.getZ() + 0.5);
-        Location loc2 = new Location(player.getWorld(), locationArgumentPos2.getX() + 0.5, locationArgumentPos2.getY(), locationArgumentPos2.getZ() + 0.5);
+        Location loc1 = new Location(player.getWorld(), locationArgumentPos1.getX() + 0.5, locationArgumentPos1.getY() + 0.1725, locationArgumentPos1.getZ() + 0.5);
+        Location loc2 = new Location(player.getWorld(), locationArgumentPos2.getX() + 0.5, locationArgumentPos2.getY() + 0.0375, locationArgumentPos2.getZ() + 0.5 - 0.2);
 
         if (loc1.distance(loc2) > maxDistance) {
             SendMessage(player, details(), String.format("地点間の距離が%smを超えています。%sm以内で指定してください。", maxDistance, maxDistance));
@@ -163,8 +163,8 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             CuboidRegion cuboidRegion = (CuboidRegion) region;
             BlockVector3 locationArgumentWePos1 = cuboidRegion.getPos1();
             BlockVector3 locationArgumentWePos2 = cuboidRegion.getPos2();
-            Location loc1 = new Location(player.getWorld(), locationArgumentWePos1.getX() + 0.5, locationArgumentWePos1.getY(), locationArgumentWePos1.getZ() + 0.5);
-            Location loc2 = new Location(player.getWorld(), locationArgumentWePos2.getX() + 0.5, locationArgumentWePos2.getY(), locationArgumentWePos2.getZ() + 0.5);
+            Location loc1 = new Location(player.getWorld(), locationArgumentWePos1.getX() + 0.5, locationArgumentWePos1.getY() + 0.1725, locationArgumentWePos1.getZ() + 0.5);
+            Location loc2 = new Location(player.getWorld(), locationArgumentWePos2.getX() + 0.5, locationArgumentWePos2.getY() + 0.0375, locationArgumentWePos2.getZ() + 0.5 - 0.2);
 
             if (loc1.distance(loc2) > maxDistance) {
                 SendMessage(player, details(), String.format("地点間の距離が%smを超えています。%sm以内で指定してください。", maxDistance, maxDistance));
@@ -187,8 +187,8 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             int polyPosY = polyRegion.getMaximumY();
 
             for (int i = 0; i < polylist.size() - 1; i++) {
-                Location loc1 = new Location(player.getWorld(), polylist.get(i).getX() + 0.5, polyPosY, polylist.get(i).getZ() + 0.5);
-                Location loc2 = new Location(player.getWorld(), polylist.get(i + 1).getX() + 0.5, polyPosY, polylist.get(i + 1).getZ() + 0.5);
+                Location loc1 = new Location(player.getWorld(), polylist.get(i).getX() + 0.5, polyPosY + 0.1725, polylist.get(i).getZ() + 0.5);
+                Location loc2 = new Location(player.getWorld(), polylist.get(i + 1).getX() + 0.5, polyPosY + 0.0375, polylist.get(i + 1).getZ() + 0.5 - 0.2);
                 if (loc1.distance(loc2) > maxDistance) {
                     SendMessage(player, details(), String.format("(%s,%s,%s) - (%s,%s,%s) の距離が%smを超えています。",
                         loc1.getBlockX(), loc1.getBlockY(), loc1.getBlockZ(), loc2.getBlockX(), loc2.getBlockY(), loc2.getBlockZ(), maxDistance));
@@ -198,8 +198,8 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             }
 
             for (int i = 0; i < polylist.size() - 1; i++) {
-                Location loc1 = new Location(player.getWorld(), polylist.get(i).getX() + 0.5, polyPosY, polylist.get(i).getZ() + 0.5);
-                Location loc2 = new Location(player.getWorld(), polylist.get(i + 1).getX() + 0.5, polyPosY, polylist.get(i + 1).getZ() + 0.5);
+                Location loc1 = new Location(player.getWorld(), polylist.get(i).getX() + 0.5, polyPosY + 0.1725, polylist.get(i).getZ() + 0.5);
+                Location loc2 = new Location(player.getWorld(), polylist.get(i + 1).getX() + 0.5, polyPosY + 0.0375, polylist.get(i + 1).getZ() + 0.5 - 0.2);
                 summonCount += summonBat(player, loc1, loc2, false);
             }
 
@@ -212,8 +212,8 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
         Player player = (Player) context.getSender();
         Vector locationArgumentPos1 = context.get("pos1");
         Vector locationArgumentPos2 = context.get("pos2");
-        Location loc1 = new Location(player.getWorld(), locationArgumentPos1.getX() + 0.5, locationArgumentPos1.getY(), locationArgumentPos1.getZ() + 0.5);
-        Location loc2 = new Location(player.getWorld(), locationArgumentPos2.getX() + 0.5, locationArgumentPos2.getY(), locationArgumentPos2.getZ() + 0.5);
+        Location loc1 = new Location(player.getWorld(), locationArgumentPos1.getX() + 0.5, locationArgumentPos1.getY() + 0.1725, locationArgumentPos1.getZ() + 0.5);
+        Location loc2 = new Location(player.getWorld(), locationArgumentPos2.getX() + 0.5, locationArgumentPos2.getY() + 0.0375, locationArgumentPos2.getZ() + 0.5 - 0.2);
 
         @NotNull Collection<Entity> loc1entities = loc1.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
         @NotNull Collection<Entity> loc2entities = loc2.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
@@ -249,8 +249,8 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             CuboidRegion cuboidRegion = (CuboidRegion) region;
             BlockVector3 locationArgumentWePos1 = cuboidRegion.getPos1();
             BlockVector3 locationArgumentWePos2 = cuboidRegion.getPos2();
-            Location loc1 = new Location(player.getWorld(), locationArgumentWePos1.getX() + 0.5, locationArgumentWePos1.getY(), locationArgumentWePos1.getZ() + 0.5);
-            Location loc2 = new Location(player.getWorld(), locationArgumentWePos2.getX() + 0.5, locationArgumentWePos2.getY(), locationArgumentWePos2.getZ() + 0.5);
+            Location loc1 = new Location(player.getWorld(), locationArgumentWePos1.getX() + 0.5, locationArgumentWePos1.getY() + 0.1725, locationArgumentWePos1.getZ() + 0.5);
+            Location loc2 = new Location(player.getWorld(), locationArgumentWePos2.getX() + 0.5, locationArgumentWePos2.getY() + 0.0375, locationArgumentWePos2.getZ() + 0.5 - 0.2);
             @NotNull Collection<Entity> loc1entities = loc1.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
             @NotNull Collection<Entity> loc2entities = loc2.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
 
@@ -275,8 +275,8 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             int wireRemoveCount = 0;
 
             for (int i = 0; i < polylist.size() - 1; i++) {
-                Location loc1 = new Location(player.getWorld(), polylist.get(i).getX() + 0.5, polyPosY, polylist.get(i).getZ() + 0.5);
-                Location loc2 = new Location(player.getWorld(), polylist.get(i + 1).getX() + 0.5, polyPosY, polylist.get(i + 1).getZ() + 0.5);
+                Location loc1 = new Location(player.getWorld(), polylist.get(i).getX() + 0.5, polyPosY + 0.1725, polylist.get(i).getZ() + 0.5);
+                Location loc2 = new Location(player.getWorld(), polylist.get(i + 1).getX() + 0.5, polyPosY + 0.0375, polylist.get(i + 1).getZ() + 0.5 - 0.2);
                 @NotNull Collection<Entity> loc1entities = loc1.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
                 @NotNull Collection<Entity> loc2entities = loc2.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
 
