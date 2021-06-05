@@ -218,12 +218,8 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
         @NotNull Collection<Entity> loc1entities = loc1.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
         @NotNull Collection<Entity> loc2entities = loc2.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
 
-        int wireRemoveCount = removeBat(loc1entities, loc2entities);
-        if (wireRemoveCount > 0) {
-            SendMessage(player, details(), String.format("指定した座標間のリード%s本を撤去しました。", wireRemoveCount));
-        } else {
-            SendMessage(player, details(), "指定した座標間のリードを撤去できませんでした。");
-        }
+        removeBat(loc1entities, loc2entities);
+        SendMessage(player, details(), "指定した座標間のリードを撤去する操作を行いました。実際には撤去されていないことがあります。");
     }
 
     void delWireWe(CommandContext<CommandSender> context) {
@@ -254,12 +250,8 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             @NotNull Collection<Entity> loc1entities = loc1.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
             @NotNull Collection<Entity> loc2entities = loc2.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
 
-            int wireRemoveCount = removeBat(loc1entities, loc2entities);
-            if (wireRemoveCount > 0) {
-                SendMessage(player, details(), String.format("指定した座標間のリード%s本を撤去しました。", wireRemoveCount));
-            } else {
-                SendMessage(player, details(), "指定した座標間のリードを撤去できませんでした。");
-            }
+            removeBat(loc1entities, loc2entities);
+            SendMessage(player, details(), "指定した座標間のリードを撤去する操作を行いました。実際には撤去されていないことがあります。");
 
         } else if (region instanceof Polygonal2DRegion) {
 
@@ -280,19 +272,13 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
                 @NotNull Collection<Entity> loc1entities = loc1.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
                 @NotNull Collection<Entity> loc2entities = loc2.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
 
-                wireRemoveCount += removeBat(loc1entities, loc2entities);
+                removeBat(loc1entities, loc2entities);
             }
-            if (wireRemoveCount > 0) {
-                SendMessage(player, details(), String.format("指定した座標間のリード%s本を撤去しました。", wireRemoveCount));
-            } else {
-                SendMessage(player, details(), "指定した座標間のリードを撤去できませんでした。");
-            }
+            SendMessage(player, details(), "指定した座標間のリードを撤去する操作を行いました。実際には撤去されていないことがあります。");
         }
     }
 
-    int removeBat(Collection<Entity> locAentities, Collection<Entity> locBentities) {
-
-        int removeCount = 0;
+    void removeBat(Collection<Entity> locAentities, Collection<Entity> locBentities) {
 
         for (Entity locAe : locAentities) {
             if (locAe.getType() != BAT || !(locAe.getScoreboardTags().contains("CmdWire1") || locAe.getScoreboardTags().contains("CmdWire2"))) {
@@ -302,21 +288,16 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
                 if (locBe.getType() != BAT || !(locBe.getScoreboardTags().contains("CmdWire1") || locBe.getScoreboardTags().contains("CmdWire2"))) {
                     continue;
                 }
-
                 if (((LivingEntity) locAe).isLeashed() && ((LivingEntity) locAe).getLeashHolder() == locBe) {
                     locAe.remove();
                     locBe.remove();
-                    removeCount++;
                 }
-
                 if (((LivingEntity) locBe).isLeashed() && ((LivingEntity) locBe).getLeashHolder() == locAe) {
                     locAe.remove();
                     locBe.remove();
-                    removeCount++;
                 }
             }
         }
-        return removeCount;
     }
 
     int summonBat(Player player, Location loc1, Location loc2, boolean isNotify) {
