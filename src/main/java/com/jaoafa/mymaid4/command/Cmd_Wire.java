@@ -87,7 +87,7 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             builder
                 .meta(CommandMeta.DESCRIPTION, "WorldEditで選択した地点間にリードを張ります。3地点以上を選択した場合、1-2,2-3,3-4地点間のようにリードが張られますが、選択した地点は全て同じ高さである必要があります。")
                 .senderType(Player.class)
-                .literal("setwe", "addwe", "connectwe", "we")
+                .literal("setwe", "addwe", "connectwe")
                 .handler(this::setWireWe)
                 .build(),
 
@@ -295,11 +295,11 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
         int removeCount = 0;
 
         for (Entity locAe : locAentities) {
-            if (!(locAe.getType() == BAT && locAe.getScoreboardTags().contains("wireUnit"))) {
+            if (locAe.getType() != BAT || !(locAe.getScoreboardTags().contains("CmdWire1") || locAe.getScoreboardTags().contains("CmdWire2"))) {
                 continue;
             }
             for (Entity locBe : locBentities) {
-                if (!(locBe.getType() == BAT && locBe.getScoreboardTags().contains("wireUnit"))) {
+                if (locBe.getType() != BAT || !(locBe.getScoreboardTags().contains("CmdWire1") || locBe.getScoreboardTags().contains("CmdWire2"))) {
                     continue;
                 }
 
@@ -308,17 +308,7 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
                     locBe.remove();
                     removeCount++;
                 }
-            }
-        }
 
-        for (Entity locBe : locBentities) {
-            if (!(locBe.getType() == BAT && locBe.getScoreboardTags().contains("wireUnit"))) {
-                continue;
-            }
-            for (Entity locAe : locAentities) {
-                if (!(locAe.getType() == BAT && locAe.getScoreboardTags().contains("wireUnit"))) {
-                    continue;
-                }
                 if (((LivingEntity) locBe).isLeashed() && ((LivingEntity) locBe).getLeashHolder() == locAe) {
                     locAe.remove();
                     locBe.remove();
@@ -341,7 +331,7 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             batnbt1.setRemoveWhenFarAway(false);
             batnbt1.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, true, false, true));
             batnbt1.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200, 1, true, false, true)); //確認用
-            batnbt1.addScoreboardTag("wireUnit");
+            batnbt1.addScoreboardTag("CmdWire1");
         });
 
         LivingEntity bat2 = player.getWorld().spawn(loc2, Bat.class, batnbt2 -> {
@@ -352,7 +342,7 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             batnbt2.setRemoveWhenFarAway(false);
             batnbt2.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, true, false, true));
             batnbt2.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200, 1, true, false, true)); //確認用
-            batnbt2.addScoreboardTag("wireUnit");
+            batnbt2.addScoreboardTag("CmdWire2");
         });
 
         boolean bool = bat2.setLeashHolder(bat1);

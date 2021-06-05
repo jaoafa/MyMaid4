@@ -33,9 +33,10 @@ public class Event_AntiDisableInvisibilityWire extends MyMaidLibrary implements 
         // エフェクトが発生したMOBのエンティティを取得する
         Entity ent = event.getEntity();
 
-        if (ent.getType() != EntityType.BAT || !(ent.getScoreboardTags().contains("wireUnit")) ||
+        if (ent.getType() != EntityType.BAT ||
             event.getCause() != EntityPotionEffectEvent.Cause.valueOf("EXPIRATION") ||
-            event.getModifiedType() != PotionEffectType.getByName("INVISIBILITY")) {
+            event.getModifiedType() != PotionEffectType.getByName("INVISIBILITY") ||
+            !(ent.getScoreboardTags().contains("CmdWire1")) || !(ent.getScoreboardTags().contains("CmdWire2"))) {
             return;
         }
         LivingEntity livent = (LivingEntity) ent;

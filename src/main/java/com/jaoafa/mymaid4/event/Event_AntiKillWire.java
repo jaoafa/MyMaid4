@@ -31,12 +31,14 @@ public class Event_AntiKillWire extends MyMaidLibrary implements Listener, Event
         // キルされたMOBのエンティティを取得する
         Entity ent = event.getEntity();
 
-        if (ent.getType() != EntityType.BAT || !(ent.getScoreboardTags().contains("wireUnit")) || event.getEntity().getKiller() == null) {
+        if (ent.getType() != EntityType.BAT ||
+            event.getEntity().getKiller() == null ||
+            !(ent.getScoreboardTags().contains("CmdWire1") || ent.getScoreboardTags().contains("CmdWire2"))) {
             return;
         }
         event.setCancelled(true);
         if (event.getEntity().getKiller() != null) {
-            event.getEntity().getKiller().sendMessage("[AntiKillWire] " + ChatColor.GREEN + "これは特別天然記念物のワイヤーユニットコウモリです。キルする必要がある場合はwireコマンドのdelまたはdelweを使用してください。");
+            event.getEntity().getKiller().sendMessage("[AntiKillWire] " + ChatColor.GREEN + "これは特別天然記念物のワイヤーコウモリです。キルする場合はwireコマンドのdelまたはdelweを使用してください。");
         }
     }
 }
