@@ -1,6 +1,6 @@
 # MyMaid4
 
-このプロジェクトは、[jao Minecraft Server](https://jaoafa.com) で導入されている PaperMC プラグイン「MyMaid4」のソースコード公開場所です。
+[jao Minecraft Server](https://jaoafa.com) で導入されている PaperMC プラグイン「MyMaid4」のプロジェクトリポジトリです。
 
 [jaoafa/MyMaid](https://github.com/jaoafa/MyMaid)・[jaoafa/MyMaid2](https://github.com/jaoafa/MyMaid2)・[jaoafa/MyMaid3](https://github.com/jaoafa/MyMaid3)の後継です。
 
