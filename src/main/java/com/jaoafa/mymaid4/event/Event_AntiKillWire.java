@@ -20,7 +20,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-public class Event_AntiKillWireUnit extends MyMaidLibrary implements Listener, EventPremise {
+public class Event_AntiKillWire extends MyMaidLibrary implements Listener, EventPremise {
     @Override
     public String description() {
         return "wireコマンドで出現させたコウモリのキルを無効化します。";
@@ -31,13 +31,14 @@ public class Event_AntiKillWireUnit extends MyMaidLibrary implements Listener, E
         // キルされたMOBのエンティティを取得する
         Entity ent = event.getEntity();
 
-        if (ent.getType() != EntityType.BAT || !(ent.getScoreboardTags().contains("wireUnit")) || event.getEntity().getKiller() == null) {
-            return;
-        }
+        if (ent.getType() != EntityType.BAT) return; // コウモリではない
+        if (event.getEntity().getKiller() == null) return; // エンティティの殺害者がいない = プレイヤーやエンティティがキルしたわけではない = コマンド等でキルされた場合
+        if (!ent.getScoreboardTags().contains("CmdWire1") && !ent.getScoreboardTags().contains("CmdWire2"))
+            return; // CmdWire1とCmdWire2、どちらのタグもついてない
+
         event.setCancelled(true);
         if (event.getEntity().getKiller() != null) {
-            event.getEntity().getKiller().sendMessage("[AntiKillWireUnit] " + ChatColor.GREEN + "これは特別天然記念物のワイヤーユニットコウモリです。特殊な操作をしなければ殺すことはできません。ご協力をお願いします。" +
-                "ちなみに特別な操作っていうのは、今後実装する予定の/wire delweみたいなコマンドのことを言いたいんだけど、今その機能ないから適当にkillコマンドでkillしてね。delwe実装したらkillコマンドもそのうちできなくなります！ｗ");
+            event.getEntity().getKiller().sendMessage("[AntiKillWire] " + ChatColor.GREEN + "これは特別天然記念物のワイヤーコウモリです。キルする場合はwireコマンドのdelまたはdelweを使用してください。");
         }
     }
 }

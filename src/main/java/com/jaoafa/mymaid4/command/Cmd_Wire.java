@@ -31,10 +31,7 @@ import com.sk89q.worldedit.world.World;
 import io.leangen.geantyref.TypeToken;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Bat;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -45,7 +42,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.jaoafa.mymaid4.Main.getWorldEdit;
-import static org.bukkit.entity.EntityType.BAT;
 
 public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
     @Override
@@ -87,7 +83,7 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             builder
                 .meta(CommandMeta.DESCRIPTION, "WorldEditで選択した地点間にリードを張ります。3地点以上を選択した場合、1-2,2-3,3-4地点間のようにリードが張られますが、選択した地点は全て同じ高さである必要があります。")
                 .senderType(Player.class)
-                .literal("setwe", "addwe", "connectwe", "we")
+                .literal("setwe", "addwe", "connectwe")
                 .handler(this::setWireWe)
                 .build(),
 
@@ -130,8 +126,8 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
         Player player = (Player) context.getSender();
         Vector locationArgumentPos1 = context.get("pos1");
         Vector locationArgumentPos2 = context.get("pos2");
-        Location loc1 = new Location(player.getWorld(), locationArgumentPos1.getX() + 0.5, locationArgumentPos1.getY(), locationArgumentPos1.getZ() + 0.5);
-        Location loc2 = new Location(player.getWorld(), locationArgumentPos2.getX() + 0.5, locationArgumentPos2.getY(), locationArgumentPos2.getZ() + 0.5);
+        Location loc1 = new Location(player.getWorld(), locationArgumentPos1.getX() + 0.5, locationArgumentPos1.getY() + 0.1725, locationArgumentPos1.getZ() + 0.5);
+        Location loc2 = new Location(player.getWorld(), locationArgumentPos2.getX() + 0.5, locationArgumentPos2.getY() + 0.0375, locationArgumentPos2.getZ() + 0.5 - 0.2);
 
         if (loc1.distance(loc2) > maxDistance) {
             SendMessage(player, details(), String.format("地点間の距離が%smを超えています。%sm以内で指定してください。", maxDistance, maxDistance));
@@ -163,8 +159,8 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             CuboidRegion cuboidRegion = (CuboidRegion) region;
             BlockVector3 locationArgumentWePos1 = cuboidRegion.getPos1();
             BlockVector3 locationArgumentWePos2 = cuboidRegion.getPos2();
-            Location loc1 = new Location(player.getWorld(), locationArgumentWePos1.getX() + 0.5, locationArgumentWePos1.getY(), locationArgumentWePos1.getZ() + 0.5);
-            Location loc2 = new Location(player.getWorld(), locationArgumentWePos2.getX() + 0.5, locationArgumentWePos2.getY(), locationArgumentWePos2.getZ() + 0.5);
+            Location loc1 = new Location(player.getWorld(), locationArgumentWePos1.getX() + 0.5, locationArgumentWePos1.getY() + 0.1725, locationArgumentWePos1.getZ() + 0.5);
+            Location loc2 = new Location(player.getWorld(), locationArgumentWePos2.getX() + 0.5, locationArgumentWePos2.getY() + 0.0375, locationArgumentWePos2.getZ() + 0.5 - 0.2);
 
             if (loc1.distance(loc2) > maxDistance) {
                 SendMessage(player, details(), String.format("地点間の距離が%smを超えています。%sm以内で指定してください。", maxDistance, maxDistance));
@@ -187,8 +183,8 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             int polyPosY = polyRegion.getMaximumY();
 
             for (int i = 0; i < polylist.size() - 1; i++) {
-                Location loc1 = new Location(player.getWorld(), polylist.get(i).getX() + 0.5, polyPosY, polylist.get(i).getZ() + 0.5);
-                Location loc2 = new Location(player.getWorld(), polylist.get(i + 1).getX() + 0.5, polyPosY, polylist.get(i + 1).getZ() + 0.5);
+                Location loc1 = new Location(player.getWorld(), polylist.get(i).getX() + 0.5, polyPosY + 0.1725, polylist.get(i).getZ() + 0.5);
+                Location loc2 = new Location(player.getWorld(), polylist.get(i + 1).getX() + 0.5, polyPosY + 0.0375, polylist.get(i + 1).getZ() + 0.5 - 0.2);
                 if (loc1.distance(loc2) > maxDistance) {
                     SendMessage(player, details(), String.format("(%s,%s,%s) - (%s,%s,%s) の距離が%smを超えています。",
                         loc1.getBlockX(), loc1.getBlockY(), loc1.getBlockZ(), loc2.getBlockX(), loc2.getBlockY(), loc2.getBlockZ(), maxDistance));
@@ -198,8 +194,8 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             }
 
             for (int i = 0; i < polylist.size() - 1; i++) {
-                Location loc1 = new Location(player.getWorld(), polylist.get(i).getX() + 0.5, polyPosY, polylist.get(i).getZ() + 0.5);
-                Location loc2 = new Location(player.getWorld(), polylist.get(i + 1).getX() + 0.5, polyPosY, polylist.get(i + 1).getZ() + 0.5);
+                Location loc1 = new Location(player.getWorld(), polylist.get(i).getX() + 0.5, polyPosY + 0.1725, polylist.get(i).getZ() + 0.5);
+                Location loc2 = new Location(player.getWorld(), polylist.get(i + 1).getX() + 0.5, polyPosY + 0.0375, polylist.get(i + 1).getZ() + 0.5 - 0.2);
                 summonCount += summonBat(player, loc1, loc2, false);
             }
 
@@ -212,18 +208,14 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
         Player player = (Player) context.getSender();
         Vector locationArgumentPos1 = context.get("pos1");
         Vector locationArgumentPos2 = context.get("pos2");
-        Location loc1 = new Location(player.getWorld(), locationArgumentPos1.getX() + 0.5, locationArgumentPos1.getY(), locationArgumentPos1.getZ() + 0.5);
-        Location loc2 = new Location(player.getWorld(), locationArgumentPos2.getX() + 0.5, locationArgumentPos2.getY(), locationArgumentPos2.getZ() + 0.5);
+        Location loc1 = new Location(player.getWorld(), locationArgumentPos1.getX() + 0.5, locationArgumentPos1.getY() + 0.1725, locationArgumentPos1.getZ() + 0.5);
+        Location loc2 = new Location(player.getWorld(), locationArgumentPos2.getX() + 0.5, locationArgumentPos2.getY() + 0.0375, locationArgumentPos2.getZ() + 0.5 - 0.2);
 
         @NotNull Collection<Entity> loc1entities = loc1.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
         @NotNull Collection<Entity> loc2entities = loc2.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
 
-        int wireRemoveCount = removeBat(loc1entities, loc2entities);
-        if (wireRemoveCount > 0) {
-            SendMessage(player, details(), String.format("指定した座標間のリード%s本を撤去しました。", wireRemoveCount));
-        } else {
-            SendMessage(player, details(), "指定した座標間のリードを撤去できませんでした。");
-        }
+        removeBat(loc1entities, loc2entities);
+        SendMessage(player, details(), "指定した座標間のリードを撤去する操作を行いました。実際には撤去されていないことがあります。");
     }
 
     void delWireWe(CommandContext<CommandSender> context) {
@@ -249,17 +241,13 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             CuboidRegion cuboidRegion = (CuboidRegion) region;
             BlockVector3 locationArgumentWePos1 = cuboidRegion.getPos1();
             BlockVector3 locationArgumentWePos2 = cuboidRegion.getPos2();
-            Location loc1 = new Location(player.getWorld(), locationArgumentWePos1.getX() + 0.5, locationArgumentWePos1.getY(), locationArgumentWePos1.getZ() + 0.5);
-            Location loc2 = new Location(player.getWorld(), locationArgumentWePos2.getX() + 0.5, locationArgumentWePos2.getY(), locationArgumentWePos2.getZ() + 0.5);
+            Location loc1 = new Location(player.getWorld(), locationArgumentWePos1.getX() + 0.5, locationArgumentWePos1.getY() + 0.1725, locationArgumentWePos1.getZ() + 0.5);
+            Location loc2 = new Location(player.getWorld(), locationArgumentWePos2.getX() + 0.5, locationArgumentWePos2.getY() + 0.0375, locationArgumentWePos2.getZ() + 0.5 - 0.2);
             @NotNull Collection<Entity> loc1entities = loc1.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
             @NotNull Collection<Entity> loc2entities = loc2.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
 
-            int wireRemoveCount = removeBat(loc1entities, loc2entities);
-            if (wireRemoveCount > 0) {
-                SendMessage(player, details(), String.format("指定した座標間のリード%s本を撤去しました。", wireRemoveCount));
-            } else {
-                SendMessage(player, details(), "指定した座標間のリードを撤去できませんでした。");
-            }
+            removeBat(loc1entities, loc2entities);
+            SendMessage(player, details(), "指定した座標間のリードを撤去する操作を行いました。実際には撤去されていないことがあります。");
 
         } else if (region instanceof Polygonal2DRegion) {
 
@@ -275,58 +263,39 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             int wireRemoveCount = 0;
 
             for (int i = 0; i < polylist.size() - 1; i++) {
-                Location loc1 = new Location(player.getWorld(), polylist.get(i).getX() + 0.5, polyPosY, polylist.get(i).getZ() + 0.5);
-                Location loc2 = new Location(player.getWorld(), polylist.get(i + 1).getX() + 0.5, polyPosY, polylist.get(i + 1).getZ() + 0.5);
+                Location loc1 = new Location(player.getWorld(), polylist.get(i).getX() + 0.5, polyPosY + 0.1725, polylist.get(i).getZ() + 0.5);
+                Location loc2 = new Location(player.getWorld(), polylist.get(i + 1).getX() + 0.5, polyPosY + 0.0375, polylist.get(i + 1).getZ() + 0.5 - 0.2);
                 @NotNull Collection<Entity> loc1entities = loc1.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
                 @NotNull Collection<Entity> loc2entities = loc2.getNearbyEntities(searchBatRadius, searchBatRadius, searchBatRadius);
 
-                wireRemoveCount += removeBat(loc1entities, loc2entities);
+                removeBat(loc1entities, loc2entities);
             }
-            if (wireRemoveCount > 0) {
-                SendMessage(player, details(), String.format("指定した座標間のリード%s本を撤去しました。", wireRemoveCount));
-            } else {
-                SendMessage(player, details(), "指定した座標間のリードを撤去できませんでした。");
-            }
+            SendMessage(player, details(), "指定した座標間のリードを撤去する操作を行いました。実際には撤去されていないことがあります。");
         }
     }
 
-    int removeBat(Collection<Entity> locAentities, Collection<Entity> locBentities) {
-
-        int removeCount = 0;
+    void removeBat(Collection<Entity> locAentities, Collection<Entity> locBentities) {
 
         for (Entity locAe : locAentities) {
-            if (!(locAe.getType() == BAT && locAe.getScoreboardTags().contains("wireUnit"))) {
-                continue;
-            }
+            if (locAe.getType() != EntityType.BAT) continue; // コウモリではない
+            if (!locAe.getScoreboardTags().contains("CmdWire1") && !locAe.getScoreboardTags().contains("CmdWire2"))
+                continue; // CmdWire1とCmdWire2、どちらのタグもついてない
+
             for (Entity locBe : locBentities) {
-                if (!(locBe.getType() == BAT && locBe.getScoreboardTags().contains("wireUnit"))) {
-                    continue;
-                }
+                if (locBe.getType() != EntityType.BAT) continue; // コウモリではない
+                if (!locBe.getScoreboardTags().contains("CmdWire1") && !locBe.getScoreboardTags().contains("CmdWire2"))
+                    continue; // CmdWire1とCmdWire2、どちらのタグもついてない
 
                 if (((LivingEntity) locAe).isLeashed() && ((LivingEntity) locAe).getLeashHolder() == locBe) {
                     locAe.remove();
                     locBe.remove();
-                    removeCount++;
-                }
-            }
-        }
-
-        for (Entity locBe : locBentities) {
-            if (!(locBe.getType() == BAT && locBe.getScoreboardTags().contains("wireUnit"))) {
-                continue;
-            }
-            for (Entity locAe : locAentities) {
-                if (!(locAe.getType() == BAT && locAe.getScoreboardTags().contains("wireUnit"))) {
-                    continue;
                 }
                 if (((LivingEntity) locBe).isLeashed() && ((LivingEntity) locBe).getLeashHolder() == locAe) {
                     locAe.remove();
                     locBe.remove();
-                    removeCount++;
                 }
             }
         }
-        return removeCount;
     }
 
     int summonBat(Player player, Location loc1, Location loc2, boolean isNotify) {
@@ -341,7 +310,7 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             batnbt1.setRemoveWhenFarAway(false);
             batnbt1.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, true, false, true));
             batnbt1.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200, 1, true, false, true)); //確認用
-            batnbt1.addScoreboardTag("wireUnit");
+            batnbt1.addScoreboardTag("CmdWire1");
         });
 
         LivingEntity bat2 = player.getWorld().spawn(loc2, Bat.class, batnbt2 -> {
@@ -352,7 +321,7 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             batnbt2.setRemoveWhenFarAway(false);
             batnbt2.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, true, false, true));
             batnbt2.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200, 1, true, false, true)); //確認用
-            batnbt2.addScoreboardTag("wireUnit");
+            batnbt2.addScoreboardTag("CmdWire2");
         });
 
         boolean bool = bat2.setLeashHolder(bat1);
