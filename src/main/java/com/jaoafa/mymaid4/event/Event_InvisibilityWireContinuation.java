@@ -33,12 +33,12 @@ public class Event_InvisibilityWireContinuation extends MyMaidLibrary implements
         // エフェクトが発生したMOBのエンティティを取得する
         Entity ent = event.getEntity();
 
-        if (ent.getType() != EntityType.BAT ||
-            event.getCause() != EntityPotionEffectEvent.Cause.EXPIRATION ||
-            event.getModifiedType() != PotionEffectType.getByName("INVISIBILITY") ||
-            !(ent.getScoreboardTags().contains("CmdWire1") || ent.getScoreboardTags().contains("CmdWire2"))) {
-            return;
-        }
+        if (ent.getType() != EntityType.BAT) return; // コウモリではない
+        if (event.getCause() != EntityPotionEffectEvent.Cause.EXPIRATION) return; // 効果時間切れ原因ではない
+        if (!event.getModifiedType().equals(PotionEffectType.INVISIBILITY)) return; // 発生したエフェクトが透明化エフェクトではない
+        if (!ent.getScoreboardTags().contains("CmdWire1") && !ent.getScoreboardTags().contains("CmdWire2"))
+            return; // CmdWire1とCmdWire2、どちらのタグもついてない
+
         LivingEntity livent = (LivingEntity) ent;
         livent.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, true, false, true));
     }

@@ -31,10 +31,7 @@ import com.sk89q.worldedit.world.World;
 import io.leangen.geantyref.TypeToken;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Bat;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -45,7 +42,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.jaoafa.mymaid4.Main.getWorldEdit;
-import static org.bukkit.entity.EntityType.BAT;
 
 public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
     @Override
@@ -281,13 +277,15 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
     void removeBat(Collection<Entity> locAentities, Collection<Entity> locBentities) {
 
         for (Entity locAe : locAentities) {
-            if (locAe.getType() != BAT || !(locAe.getScoreboardTags().contains("CmdWire1") || locAe.getScoreboardTags().contains("CmdWire2"))) {
-                continue;
-            }
+            if (locAe.getType() != EntityType.BAT) continue; // コウモリではない
+            if (!locAe.getScoreboardTags().contains("CmdWire1") && !locAe.getScoreboardTags().contains("CmdWire2"))
+                continue; // CmdWire1とCmdWire2、どちらのタグもついてない
+
             for (Entity locBe : locBentities) {
-                if (locBe.getType() != BAT || !(locBe.getScoreboardTags().contains("CmdWire1") || locBe.getScoreboardTags().contains("CmdWire2"))) {
-                    continue;
-                }
+                if (locBe.getType() != EntityType.BAT) continue; // コウモリではない
+                if (!locBe.getScoreboardTags().contains("CmdWire1") && !locBe.getScoreboardTags().contains("CmdWire2"))
+                    continue; // CmdWire1とCmdWire2、どちらのタグもついてない
+
                 if (((LivingEntity) locAe).isLeashed() && ((LivingEntity) locAe).getLeashHolder() == locBe) {
                     locAe.remove();
                     locBe.remove();
