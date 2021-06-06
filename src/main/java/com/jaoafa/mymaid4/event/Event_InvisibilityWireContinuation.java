@@ -22,21 +22,21 @@ import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class Event_AntiDisableInvisibilityWire extends MyMaidLibrary implements Listener, EventPremise {
+public class Event_InvisibilityWireContinuation extends MyMaidLibrary implements Listener, EventPremise {
     @Override
     public String description() {
         return "wireコマンドで出現させたコウモリの透明化エフェクトが切れた際、再度透明化エフェクトを付与します。";
     }
 
     @EventHandler
-    public void EntityDisableInvisibility(EntityPotionEffectEvent event) {
+    public void InvisibilityWireContinuation(EntityPotionEffectEvent event) {
         // エフェクトが発生したMOBのエンティティを取得する
         Entity ent = event.getEntity();
 
         if (ent.getType() != EntityType.BAT ||
-            event.getCause() != EntityPotionEffectEvent.Cause.valueOf("EXPIRATION") ||
+            event.getCause() != EntityPotionEffectEvent.Cause.EXPIRATION ||
             event.getModifiedType() != PotionEffectType.getByName("INVISIBILITY") ||
-            !(ent.getScoreboardTags().contains("CmdWire1")) || !(ent.getScoreboardTags().contains("CmdWire2"))) {
+            !(ent.getScoreboardTags().contains("CmdWire1") || ent.getScoreboardTags().contains("CmdWire2"))) {
             return;
         }
         LivingEntity livent = (LivingEntity) ent;
