@@ -91,7 +91,7 @@ public class MainTest {
 
                     try {
                         Listener listener = (Listener) instance;
-                        System.out.println("[" + name + "] registrable. (" + listener.toString() + ")");
+                        System.out.println("[" + name + "] registrable. (" + listener + ")");
                     } catch (ClassCastException e) {
                         System.out.printf("%s: ClassCastException%n", clazz.getSimpleName());
                         fail();

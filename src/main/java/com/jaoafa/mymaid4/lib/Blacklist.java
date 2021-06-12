@@ -32,8 +32,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Blacklist {
-    static Map<BlacklistItem, Long> notifySendTime = new HashMap<>();
-    Set<BlacklistItem> items;
+    static final Map<BlacklistItem, Long> notifySendTime = new HashMap<>();
+    final Set<BlacklistItem> items;
 
     public Blacklist() {
         items = new HashSet<>();
@@ -109,7 +109,7 @@ public class Blacklist {
         EQUIP("装備"),
         ACQUIRE("拾得");
 
-        String name;
+        final String name;
 
         BlacklistEvent(String name) {
             this.name = name;

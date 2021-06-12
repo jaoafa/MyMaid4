@@ -19,7 +19,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 public class MCBans {
-    OfflinePlayer offplayer;
+    final OfflinePlayer offplayer;
     boolean isFound = false;
 
     int globalCount = -1;
@@ -32,7 +32,7 @@ public class MCBans {
     public MCBans(OfflinePlayer offplayer) throws IOException {
         this.offplayer = offplayer;
 
-        String url = "https://api.jaoafa.com/users/mcbans/" + offplayer.getUniqueId().toString();
+        String url = "https://api.jaoafa.com/users/mcbans/" + offplayer.getUniqueId();
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).get().build();
         Response response = client.newCall(request).execute();
@@ -110,7 +110,7 @@ public class MCBans {
     }
 
     public static class Ban {
-        int banid;
+        final int banid;
 
         String mcid;
         String banned_by;

@@ -32,7 +32,7 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
         return "迷惑コマンドの制限を行います。";
     }
 
-    static Map<String, AntiCommand> antiCommandMap = new HashMap<>();
+    static final Map<String, AntiCommand> antiCommandMap = new HashMap<>();
 
     static {
         antiCommandMap.put("/kill", new AntiCmd_Kill());
@@ -80,7 +80,7 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
         String[] args = command.split(" ");
         Optional<Map.Entry<String, AntiCommand>> func = antiCommandMap.entrySet().stream().filter(cmd -> cmd.getKey().equalsIgnoreCase(args[0])).findFirst();
 
-        if (!func.isPresent()) {
+        if (func.isEmpty()) {
             return;
         }
 

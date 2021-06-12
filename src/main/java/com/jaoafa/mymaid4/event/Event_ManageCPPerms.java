@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class Event_ManageCPPerms extends MyMaidLibrary implements Listener, EventPremise {
-    static Map<String, String> cpSubCommands = new HashMap<>();
+    static final Map<String, String> cpSubCommands = new HashMap<>();
 
     static {
         // SubArgument : PermissionNode
@@ -86,7 +86,7 @@ public class Event_ManageCPPerms extends MyMaidLibrary implements Listener, Even
             .filter(cmd -> cmd.getKey().equalsIgnoreCase(args[1]))
             .findFirst();
 
-        if (!func.isPresent()) {
+        if (func.isEmpty()) {
             return;
         }
         if (player.hasPermission(func.get().getValue())) {

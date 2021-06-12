@@ -23,8 +23,8 @@ import java.util.Map;
 import java.util.UUID;
 
 public class SelClickManager {
-    static Map<UUID, Boolean> cache = new HashMap<>();
-    static File file = new File(Main.getJavaPlugin().getDataFolder(), "selclick.yml");
+    static final Map<UUID, Boolean> cache = new HashMap<>();
+    static final File file = new File(Main.getJavaPlugin().getDataFolder(), "selclick.yml");
 
     public static boolean isEnable(Player player) {
         if (cache.containsKey(player.getUniqueId())) {

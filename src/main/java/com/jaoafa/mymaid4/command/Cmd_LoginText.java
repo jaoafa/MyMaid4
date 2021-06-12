@@ -19,8 +19,6 @@ import com.jaoafa.mymaid4.lib.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.sql.SQLException;
-
 public class Cmd_LoginText extends MyMaidLibrary implements CommandPremise {
     @Override
     public MyMaidCommand.Detail details() {

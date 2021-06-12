@@ -62,7 +62,7 @@ public class Cmd_Looking extends MyMaidLibrary implements CommandPremise {
     void startNowLooking(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
         Optional<Player> target = player.getWorld().getPlayers().stream().filter(p -> getLookingAt(player, p)).findFirst();
-        if (!target.isPresent()) {
+        if (target.isEmpty()) {
             SendMessage(player, details(), "あなたはどのプレイヤーも見ていません...");
             return;
         }

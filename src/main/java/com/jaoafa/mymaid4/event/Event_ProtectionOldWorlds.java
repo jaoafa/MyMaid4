@@ -33,7 +33,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import java.util.Arrays;
 
 public class Event_ProtectionOldWorlds extends MyMaidLibrary implements Listener, EventPremise {
-    String[] worldNames = new String[]{
+    final String[] worldNames = new String[]{
         "kassi-hp-tk",
         "Jao_Afa_1",
         "Jao_Afa_2",
@@ -45,8 +45,8 @@ public class Event_ProtectionOldWorlds extends MyMaidLibrary implements Listener
         "Summer2018",
         "Summer2020"
     };
-    Material[] ignoreClickCancel = new Material[]{};
-    Material[] ignoreTargetClickCancel = new Material[]{
+    final Material[] ignoreClickCancel = new Material[]{};
+    final Material[] ignoreTargetClickCancel = new Material[]{
         Material.ACACIA_DOOR,
         Material.BIRCH_DOOR,
         Material.DARK_OAK_DOOR,

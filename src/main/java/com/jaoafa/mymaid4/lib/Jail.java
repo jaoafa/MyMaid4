@@ -32,9 +32,9 @@ import java.util.*;
  * Jail Library
  */
 public class Jail {
-    static Map<UUID, Jail> cache = new HashMap<>();
+    static final Map<UUID, Jail> cache = new HashMap<>();
 
-    OfflinePlayer player;
+    final OfflinePlayer player;
 
     /** Jail Id */
     private int id = -1;

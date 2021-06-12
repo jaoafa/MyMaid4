@@ -26,6 +26,7 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class Cmd_Time extends MyMaidLibrary implements CommandPremise {
     @Override
     public MyMaidCommand.Detail details() {
@@ -60,6 +61,7 @@ public class Cmd_Time extends MyMaidLibrary implements CommandPremise {
     void timeSetByName(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
         String timeName = context.get("timeName"); //day or 1000 どれが入ってるかわからない
+        @SuppressWarnings("ConstantConditions")
         boolean isRelative = context.getOrDefault("isRelative", false); //時間固定するかどうか
         int timeInt = 0; //1000とかで指定された場合に代入
         boolean getTimeByNumber; //数値指定かどうか
@@ -100,6 +102,7 @@ public class Cmd_Time extends MyMaidLibrary implements CommandPremise {
     void timeAddByInt(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
         int myTimeInt = context.get("timeInt");
+        @SuppressWarnings("ConstantConditions")
         boolean isRelative = context.getOrDefault("isRelative", false); //時間固定するかどうか
         long myCurrentTime = player.getPlayerTime();
         player.setPlayerTime(myCurrentTime + myTimeInt, isRelative);

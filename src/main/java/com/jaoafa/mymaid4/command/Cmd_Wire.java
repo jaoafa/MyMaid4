@@ -119,8 +119,8 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
         );
     }
 
-    double maxDistance = 128.0;
-    int searchBatRadius = 2;
+    final double maxDistance = 128.0;
+    final int searchBatRadius = 2;
 
     void setWire(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();

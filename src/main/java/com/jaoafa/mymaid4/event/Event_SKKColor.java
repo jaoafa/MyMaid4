@@ -15,6 +15,7 @@ import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import com.jaoafa.mymaid4.lib.SKKColorManager;
 import io.papermc.paper.chat.ChatComposer;
+import io.papermc.paper.chat.ChatRenderer;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -38,7 +39,7 @@ public class Event_SKKColor extends MyMaidLibrary implements Listener, EventPrem
         Player player = event.getPlayer();
 
         // これでいいのだろうか…
-        ChatComposer composer = (_player, displayName, message) ->
+        ChatRenderer renderer = (_player, displayName, message, viewer) ->
             Component.text().append(
                 Component.text("[", NamedTextColor.GRAY),
                 Component.text(sdfTimeFormat(new Date()), NamedTextColor.GRAY),
@@ -47,7 +48,7 @@ public class Event_SKKColor extends MyMaidLibrary implements Listener, EventPrem
                 displayName,
                 Component.text(": "),
                 MyMaidLibrary.replaceComponentURL(message)).build();
-        event.composer(composer);
+        event.renderer(renderer);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

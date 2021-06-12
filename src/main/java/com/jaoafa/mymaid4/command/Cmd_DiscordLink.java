@@ -215,7 +215,7 @@ public class Cmd_DiscordLink extends MyMaidLibrary implements CommandPremise {
         general.sendMessage(
             ":loudspeaker:<@" + disid + ">さんのMinecraftアカウント連携を完了しました！ MinecraftID: `" + player.getName() + "`")
             .queue();
-        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getUniqueId().toString() + " parent set verified");
+        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getUniqueId() + " parent set verified");
 
         Role minecraftConnected = guild.getRoleById(604011598952136853L);
         Role verified = guild.getRoleById(597405176969560064L);

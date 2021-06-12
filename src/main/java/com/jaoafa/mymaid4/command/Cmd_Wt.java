@@ -29,7 +29,7 @@ import java.util.Map;
 
 public class Cmd_Wt extends MyMaidLibrary implements CommandPremise {
 
-    Map<String, String> worlds = new HashMap<String, String>() {
+    final Map<String, String> worlds = new HashMap<>() {
         {
             put("1", "Jao_Afa");
             put("2", "Jao_Afa_nether");

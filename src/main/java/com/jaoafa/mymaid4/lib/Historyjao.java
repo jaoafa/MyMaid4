@@ -20,14 +20,14 @@ import java.util.Date;
 import java.util.*;
 
 public class Historyjao {
-    static Map<UUID, Historyjao> cache = new HashMap<>();
+    static final Map<UUID, Historyjao> cache = new HashMap<>();
 
-    OfflinePlayer player;
+    final OfflinePlayer player;
     String name;
     UUID uuid;
     boolean found = false;
-    boolean notify = true;
-    List<Data> data = new ArrayList<>();
+    final boolean notify = true;
+    final List<Data> data = new ArrayList<>();
 
     long DBSyncTime = -1L;
 

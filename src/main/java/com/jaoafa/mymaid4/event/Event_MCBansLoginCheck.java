@@ -124,8 +124,8 @@ public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener, E
                             Component.newline(),
                             Component.text("Ban type: " + type, NamedTextColor.WHITE),
                             Component.newline(),
-                            Component.text("http://mcbans.com/ban/" + banid, NamedTextColor.WHITE)
-                                .clickEvent(ClickEvent.openUrl("http://mcbans.com/ban/" + banid))
+                            Component.text("https://mcbans.com/ban/" + banid, NamedTextColor.WHITE)
+                                .clickEvent(ClickEvent.openUrl("https://mcbans.com/ban/" + banid))
                         ).build();
                         event.disallow(Result.KICK_BANNED, component);
                     }

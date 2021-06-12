@@ -180,7 +180,7 @@ public class Event_TeleportCmd extends MyMaidLibrary implements Listener, EventP
                 Optional<TeleportCommandEvent.FacingAnchor> facingAnchor = Arrays.stream(TeleportCommandEvent.FacingAnchor.values())
                     .filter(s -> s.name().equalsIgnoreCase(args[8]))
                     .findFirst();
-                if (!facingAnchor.isPresent()) return;
+                if (facingAnchor.isEmpty()) return;
 
                 TeleportCommandEvent tpCmdEvent = new TeleportCommandEvent(sender, fromPlayer, loc, facingPlayer, facingAnchor.get());
                 Bukkit.getServer().getPluginManager().callEvent(tpCmdEvent);
@@ -301,7 +301,7 @@ public class Event_TeleportCmd extends MyMaidLibrary implements Listener, EventP
                 Optional<TeleportCommandEvent.FacingAnchor> facingAnchor = Arrays.stream(TeleportCommandEvent.FacingAnchor.values())
                     .filter(s -> s.name().equalsIgnoreCase(args[8]))
                     .findFirst();
-                if (!facingAnchor.isPresent()) return;
+                if (facingAnchor.isEmpty()) return;
 
                 TeleportCommandEvent tpCmdEvent = new TeleportCommandEvent(sender, fromPlayer, loc, facingPlayer, facingAnchor.get());
                 Bukkit.getServer().getPluginManager().callEvent(tpCmdEvent);

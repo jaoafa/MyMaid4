@@ -116,7 +116,7 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
             SendMessage(player, details(), "ページ数は1以上の数字を指定してください。");
             return;
         }
-        int visualPagenum = 0;
+        int visualPagenum;
         try {
             visualPagenum = pagenumInt;
         } catch (NumberFormatException e) {
@@ -187,12 +187,11 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
         int homenameLength = homename.length();
         if (homenameLength >= 8) {
             homename = homename.substring(0, 5) + "...";
-            return homename;
         } else {
             for (int count = 0; count < 8 - homenameLength; count++) {
                 homename = homename + " ";
             }
-            return homename;
         }
+        return homename;
     }
 }

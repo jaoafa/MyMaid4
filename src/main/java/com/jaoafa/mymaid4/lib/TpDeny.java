@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class TpDeny {
-    Player player;
+    final Player player;
 
     public TpDeny(Player player) {
         this.player = player;

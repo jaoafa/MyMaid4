@@ -29,9 +29,9 @@ import java.util.*;
  * ChatBan Library
  */
 public class ChatBan {
-    static Map<UUID, ChatBan> cache = new HashMap<>();
+    static final Map<UUID, ChatBan> cache = new HashMap<>();
 
-    OfflinePlayer player;
+    final OfflinePlayer player;
 
     /** ChatBan Id */
     private int id = -1;

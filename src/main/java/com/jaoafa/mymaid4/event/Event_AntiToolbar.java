@@ -42,9 +42,9 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
         return "ツールバーの利用を制限します。";
     }
 
-    Pattern damagePattern = Pattern.compile("\\{Damage:[0-9]+}");
+    final Pattern damagePattern = Pattern.compile("\\{Damage:[0-9]+}");
 
-    Map<UUID, ItemStack> pickupItems = new HashMap<>();
+    final Map<UUID, ItemStack> pickupItems = new HashMap<>();
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryCreative(InventoryCreativeEvent event) {

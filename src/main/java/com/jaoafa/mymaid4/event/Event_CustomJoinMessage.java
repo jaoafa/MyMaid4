@@ -32,7 +32,7 @@ public class Event_CustomJoinMessage extends MyMaidLibrary implements Listener, 
         return "独自のログインメッセージを表示するように制御します。";
     }
 
-    static List<String> JoinMessages = Arrays.asList(
+    static final List<String> JoinMessages = Arrays.asList(
         "the New Generation", "- Super", "Hyper", "Ultra", "Extreme", "Insane", "Gigantic", "Epic", "Amazing", "Beautiful",
         "Special", "Swag", "Lunatic", "Exotic", "God", "Hell", "Heaven", "Mega", "Giga", "Tera", "Refined", "Sharp",
         "Strong", "Muscle", "Macho", "Bomber", "Blazing", "Frozen", "Legendary", "Mystical", "Tactical", "Critical",

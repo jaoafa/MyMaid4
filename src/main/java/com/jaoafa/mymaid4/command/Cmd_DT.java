@@ -166,7 +166,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
             .filter(marker -> marker.getLabel().equals(markerName))
             .findFirst();
 
-        if (!matchedMarker.isPresent()) {
+        if (matchedMarker.isEmpty()) {
             SendMessage(sender, details(), "指定されたマーカー名のマーカーは見つかりませんでした。");
             Optional<Marker> perhapsMarker = markers.stream()
                 .filter(marker -> marker.getLabel().equalsIgnoreCase(markerName))
@@ -232,7 +232,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
             .filter(m -> m.getLabel().equals(markerName))
             .findFirst();
 
-        if (!_marker.isPresent()) {
+        if (_marker.isEmpty()) {
             SendMessage(player, details(), "指定されたマーカーは見つかりませんでした。");
             return;
         }
@@ -278,7 +278,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
                 double distance2 = new Location(Bukkit.getWorld(e2.getWorld()), e2.getX(), e2.getY(), e2.getZ()).distance(loc);
                 return (int) (distance1 - distance2);
             });
-        if (!marker.isPresent()) {
+        if (marker.isEmpty()) {
             SendMessage(player, details(), "ワールドにマーカーがひとつもありませんでした。");
             return;
         }
@@ -307,7 +307,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
                 double distance2 = new Location(Bukkit.getWorld(e2.getWorld()), e2.getX(), e2.getY(), e2.getZ()).distance(loc);
                 return (int) (distance1 - distance2);
             });
-        if (!marker.isPresent()) {
+        if (marker.isEmpty()) {
             SendMessage(player, details(), "ワールドにマーカーがひとつもありませんでした。");
             return;
         }

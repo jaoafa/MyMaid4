@@ -64,10 +64,9 @@ public class Cmd_Weather extends MyMaidLibrary implements CommandPremise {
     }
 
     List<String> suggestWeatherName(final CommandContext<CommandSender> context, final String current) {
-        List<String> list = new ArrayList<>();
-        list.addAll(Arrays.stream(WeatherType.values())
+        List<String> list = Arrays.stream(WeatherType.values())
             .map(Enum::name)
-            .collect(Collectors.toList()));
+            .collect(Collectors.toList());
 
         return list.stream()
             .filter(s -> s.toLowerCase().startsWith(current.toLowerCase()))

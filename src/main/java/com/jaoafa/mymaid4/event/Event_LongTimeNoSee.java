@@ -51,7 +51,7 @@ public class Event_LongTimeNoSee extends MyMaidLibrary implements Listener, Even
             }
 
             String last_str = res.getString("ts");
-            long last = new Long(last_str);
+            long last = Long.parseLong(last_str);
             long now = System.currentTimeMillis() / 1000L;
             long sa = now - last;
             Main.getMyMaidLogger().info(MessageFormat.format("[LongTimeNoSee] {0}: {1}s (LAST: {2} / NOW: {3})",
