@@ -141,7 +141,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
 
         // /dt <Marker>
         // /dt <Player> <Marker>
-        if (!isEnabledPlugin("dynmap")) {
+        if (isDisabledPlugin("dynmap")) {
             SendMessage(sender, details(), "Dynmapプラグインが動作していないため、このコマンドは使用できません。");
             return;
         }
@@ -380,7 +380,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
      * @return サジェストする文字列一覧
      */
     List<String> suggestMarkerNames(final CommandContext<CommandSender> context, final String current) {
-        if (!isEnabledPlugin("dynmap")) {
+        if (isDisabledPlugin("dynmap")) {
             return new ArrayList<>();
         }
         DynmapAPI dynmapAPI = getDynmapAPI();
@@ -403,7 +403,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
      * @return サジェストする文字列一覧
      */
     List<String> suggestMarkerTypes(final CommandContext<CommandSender> context, final String current) {
-        if (!isEnabledPlugin("dynmap")) {
+        if (isDisabledPlugin("dynmap")) {
             return new ArrayList<>();
         }
         DynmapAPI dynmapAPI = getDynmapAPI();
@@ -424,7 +424,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
      * @return サジェストする文字列一覧
      */
     List<String> suggestMarkerIcons(final CommandContext<CommandSender> context, final String current) {
-        if (!isEnabledPlugin("dynmap")) {
+        if (isDisabledPlugin("dynmap")) {
             return new ArrayList<>();
         }
         DynmapAPI dynmapAPI = getDynmapAPI();
