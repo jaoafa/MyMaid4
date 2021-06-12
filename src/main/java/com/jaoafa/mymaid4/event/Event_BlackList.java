@@ -299,7 +299,7 @@ public class Event_BlackList extends MyMaidLibrary implements Listener, EventPre
         Optional<Blacklist.BlacklistItem> optItem = items.stream()
             .filter(blacklistItem -> material == blacklistItem.getMaterial())
             .findFirst();
-        if (!optItem.isPresent()) {
+        if (optItem.isEmpty()) {
             return true;
         }
 

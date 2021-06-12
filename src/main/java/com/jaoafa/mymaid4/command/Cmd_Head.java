@@ -13,7 +13,6 @@ package com.jaoafa.mymaid4.command;
 
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.StringArgument;
-import cloud.commandframework.bukkit.parsers.OfflinePlayerArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
 import com.jaoafa.mymaid4.lib.CommandPremise;
@@ -21,13 +20,13 @@ import com.jaoafa.mymaid4.lib.MyMaidCommand;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.SkullType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.SkullMeta;
+
+import java.util.Objects;
 
 public class Cmd_Head extends MyMaidLibrary implements CommandPremise {
     @Override
@@ -67,7 +66,7 @@ public class Cmd_Head extends MyMaidLibrary implements CommandPremise {
         inv.setItemInMainHand(skull);
         SendMessage(player, details(), "「" + name + "の頭」をメインハンドのアイテムと置きかえました。" );
 
-        if (main != null && main.getType() != Material.AIR) {
+        if (main.getType() != Material.AIR) {
             if (player.getInventory().firstEmpty() == -1) {
                 player.getLocation().getWorld().dropItem(player.getLocation(), main);
                 SendMessage(player, details(), "インベントリがいっぱいだったため、既に持っていたアイテムはあなたの足元にドロップしました。" );
@@ -82,7 +81,8 @@ public class Cmd_Head extends MyMaidLibrary implements CommandPremise {
         String targetPlayer = context.getOrDefault("player", null);
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
-        meta.setOwningPlayer(Bukkit.getOfflinePlayer(targetPlayer));
+        //noinspection deprecation プレイヤー名からOfflinePlayerを得るにはこの方法しかないため
+        meta.setOwningPlayer(Bukkit.getOfflinePlayer(Objects.requireNonNull(targetPlayer)));
         skull.setItemMeta(meta);
         PlayerInventory inv = player.getInventory();
         ItemStack main = inv.getItemInMainHand();
@@ -90,7 +90,7 @@ public class Cmd_Head extends MyMaidLibrary implements CommandPremise {
         inv.setItemInMainHand(skull);
         SendMessage(player, details(), "「" + targetPlayer + "の頭」をメインハンドのアイテムと置きかえました。" );
 
-        if (main != null && main.getType() != Material.AIR) {
+        if (main.getType() != Material.AIR) {
             if (player.getInventory().firstEmpty() == -1) {
                 player.getLocation().getWorld().dropItem(player.getLocation(), main);
                 SendMessage(player, details(), "インベントリがいっぱいだったため、既に持っていたアイテムはあなたの足元にドロップしました。" );

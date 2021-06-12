@@ -74,7 +74,7 @@ public class Cmd_Rider extends MyMaidLibrary implements CommandPremise {
 
         if (target == null) {
             Optional<Player> looking = player.getWorld().getPlayers().stream().filter(p -> getLookingAt(player, p)).findFirst();
-            if (!looking.isPresent()) {
+            if (looking.isEmpty()) {
                 SendMessage(player, details(), "あなたはどのプレイヤーも見ていません...");
                 return;
             }

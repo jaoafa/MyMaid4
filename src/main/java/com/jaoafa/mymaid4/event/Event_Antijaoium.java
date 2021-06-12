@@ -56,8 +56,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPremise {
-    Set<String> sendHashes = new HashSet<>();
-    Map<String, String> Reason = new HashMap<>(); // プレイヤー : 理由
+    final Set<String> sendHashes = new HashSet<>();
+    final Map<String, String> Reason = new HashMap<>(); // プレイヤー : 理由
 
     @Override
     public String description() {

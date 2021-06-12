@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SKKColorManager {
-    static List<NamedTextColor> TextColors = Arrays.asList(
+    static final List<NamedTextColor> TextColors = Arrays.asList(
         NamedTextColor.GRAY,
         NamedTextColor.WHITE,
         NamedTextColor.DARK_BLUE,

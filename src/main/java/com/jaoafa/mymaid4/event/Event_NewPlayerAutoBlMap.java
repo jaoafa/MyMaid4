@@ -39,7 +39,7 @@ public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener,
         return "新規プレイヤーがログアウトした際にブロック編集情報を通知します。";
     }
 
-    Set<UUID> firstLoginer = new HashSet<>();
+    final Set<UUID> firstLoginer = new HashSet<>();
 
     @EventHandler
     public void OnEvent_FirstLogin(PlayerJoinEvent event) {
@@ -62,7 +62,7 @@ public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener,
         new BukkitRunnable() {
             public void run() {
                 firstLoginer.remove(player.getUniqueId());
-                String url = "https://api.jaoafa.com/cities/getblockimg?uuid=" + player.getUniqueId().toString();
+                String url = "https://api.jaoafa.com/cities/getblockimg?uuid=" + player.getUniqueId();
 
                 TextChannel channel = MyMaidData.getJaotanChannel();
                 if (channel == null) {
@@ -77,19 +77,19 @@ public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener,
 
                     Response response = client.newCall(request).execute();
                     if (response.code() != 200 && response.code() != 302) {
-                        System.out.printf("NewPlayerAutoBlMap: APIサーバへの接続に失敗: %d %s\nhttps://jaoafa.com/cp/?uuid=%s%n", response.code(), Objects.requireNonNull(response.body()).string(), player.getUniqueId().toString());
+                        System.out.printf("NewPlayerAutoBlMap: APIサーバへの接続に失敗: %d %s\nhttps://jaoafa.com/cp/?uuid=%s%n", response.code(), Objects.requireNonNull(response.body()).string(), player.getUniqueId());
                         response.close();
                         return;
                     }
                     if (response.body() == null) {
-                        System.out.printf("NewPlayerAutoBlMap: APIサーバへの接続に失敗: response.body() is null.\nhttps://jaoafa.com/cp/?uuid=%s%n", player.getUniqueId().toString());
+                        System.out.printf("NewPlayerAutoBlMap: APIサーバへの接続に失敗: response.body() is null.\nhttps://jaoafa.com/cp/?uuid=%s%n", player.getUniqueId());
                         response.close();
                         return;
                     }
                     System.out.println("NewPlayerAutoBlMap: ブロック編集マップ取得完了");
 
-                    channel.sendFile(response.body().byteStream(), player.getUniqueId().toString() + ".png")
-                        .append(String.format("新規プレイヤー「%s」のブロック編集マップ\nhttps://jaoafa.com/cp/?uuid=%s", player.getName(), player.getUniqueId().toString())).queue(msg -> {
+                    channel.sendFile(response.body().byteStream(), player.getUniqueId() + ".png")
+                        .append(String.format("新規プレイヤー「%s」のブロック編集マップ\nhttps://jaoafa.com/cp/?uuid=%s", player.getName(), player.getUniqueId())).queue(msg -> {
                         System.out.println("NewPlayerAutoBlMap: メッセージ送信完了 (" + msg.getJumpUrl() + ")");
                         response.close();
                     }, failure -> {

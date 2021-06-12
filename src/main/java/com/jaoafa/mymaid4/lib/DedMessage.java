@@ -23,7 +23,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class DedMessage {
-    static Set<Details> cache = new HashSet<>();
+    static final Set<Details> cache = new HashSet<>();
     static long DBSyncTime = -1L;
 
     /**

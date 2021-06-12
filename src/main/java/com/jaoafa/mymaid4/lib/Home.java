@@ -23,8 +23,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Home extends MyMaidLibrary {
-    static Map<UUID, Set<Detail>> homeNames = new HashMap<>();
-    OfflinePlayer player;
+    static final Map<UUID, Set<Detail>> homeNames = new HashMap<>();
+    final OfflinePlayer player;
 
     public Home(OfflinePlayer player) {
         this.player = player;
@@ -210,14 +210,14 @@ public class Home extends MyMaidLibrary {
     }
 
     public static class Detail {
-        public String name;
-        public String worldName;
-        public double x;
-        public double y;
-        public double z;
-        public float yaw;
-        public float pitch;
-        public Timestamp create_at;
+        public final String name;
+        public final String worldName;
+        public final double x;
+        public final double y;
+        public final double z;
+        public final float yaw;
+        public final float pitch;
+        public final Timestamp create_at;
 
         public Detail(String name, String worldName, double x, double y, double z, float yaw, float pitch, Timestamp create_at) {
             this.name = name;

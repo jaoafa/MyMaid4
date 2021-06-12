@@ -22,9 +22,10 @@ import java.time.Instant;
 import java.util.*;
 
 public class PlayerVoteDataMono extends MyMaidLibrary {
-    static Map<UUID, PlayerVoteDataMono> cache = new HashMap<>();
+    static final Map<UUID, PlayerVoteDataMono> cache = new HashMap<>();
 
     @NotNull
+    final
     OfflinePlayer offplayer;
     boolean exists;
     int id = -1;

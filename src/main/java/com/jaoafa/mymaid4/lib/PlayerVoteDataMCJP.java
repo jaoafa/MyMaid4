@@ -24,9 +24,10 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class PlayerVoteDataMCJP extends MyMaidLibrary {
-    static Map<UUID, PlayerVoteDataMCJP> cache = new HashMap<>();
+    static final Map<UUID, PlayerVoteDataMCJP> cache = new HashMap<>();
 
     @NotNull
+    final
     OfflinePlayer offplayer;
     boolean exists;
     int id = -1;

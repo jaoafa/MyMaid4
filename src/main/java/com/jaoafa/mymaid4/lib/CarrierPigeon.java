@@ -27,7 +27,7 @@ import java.util.*;
  * 伝書鳩ちゃん！
  */
 public class CarrierPigeon {
-    File file;
+    final File file;
     List<String> Messages = new LinkedList<>();
     List<String> Speakers = new LinkedList<>();
 

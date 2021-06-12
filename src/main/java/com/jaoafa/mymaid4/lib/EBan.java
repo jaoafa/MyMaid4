@@ -28,9 +28,9 @@ import java.util.*;
  * EBan Library
  */
 public class EBan {
-    static Map<UUID, EBan> cache = new HashMap<>();
+    static final Map<UUID, EBan> cache = new HashMap<>();
 
-    OfflinePlayer player;
+    final OfflinePlayer player;
 
     /** EBan Id */
     private int id = -1;
