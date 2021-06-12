@@ -160,6 +160,9 @@ public class MyMaidLibrary {
      * @return メイン権限グループ名
      */
     public static String getPermissionMainGroup(OfflinePlayer player) {
+        if (!Bukkit.getPluginManager().isPluginEnabled("LuckPerms")) {
+            return null;
+        }
         LuckPerms LPApi = LuckPermsProvider.get();
         User LP_Player = LPApi.getUserManager().getUser(player.getUniqueId());
         if (LP_Player == null) {
@@ -563,9 +566,9 @@ public class MyMaidLibrary {
      *
      * @return プラグインが有効であるか
      */
-    protected boolean isEnabledPlugin(String pluginName) {
+    protected boolean isDisabledPlugin(String pluginName) {
         Plugin plugin = Main.getJavaPlugin().getServer().getPluginManager().getPlugin(pluginName);
-        return plugin != null && plugin.isEnabled();
+        return plugin == null || !plugin.isEnabled();
     }
 
     public static void debug(String message) {
@@ -665,6 +668,7 @@ public class MyMaidLibrary {
                 .clickEvent(ClickEvent.openUrl(url.content()))).build());
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted") // isNotSignは不適切
     public static boolean isSign(Material material) {
         return Arrays.stream(Material.values())
             .filter(m -> m.data == Sign.class || m.data == WallSign.class)

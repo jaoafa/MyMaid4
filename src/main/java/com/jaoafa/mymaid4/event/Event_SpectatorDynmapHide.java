@@ -30,7 +30,7 @@ public class Event_SpectatorDynmapHide extends MyMaidLibrary implements Listener
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onChangedGameMode(PlayerGameModeChangeEvent event) {
-        if (!isEnabledPlugin("dynmap")) {
+        if (isDisabledPlugin("dynmap")) {
             return;
         }
 
