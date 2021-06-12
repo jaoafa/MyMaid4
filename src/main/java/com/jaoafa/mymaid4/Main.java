@@ -31,7 +31,6 @@ import com.jaoafa.mymaid4.tasks.Task_Pigeon;
 import com.jaoafa.mymaid4.tasks.Task_TabList;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import net.dv8tion.jda.api.JDABuilder;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -68,7 +67,6 @@ import java.util.stream.Collectors;
 public final class Main extends JavaPlugin {
     private static Main Main = null;
     private static MyMaidConfig config = null;
-    private BukkitAudiences adventure;
     private MinecraftHelp<CommandSender> minecraftHelp;
 
     @Override
@@ -103,10 +101,6 @@ public final class Main extends JavaPlugin {
                 .forEach(listener -> config.getJDA().getEventManager().unregister(listener));
             config.getJDA().shutdownNow();
         }
-        if (this.adventure != null) {
-            this.adventure.close();
-            this.adventure = null;
-        }
         MyMaidServer.stopServer();
     }
 
@@ -130,10 +124,9 @@ public final class Main extends JavaPlugin {
             return;
         }
 
-        this.adventure = BukkitAudiences.create(this);
         this.minecraftHelp = new MinecraftHelp<>(
             "/mymaidhelp",
-            this.adventure::sender,
+            x -> x,
             manager
         );
 
@@ -210,7 +203,7 @@ public final class Main extends JavaPlugin {
                         .build();
                 }
             )
-            .apply(manager, adventure::sender);
+            .apply(manager, x -> x);
 
         manager.command(
             manager.commandBuilder("mymaidhelp")
