@@ -88,6 +88,10 @@ public class MyMaidLibrary {
     public static void reportError(Class<?> clazz, Throwable e) {
         e.printStackTrace();
 
+        if(Main.getMyMaidConfig().isDevelopmentServer()){
+            return;
+        }
+
         TextChannel reportChannel = MyMaidData.getReportChannel();
         if (reportChannel == null) {
             return;
