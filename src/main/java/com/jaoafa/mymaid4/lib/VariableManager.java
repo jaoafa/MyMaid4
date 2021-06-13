@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VariableManager {
-    Map<String, String> map = new HashMap<>();
+    final Map<String, String> map = new HashMap<>();
 
     public boolean set(String key, String value) {
         map.put(key, value);

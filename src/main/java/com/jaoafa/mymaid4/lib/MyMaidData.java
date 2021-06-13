@@ -15,7 +15,6 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import javax.annotation.Nullable;

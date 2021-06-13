@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Cmd_VarCmd extends MyMaidLibrary implements CommandPremise {
-    Pattern pattern = Pattern.compile("\\$([a-zA-Z][a-zA-Z0-9_.]{2,})\\$");
+    final Pattern pattern = Pattern.compile("\\$([a-zA-Z][a-zA-Z0-9_.]{2,})\\$");
 
     @Override
     public MyMaidCommand.Detail details() {

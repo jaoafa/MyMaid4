@@ -20,20 +20,16 @@ import com.jaoafa.mymaid4.lib.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
 
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.regex.Matcher;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class Cmd_Var extends MyMaidLibrary implements CommandPremise {
-    Pattern pattern = Pattern.compile("^[a-zA-Z][a-zA-Z0-9_.]{2,}$");
+    final Pattern pattern = Pattern.compile("^[a-zA-Z][a-zA-Z0-9_.]{2,}$");
 
     @Override
     public MyMaidCommand.Detail details() {
@@ -342,9 +338,9 @@ public class Cmd_Var extends MyMaidLibrary implements CommandPremise {
         MULTIPLY("*", "と", "掛けた"),
         DIVIDE("/", "から", "割った");
 
-        String unitId;
-        String andOr;
-        String what;
+        final String unitId;
+        final String andOr;
+        final String what;
 
         CalcUnit(String unitId, String andOr, String what) {
             this.unitId = unitId;
