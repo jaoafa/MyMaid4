@@ -44,6 +44,7 @@ public class MyMaidData {
     private static final Map<UUID, Location> selectedSign = new HashMap<>();
     private static Blacklist blacklist;
     private static Map<Material, List<String>> creativeInventoryWithNBTs = new HashMap<>(); // material : nbt
+    private static final VariableManager variableManager = new VariableManager();
 
     @Nullable
     public static TextChannel getReportChannel() {
@@ -244,5 +245,9 @@ public class MyMaidData {
 
     public static void setCreativeInventoryWithNBTs(Map<Material, List<String>> creativeInventoryWithNBTs) {
         MyMaidData.creativeInventoryWithNBTs = creativeInventoryWithNBTs;
+    }
+
+    public static VariableManager getVariableManager() {
+        return variableManager;
     }
 }
