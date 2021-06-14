@@ -26,6 +26,6 @@ jobs:
         run: mvn -B package --file pom.xml
 
       - name: Test
-        uses: jaoafa/CheckPluginEnabling@v1.1
+        uses: jaoafa/CheckPluginEnabling@v1.2
         with:
           plugin-name: MyMaid4
