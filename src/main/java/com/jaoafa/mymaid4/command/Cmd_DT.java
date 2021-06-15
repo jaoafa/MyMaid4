@@ -16,7 +16,7 @@ import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.IntegerArgument;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.bukkit.arguments.selector.MultipleEntitySelector;
-import cloud.commandframework.bukkit.parsers.selector.MultiplePlayerSelectorArgument;
+import cloud.commandframework.bukkit.parsers.selector.MultipleEntitySelectorArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
 import com.jaoafa.mymaid4.lib.CommandPremise;
@@ -67,9 +67,9 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
                 .handler(this::teleportMarker)
                 .build(),
             builder
-                .meta(CommandMeta.DESCRIPTION, "プレイヤーをマーカーにテレポートさせます。")
+                .meta(CommandMeta.DESCRIPTION, "エンティティをマーカーにテレポートさせます。")
                 .literal("tp")
-                .argument(MultiplePlayerSelectorArgument
+                .argument(MultipleEntitySelectorArgument
                     .newBuilder("targets"), ArgumentDescription.of("エンティティ対象セレクター"))
                 .argument(StringArgument
                     .newBuilder("markerName"), ArgumentDescription.of("マーカー名"))
