@@ -161,7 +161,7 @@ public class MyMaidConfig {
         return serverChatChannelId;
     }
 
-    public String getGithubAccessToken() {
+    public String getGitHubAccessToken() {
         return githubAccessToken;
     }
 }

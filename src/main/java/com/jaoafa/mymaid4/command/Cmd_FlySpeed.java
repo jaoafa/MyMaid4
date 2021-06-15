@@ -40,16 +40,14 @@ public class Cmd_FlySpeed extends MyMaidLibrary implements CommandPremise {
         return new MyMaidCommand.Cmd(
             builder
                 .meta(CommandMeta.DESCRIPTION, "指定したプレイヤーのクリエイティブ飛行速度を表示します。")
-                .argument(PlayerArgument.optional("target"),
-                    ArgumentDescription.of("ターゲットプレイヤー"))
+                .argument(PlayerArgument.optional("target"), ArgumentDescription.of("ターゲットプレイヤー"))
                 .handler(this::showFlySpeed)
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "クリエイティブ飛行速度を設定します。")
                 .senderType(Player.class)
                 .literal("set")
-                .argument(FloatArgument.of("percent"),
-                    ArgumentDescription.of("クリエイティブ飛行速度(通常100%)"))
+                .argument(FloatArgument.of("percent"), ArgumentDescription.of("クリエイティブ飛行速度(通常100%)"))
                 .handler(this::setFlySpeed)
                 .build()
         );

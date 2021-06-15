@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
@@ -42,8 +43,8 @@ public class Cmd_Chat extends MyMaidLibrary implements CommandPremise {
         return new MyMaidCommand.Cmd(
             builder
                 .meta(CommandMeta.DESCRIPTION, "偽のプレイヤーに喋らせます。")
-                .argument(StringArgument.single("player"))
-                .argument(StringArgument.greedy("message"))
+                .argument(StringArgument.single("player"), ArgumentDescription.of("喋らせるプレイヤー名"))
+                .argument(StringArgument.greedy("message"), ArgumentDescription.of("喋らせるメッセージ"))
                 .handler(this::chatFake)
                 .build()
         );

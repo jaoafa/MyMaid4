@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.bukkit.parsers.OfflinePlayerArgument;
@@ -44,14 +45,14 @@ public class Cmd_EBan extends MyMaidLibrary implements CommandPremise {
             builder
                 .meta(CommandMeta.DESCRIPTION, "ターゲットをEBanします。")
                 .literal("add")
-                .argument(OfflinePlayerArgument.of("player"))
-                .argument(StringArgument.greedy("reason"))
+                .argument(OfflinePlayerArgument.of("player"), ArgumentDescription.of("プレイヤー名"))
+                .argument(StringArgument.greedy("reason"), ArgumentDescription.of("理由"))
                 .handler(this::addEBan)
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "ターゲットのEBanを解除します。")
                 .literal("remove", "del", "rem")
-                .argument(OfflinePlayerArgument.of("player"))
+                .argument(OfflinePlayerArgument.of("player"), ArgumentDescription.of("対象のプレイヤー名"))
                 .handler(this::removeEBan)
                 .build(),
             builder

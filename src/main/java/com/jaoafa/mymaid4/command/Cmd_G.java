@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.bukkit.parsers.PlayerArgument;
@@ -60,7 +61,7 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
                 .senderType(Player.class)
                 .argument(StringArgument
                     .<CommandSender>newBuilder("gamemode")
-                    .withSuggestionsProvider(this::suggestGameMode))
+                    .withSuggestionsProvider(this::suggestGameMode), ArgumentDescription.of("ゲームモード"))
                 .handler(this::changeGamemode)
                 .build(),
             builder
@@ -68,7 +69,7 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
                 .argument(StringArgument
                     .<CommandSender>newBuilder("gamemode")
                     .withSuggestionsProvider(this::suggestGameMode))
-                .argument(PlayerArgument.of("player"))
+                .argument(PlayerArgument.of("player"), ArgumentDescription.of("ゲームモード"))
                 .handler(this::changePlayerGamemode)
                 .build()
         );

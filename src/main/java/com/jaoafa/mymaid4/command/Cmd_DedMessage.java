@@ -77,7 +77,7 @@ public class Cmd_DedMessage extends MyMaidLibrary implements CommandPremise {
                 .literal("remove")
                 .argument(IntegerArgument
                     .<CommandSender>newBuilder("id")
-                    .withSuggestionsProvider(this::suggestCustomDedMessageIds))
+                    .withSuggestionsProvider(this::suggestCustomDedMessageIds), ArgumentDescription.of("カスタム死亡メッセージID"))
                 .handler(this::removeCustomDeathMessage)
                 .build(),
             builder
@@ -87,7 +87,7 @@ public class Cmd_DedMessage extends MyMaidLibrary implements CommandPremise {
                 .argument(IntegerArgument
                     .<CommandSender>newBuilder("page")
                     .withMin(1)
-                    .asOptionalWithDefault("1"))
+                    .asOptionalWithDefault("1"), ArgumentDescription.of("カスタム死亡メッセージID"))
                 .handler(this::listCustomDeathMessage)
                 .build()
         );

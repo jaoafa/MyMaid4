@@ -66,15 +66,15 @@ public class Cmd_Bug extends MyMaidLibrary implements CommandPremise {
                 .meta(CommandMeta.DESCRIPTION, "本によりIssue作成処理を行います。")
                 .senderType(Player.class)
                 .literal("true")
-                .hidden()
                 .handler(this::createIssueBook)
+                .hidden()
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "記入済みの本を記入可能な本に戻します。")
                 .senderType(Player.class)
                 .literal("false")
-                .hidden()
                 .handler(this::reWritableBook)
+                .hidden()
                 .build()
         );
     }
@@ -83,7 +83,7 @@ public class Cmd_Bug extends MyMaidLibrary implements CommandPremise {
         Player player = (Player) context.getSender();
         PlayerInventory inv = player.getInventory();
 
-        if (Main.getMyMaidConfig().getGithubAccessToken() == null) {
+        if (Main.getMyMaidConfig().getGitHubAccessToken() == null) {
             SendMessage(player, details(), "不具合報告に必要な設定情報が見つからなかったため、不具合報告ができません。");
             return;
         }
@@ -196,7 +196,7 @@ public class Cmd_Bug extends MyMaidLibrary implements CommandPremise {
 
         new BukkitRunnable() {
             public void run() {
-                String accessToken = Main.getMyMaidConfig().getGithubAccessToken();
+                String accessToken = Main.getMyMaidConfig().getGitHubAccessToken();
                 if (accessToken == null) {
                     SendMessage(player, details(), "不具合報告に必要な設定情報が見つからなかったため、不具合報告ができませんでした。");
                     return;

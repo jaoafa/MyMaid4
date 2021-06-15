@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.bukkit.parsers.PlayerArgument;
 import cloud.commandframework.context.CommandContext;
@@ -35,7 +36,7 @@ public class Cmd_Glookup extends MyMaidLibrary implements CommandPremise {
         return new MyMaidCommand.Cmd(
             builder
                 .meta(CommandMeta.DESCRIPTION, "他人のゲームモードを確認します。")
-                .argument(PlayerArgument.of("player"))
+                .argument(PlayerArgument.of("player"), ArgumentDescription.of("プレイヤー名"))
                 .handler(this::playerGamemodeLookup)
                 .build()
         );

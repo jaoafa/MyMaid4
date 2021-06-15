@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
@@ -55,7 +56,7 @@ public class Cmd_DelHome extends MyMaidLibrary implements CommandPremise {
                 .argument(StringArgument
                     .<CommandSender>newBuilder("name")
                     .asOptionalWithDefault("default")
-                    .withSuggestionsProvider(Home::suggestHomeName))
+                    .withSuggestionsProvider(Home::suggestHomeName), ArgumentDescription.of("ホーム名"))
                 .handler(this::deleteHome)
                 .build()
         );

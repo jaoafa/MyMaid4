@@ -11,22 +11,21 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
-import cloud.commandframework.arguments.standard.StringArgument;
+import cloud.commandframework.bukkit.parsers.OfflinePlayerArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
 import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.SkullMeta;
-
-import java.util.Objects;
 
 public class Cmd_Head extends MyMaidLibrary implements CommandPremise {
     @Override
@@ -46,8 +45,8 @@ public class Cmd_Head extends MyMaidLibrary implements CommandPremise {
                 .handler(this::giveMyHead)
                 .build(),
             builder
-                .meta(CommandMeta.DESCRIPTION, "指定したプレイヤーの頭ブロックを入手します。" )
-                .argument(StringArgument.newBuilder("player" ))
+                .meta(CommandMeta.DESCRIPTION, "指定したプレイヤーの頭ブロックを入手します。")
+                .argument(OfflinePlayerArgument.of("player"), ArgumentDescription.of("対象のプレイヤー"))
                 .handler(this::givePlayerHead)
                 .build()
         );
@@ -78,11 +77,10 @@ public class Cmd_Head extends MyMaidLibrary implements CommandPremise {
 
     void givePlayerHead(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
-        String targetPlayer = context.getOrDefault("player", null);
+        OfflinePlayer targetPlayer = context.getOrDefault("player", null);
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
-        //noinspection deprecation プレイヤー名からOfflinePlayerを得るにはこの方法しかないため
-        meta.setOwningPlayer(Bukkit.getOfflinePlayer(Objects.requireNonNull(targetPlayer)));
+        meta.setOwningPlayer(targetPlayer);
         skull.setItemMeta(meta);
         PlayerInventory inv = player.getInventory();
         ItemStack main = inv.getItemInMainHand();

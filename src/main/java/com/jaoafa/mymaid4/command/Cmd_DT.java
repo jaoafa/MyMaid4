@@ -11,9 +11,12 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.IntegerArgument;
 import cloud.commandframework.arguments.standard.StringArgument;
+import cloud.commandframework.bukkit.arguments.selector.MultipleEntitySelector;
+import cloud.commandframework.bukkit.parsers.selector.MultiplePlayerSelectorArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
 import com.jaoafa.mymaid4.lib.CommandPremise;
@@ -31,6 +34,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.dynmap.DynmapAPI;
@@ -59,31 +63,30 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
                 .argument(StringArgument
                     .<CommandSender>newBuilder("markerName")
                     .single()
-                    .withSuggestionsProvider(this::suggestMarkerNames))
+                    .withSuggestionsProvider(this::suggestMarkerNames), ArgumentDescription.of("マーカー名"))
                 .handler(this::teleportMarker)
                 .build(),
-            /*
             builder
                 .meta(CommandMeta.DESCRIPTION, "プレイヤーをマーカーにテレポートさせます。")
+                .literal("tp")
                 .argument(MultiplePlayerSelectorArgument
-                    .newBuilder("player"))
+                    .newBuilder("targets"), ArgumentDescription.of("エンティティ対象セレクター"))
                 .argument(StringArgument
-                    .newBuilder("markerName"))
+                    .newBuilder("markerName"), ArgumentDescription.of("マーカー名"))
                 .handler(this::teleportMarker)
                 .build(),
-             */
             builder
                 .meta(CommandMeta.DESCRIPTION, "マーカーを追加します。")
                 .senderType(Player.class)
                 .literal("add", "set")
-                .argument(StringArgument.of("markerName"))
+                .argument(StringArgument.of("markerName"), ArgumentDescription.of("マーカー名"))
                 .argument(StringArgument
                     .<CommandSender>newBuilder("markerType")
-                    .withSuggestionsProvider(this::suggestMarkerTypes))
+                    .withSuggestionsProvider(this::suggestMarkerTypes), ArgumentDescription.of("マーカー種別"))
                 .argument(StringArgument
                     .<CommandSender>newBuilder("markerIcon")
                     .asOptional()
-                    .withSuggestionsProvider(this::suggestMarkerIcons))
+                    .withSuggestionsProvider(this::suggestMarkerIcons), ArgumentDescription.of("マーカーアイコン"))
                 .handler(this::addMarker)
                 .build(),
             builder
@@ -92,7 +95,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
                 .literal("del", "remove", "rem")
                 .argument(StringArgument
                     .<CommandSender>newBuilder("markerName")
-                    .withSuggestionsProvider(this::suggestMarkerNames))
+                    .withSuggestionsProvider(this::suggestMarkerNames), ArgumentDescription.of("マーカー名"))
                 .handler(this::delMarker)
                 .build(),
             builder
@@ -120,7 +123,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
                 .argument(IntegerArgument
                     .<CommandSender>newBuilder("page")
                     .withMin(1)
-                    .asOptionalWithDefault("1"))
+                    .asOptionalWithDefault("1"), ArgumentDescription.of("ページ"))
                 .handler(this::listMarkers)
                 .build()
         );
@@ -128,9 +131,19 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
 
     void teleportMarker(CommandContext<CommandSender> context) {
         CommandSender sender = context.getSender();
-        Player target = context.getOrDefault("player", null);
+        MultipleEntitySelector targets = context.get("targets");
         String markerName = context.get("markerName");
         Player sendPlayer = (Player) context.getSender();
+
+        if (!targets.hasAny() || targets.getEntities().isEmpty()) {
+            SendMessage(context.getSender(), details(), "指定されたエンティティが見つかりませんでした。");
+            return;
+        }
+        if (targets.getEntities().size() >= 10) {
+            SendMessage(context.getSender(), details(), "指定されたエンティティが多すぎます。10以内にして下さい。");
+            return;
+        }
+
         if (DTCooldown.containsKey(sendPlayer.getUniqueId()) && DTCooldown.get(sendPlayer.getUniqueId()) > System.currentTimeMillis() - 3000) {
             SendMessage(context.getSender(), details(), "DTには3秒のクールダウンがあります！少々お待ちください...");
             return;
@@ -138,21 +151,11 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
             DTCooldown.put(sendPlayer.getUniqueId(), System.currentTimeMillis());
         }
 
-
         // /dt <Marker>
         // /dt <Player> <Marker>
         if (isDisabledPlugin("dynmap")) {
             SendMessage(sender, details(), "Dynmapプラグインが動作していないため、このコマンドは使用できません。");
             return;
-        }
-
-        if (target == null && !(sender instanceof Player)) {
-            // プレイヤー以外かつマーカー名しか指定していない
-            SendMessage(sender, details(), "このコマンドはプレイヤーから実行してください。(ターゲットプレイヤーが指定されていません)");
-            return;
-        }
-        if (target == null) {
-            target = (Player) sender;
         }
 
         DynmapAPI dynmapAPI = getDynmapAPI();
@@ -175,7 +178,9 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
             return;
         }
 
-        teleportToMarker(sender, target, matchedMarker.get());
+        for (Entity entity : targets.getEntities()) {
+            teleportToMarker(sender, entity, matchedMarker.get());
+        }
     }
 
     void addMarker(CommandContext<CommandSender> context) {
@@ -460,7 +465,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
             .anyMatch(marker -> marker.getLabel().equals(markerName));
     }
 
-    void teleportToMarker(CommandSender sender, Player player, Marker marker) {
+    void teleportToMarker(CommandSender sender, Entity entity, Marker marker) {
         String markerName = marker.getLabel();
         World world = Bukkit.getWorld(marker.getWorld());
         if (world == null) {
@@ -472,15 +477,15 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
             // 小数点以下が指定されていない場合に0.5を足す
             loc.add(0.5f, 0f, 0.5f);
         }
-        player.teleport(loc);
+        entity.teleport(loc);
 
         // 可読性悪すぎ
         HoverEvent<?> senderHoverEvent =
-            sender == player ?
+            sender == entity ?
                 HoverEvent.showEntity(
                     Key.key("player"),
-                    player.getUniqueId(),
-                    Component.text(player.getName())) :
+                    entity.getUniqueId(),
+                    Component.text(entity.getName())) :
                 sender instanceof Player ?
                     HoverEvent.showEntity(
                         Key.key("player"),
@@ -494,11 +499,11 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
                 .hoverEvent(senderHoverEvent),
             Component.text(":", NamedTextColor.GRAY),
             Component.space(),
-            Component.text(player.getName(), NamedTextColor.GRAY, TextDecoration.ITALIC)
+            Component.text(entity.getName(), NamedTextColor.GRAY, TextDecoration.ITALIC)
                 .hoverEvent(HoverEvent.showEntity(
-                    Key.key("player"),
-                    player.getUniqueId(),
-                    Component.text(player.getName()))),
+                    Key.key(entity instanceof Player ? "player" : "entity"),
+                    entity.getUniqueId(),
+                    Component.text(entity.getName()))),
             Component.space(),
             Component.text("を", NamedTextColor.GRAY),
             Component.space(),
@@ -519,7 +524,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
             Component.text("にテレポートさせました]", NamedTextColor.GRAY)
         ));
         if (MyMaidData.getServerChatChannel() != null) {
-            MyMaidData.getServerChatChannel().sendMessage("*[" + DiscordEscape(sender.getName()) + ": " + DiscordEscape(player.getName()) + " teleported to " + markerName + "]*").queue();
+            MyMaidData.getServerChatChannel().sendMessage("*[" + DiscordEscape(sender.getName()) + ": " + DiscordEscape(entity.getName()) + " teleported to " + markerName + "]*").queue();
         }
     }
 }

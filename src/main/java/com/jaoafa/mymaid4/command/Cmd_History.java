@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.BooleanArgument;
 import cloud.commandframework.arguments.standard.IntegerArgument;
@@ -47,28 +48,28 @@ public class Cmd_History extends MyMaidLibrary implements CommandPremise {
             builder
                 .meta(CommandMeta.DESCRIPTION, "指定したプレイヤーのjaoHistoryにデータを追加します。")
                 .literal("add")
-                .argument(OfflinePlayerArgument.of("target"))
-                .argument(StringArgument.greedy("message"))
+                .argument(OfflinePlayerArgument.of("target"), ArgumentDescription.of("対象のプレイヤー"))
+                .argument(StringArgument.greedy("message"), ArgumentDescription.of("メッセージ"))
                 .handler(this::addItem)
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "指定したプレイヤーのjaoHistory項目を無効化します。")
                 .literal("disable")
-                .argument(OfflinePlayerArgument.of("target"))
+                .argument(OfflinePlayerArgument.of("target"), ArgumentDescription.of("対象のプレイヤー"))
                 .argument(IntegerArgument.<CommandSender>newBuilder("item")
-                    .withSuggestionsProvider(this::suggestHistoryIds))
+                    .withSuggestionsProvider(this::suggestHistoryIds), ArgumentDescription.of("jaoHistoryId"))
                 .handler(this::disableItem)
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "指定したプレイヤーのjaoHistory項目の通知設定を行います。")
                 .literal("notify")
-                .argument(OfflinePlayerArgument.of("target"))
+                .argument(OfflinePlayerArgument.of("target"), ArgumentDescription.of("対象のプレイヤー"))
                 .argument(IntegerArgument.<CommandSender>newBuilder("item")
-                    .withSuggestionsProvider(this::suggestHistoryIds))
+                    .withSuggestionsProvider(this::suggestHistoryIds), ArgumentDescription.of("jaoHistoryId"))
                 .argument(BooleanArgument
                     .<CommandSender>newBuilder("changeTo")
                     .withLiberal(true)
-                    .withSuggestionsProvider(this::suggestBoolean))
+                    .withSuggestionsProvider(this::suggestBoolean), ArgumentDescription.of("変更後の通知設定"))
                 .handler(this::notifyItem)
                 .build(),
             builder
