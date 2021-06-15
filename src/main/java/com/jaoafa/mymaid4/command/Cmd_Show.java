@@ -12,6 +12,7 @@
 package com.jaoafa.mymaid4.command;
 
 import cloud.commandframework.Command;
+import cloud.commandframework.bukkit.parsers.PlayerArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
 import com.jaoafa.mymaid4.Main;
@@ -38,12 +39,18 @@ public class Cmd_Show extends MyMaidLibrary implements CommandPremise {
             builder
                 .meta(CommandMeta.DESCRIPTION, "Hide状態を解除します。")
                 .senderType(Player.class)
-                .handler(this::addHid)
+                .handler(this::liftHid)
+                .build(),
+            builder
+                .meta(CommandMeta.DESCRIPTION, "指定したプレイヤーのHide状態を解除します。")
+                .senderType(Player.class)
+                .argument(PlayerArgument.of("target"))
+                .handler(this::liftHidOther)
                 .build()
         );
     }
 
-    void addHid(CommandContext<CommandSender> context) {
+    void liftHid(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
         if (!isAMR(player)) {
             SendMessage(player, details(), "あなたの権限ではこのコマンドを実行することができません！");
@@ -57,5 +64,27 @@ public class Cmd_Show extends MyMaidLibrary implements CommandPremise {
             MyMaidData.removeHid(player.getUniqueId());
         }
         SendMessage(player, details(), "あなたは他のプレイヤーから見えるようになりました。");
+    }
+
+    void liftHidOther(CommandContext<CommandSender> context) {
+        Player player = (Player) context.getSender();
+        Player target = context.get("target");
+        if (!isAMR(player)) {
+            SendMessage(player, details(), "あなたの権限ではこのコマンドを実行することができません！");
+            return;
+        }
+        if (!isAMR(target)) {
+            SendMessage(player, details(), "対象のプレイヤーの権限がRegular以上でないため、実行できません。");
+            return;
+        }
+
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            p.showPlayer(Main.getJavaPlugin(), target);
+        }
+        if (MyMaidData.isHid(target.getUniqueId())) {
+            MyMaidData.removeHid(target.getUniqueId());
+        }
+        SendMessage(target, details(), "あなたは他のプレイヤーから見えるようになりました。");
+        SendMessage(player, details(), "プレイヤー「" + target.getName() + "」をから見えるようにしました。");
     }
 }
