@@ -12,6 +12,7 @@
 package com.jaoafa.mymaid4.command;
 
 import cloud.commandframework.Command;
+import cloud.commandframework.bukkit.parsers.PlayerArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
 import com.jaoafa.mymaid4.Main;
@@ -39,6 +40,12 @@ public class Cmd_Hide extends MyMaidLibrary implements CommandPremise {
                 .meta(CommandMeta.DESCRIPTION, "他のプレイヤーから姿を隠します。")
                 .senderType(Player.class)
                 .handler(this::addHid)
+                .build(),
+            builder
+                .meta(CommandMeta.DESCRIPTION, "指定したプレイヤーを他のプレイヤーから姿を隠します。")
+                .senderType(Player.class)
+                .argument(PlayerArgument.of("target"))
+                .handler(this::addHidOther)
                 .build()
         );
     }
@@ -58,5 +65,28 @@ public class Cmd_Hide extends MyMaidLibrary implements CommandPremise {
         }
         SendMessage(player, details(), "あなたは他のプレイヤーから見えなくなりました。見えるようにするには/showを実行しましょう。");
         SendMessage(player, details(), "なお、プレイヤーリストからも見えなくなりますのでお気をつけて。");
+    }
+
+    void addHidOther(CommandContext<CommandSender> context) {
+        Player player = (Player) context.getSender();
+        Player target = context.get("target");
+        if (!isAMR(player)) {
+            SendMessage(player, details(), "あなたの権限ではこのコマンドを実行することができません！");
+            return;
+        }
+        if (!isAMR(target)) {
+            SendMessage(player, details(), "対象のプレイヤーの権限がRegular以上でないため、実行できません。");
+            return;
+        }
+
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            p.hidePlayer(Main.getJavaPlugin(), target);
+        }
+        if (!MyMaidData.isHid(target.getUniqueId())) {
+            MyMaidData.addHid(target.getUniqueId());
+        }
+        SendMessage(target, details(), "あなたは他のプレイヤーから見えなくなりました。見えるようにするには/showを実行しましょう。");
+        SendMessage(target, details(), "なお、プレイヤーリストからも見えなくなりますのでお気をつけて。");
+        SendMessage(player, details(), "プレイヤー「" + target.getName() + "」を他のプレイヤーから見えなくしました。");
     }
 }
