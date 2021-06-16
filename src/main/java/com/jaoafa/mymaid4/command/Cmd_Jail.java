@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.bukkit.parsers.OfflinePlayerArgument;
@@ -44,14 +45,14 @@ public class Cmd_Jail extends MyMaidLibrary implements CommandPremise {
             builder
                 .meta(CommandMeta.DESCRIPTION, "ターゲットをJailします。")
                 .literal("add")
-                .argument(OfflinePlayerArgument.of("player"))
+                .argument(OfflinePlayerArgument.of("player"), ArgumentDescription.of("対象のプレイヤー"))
                 .argument(StringArgument.greedy("reason"))
                 .handler(this::addJail)
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "ターゲットのJailを解除します。")
                 .literal("remove", "del", "rem")
-                .argument(OfflinePlayerArgument.of("player"))
+                .argument(OfflinePlayerArgument.of("player"), ArgumentDescription.of("対象のプレイヤー"))
                 .handler(this::removeJail)
                 .build(),
             builder
@@ -59,14 +60,14 @@ public class Cmd_Jail extends MyMaidLibrary implements CommandPremise {
                 .literal("status", "list")
                 .argument(OfflinePlayerArgument
                     .<CommandSender>newBuilder("player")
-                    .asOptional())
+                    .asOptional(), ArgumentDescription.of("詳細を表示するプレイヤー"))
                 .handler(this::getStatus)
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "遺言を記録します。")
                 .senderType(Player.class)
                 .literal("testment")
-                .argument(StringArgument.greedy("message"))
+                .argument(StringArgument.greedy("message"), ArgumentDescription.of("遺言"))
                 .handler(this::setTestment)
                 .build()
         );

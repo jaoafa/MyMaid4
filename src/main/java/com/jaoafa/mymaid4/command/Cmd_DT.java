@@ -63,7 +63,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
                 .argument(StringArgument
                     .<CommandSender>newBuilder("markerName")
                     .single()
-                    .withSuggestionsProvider(this::suggestMarkerNames))
+                    .withSuggestionsProvider(this::suggestMarkerNames), ArgumentDescription.of("マーカー名"))
                 .handler(this::teleportMarker)
                 .build(),
             builder
@@ -80,14 +80,14 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
                 .meta(CommandMeta.DESCRIPTION, "マーカーを追加します。")
                 .senderType(Player.class)
                 .literal("add", "set")
-                .argument(StringArgument.of("markerName"))
+                .argument(StringArgument.of("markerName"), ArgumentDescription.of("マーカー名"))
                 .argument(StringArgument
                     .<CommandSender>newBuilder("markerType")
-                    .withSuggestionsProvider(this::suggestMarkerTypes))
+                    .withSuggestionsProvider(this::suggestMarkerTypes), ArgumentDescription.of("マーカー種別"))
                 .argument(StringArgument
                     .<CommandSender>newBuilder("markerIcon")
                     .asOptional()
-                    .withSuggestionsProvider(this::suggestMarkerIcons))
+                    .withSuggestionsProvider(this::suggestMarkerIcons), ArgumentDescription.of("マーカーアイコン"))
                 .handler(this::addMarker)
                 .build(),
             builder
@@ -96,7 +96,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
                 .literal("del", "remove", "rem")
                 .argument(StringArgument
                     .<CommandSender>newBuilder("markerName")
-                    .withSuggestionsProvider(this::suggestMarkerNames))
+                    .withSuggestionsProvider(this::suggestMarkerNames), ArgumentDescription.of("マーカー名"))
                 .handler(this::delMarker)
                 .build(),
             builder
@@ -124,7 +124,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
                 .argument(IntegerArgument
                     .<CommandSender>newBuilder("page")
                     .withMin(1)
-                    .asOptionalWithDefault("1"))
+                    .asOptionalWithDefault("1"), ArgumentDescription.of("ページ"))
                 .handler(this::listMarkers)
                 .build()
         );

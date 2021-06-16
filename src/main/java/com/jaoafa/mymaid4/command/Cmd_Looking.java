@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.bukkit.parsers.PlayerArgument;
 import cloud.commandframework.context.CommandContext;
@@ -47,7 +48,7 @@ public class Cmd_Looking extends MyMaidLibrary implements CommandPremise {
                 .meta(CommandMeta.DESCRIPTION, "プレイヤーを見続けはじめます。")
                 .senderType(Player.class)
                 .literal("on", "see", "start")
-                .argument(PlayerArgument.newBuilder("target"))
+                .argument(PlayerArgument.of("target"), ArgumentDescription.of("見続けるプレイヤー"))
                 .handler(this::startLooking)
                 .build(),
             builder

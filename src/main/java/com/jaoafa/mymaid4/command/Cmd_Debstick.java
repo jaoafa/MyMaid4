@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.bukkit.parsers.PlayerArgument;
 import cloud.commandframework.context.CommandContext;
@@ -43,7 +44,7 @@ public class Cmd_Debstick extends MyMaidLibrary implements CommandPremise {
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "デバッグステイックを指定したプレイヤーのメインハンドのアイテムと置き換えます。")
-                .argument(PlayerArgument.of("player"))
+                .argument(PlayerArgument.of("player"), ArgumentDescription.of("デバッグスティックを付与するプレイヤー"))
                 .handler(this::giveCommandBlockToPlayer)
                 .build()
         );

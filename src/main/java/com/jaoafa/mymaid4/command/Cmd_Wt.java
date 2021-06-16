@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.bukkit.parsers.PlayerArgument;
 import cloud.commandframework.context.CommandContext;
@@ -53,8 +54,7 @@ public class Cmd_Wt extends MyMaidLibrary implements CommandPremise {
                 .senderType(Player.class)
                 .argument(StringArgument
                     .<CommandSender>newBuilder("worldName")
-                    .single()
-                    .withSuggestionsProvider(MyMaidLibrary::suggestWorldNames))
+                    .withSuggestionsProvider(MyMaidLibrary::suggestWorldNames), ArgumentDescription.of("ワールド名もしくはワールド番号"))
                 .handler(this::worldTeleport)
                 .build(),
 
@@ -62,9 +62,8 @@ public class Cmd_Wt extends MyMaidLibrary implements CommandPremise {
                 .meta(CommandMeta.DESCRIPTION, "指定したプレイヤーを指定したワールドにテレポートさせます。")
                 .argument(StringArgument
                     .<CommandSender>newBuilder("worldName")
-                    .single()
-                    .withSuggestionsProvider(MyMaidLibrary::suggestWorldNames))
-                .argument(PlayerArgument.of("player"))
+                    .withSuggestionsProvider(MyMaidLibrary::suggestWorldNames), ArgumentDescription.of("ワールド名もしくはワールド番号"))
+                .argument(PlayerArgument.of("player"), ArgumentDescription.of("テレポートさせるプレイヤー"))
                 .handler(this::worldTeleportPlayer)
                 .build()
 

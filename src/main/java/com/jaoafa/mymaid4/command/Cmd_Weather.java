@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
@@ -41,7 +42,9 @@ public class Cmd_Weather extends MyMaidLibrary implements CommandPremise {
             builder
                 .meta(CommandMeta.DESCRIPTION, "自分だけに適用される天気を設定します。")
                 .literal("set")
-                .argument(StringArgument.<CommandSender>newBuilder("weatherName").withSuggestionsProvider(this::suggestWeatherName))
+                .argument(StringArgument
+                    .<CommandSender>newBuilder("weatherName")
+                    .withSuggestionsProvider(this::suggestWeatherName), ArgumentDescription.of("天気名"))
                 .senderType(Player.class)
                 .handler(this::weatherSetByName)
                 .build()

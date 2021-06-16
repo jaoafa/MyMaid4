@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.IntegerArgument;
 import cloud.commandframework.arguments.standard.StringArgument;
@@ -53,7 +54,7 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
                 .argument(StringArgument
                     .<CommandSender>newBuilder("name")
                     .asOptionalWithDefault("default")
-                    .withSuggestionsProvider(Home::suggestHomeName))
+                    .withSuggestionsProvider(Home::suggestHomeName), ArgumentDescription.of("ページ"))
                 .handler(this::teleportHome)
                 .build(),
             builder
@@ -63,7 +64,7 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
                 .handler(this::listHome)
                 .argument(IntegerArgument
                     .<CommandSender>newBuilder("Page").withMin(1)
-                    .asOptionalWithDefault("1"))
+                    .asOptionalWithDefault("1"), ArgumentDescription.of("ページ"))
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "指定したホームに関する情報を表示します。")
@@ -72,7 +73,7 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
                 .argument(StringArgument
                     .<CommandSender>newBuilder("name")
                     .asOptionalWithDefault("default")
-                    .withSuggestionsProvider(Home::suggestHomeName))
+                    .withSuggestionsProvider(Home::suggestHomeName), ArgumentDescription.of("ページ"))
                 .handler(this::viewHome)
                 .build()
         );

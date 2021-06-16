@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.bukkit.parsers.PlayerArgument;
 import cloud.commandframework.context.CommandContext;
@@ -43,7 +44,7 @@ public class Cmd_Brb extends MyMaidLibrary implements CommandPremise {
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "バリアブロックを指定したプレイヤーのメインハンドのアイテムと置き換えます。")
-                .argument(PlayerArgument.of("player"))
+                .argument(PlayerArgument.of("player"), ArgumentDescription.of("バリアブロックを付与するプレイヤー名"))
                 .handler(this::giveBarrierToPlayer)
                 .build()
         );

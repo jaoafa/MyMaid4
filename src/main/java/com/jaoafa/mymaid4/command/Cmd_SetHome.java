@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
@@ -56,7 +57,7 @@ public class Cmd_SetHome extends MyMaidLibrary implements CommandPremise {
                 .senderType(Player.class)
                 .argument(StringArgument
                     .<CommandSender>newBuilder("name")
-                    .asOptionalWithDefault("default"))
+                    .asOptionalWithDefault("default"), ArgumentDescription.of("ホーム名。指定しない場合default"))
                 .handler(this::setHome)
                 .build()
         );

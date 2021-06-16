@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
@@ -50,8 +51,7 @@ public class Cmd_DiscordLink extends MyMaidLibrary implements CommandPremise {
             builder
                 .meta(CommandMeta.DESCRIPTION, "DiscordアカウントとMinecraftアカウントを紐づけます。")
                 .senderType(Player.class)
-                .argument(StringArgument
-                    .newBuilder("authKey"))
+                .argument(StringArgument.of("authKey"), ArgumentDescription.of("認証コード"))
                 .handler(this::authDiscord)
                 .build()
         );

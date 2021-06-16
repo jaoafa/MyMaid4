@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.bukkit.arguments.selector.SinglePlayerSelector;
@@ -44,9 +45,9 @@ public class Cmd_InvLoad extends MyMaidLibrary implements CommandPremise {
         return new MyMaidCommand.Cmd(
             builder
                 .meta(CommandMeta.DESCRIPTION, "指定したプレイヤーにおける指定した名前のインベントリを復元します。")
-                .argument(SinglePlayerSelectorArgument.of("target"))
-                .argument(StringArgument.optional("saveName"))
-                .argument(SinglePlayerSelectorArgument.optional("player"))
+                .argument(SinglePlayerSelectorArgument.of("target"), ArgumentDescription.of("インベントリを保存したプレイヤー"))
+                .argument(StringArgument.optional("saveName"), ArgumentDescription.of("保存名"))
+                .argument(SinglePlayerSelectorArgument.optional("player"), ArgumentDescription.of("復元先のプレイヤー"))
                 .handler(this::loadInventory)
                 .build()
         );

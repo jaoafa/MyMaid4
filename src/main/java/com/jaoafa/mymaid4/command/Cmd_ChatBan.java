@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.bukkit.parsers.OfflinePlayerArgument;
@@ -44,22 +45,22 @@ public class Cmd_ChatBan extends MyMaidLibrary implements CommandPremise {
             builder
                 .meta(CommandMeta.DESCRIPTION, "ターゲットをChatBanします。")
                 .literal("add")
-                .argument(OfflinePlayerArgument.of("player"))
-                .argument(StringArgument.greedy("reason"))
+                .argument(OfflinePlayerArgument.of("player"), ArgumentDescription.of("対象のプレイヤー"))
+                .argument(StringArgument.greedy("reason"), ArgumentDescription.of("理由"))
                 .handler(this::addChatBan)
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "ターゲットのChatBanを解除します。")
                 .literal("remove", "del", "rem")
-                .argument(OfflinePlayerArgument.of("player"))
+                .argument(OfflinePlayerArgument.of("player"), ArgumentDescription.of("対象のプレイヤー"))
                 .handler(this::removeChatBan)
                 .build(),
             builder
-                .meta(CommandMeta.DESCRIPTION, "ChatBan一覧を表示します。")
+                .meta(CommandMeta.DESCRIPTION, "ChatBan一覧もしくは詳細を表示します。")
                 .literal("status", "list")
                 .argument(OfflinePlayerArgument
                     .<CommandSender>newBuilder("player")
-                    .asOptional())
+                    .asOptional(), ArgumentDescription.of("詳細を表示するプレイヤー"))
                 .handler(this::getStatus)
                 .build()
         );

@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.IntegerArgument;
 import cloud.commandframework.arguments.standard.StringArgument;
@@ -47,8 +48,8 @@ public class Cmd_Var extends MyMaidLibrary implements CommandPremise {
                 .literal("text", "set")
                 .argument(StringArgument
                     .<CommandSender>newBuilder("key")
-                    .withSuggestionsProvider(this::suggestVariableNames))
-                .argument(StringArgument.of("value"))
+                    .withSuggestionsProvider(this::suggestVariableNames), ArgumentDescription.of("変数名"))
+                .argument(StringArgument.of("value"), ArgumentDescription.of("代入する値"))
                 .handler(this::setVariable)
                 .build(),
             builder
@@ -56,72 +57,72 @@ public class Cmd_Var extends MyMaidLibrary implements CommandPremise {
                 .literal("plus", "add")
                 .argument(StringArgument
                     .<CommandSender>newBuilder("setToKey")
-                    .withSuggestionsProvider(this::suggestVariableNames))
+                    .withSuggestionsProvider(this::suggestVariableNames), ArgumentDescription.of("結果を代入する変数名"))
                 .argument(StringArgument
                     .<CommandSender>newBuilder("keyOrValue1")
-                    .withSuggestionsProvider(this::suggestVariableNames))
+                    .withSuggestionsProvider(this::suggestVariableNames), ArgumentDescription.of("加算する変数名もしくは値"))
                 .argument(StringArgument
                     .<CommandSender>newBuilder("keyOrValue2")
-                    .withSuggestionsProvider(this::suggestVariableNames))
-                .handler(c -> processVariable(c, CalcUnit.PLUS))
+                    .withSuggestionsProvider(this::suggestVariableNames), ArgumentDescription.of("加算する変数名もしくは値"))
+                .handler(c -> processVariable(c, MathSign.PLUS))
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "減算し、結果を変数に代入します。")
                 .literal("minus", "remove", "rem", "rm", "subtraction", "sub")
                 .argument(StringArgument
                     .<CommandSender>newBuilder("setToKey")
-                    .withSuggestionsProvider(this::suggestVariableNames))
+                    .withSuggestionsProvider(this::suggestVariableNames), ArgumentDescription.of("結果を代入する変数名"))
                 .argument(StringArgument
                     .<CommandSender>newBuilder("keyOrValue1")
-                    .withSuggestionsProvider(this::suggestVariableNames))
+                    .withSuggestionsProvider(this::suggestVariableNames), ArgumentDescription.of("減算される変数名もしくは値"))
                 .argument(StringArgument
                     .<CommandSender>newBuilder("keyOrValue2")
-                    .withSuggestionsProvider(this::suggestVariableNames))
-                .handler(c -> processVariable(c, CalcUnit.MINUS))
+                    .withSuggestionsProvider(this::suggestVariableNames), ArgumentDescription.of("減算する変数名もしくは値"))
+                .handler(c -> processVariable(c, MathSign.MINUS))
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "乗算し、結果を変数に代入します。")
                 .literal("multiply", "multi")
                 .argument(StringArgument
                     .<CommandSender>newBuilder("setToKey")
-                    .withSuggestionsProvider(this::suggestVariableNames))
+                    .withSuggestionsProvider(this::suggestVariableNames), ArgumentDescription.of("結果を代入する変数名"))
                 .argument(StringArgument
                     .<CommandSender>newBuilder("keyOrValue1")
-                    .withSuggestionsProvider(this::suggestVariableNames))
+                    .withSuggestionsProvider(this::suggestVariableNames), ArgumentDescription.of("乗算される変数名もしくは値"))
                 .argument(StringArgument
                     .<CommandSender>newBuilder("keyOrValue2")
-                    .withSuggestionsProvider(this::suggestVariableNames))
-                .handler(c -> processVariable(c, CalcUnit.MULTIPLY))
+                    .withSuggestionsProvider(this::suggestVariableNames), ArgumentDescription.of("乗算する変数名もしくは値"))
+                .handler(c -> processVariable(c, MathSign.MULTIPLY))
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "除算し、結果を変数に代入します。")
                 .literal("division", "div")
                 .argument(StringArgument
                     .<CommandSender>newBuilder("setToKey")
-                    .withSuggestionsProvider(this::suggestVariableNames))
+                    .withSuggestionsProvider(this::suggestVariableNames), ArgumentDescription.of("結果を代入する変数名"))
                 .argument(StringArgument
                     .<CommandSender>newBuilder("keyOrValue1")
-                    .withSuggestionsProvider(this::suggestVariableNames))
+                    .withSuggestionsProvider(this::suggestVariableNames), ArgumentDescription.of("除算される変数名もしくは値"))
                 .argument(StringArgument
                     .<CommandSender>newBuilder("keyOrValue2")
-                    .withSuggestionsProvider(this::suggestVariableNames))
-                .handler(c -> processVariable(c, CalcUnit.DIVIDE))
+                    .withSuggestionsProvider(this::suggestVariableNames), ArgumentDescription.of("乗算する変数名もしくは値"))
+                .handler(c -> processVariable(c, MathSign.DIVIDE))
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "計算し、結果を変数に代入します。")
                 .literal("calc")
                 .argument(StringArgument
                     .<CommandSender>newBuilder("setToKey")
-                    .withSuggestionsProvider(this::suggestVariableNames))
+                    .withSuggestionsProvider(this::suggestVariableNames), ArgumentDescription.of("結果を代入する変数名"))
                 .argument(StringArgument
                     .<CommandSender>newBuilder("keyOrValue1")
-                    .withSuggestionsProvider(this::suggestVariableNames))
+                    .withSuggestionsProvider(this::suggestVariableNames), ArgumentDescription.of("計算される変数名もしくは値"))
                 .argument(StringArgument
-                    .<CommandSender>newBuilder("unit")
-                    .withSuggestionsProvider((context, current) -> Arrays.asList("+", "-", "*", "/")))
+                    .<CommandSender>newBuilder("mathSign")
+                    .withSuggestionsProvider((context, current) -> Arrays.asList("+", "-", "*", "/")), ArgumentDescription.of("計算記号"))
                 .argument(StringArgument
                     .<CommandSender>newBuilder("keyOrValue2")
-                    .withSuggestionsProvider(this::suggestVariableNames))
+                    .withSuggestionsProvider(this::suggestVariableNames), ArgumentDescription.of("計算する変数名もしくは値"))
                 .handler(this::calcVariable)
                 .build(),
             builder
@@ -129,13 +130,13 @@ public class Cmd_Var extends MyMaidLibrary implements CommandPremise {
                 .literal("output", "out", "view")
                 .argument(StringArgument
                     .<CommandSender>newBuilder("key")
-                    .withSuggestionsProvider(this::suggestVariableNames))
+                    .withSuggestionsProvider(this::suggestVariableNames), ArgumentDescription.of("変数名"))
                 .handler(this::outputVariable)
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "キーの一覧を表示します。")
                 .literal("list")
-                .argument(IntegerArgument.optional("page", 1))
+                .argument(IntegerArgument.optional("page", 1), ArgumentDescription.of("ページ"))
                 .handler(this::listVariable)
                 .build(),
             builder
@@ -143,7 +144,7 @@ public class Cmd_Var extends MyMaidLibrary implements CommandPremise {
                 .literal("clear", "reset")
                 .argument(StringArgument
                     .<CommandSender>newBuilder("key")
-                    .withSuggestionsProvider(this::suggestVariableNames))
+                    .withSuggestionsProvider(this::suggestVariableNames), ArgumentDescription.of("削除する変数の変数名"))
                 .handler(this::clearVariable)
                 .build()
         );
@@ -173,7 +174,7 @@ public class Cmd_Var extends MyMaidLibrary implements CommandPremise {
         SendMessage(sender, details(), "変数「" + key + "」に値「" + value + "」を代入しました。");
     }
 
-    void processVariable(CommandContext<CommandSender> context, CalcUnit unit) {
+    void processVariable(CommandContext<CommandSender> context, MathSign unit) {
         CommandSender sender = context.getSender();
         String setToKey = context.get("setToKey");
         String keyOrValue1 = context.get("keyOrValue1");
@@ -207,7 +208,7 @@ public class Cmd_Var extends MyMaidLibrary implements CommandPremise {
         CommandSender sender = context.getSender();
         String setToKey = context.get("setToKey");
         String keyOrValue1 = context.get("keyOrValue1");
-        String unit = context.get("unit");
+        String mathSign = context.get("mathSign");
         String keyOrValue2 = context.get("keyOrValue2");
 
         if (!pattern.matcher(setToKey).matches()) {
@@ -231,9 +232,9 @@ public class Cmd_Var extends MyMaidLibrary implements CommandPremise {
             return;
         }
 
-        if (CalcUnit.fromId(unit).isEmpty()) return;
+        if (MathSign.fromId(mathSign).isEmpty()) return;
 
-        calcProcess(sender, setToKey, value1, value2, CalcUnit.fromId(unit).get());
+        calcProcess(sender, setToKey, value1, value2, MathSign.fromId(mathSign).get());
     }
 
     void outputVariable(CommandContext<CommandSender> context) {
@@ -303,11 +304,11 @@ public class Cmd_Var extends MyMaidLibrary implements CommandPremise {
         }
     }
 
-    void calcProcess(CommandSender sender, String key, int value1, int value2, CalcUnit unit) {
+    void calcProcess(CommandSender sender, String key, int value1, int value2, MathSign mathSign) {
         VariableManager vm = MyMaidData.getVariableManager();
 
         int result;
-        switch (unit) {
+        switch (mathSign) {
             case PLUS:
                 result = value1 + value2;
                 break;
@@ -321,35 +322,35 @@ public class Cmd_Var extends MyMaidLibrary implements CommandPremise {
                 result = value1 / value2;
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + unit);
+                throw new IllegalStateException("Unexpected value: " + mathSign);
         }
 
         vm.set(key, result);
-        SendMessage(sender, details(), String.format("「%d」%s「%d」を%s結果である「%d」をキー「%s」にセットしました。", value1, unit.andOr, value2, unit.what, result, key));
+        SendMessage(sender, details(), String.format("「%d」%s「%d」を%s結果である「%d」をキー「%s」にセットしました。", value1, mathSign.andOr, value2, mathSign.what, result, key));
     }
 
     List<String> suggestVariableNames(final CommandContext<CommandSender> context, final String current) {
         return new ArrayList<>(MyMaidData.getVariableManager().getVariables().keySet());
     }
 
-    enum CalcUnit {
+    enum MathSign {
         PLUS("+", "と", "足した"),
         MINUS("-", "から", "引いた"),
         MULTIPLY("*", "と", "掛けた"),
         DIVIDE("/", "から", "割った");
 
-        final String unitId;
+        final String signId;
         final String andOr;
         final String what;
 
-        CalcUnit(String unitId, String andOr, String what) {
-            this.unitId = unitId;
+        MathSign(String signId, String andOr, String what) {
+            this.signId = signId;
             this.andOr = andOr;
             this.what = what;
         }
 
-        public static Optional<CalcUnit> fromId(String unitId) {
-            return Arrays.stream(values()).filter(u -> u.unitId.equals(unitId)).findFirst();
+        public static Optional<MathSign> fromId(String signId) {
+            return Arrays.stream(values()).filter(u -> u.signId.equals(signId)).findFirst();
         }
     }
 }
