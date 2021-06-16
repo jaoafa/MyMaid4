@@ -45,14 +45,14 @@ public class Cmd_EBan extends MyMaidLibrary implements CommandPremise {
             builder
                 .meta(CommandMeta.DESCRIPTION, "ターゲットをEBanします。")
                 .literal("add")
-                .argument(OfflinePlayerArgument.of("player"), ArgumentDescription.of("プレイヤー名"))
+                .argument(OfflinePlayerArgument.of("player"), ArgumentDescription.of("対象のプレイヤー"))
                 .argument(StringArgument.greedy("reason"), ArgumentDescription.of("理由"))
                 .handler(this::addEBan)
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "ターゲットのEBanを解除します。")
                 .literal("remove", "del", "rem")
-                .argument(OfflinePlayerArgument.of("player"), ArgumentDescription.of("対象のプレイヤー名"))
+                .argument(OfflinePlayerArgument.of("player"), ArgumentDescription.of("対象のプレイヤー"))
                 .handler(this::removeEBan)
                 .build(),
             builder

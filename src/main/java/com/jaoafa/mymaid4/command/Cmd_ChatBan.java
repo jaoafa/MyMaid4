@@ -60,7 +60,7 @@ public class Cmd_ChatBan extends MyMaidLibrary implements CommandPremise {
                 .literal("status", "list")
                 .argument(OfflinePlayerArgument
                     .<CommandSender>newBuilder("player")
-                    .asOptional(), ArgumentDescription.of("詳細を表示するプレイヤー名"))
+                    .asOptional(), ArgumentDescription.of("詳細を表示するプレイヤー"))
                 .handler(this::getStatus)
                 .build()
         );

@@ -11,11 +11,15 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
-import com.jaoafa.mymaid4.lib.*;
+import com.jaoafa.mymaid4.lib.CommandPremise;
+import com.jaoafa.mymaid4.lib.MyMaidCommand;
+import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import com.jaoafa.mymaid4.lib.PlayerVoteDataMCJP;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -39,7 +43,7 @@ public class Cmd_LoginText extends MyMaidLibrary implements CommandPremise {
             builder
                 .meta(CommandMeta.DESCRIPTION, "ログイン時に表示されるテキストに任意のテキストを追加します。")
                 .senderType(Player.class)
-                .argument(StringArgument.greedy("loginText"))
+                .argument(StringArgument.greedy("loginText"), ArgumentDescription.of("変更後のログインテキスト"))
                 .handler(this::setLoginText)
                 .build()
         );
