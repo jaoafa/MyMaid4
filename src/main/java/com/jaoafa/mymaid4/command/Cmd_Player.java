@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
@@ -50,7 +51,7 @@ public class Cmd_Player extends MyMaidLibrary implements CommandPremise {
                 .meta(CommandMeta.DESCRIPTION, "指定されたプレイヤーの権限グループを表示します。")
                 .argument(StringArgument
                     .<CommandSender>newBuilder("player")
-                    .withSuggestionsProvider(this::suggestOfflinePlayers))
+                    .withSuggestionsProvider(this::suggestOfflinePlayers), ArgumentDescription.of("対象のプレイヤー"))
                 .handler(this::getPermGroup)
                 .build()
         );

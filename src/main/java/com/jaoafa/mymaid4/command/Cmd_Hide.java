@@ -43,7 +43,6 @@ public class Cmd_Hide extends MyMaidLibrary implements CommandPremise {
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "指定したプレイヤーを他のプレイヤーから姿を隠します。")
-                .senderType(Player.class)
                 .argument(PlayerArgument.of("target"))
                 .handler(this::addHidOther)
                 .build()

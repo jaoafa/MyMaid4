@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
@@ -49,7 +50,7 @@ public class Cmd_VarCmd extends MyMaidLibrary implements CommandPremise {
         return new MyMaidCommand.Cmd(
             builder
                 .meta(CommandMeta.DESCRIPTION, "変数を含むコマンドの変数を置き換え、実行します。")
-                .argument(StringArgument.greedy("command"))
+                .argument(StringArgument.greedy("command"), ArgumentDescription.of("変数を含むコマンド"))
                 .handler(this::runCommand)
                 .build()
         );

@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.BooleanArgument;
 import cloud.commandframework.context.CommandContext;
@@ -41,7 +42,7 @@ public class Cmd_TempMute extends MyMaidLibrary implements CommandPremise {
                 .senderType(Player.class)
                 .argument(BooleanArgument
                     .<CommandSender>newBuilder("changeTo")
-                    .asOptional())
+                    .asOptional(), ArgumentDescription.of("オン・オフのいずれか (未指定の場合トグル)"))
                 .handler(this::changeTempMute)
                 .build()
         );

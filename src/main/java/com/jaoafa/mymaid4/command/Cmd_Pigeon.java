@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.IntegerArgument;
 import cloud.commandframework.arguments.standard.StringArgument;
@@ -45,14 +46,14 @@ public class Cmd_Pigeon extends MyMaidLibrary implements CommandPremise {
                 .meta(CommandMeta.DESCRIPTION, "伝書鳩ちゃんにスピーカーを追加してもらいます。")
                 .literal("speaker", "speakers")
                 .literal("add")
-                .argument(StringArgument.greedy("speaker"))
+                .argument(StringArgument.greedy("speaker"), ArgumentDescription.of("スピーカー名"))
                 .handler(this::addSpeaker)
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "伝書鳩ちゃんにメッセージを追加してもらいます。")
                 .literal("messages", "message", "msg")
                 .literal("add")
-                .argument(StringArgument.greedy("message"))
+                .argument(StringArgument.greedy("message"), ArgumentDescription.of("メッセージ内容"))
                 .handler(this::addMessage)
                 .build(),
             builder
@@ -62,7 +63,7 @@ public class Cmd_Pigeon extends MyMaidLibrary implements CommandPremise {
                 .argument(StringArgument
                     .<CommandSender>newBuilder("speaker")
                     .asOptional()
-                    .withSuggestionsProvider(this::suggestSpeakers))
+                    .withSuggestionsProvider(this::suggestSpeakers), ArgumentDescription.of("スピーカー名もしくはID"))
                 .handler(this::removeSpeaker)
                 .build(),
             builder
@@ -72,7 +73,7 @@ public class Cmd_Pigeon extends MyMaidLibrary implements CommandPremise {
                 .argument(StringArgument
                     .<CommandSender>newBuilder("message")
                     .asOptional()
-                    .withSuggestionsProvider(this::suggestMessages))
+                    .withSuggestionsProvider(this::suggestMessages), ArgumentDescription.of("メッセージ内容"))
                 .handler(this::removeMessage)
                 .build(),
             builder
@@ -93,7 +94,7 @@ public class Cmd_Pigeon extends MyMaidLibrary implements CommandPremise {
                 .argument(IntegerArgument
                     .<CommandSender>newBuilder("messageId")
                     .asOptional()
-                    .withSuggestionsProvider(this::suggestMessageIds))
+                    .withSuggestionsProvider(this::suggestMessageIds), ArgumentDescription.of("メッセージID"))
                 .handler(this::broadcast)
                 .build()
         );

@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.bukkit.parsers.PlayerArgument;
 import cloud.commandframework.context.CommandContext;
@@ -29,7 +30,7 @@ public class Cmd_Show extends MyMaidLibrary implements CommandPremise {
     public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
             "show",
-            "Hide状態を解除します。"
+            "姿を見えるようにします。"
         );
     }
 
@@ -37,14 +38,13 @@ public class Cmd_Show extends MyMaidLibrary implements CommandPremise {
     public MyMaidCommand.Cmd register(Command.Builder<CommandSender> builder) {
         return new MyMaidCommand.Cmd(
             builder
-                .meta(CommandMeta.DESCRIPTION, "Hide状態を解除します。")
+                .meta(CommandMeta.DESCRIPTION, "姿を見えるようにします。")
                 .senderType(Player.class)
                 .handler(this::liftHid)
                 .build(),
             builder
-                .meta(CommandMeta.DESCRIPTION, "指定したプレイヤーのHide状態を解除します。")
-                .senderType(Player.class)
-                .argument(PlayerArgument.of("target"))
+                .meta(CommandMeta.DESCRIPTION, "指定したプレイヤーの姿を見えるようにします。")
+                .argument(PlayerArgument.of("target"), ArgumentDescription.of("対象のプレイヤー"))
                 .handler(this::liftHidOther)
                 .build()
         );

@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.BooleanArgument;
 import cloud.commandframework.arguments.standard.IntegerArgument;
@@ -42,16 +43,16 @@ public class Cmd_Time extends MyMaidLibrary implements CommandPremise {
             builder
                 .meta(CommandMeta.DESCRIPTION, "自分だけに適用される時間を設定します。")
                 .literal("set")
-                .argument(StringArgument.of("timeName"))
-                .argument(BooleanArgument.optional("isRelative"))
+                .argument(StringArgument.of("timeName"), ArgumentDescription.of("時間の名前"))
+                .argument(BooleanArgument.optional("isRelative"), ArgumentDescription.of("ワールド時間と相対的に保つか"))
                 .senderType(Player.class)
                 .handler(this::timeSetByName)
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "自分だけに適用される時間を進めます。")
                 .literal("add")
-                .argument(IntegerArgument.of("timeInt"))
-                .argument(BooleanArgument.optional("isRelative"))
+                .argument(IntegerArgument.of("timeInt"), ArgumentDescription.of("時間"))
+                .argument(BooleanArgument.optional("isRelative"), ArgumentDescription.of("ワールド時間と相対的に保つか"))
                 .senderType(Player.class)
                 .handler(this::timeAddByInt)
                 .build()

@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
@@ -53,7 +54,7 @@ public class Cmd_SKKColor extends MyMaidLibrary implements CommandPremise {
                 .meta(CommandMeta.DESCRIPTION, "チャット欄に表示される四角の色を変更します。")
                 .senderType(Player.class)
                 .argument(StringArgument.<CommandSender>newBuilder("color")
-                    .withSuggestionsProvider(this::suggestColors))
+                    .withSuggestionsProvider(this::suggestColors), ArgumentDescription.of("変更後の四角色"))
                 .handler(this::setSKKColor)
                 .build()
         );
