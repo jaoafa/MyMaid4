@@ -3,6 +3,7 @@
 !.idea/scopes
 !.idea/copyright
 !.idea/codeStyles
+!.idea/inspectionProfiles
 
 *.iml
 *.ipr
