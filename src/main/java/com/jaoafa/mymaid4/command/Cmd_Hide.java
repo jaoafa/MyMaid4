@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.bukkit.parsers.PlayerArgument;
 import cloud.commandframework.context.CommandContext;
@@ -43,7 +44,7 @@ public class Cmd_Hide extends MyMaidLibrary implements CommandPremise {
                 .build(),
             builder
                 .meta(CommandMeta.DESCRIPTION, "指定したプレイヤーを他のプレイヤーから姿を隠します。")
-                .argument(PlayerArgument.of("target"))
+                .argument(PlayerArgument.of("target"), ArgumentDescription.of("対象のプレイヤー"))
                 .handler(this::addHidOther)
                 .build()
         );
