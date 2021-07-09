@@ -11,12 +11,20 @@
 
 package com.jaoafa.mymaid4.lib;
 
+import com.jaoafa.mymaid4.Main;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.TextChannel;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.*;
 import java.sql.*;
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 import java.util.*;
 
 public class Historyjao {
@@ -45,7 +53,7 @@ public class Historyjao {
         return hist;
     }
 
-    public boolean add(String message) {
+    public boolean add(String message, CommandSender sender) {
         if (MyMaidData.getMainMySQLDBManager() == null) {
             throw new IllegalStateException("Main.MySQLDBManager == null");
         }
@@ -62,15 +70,40 @@ public class Historyjao {
             e.printStackTrace();
             return false;
         }
+        addDiscordNotify(message, sender);
         DBSync(true);
         return true;
+    }
+
+    private void addDiscordNotify(String message, CommandSender sender) {
+        JDA jda = Main.getMyMaidConfig().getJDA();
+        if (jda == null) {
+            return;
+        }
+        TextChannel channel = jda.getTextChannelById(862918445031882782L);
+        if (channel == null) {
+            return;
+        }
+        EmbedBuilder builder = new EmbedBuilder()
+            .setTitle("HISTORY ADDED")
+            .setDescription("jaoHistoryに項目が追加されました。")
+            .addField("MinecraftID", player.getName(), false)
+            .addField("Message", message, false)
+            .setTimestamp(Instant.now())
+            .setColor(Color.YELLOW);
+        if (sender instanceof Player) {
+            builder.setAuthor(sender.getName(),
+                "https://users.jaoafa.com/" + ((Player) sender).getUniqueId(),
+                "https://crafatar.com/renders/head/" + ((Player) sender).getUniqueId() + "?overlay=true");
+        }
+        channel.sendMessageEmbeds(builder.build()).queue();
     }
 
     public boolean autoAdd(String prefix, String details) {
         if (getDataList().stream().anyMatch(d -> d.message.startsWith(prefix))) {
             return false;
         }
-        return add(prefix + " " + details);
+        return add(prefix + " " + details, null);
     }
 
     public boolean disable(int id) {
