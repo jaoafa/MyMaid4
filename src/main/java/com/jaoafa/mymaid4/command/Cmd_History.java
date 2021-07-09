@@ -95,7 +95,7 @@ public class Cmd_History extends MyMaidLibrary implements CommandPremise {
         String message = context.get("message");
 
         Historyjao histjao = Historyjao.getHistoryjao(target);
-        boolean bool = histjao.add(message);
+        boolean bool = histjao.add(message, context.getSender());
         SendMessage(sender, details(), String.format("%s の jaoHistory への登録に%sしました。", target.getName(), bool ? "成功" : "失敗"));
     }
 
