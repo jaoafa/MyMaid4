@@ -85,7 +85,7 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener, EventPr
                 "https://crafatar.com/renders/body/" + player.getUniqueId() + ".png?overlay=true&scale=10");
             builder.setAuthor(Main.getMyMaidConfig().getJDA().getSelfUser().getName(), null,
                 Main.getMyMaidConfig().getJDA().getSelfUser().getAvatarUrl());
-            jaotan.sendMessage(builder.build()).queue();
+            jaotan.sendMessageEmbeds(builder.build()).queue();
 
             if (mcbans != null && (mcbans.getGlobalCount() > 0 || mcbans.getLocalCount() > 0)) {
                 int[] global_ids = mcbans.getGlobalBanIds();
@@ -127,7 +127,7 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener, EventPr
                     }
                 }
 
-                jaotan.sendMessage(embed.build()).queue();
+                jaotan.sendMessageEmbeds(embed.build()).queue();
             }
         }
     }

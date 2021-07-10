@@ -28,6 +28,6 @@ public class Event_TempMute extends MyMaidLibrary implements Listener, EventPrem
     public void onChat(AsyncChatEvent event) {
         if (MyMaidData.getTempMuting().size() == 0) return;
 
-        event.recipients().removeAll(MyMaidData.getTempMuting());
+        event.viewers().removeAll(MyMaidData.getTempMuting());
     }
 }

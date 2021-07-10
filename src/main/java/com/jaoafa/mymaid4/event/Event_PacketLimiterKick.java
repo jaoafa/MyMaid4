@@ -70,6 +70,6 @@ public class Event_PacketLimiterKick extends MyMaidLibrary implements Listener, 
         if (MyMaidData.getJaotanChannel() == null) {
             return;
         }
-        MyMaidData.getJaotanChannel().sendMessage(embed.build()).queue();
+        MyMaidData.getJaotanChannel().sendMessageEmbeds(embed.build()).queue();
     }
 }

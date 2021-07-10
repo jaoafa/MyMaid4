@@ -111,7 +111,7 @@ public class MyMaidLibrary {
             .setColor(Color.RED)
             .setFooter(String.format("MyMaid4 %s", Main.getJavaPlugin().getDescription().getVersion()))
             .build();
-        reportChannel.sendMessage(embed).queue();
+        reportChannel.sendMessageEmbeds(embed).queue();
         reportChannel.sendFile(is, "stacktrace.txt").queue();
     }
 
