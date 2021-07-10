@@ -153,7 +153,7 @@ public class Event_AdvancementDiscordNotify extends MyMaidLibrary implements Lis
         STORY_SMELT_IRON("金属を手に入れる"),
         STORY_UPGRADE_TOOLS("アップグレード");
 
-        String translated;
+        final String translated;
 
         Advancements(String translated) {
             this.translated = translated;
