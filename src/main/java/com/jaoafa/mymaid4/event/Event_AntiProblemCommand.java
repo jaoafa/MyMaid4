@@ -266,11 +266,11 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
     static class AntiCmd_BanCmd implements AntiCommand {
         @Override
         public void execute(PlayerCommandPreprocessEvent event, Player player, String[] args) {
-            if (args.length != 0 &&
-                args[1].equalsIgnoreCase(player.getName()) ||
-                args[1].equalsIgnoreCase("me") ||
-                args[1].equalsIgnoreCase("@p") ||
-                args[1].equalsIgnoreCase("@s")) {
+            if (args.length >= 2 &&
+                (args[1].equalsIgnoreCase(player.getName()) ||
+                    args[1].equalsIgnoreCase("me") ||
+                    args[1].equalsIgnoreCase("@p") ||
+                    args[1].equalsIgnoreCase("@s"))) {
                 // 自分で自分をBan
                 player.kick(Component.translatable("multiplayer.disconnect.banned"));
                 event.setCancelled(true);
@@ -294,11 +294,12 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
     static class AntiCmd_KickCmd implements AntiCommand {
         @Override
         public void execute(PlayerCommandPreprocessEvent event, Player player, String[] args) {
-            if (args.length != 0 &&
-                args[1].equalsIgnoreCase(player.getName()) ||
-                args[1].equalsIgnoreCase("me") ||
-                args[1].equalsIgnoreCase("@p") ||
-                args[1].equalsIgnoreCase("@s")) {
+            System.out.println("args.length: " + args.length);
+            if (args.length >= 2 &&
+                (args[1].equalsIgnoreCase(player.getName()) ||
+                    args[1].equalsIgnoreCase("me") ||
+                    args[1].equalsIgnoreCase("@p") ||
+                    args[1].equalsIgnoreCase("@s"))) {
                 // 自分で自分をキック
                 player.kick(Component.translatable("multiplayer.disconnect.kicked"));
                 event.setCancelled(true);
