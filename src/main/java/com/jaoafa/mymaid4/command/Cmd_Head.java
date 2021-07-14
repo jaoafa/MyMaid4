@@ -77,7 +77,7 @@ public class Cmd_Head extends MyMaidLibrary implements CommandPremise {
 
     void givePlayerHead(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
-        OfflinePlayer targetPlayer = context.getOrDefault("player", null);
+        OfflinePlayer targetPlayer = context.get("player");
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
         meta.setOwningPlayer(targetPlayer);
@@ -86,7 +86,7 @@ public class Cmd_Head extends MyMaidLibrary implements CommandPremise {
         ItemStack main = inv.getItemInMainHand();
 
         inv.setItemInMainHand(skull);
-        SendMessage(player, details(), "「" + targetPlayer + "の頭」をメインハンドのアイテムと置きかえました。" );
+        SendMessage(player, details(), "「" + targetPlayer.getName() + "の頭」をメインハンドのアイテムと置きかえました。");
 
         if (main.getType() != Material.AIR) {
             if (player.getInventory().firstEmpty() == -1) {
