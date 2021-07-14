@@ -28,7 +28,8 @@ public class Event_SpectatorDynmapHide extends MyMaidLibrary implements Listener
         return "スペクテイターモードの際、Dynmapから姿を隠します。";
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.MONITOR,
+                  ignoreCancelled = true)
     public void onChangedGameMode(PlayerGameModeChangeEvent event) {
         if (isDisabledPlugin("dynmap")) {
             return;
