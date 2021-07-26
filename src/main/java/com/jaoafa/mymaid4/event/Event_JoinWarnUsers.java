@@ -52,7 +52,7 @@ public class Event_JoinWarnUsers extends MyMaidLibrary implements Listener, Even
                 }
                 try {
                     JSONObject object = new JSONObject(Files.readString(file.toPath()));
-                    if (!object.has(player.getName())) {
+                    if (!object.has(uuid.toString())) {
                         return;
                     }
                     TextChannel channel = MyMaidData.getJaotanChannel();
@@ -63,7 +63,7 @@ public class Event_JoinWarnUsers extends MyMaidLibrary implements Listener, Even
                         .setColor(Color.RED)
                         .setTitle(player.getName() + " は警告対象者です")
                         .setAuthor(player.getName(), "https://users.jaoafa.com/" + uuid, "https://crafatar.com/avatars/" + uuid)
-                        .setDescription("理由: " + object.getString(player.getName()))
+                        .setDescription("理由: " + object.getString(uuid.toString()))
                         .setTimestamp(Instant.now())
                         .setFooter("MyMaid4 WarnUsers");
                     channel.sendMessageEmbeds(builder.build()).queue();
