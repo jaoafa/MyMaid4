@@ -38,12 +38,12 @@ public class Cmd_SecretTP extends MyMaidLibrary implements CommandPremise {
             builder
                 .meta(CommandMeta.DESCRIPTION, "スぺテクターで特定のプレイヤーにテレポートします。")
                 .argument(PlayerArgument.of("player"), ArgumentDescription.of("テレポートするプレイヤー名"))
-                .handler(this::giveBarrierToPlayer)
+                .handler(this::secretTP)
                 .build()
         );
     }
 
-    void giveBarrierToPlayer(CommandContext<CommandSender> context) {
+    void secretTP(CommandContext<CommandSender> context) {
         Player target = context.getOrDefault("player", null);
         Player player = (Player) context.getSender();
         if (target == null) return;

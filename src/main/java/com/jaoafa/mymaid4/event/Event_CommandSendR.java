@@ -56,8 +56,7 @@ public class Event_CommandSendR extends MyMaidLibrary implements Listener, Event
                                 Style.style()
                                     .color(NamedTextColor.DARK_AQUA)
                                     .decorate(TextDecoration.UNDERLINED)
-                                    .clickEvent(ClickEvent.runCommand("/g sp"))
-                                    .clickEvent(ClickEvent.runCommand("/tp " + player.getName()))
+                                    .clickEvent(ClickEvent.runCommand("/secrettp " + player.getName()))
                                     .hoverEvent(HoverEvent.showText(
                                         Component.text(String.format("スぺテクターで%sにテレポート", player.getName()))
                                     ))
