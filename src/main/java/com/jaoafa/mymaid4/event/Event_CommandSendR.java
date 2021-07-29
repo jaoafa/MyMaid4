@@ -41,37 +41,6 @@ public class Event_CommandSendR extends MyMaidLibrary implements Listener, Event
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             //AMRかつAMではない = R
             //かつ実行者本人ではない
-            if (p.getName().equals("yuuaHP")) {
-                p.sendMessage(
-                    Component.text()
-                        .color(NamedTextColor.DARK_GRAY)
-                        .append(
-                            // [Group/PlayerName] command test test (取り消し済み)
-                            Component.text(
-                                String.format("[%s/", group),
-                                NamedTextColor.GRAY
-                            ),
-                            Component.text(
-                                player.getName(),
-                                Style.style()
-                                    .color(NamedTextColor.DARK_AQUA)
-                                    .decorate(TextDecoration.UNDERLINED)
-                                    .clickEvent(ClickEvent.runCommand("/secrettp " + player.getName()))
-                                    .hoverEvent(HoverEvent.showText(
-                                        Component.text(String.format("スぺテクターで%sにテレポート", player.getName()))
-                                    ))
-                                    .build()
-                            ),
-                            Component.text(
-                                "] ",
-                                NamedTextColor.GRAY
-                            ),
-                            Component.text(command, NamedTextColor.YELLOW),
-                            Component.text((event.isCancelled() ? " (取り消し済み)" : ""), NamedTextColor.RED)
-                        )
-                );
-
-            }
             if (isAMR(p) && (!isAM(p)) && (!player.getName().equals(p.getName()))) {
                 if (MyMaidData.getTempMuting().contains(player)) return;
 
