@@ -275,6 +275,17 @@ public class MyMaidLibrary {
     }
 
     /**
+     * プレイヤーがRegularであるかを判定します。
+     *
+     * @param player 判定するプレイヤー
+     */
+    protected static boolean isR(OfflinePlayer player) {
+        String group = getPermissionMainGroup(player);
+        if (group == null) return false;
+        return group.equalsIgnoreCase("Regular");
+    }
+
+    /**
      * プレイヤーがVerifiedであるかを判定します。
      *
      * @param player 判定するプレイヤー

@@ -27,31 +27,19 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-public class Event_CommandSendAM extends MyMaidLibrary implements Listener, EventPremise {
+public class Event_CommandSendR extends MyMaidLibrary implements Listener, EventPremise {
     @Override
     public String description() {
-        return "実行されたコマンドをAdminとModeratorに通知します。";
+        return "実行されたコマンドをRegularに通知します。";
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onCommand(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
         String command = event.getMessage();
-        if (isAMRV(player)) {
-            // Default以上は実行試行したコマンドを返す
-            player.sendMessage(
-                Component.text()
-                    .color(NamedTextColor.DARK_GRAY)
-                    .append(
-                        Component.text("["),
-                        Component.text("Cmd", Style.style(TextDecoration.UNDERLINED, ClickEvent.copyToClipboard(command)).toBuilder().build()),
-                        Component.text("] " + command)
-                    )
-            );
-        }
         String group = getPermissionMainGroup(player);
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            if (isAM(p) && (!player.getName().equals(p.getName()))) {
+            if (isR(p) && (!player.getName().equals(p.getName()))) {
                 if (MyMaidData.getTempMuting().contains(player)) return;
 
                 p.sendMessage(
@@ -84,61 +72,5 @@ public class Event_CommandSendAM extends MyMaidLibrary implements Listener, Even
                 );
             }
         }
-
-        // Lunachat - jp translate
-
-        // TODO 実装する
-        /*
-        if (!Bukkit.getServer().getPluginManager().isPluginEnabled("LunaChat")) {
-            return;
-        }
-        LunaChat lunachat = (LunaChat) Bukkit.getServer().getPluginManager().getPlugin("LunaChat");
-        LunaChatAPI lunachatapi = lunachat.getLunaChatAPI();
-
-        if (!command.contains(" ")) {
-            return;
-        }
-        String[] commands = command.split(" ", 0);
-        List<String> tells = new ArrayList<String>() {
-            {
-                add("/tell");
-                add("/msg");
-                add("/message");
-                add("/m");
-                add("/t");
-                add("/w");
-            }
-        };
-
-        if (tells.contains(commands[0])) {
-            if (commands.length <= 2) {
-                return;
-            }
-            String text = String.join(" ", Arrays.copyOfRange(commands, 2, commands.length));
-            if (!lunachatapi.isPlayerJapanize(player.getName())) {
-                return;
-            }
-            String jp = lunachatapi.japanize(text, JapanizeType.GOOGLE_IME);
-            for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-                if (isAM(p) && (!player.getName().equals(p.getName()))) {
-                    p.sendMessage(ChatColor.GRAY + "(" + ChatColor.YELLOW + jp + ChatColor.GRAY + ")");
-                }
-            }
-        } else if (commands[0].equalsIgnoreCase("/r")) {
-            if (commands.length <= 1) {
-                return;
-            }
-            String text = String.join(" ", Arrays.copyOfRange(commands, 1, commands.length));
-            if (!lunachatapi.isPlayerJapanize(player.getName())) {
-                return;
-            }
-            String jp = lunachatapi.japanize(text, JapanizeType.GOOGLE_IME);
-            for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-                if (isAM(p) && (!player.getName().equals(p.getName()))) {
-                    p.sendMessage(ChatColor.GRAY + "(" + ChatColor.YELLOW + jp + ChatColor.GRAY + ")");
-                }
-            }
-        }
-        */
     }
 }
