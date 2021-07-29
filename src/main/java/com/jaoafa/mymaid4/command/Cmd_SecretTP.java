@@ -36,7 +36,7 @@ public class Cmd_SecretTP extends MyMaidLibrary implements CommandPremise {
     public MyMaidCommand.Cmd register(Command.Builder<CommandSender> builder) {
         return new MyMaidCommand.Cmd(
             builder
-                .meta(CommandMeta.DESCRIPTION, "スぺテクターで特定のプレイヤーにテレポートします。")
+                .meta(CommandMeta.DESCRIPTION, "スペクテイターで特定のプレイヤーにテレポートします。")
                 .argument(PlayerArgument.of("player"), ArgumentDescription.of("テレポートするプレイヤー名"))
                 .handler(this::secretTP)
                 .build()
@@ -53,6 +53,6 @@ public class Cmd_SecretTP extends MyMaidLibrary implements CommandPremise {
         }
         target.setGameMode(GameMode.SPECTATOR);
         target.teleport(target);
-        SendMessage(player,details(),target.getName()+"にスぺテクターでテレポートしました。");
+        SendMessage(player,details(),target.getName()+"にスペクテイターでテレポートしました。");
     }
 }

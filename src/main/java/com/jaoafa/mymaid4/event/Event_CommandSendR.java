@@ -39,9 +39,7 @@ public class Event_CommandSendR extends MyMaidLibrary implements Listener, Event
         String command = event.getMessage();
         String group = getPermissionMainGroup(player);
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            //AMRかつAMではない = R
-            //かつ実行者本人ではない
-            if (isAMR(p) && (!isAM(p)) && (!player.getName().equals(p.getName()))) {
+            if (isR(p) && (!player.getName().equals(p.getName()))) {
                 if (MyMaidData.getTempMuting().contains(player)) return;
 
                 p.sendMessage(
@@ -56,11 +54,11 @@ public class Event_CommandSendR extends MyMaidLibrary implements Listener, Event
                             Component.text(
                                 player.getName(),
                                 Style.style()
-                                    .color(NamedTextColor.DARK_AQUA)
+                                    .color(NamedTextColor.GRAY)
                                     .decorate(TextDecoration.UNDERLINED)
                                     .clickEvent(ClickEvent.runCommand("/secrettp " + player.getName()))
                                     .hoverEvent(HoverEvent.showText(
-                                        Component.text(String.format("スぺテクターで%sにテレポート", player.getName()))
+                                        Component.text(String.format("スペクテイターで%sにテレポート", player.getName()))
                                     ))
                                     .build()
                             ),
@@ -69,7 +67,7 @@ public class Event_CommandSendR extends MyMaidLibrary implements Listener, Event
                                 NamedTextColor.GRAY
                             ),
                             Component.text(command, NamedTextColor.YELLOW),
-                            Component.text((event.isCancelled() ? " (取り消し済み)" : ""), NamedTextColor.RED)
+                            Component.text((event.isCancelled() ? " (拒否)" : ""), NamedTextColor.RED)
                         )
                 );
             }

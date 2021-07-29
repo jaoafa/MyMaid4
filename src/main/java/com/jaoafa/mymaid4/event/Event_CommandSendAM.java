@@ -66,11 +66,11 @@ public class Event_CommandSendAM extends MyMaidLibrary implements Listener, Even
                             Component.text(
                                 player.getName(),
                                 Style.style()
-                                    .color(NamedTextColor.DARK_AQUA)
+                                    .color(NamedTextColor.GRAY)
                                     .decorate(TextDecoration.UNDERLINED)
                                     .clickEvent(ClickEvent.runCommand("/secrettp " + player.getName()))
                                     .hoverEvent(HoverEvent.showText(
-                                        Component.text(String.format("スぺテクターで%sにテレポート", player.getName()))
+                                        Component.text(String.format("スペクテイターで%sにテレポート", player.getName()))
                                     ))
                                     .build()
                             ),
@@ -79,7 +79,7 @@ public class Event_CommandSendAM extends MyMaidLibrary implements Listener, Even
                                 NamedTextColor.GRAY
                             ),
                             Component.text(command, NamedTextColor.YELLOW),
-                            Component.text((event.isCancelled() ? " (取り消し済み)" : ""), NamedTextColor.RED)
+                            Component.text((event.isCancelled() ? " (拒否)" : ""), NamedTextColor.RED)
                         )
                 );
             }
