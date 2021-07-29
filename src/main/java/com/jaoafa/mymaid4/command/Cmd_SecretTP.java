@@ -28,7 +28,7 @@ public class Cmd_SecretTP extends MyMaidLibrary implements CommandPremise {
     public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
             "secrettp",
-            "スぺテクターでテレポートします。"
+            "スペクテイターでテレポートします。"
         );
     }
 
@@ -53,6 +53,6 @@ public class Cmd_SecretTP extends MyMaidLibrary implements CommandPremise {
         }
         target.setGameMode(GameMode.SPECTATOR);
         target.teleport(target);
-        SendMessage(player,details(),target.getName()+"にスペクテイターでテレポートしました。");
+        SendMessage(player, details(), target.getName() + "にスペクテイターでテレポートしました。");
     }
 }
