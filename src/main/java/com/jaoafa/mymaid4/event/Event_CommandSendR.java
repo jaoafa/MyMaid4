@@ -37,18 +37,6 @@ public class Event_CommandSendR extends MyMaidLibrary implements Listener, Event
     public void onCommand(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
         String command = event.getMessage();
-        if (isAMRV(player)) {
-            // Default以上は実行試行したコマンドを返す
-            player.sendMessage(
-                Component.text()
-                    .color(NamedTextColor.DARK_GRAY)
-                    .append(
-                        Component.text("["),
-                        Component.text("Cmd", Style.style(TextDecoration.UNDERLINED, ClickEvent.copyToClipboard(command)).toBuilder().build()),
-                        Component.text("] " + command)
-                    )
-            );
-        }
         String group = getPermissionMainGroup(player);
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             //AMRかつAMではない = R
