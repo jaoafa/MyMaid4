@@ -14,8 +14,13 @@ package com.jaoafa.mymaid4.event;
 import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -34,16 +39,50 @@ public class Event_CommandSendAM extends MyMaidLibrary implements Listener, Even
         String command = event.getMessage();
         if (isAMRV(player)) {
             // Default以上は実行試行したコマンドを返す
-            player.sendMessage(ChatColor.DARK_GRAY + "Cmd: " + command); // 仮
+            player.sendMessage(
+                Component.text()
+                    .color(NamedTextColor.DARK_GRAY)
+                    .append(
+                        Component.text("["),
+                        Component.text("Cmd", Style.style(TextDecoration.UNDERLINED, ClickEvent.copyToClipboard(command)).toBuilder().build()),
+                        Component.text("] " + command)
+                    )
+            );
         }
         String group = getPermissionMainGroup(player);
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             if (isAM(p) && (!player.getName().equals(p.getName()))) {
-                if (MyMaidData.getTempMuting().contains(player)) {
-                    return;
-                }
+                if (MyMaidData.getTempMuting().contains(player)) return;
+
                 p.sendMessage(
-                    ChatColor.GRAY + "(" + group + ") " + player.getName() + ": " + ChatColor.YELLOW + command + (event.isCancelled() ? ChatColor.RED + " (Canceled)" : ""));
+                    Component.text()
+                        .color(NamedTextColor.DARK_GRAY)
+                        .append(
+                            // [Group/PlayerName] command test test (取り消し済み)
+                            Component.text(
+                                String.format("[%s/", group),
+                                NamedTextColor.GRAY
+                            ),
+                            Component.text(
+                                player.getName(),
+                                Style.style()
+                                    .color(NamedTextColor.DARK_AQUA)
+                                    .decorate(TextDecoration.UNDERLINED)
+                                    .clickEvent(ClickEvent.runCommand("/g sp"))
+                                    .clickEvent(ClickEvent.runCommand("/tp " + player.getName()))
+                                    .hoverEvent(HoverEvent.showText(
+                                        Component.text(String.format("スぺテクターで%sにテレポート", player.getName()))
+                                    ))
+                                    .build()
+                            ),
+                            Component.text(
+                                "] ",
+                                NamedTextColor.GRAY
+                            ),
+                            Component.text(command, NamedTextColor.YELLOW),
+                            Component.text((event.isCancelled() ? " (取り消し済み)" : ""), NamedTextColor.RED)
+                        )
+                );
             }
         }
 

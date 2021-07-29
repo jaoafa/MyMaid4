@@ -55,6 +55,7 @@ public class Event_CommandSendR extends MyMaidLibrary implements Listener, Event
             //かつ実行者本人ではない
             if (isAMR(p) && (!isAM(p)) && (!player.getName().equals(p.getName()))) {
                 if (MyMaidData.getTempMuting().contains(player)) return;
+
                 p.sendMessage(
                     Component.text()
                         .color(NamedTextColor.DARK_GRAY)
