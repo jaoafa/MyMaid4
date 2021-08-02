@@ -48,11 +48,11 @@ public class Cmd_SecretTP extends MyMaidLibrary implements CommandPremise {
         Player player = (Player) context.getSender();
         if (target == null) return;
         if (!isAMR(player)) {
-            SendMessage(target, details(), "あなたの権限ではこのコマンドを実行することができません！");
+            SendMessage(player, details(), "あなたの権限ではこのコマンドを実行することができません！");
             return;
         }
-        target.setGameMode(GameMode.SPECTATOR);
-        target.teleport(target);
+        player.setGameMode(GameMode.SPECTATOR);
+        player.teleport(target);
         SendMessage(player, details(), target.getName() + "にスペクテイターでテレポートしました。");
     }
 }
