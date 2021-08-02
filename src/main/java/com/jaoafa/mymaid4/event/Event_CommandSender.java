@@ -27,19 +27,20 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-public class Event_CommandSendAM extends MyMaidLibrary implements Listener, EventPremise {
+public class Event_CommandSender extends MyMaidLibrary implements Listener, EventPremise {
     @Override
     public String description() {
-        return "実行されたコマンドをAdminとModeratorに通知します。";
+        return "実行されたコマンドを特定権限に通知します。";
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onCommand(PlayerCommandPreprocessEvent event) {
-        Player player = event.getPlayer();
+        Player executer = event.getPlayer();
         String command = event.getMessage();
-        if (isAMRV(player)) {
-            // Default以上は実行試行したコマンドを返す
-            player.sendMessage(
+        String group = getPermissionMainGroup(executer);
+        if (isAMRV(executer)) {
+            // Verified以上は実行試行したコマンドを返す
+            executer.sendMessage(
                 Component.text()
                     .color(NamedTextColor.DARK_GRAY)
                     .append(
@@ -49,39 +50,22 @@ public class Event_CommandSendAM extends MyMaidLibrary implements Listener, Even
                     )
             );
         }
-        String group = getPermissionMainGroup(player);
-        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            if (isAM(p) && (!player.getName().equals(p.getName()))) {
-                if (MyMaidData.getTempMuting().contains(player)) return;
+        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
 
-                p.sendMessage(
-                    Component.text()
-                        .color(NamedTextColor.DARK_GRAY)
-                        .append(
-                            // [Group/PlayerName] command test test (取り消し済み)
-                            Component.text(
-                                String.format("[%s/", group),
-                                NamedTextColor.GRAY
-                            ),
-                            Component.text(
-                                player.getName(),
-                                Style.style()
-                                    .color(NamedTextColor.GRAY)
-                                    .decorate(TextDecoration.UNDERLINED)
-                                    .clickEvent(ClickEvent.runCommand("/secrettp " + player.getName()))
-                                    .hoverEvent(HoverEvent.showText(
-                                        Component.text(String.format("スペクテイターで%sにテレポート", player.getName()))
-                                    ))
-                                    .build()
-                            ),
-                            Component.text(
-                                "] ",
-                                NamedTextColor.GRAY
-                            ),
-                            Component.text(command, NamedTextColor.YELLOW),
-                            Component.text((event.isCancelled() ? " (拒否)" : ""), NamedTextColor.RED)
-                        )
-                );
+            //TempMute or 実行者本人
+            if (MyMaidData.getTempMuting().contains(executer) || executer.getName().equals(player.getName())) return;
+
+            //送り先がVD
+            if (isV(player) || isD(player)) return;
+
+            //送り先がR & 実行者がRVD
+            if (isR(player) && (isR(executer) || isV(executer) || isD(executer))) {
+                sendCmd(player, executer, group, command, event);
+            }
+
+            //送り先AM & 実行者AMRVD
+            if (isAM(player)) {
+                sendCmd(player, executer, group, command, event);
             }
         }
 
@@ -140,5 +124,38 @@ public class Event_CommandSendAM extends MyMaidLibrary implements Listener, Even
             }
         }
         */
+
+    }
+
+    private static void sendCmd(Player player, Player executer, String group, String command, PlayerCommandPreprocessEvent event) {
+        player.sendMessage(
+            Component.text()
+                .color(NamedTextColor.DARK_GRAY)
+                .append(
+                    // [Group/PlayerName] command test test (取り消し済み)
+                    Component.text(
+                        String.format("[%s/", group),
+                        NamedTextColor.GRAY
+                    ),
+                    Component.text(
+                        executer.getName(),
+                        Style.style()
+                            .color(NamedTextColor.GRAY)
+                            .decorate(TextDecoration.UNDERLINED)
+                            .clickEvent(ClickEvent.runCommand("/secrettp " + executer.getName()))
+                            .hoverEvent(HoverEvent.showText(
+                                Component.text(String.format("スペクテイターで%sにテレポート", executer.getName()))
+                            ))
+                            .build()
+                    ),
+                    Component.text(
+                        "] ",
+                        NamedTextColor.GRAY
+                    ),
+                    Component.text(command, NamedTextColor.YELLOW),
+                    Component.text((event.isCancelled() ? " (拒否)" : ""), NamedTextColor.RED)
+                )
+        );
+
     }
 }
