@@ -35,12 +35,14 @@ public class Event_CommandSender extends MyMaidLibrary implements Listener, Even
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onCommand(PlayerCommandPreprocessEvent event) {
-        Player executer = event.getPlayer();
+        Player executor = event.getPlayer();
         String command = event.getMessage();
-        String group = getPermissionMainGroup(executer);
-        if (isAMRV(executer)) {
+        String group = getPermissionMainGroup(executor);
+
+        //feedback
+        if (isAMRV(executor)) {
             // Verified以上は実行試行したコマンドを返す
-            executer.sendMessage(
+            executor.sendMessage(
                 Component.text()
                     .color(NamedTextColor.DARK_GRAY)
                     .append(
@@ -50,21 +52,31 @@ public class Event_CommandSender extends MyMaidLibrary implements Listener, Even
                     )
             );
         }
+
+        //sender
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             //TempMute or 実行者本人
-            if (MyMaidData.getTempMuting().contains(executer) || executer.getName().equals(player.getName())) return;
+            if (MyMaidData.getTempMuting().contains(executor) || executor.getName().equals(player.getName())) {
+                System.out.println("TempMute or Executor");
+                return;
+            }
 
             //送り先がVD
-            if (isV(player) || isD(player)) return;
+            if (isV(player) || isD(player)) {
+                System.out.println("VDReturn");
+                return;
+            }
 
             //送り先AM & 実行者AMRVD -> 送る
             if (isAM(player)) {
-                sendCmd(player, executer, group, command, event);
+                sendCmd(player, executor, group, command, event);
+                System.out.println("sendToAM");
             }
 
             //送り先がR & 実行者がRVD -> 送る
-            if (isR(player) && (isV(executer) || isD(executer))) {
-                sendCmd(player, executer, group, command, event);
+            if (isR(player) && (isV(executor) || isD(executor))) {
+                sendCmd(player, executor, group, command, event);
+                System.out.println("sendToR");
             }
         }
 
@@ -133,7 +145,7 @@ public class Event_CommandSender extends MyMaidLibrary implements Listener, Even
                 .append(
                     // [Group/PlayerName] command test test (取り消し済み)
                     Component.text(
-                        String.format("[%s/", group),
+                        String.format("[%s|", group),
                         NamedTextColor.GRAY
                     ),
                     Component.text(
