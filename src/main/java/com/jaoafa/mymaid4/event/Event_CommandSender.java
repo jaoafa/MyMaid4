@@ -55,6 +55,7 @@ public class Event_CommandSender extends MyMaidLibrary implements Listener, Even
 
         //sender
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+            System.out.printf("%s checking...%n", player.getName());
             //TempMute or 実行者本人
             if (MyMaidData.getTempMuting().contains(executor) || executor.getName().equals(player.getName())) {
                 System.out.println("TempMute or Executor");
