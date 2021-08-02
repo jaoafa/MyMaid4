@@ -59,13 +59,13 @@ public class Event_CommandSender extends MyMaidLibrary implements Listener, Even
             //TempMute or 実行者本人
             if (MyMaidData.getTempMuting().contains(executor) || executor.getName().equals(player.getName())) {
                 System.out.println("TempMute or Executor");
-                return;
+                continue;
             }
 
             //送り先がVD
             if (isV(player) || isD(player)) {
                 System.out.println("VDReturn");
-                return;
+                continue;
             }
 
             //送り先AM & 実行者AMRVD -> 送る
