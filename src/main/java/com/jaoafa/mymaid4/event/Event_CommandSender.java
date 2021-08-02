@@ -51,20 +51,19 @@ public class Event_CommandSender extends MyMaidLibrary implements Listener, Even
             );
         }
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-
             //TempMute or 実行者本人
             if (MyMaidData.getTempMuting().contains(executer) || executer.getName().equals(player.getName())) return;
 
             //送り先がVD
             if (isV(player) || isD(player)) return;
 
-            //送り先がR & 実行者がRVD
-            if (isR(player) && (isR(executer) || isV(executer) || isD(executer))) {
+            //送り先AM & 実行者AMRVD -> 送る
+            if (isAM(player)) {
                 sendCmd(player, executer, group, command, event);
             }
 
-            //送り先AM & 実行者AMRVD
-            if (isAM(player)) {
+            //送り先がR & 実行者がRVD -> 送る
+            if (isR(player) && (isV(executer) || isD(executer))) {
                 sendCmd(player, executer, group, command, event);
             }
         }
