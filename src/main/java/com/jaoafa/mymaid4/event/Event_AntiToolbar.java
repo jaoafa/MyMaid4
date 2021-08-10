@@ -88,6 +88,10 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
             return;
         }
 
+        if (is.getType() == Material.FILLED_MAP) {
+            return; // #533 埋めてあるマップは除外
+        }
+
         event.setCurrentItem(null);
         event.setCursor(new ItemStack(Material.AIR));
         player.sendMessage(Component.text().append(
