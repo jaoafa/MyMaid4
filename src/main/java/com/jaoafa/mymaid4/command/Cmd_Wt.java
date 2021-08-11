@@ -75,7 +75,7 @@ public class Cmd_Wt extends MyMaidLibrary implements CommandPremise {
         String worldName = context.get("worldName");
         World world = Bukkit.getWorld(worlds.getOrDefault(worldName, worldName));
         if (world == null) {
-            SendMessage(player, details(), String.format("「%s」ワールドの取得に失敗しました。", worldName));
+            SendMessage(player, details(), String.format("「%s」ワールドの取得に失敗しました。", worlds.getOrDefault(worldName, worldName)));
             return;
         }
         Location loc = new Location(world, 0, 0, 0, 0, 0);
@@ -83,7 +83,7 @@ public class Cmd_Wt extends MyMaidLibrary implements CommandPremise {
         loc = new Location(world, 0, y, 0, 0, 0);
         loc.add(0.5f, 0f, 0.5f);
         player.teleport(loc);
-        SendMessage(player, details(), String.format("「%s」ワールドにテレポートしました。", worldName));
+        SendMessage(player, details(), String.format("「%s」ワールドにテレポートしました。", world.getName()));
     }
 
 
@@ -100,7 +100,7 @@ public class Cmd_Wt extends MyMaidLibrary implements CommandPremise {
         String worldName = context.get("worldName");
         World world = Bukkit.getWorld(worlds.getOrDefault(worldName, worldName));
         if (world == null) {
-            SendMessage(player, details(), String.format("「%s」ワールドの取得に失敗しました。", worldName));
+            SendMessage(player, details(), String.format("「%s」ワールドの取得に失敗しました。", worlds.getOrDefault(worldName, worldName)));
             return;
         }
         Location loc = new Location(world, 0, 0, 0, 0, 0);
@@ -108,7 +108,7 @@ public class Cmd_Wt extends MyMaidLibrary implements CommandPremise {
         loc = new Location(world, 0, y, 0, 0, 0);
         loc.add(0.5f, 0f, 0.5f);
         player.teleport(loc);
-        SendMessage(player, details(), String.format("「%s」ワールドにテレポートしました。", worldName));
-        SendMessage(sender, details(), String.format("プレイヤー「%s」を「%s」ワールドにテレポートさせました。", player, worldName));
+        SendMessage(player, details(), String.format("「%s」ワールドにテレポートしました。", world.getName()));
+        SendMessage(sender, details(), String.format("プレイヤー「%s」を「%s」ワールドにテレポートさせました。", player, world.getName()));
     }
 }
