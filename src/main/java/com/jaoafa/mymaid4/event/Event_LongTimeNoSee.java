@@ -68,7 +68,7 @@ public class Event_LongTimeNoSee extends MyMaidLibrary implements Listener, Even
                 player.getName(),
                 formattedTime));
         } catch (SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
         }
     }
 

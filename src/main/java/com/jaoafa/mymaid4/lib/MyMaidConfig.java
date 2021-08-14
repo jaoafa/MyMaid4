@@ -33,6 +33,7 @@ public class MyMaidConfig {
     private Long reportChannelId = null;
     private Long serverChatChannelId = null;
     private String githubAccessToken = null;
+    private String rollbarAccessToken = null;
 
     public void init() {
         JavaPlugin plugin = Main.getJavaPlugin();
@@ -101,7 +102,7 @@ public class MyMaidConfig {
                 MyMaidData.setMainMySQLDBManager(new MySQLDBManager(hostname, port, username, password, dbname));
             } catch (ClassNotFoundException e) {
                 plugin.getLogger().warning("MainDBのInitに失敗しました（ClassNotFoundException）一部の機能は無効化されます。");
-                e.printStackTrace();
+                MyMaidLibrary.reportError(getClass(), e);
             }
         } else {
             plugin.getLogger().warning(notFoundConfigKey("main_database"));
@@ -119,7 +120,7 @@ public class MyMaidConfig {
                 MyMaidData.setZKRHatMySQLDBManager(new MySQLDBManager(hostname, port, username, password, dbname));
             } catch (ClassNotFoundException e) {
                 plugin.getLogger().warning("ZakuroHatDBのInitに失敗しました（ClassNotFoundException）一部の機能は無効化されます。");
-                e.printStackTrace();
+                MyMaidLibrary.reportError(getClass(), e);
             }
         } else {
             plugin.getLogger().warning(notFoundConfigKey("zakurohat_database"));
@@ -129,6 +130,12 @@ public class MyMaidConfig {
             githubAccessToken = config.getString("githubAccessToken");
         } else {
             plugin.getLogger().warning(notFoundConfigKey("githubAccessToken"));
+        }
+
+        if (config.contains("rollbarAccessToken")) {
+            rollbarAccessToken = config.getString("rollbarAccessToken");
+        } else {
+            plugin.getLogger().warning(notFoundConfigKey("rollbarAccessToken"));
         }
     }
 
@@ -163,5 +170,9 @@ public class MyMaidConfig {
 
     public String getGitHubAccessToken() {
         return githubAccessToken;
+    }
+
+    public String getRollbarAccessToken() {
+        return rollbarAccessToken;
     }
 }

@@ -81,6 +81,7 @@ public class Cmd_InvSave extends MyMaidLibrary implements CommandPremise {
         } catch (IOException e) {
             reportError(getClass(), e);
             SendMessage(sender, details(), target.getName() + "のインベントリを「" + saveName + "」という名前で保存しようとしましたが失敗しました。");
+            MyMaidLibrary.reportError(getClass(), e);
         }
     }
 }

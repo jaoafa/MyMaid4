@@ -113,6 +113,10 @@ public class MyMaidLibrary {
             .build();
         reportChannel.sendMessageEmbeds(embed).queue();
         reportChannel.sendFile(is, "stacktrace.txt").queue();
+
+        if (Main.getRollbar() != null && !Main.getMyMaidConfig().isDevelopmentServer()) {
+            Main.getRollbar().critical(e, "Class: " + clazz.getName());
+        }
     }
 
     /**

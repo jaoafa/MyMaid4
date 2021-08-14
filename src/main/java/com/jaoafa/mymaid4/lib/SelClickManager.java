@@ -48,7 +48,7 @@ public class SelClickManager {
         try {
             conf.save(file);
         } catch (IOException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(SelClickManager.class, e);
         }
     }
 }
