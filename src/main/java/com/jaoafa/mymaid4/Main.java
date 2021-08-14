@@ -82,7 +82,11 @@ public final class Main extends JavaPlugin {
             return;
 
         if (config.getRollbarAccessToken() != null) {
-            rollbar = Rollbar.init(ConfigBuilder.withAccessToken(config.getRollbarAccessToken()).build());
+            rollbar = Rollbar.init(ConfigBuilder
+                .withAccessToken(config.getRollbarAccessToken())
+                .environment(!config.isDevelopmentServer() ? "production" : "development")
+                .codeVersion(getDescription().getVersion())
+                .build());
         }
 
         CarrierPigeon carrierPigeon = new CarrierPigeon(new File(this.getDataFolder(), "carrierPigeon.yml"));
