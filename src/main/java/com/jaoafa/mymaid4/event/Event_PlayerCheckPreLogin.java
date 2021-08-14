@@ -73,6 +73,7 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
             }
         } catch (SQLException e) {
             disallow(event, Component.text("サーバ側のシステムエラーによりログインできませんでした。"), "DB ERROR (3)");
+            MyMaidLibrary.reportError(Event_PlayerCheckPreLogin.class, e);
             return;
         }
 
@@ -155,11 +156,11 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
             return dr.city(ia);
         } catch (IOException e) {
             plugin.getLogger().warning("IOException catched. getGeoIP failed.");
-            e.printStackTrace();
+            MyMaidLibrary.reportError(Event_PlayerCheckPreLogin.class, e);
             return null;
         } catch (GeoIp2Exception e) {
             plugin.getLogger().warning("GeoIp2Exception catched. getGeoIP failed.");
-            e.printStackTrace();
+            MyMaidLibrary.reportError(Event_PlayerCheckPreLogin.class, e);
             return null;
         }
     }

@@ -29,6 +29,8 @@ import com.jaoafa.mymaid4.httpServer.MyMaidServer;
 import com.jaoafa.mymaid4.lib.*;
 import com.jaoafa.mymaid4.tasks.Task_Pigeon;
 import com.jaoafa.mymaid4.tasks.Task_TabList;
+import com.rollbar.notifier.Rollbar;
+import com.rollbar.notifier.config.ConfigBuilder;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import net.dv8tion.jda.api.JDABuilder;
 import net.kyori.adventure.text.Component;
@@ -68,6 +70,7 @@ public final class Main extends JavaPlugin {
     private static Main Main = null;
     private static MyMaidConfig config = null;
     private MinecraftHelp<CommandSender> minecraftHelp;
+    private static Rollbar rollbar = null;
 
     @Override
     public void onEnable() {
@@ -77,6 +80,10 @@ public final class Main extends JavaPlugin {
         config.init();
         if (!isEnabled())
             return;
+
+        if (config.getRollbarAccessToken() != null) {
+            rollbar = Rollbar.init(ConfigBuilder.withAccessToken(config.getRollbarAccessToken()).build());
+        }
 
         CarrierPigeon carrierPigeon = new CarrierPigeon(new File(this.getDataFolder(), "carrierPigeon.yml"));
         MyMaidData.setCarrierPigeon(carrierPigeon);
@@ -102,6 +109,13 @@ public final class Main extends JavaPlugin {
             config.getJDA().shutdownNow();
         }
         MyMaidServer.stopServer();
+        if (rollbar != null) {
+            try {
+                rollbar.close(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void registerCommand() {
@@ -121,6 +135,7 @@ public final class Main extends JavaPlugin {
         } catch (Exception e) {
             getLogger().warning("コマンドの登録に失敗しました。PaperCommandManagerを取得できません。");
             e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
             return;
         }
 
@@ -275,6 +290,7 @@ public final class Main extends JavaPlugin {
                         } catch (AmbiguousNodeException e) {
                             getLogger().warning(String.format("%s: コマンドの登録に失敗したため、このコマンドは使用できません: AmbiguousNodeException", cmd.toString()));
                             getLogger().warning("このエラーは、コマンドフレームワークがコマンドの引数を見分けられないエラーによるものです。literalを追加して固有なコマンドと見なせるように修正してください。");
+                            MyMaidLibrary.reportError(getClass(), e);
                         }
                     });
 
@@ -295,12 +311,14 @@ public final class Main extends JavaPlugin {
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | NoClassDefFoundError e) {
                     getLogger().warning(String.format("%s: コマンドの登録に失敗しました。", commandName));
                     e.printStackTrace();
+                    MyMaidLibrary.reportError(getClass(), e);
                 }
             }
             MyMaidData.putGetDocsData("commands", commands);
         } catch (ClassNotFoundException | IOException e) {
             getLogger().warning("コマンドの登録に失敗しました。");
             e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
         }
     }
 
@@ -362,16 +380,19 @@ public final class Main extends JavaPlugin {
                         getLogger().info(String.format("%s: イベントの登録に成功しました。", clazz.getSimpleName()));
                     } catch (ClassCastException e) {
                         getLogger().warning(String.format("%s: Listener を実装していないため、登録できませんでした。[1]", clazz.getSimpleName()));
+                        MyMaidLibrary.reportError(getClass(), e);
                     }
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | NoClassDefFoundError e) {
                     getLogger().warning(String.format("%s: イベントの登録に失敗しました。", name));
                     e.printStackTrace();
+                    MyMaidLibrary.reportError(getClass(), e);
                 }
             }
             MyMaidData.putGetDocsData("events", events);
         } catch (ClassNotFoundException | IOException e) {
             getLogger().warning("イベントの登録に失敗しました。");
             e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
         }
     }
 
@@ -400,11 +421,13 @@ public final class Main extends JavaPlugin {
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     getJavaPlugin().getLogger().warning(String.format("%s: Discordイベントの登録に成功しました。", name));
                     e.printStackTrace();
+                    MyMaidLibrary.reportError(Main.class, e);
                 }
             }
         } catch (ClassNotFoundException | IOException e) {
             getJavaPlugin().getLogger().warning("Discordイベントの登録に失敗しました。");
             e.printStackTrace();
+            MyMaidLibrary.reportError(Main.class, e);
         }
     }
 
@@ -434,11 +457,13 @@ public final class Main extends JavaPlugin {
                     items.put(material, nbts);
                 } catch (IllegalArgumentException e) {
                     getLogger().warning(MessageFormat.format("initCreativeInventoryItems: {0} がMaterialに見つかりません。", materialName));
+                    MyMaidLibrary.reportError(getClass(), e);
                 }
             }
             MyMaidData.setCreativeInventoryWithNBTs(items);
         } catch (IOException e) {
             e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
         }
     }
 
@@ -477,5 +502,9 @@ public final class Main extends JavaPlugin {
 
     public static MyMaidConfig getMyMaidConfig() {
         return config;
+    }
+
+    public static Rollbar getRollbar() {
+        return rollbar;
     }
 }

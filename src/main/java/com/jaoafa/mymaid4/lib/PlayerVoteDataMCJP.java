@@ -122,7 +122,7 @@ public class PlayerVoteDataMCJP extends MyMaidLibrary {
                 }
             }
         } catch (UnsupportedOperationException | NullPointerException | NumberFormatException | SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(PlayerVoteDataMCJP.class, e);
             return false; // エラー発生したらその日の初めての投票ではないとみなす。ただしエラー通知はする
         }
         return true; // だれも投票してなかったら、trueを返す
@@ -170,6 +170,7 @@ public class PlayerVoteDataMCJP extends MyMaidLibrary {
                 }
             }
         } catch (UnsupportedOperationException | NullPointerException | NumberFormatException e) {
+            MyMaidLibrary.reportError(getClass(), e);
             return false; // エラー発生したら投票してないものとみなす
         }
         return true; // どれもひっかからなかったら投票したものとみなす
@@ -303,7 +304,7 @@ public class PlayerVoteDataMCJP extends MyMaidLibrary {
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
         }
     }
 
@@ -337,7 +338,7 @@ public class PlayerVoteDataMCJP extends MyMaidLibrary {
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
         }
     }
 

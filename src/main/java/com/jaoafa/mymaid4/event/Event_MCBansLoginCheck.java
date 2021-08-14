@@ -100,7 +100,7 @@ public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener, E
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
             return;
         }
 
@@ -132,7 +132,7 @@ public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener, E
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
         }
     }
 
@@ -214,7 +214,7 @@ public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener, E
                     System.out.println("OnLoginAfterCheck: Timeout");
                 } catch (IOException e) {
                     System.out.println("OnLoginAfterCheck: IOException Error...");
-                    e.printStackTrace();
+                    MyMaidLibrary.reportError(getClass(), e);
                 }
             }
         }.runTaskAsynchronously(Main.getJavaPlugin());

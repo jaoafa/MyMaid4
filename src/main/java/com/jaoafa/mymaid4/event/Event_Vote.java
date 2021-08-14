@@ -188,7 +188,7 @@ public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise 
             newVote = pvd.getVoteCount();
         } catch (SQLException | NullPointerException e) {
             missedNotifyMinecraftJP(name, e.getClass().getName() + " -> " + e.getMessage() + " (投票数追加失敗)");
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
             return;
         }
 
@@ -234,7 +234,7 @@ public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise 
             newVote = pvd.getVoteCount();
         } catch (SQLException | NullPointerException e) {
             missedNotifyMonocraftNet(name, e.getClass().getName() + " -> " + e.getMessage() + " (投票数追加失敗)");
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
             return;
         }
 
@@ -257,7 +257,7 @@ public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise 
             return uuid;
         } catch (SQLException e) {
             missedNotify(name, e.getClass().getName() + " -> " + e.getMessage());
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
             return null;
         }
     }

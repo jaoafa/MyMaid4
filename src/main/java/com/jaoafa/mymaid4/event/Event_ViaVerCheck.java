@@ -59,7 +59,7 @@ public class Event_ViaVerCheck extends MyMaidLibrary implements Listener, EventP
                     String str = toString(is);
                     obj = new JSONObject(str);
                 } catch (IOException | JSONException e) {
-                    e.printStackTrace();
+                    MyMaidLibrary.reportError(getClass(), e);
                     return;
                 }
 

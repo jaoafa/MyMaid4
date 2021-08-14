@@ -55,7 +55,7 @@ public class DedMessage {
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(DedMessage.class, e);
             return false;
         }
         DBSync(true);
@@ -102,7 +102,7 @@ public class DedMessage {
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(DedMessage.class, e);
             return false;
         }
         DBSync(true);
@@ -180,7 +180,7 @@ public class DedMessage {
 
             DBSyncTime = System.currentTimeMillis();
         } catch (SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(DedMessage.class, e);
         }
     }
 

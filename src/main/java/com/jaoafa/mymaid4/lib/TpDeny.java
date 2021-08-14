@@ -54,7 +54,7 @@ public class TpDeny {
             stmt.close();
             return bool; // 存在するならdeny
         } catch (SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
             return false;
         }
     }
@@ -84,7 +84,7 @@ public class TpDeny {
             stmt.close();
             return count != 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
             return false;
         }
     }
@@ -110,7 +110,7 @@ public class TpDeny {
             stmt.close();
             return count != 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
             return false;
         }
     }
@@ -143,7 +143,7 @@ public class TpDeny {
             }
             return rets;
         } catch (SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
             return rets;
         }
     }
@@ -174,7 +174,7 @@ public class TpDeny {
             stmt.close();
             return bool; // 存在するならdeny
         } catch (SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
             return true;
         }
     }
@@ -201,7 +201,7 @@ public class TpDeny {
             stmt.close();
             return count != 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
             return false;
         }
     }

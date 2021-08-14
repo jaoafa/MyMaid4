@@ -241,6 +241,7 @@ public class Cmd_Bug extends MyMaidLibrary implements CommandPremise {
                 } catch (IOException e) {
                     SendMessage(player, details(), String.format("不具合報告に失敗しました: %s", e.getMessage()));
                     e.printStackTrace();
+                    MyMaidLibrary.reportError(getClass(), e);
                 }
             }
         }.runTaskAsynchronously(Main.getJavaPlugin());

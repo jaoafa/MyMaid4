@@ -67,7 +67,7 @@ public class Historyjao {
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
             return false;
         }
         addDiscordNotify(message, sender);
@@ -120,7 +120,7 @@ public class Historyjao {
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
             return false;
         }
         DBSync(true);
@@ -142,7 +142,7 @@ public class Historyjao {
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
             return false;
         }
         DBSync(true);
@@ -174,7 +174,7 @@ public class Historyjao {
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
             return false;
         }
         DBSync(true);
@@ -225,7 +225,7 @@ public class Historyjao {
 
             DBSyncTime = System.currentTimeMillis();
         } catch (SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
 
             this.name = player.getName();
             this.uuid = player.getUniqueId();

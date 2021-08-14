@@ -68,7 +68,7 @@ public class Event_JoinWarnUsers extends MyMaidLibrary implements Listener, Even
                         .setFooter("MyMaid4 WarnUsers");
                     channel.sendMessageEmbeds(builder.build()).queue();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    MyMaidLibrary.reportError(getClass(), e);
                 }
             }
         }.runTaskAsynchronously(Main.getJavaPlugin());

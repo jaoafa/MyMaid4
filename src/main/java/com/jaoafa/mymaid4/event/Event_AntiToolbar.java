@@ -101,7 +101,7 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
         try {
             saveToolbarItem(player, is);
         } catch (IOException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
         }
         event.setCancelled(true);
     }

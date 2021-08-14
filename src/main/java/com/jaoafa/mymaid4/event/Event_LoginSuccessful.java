@@ -55,7 +55,7 @@ public class Event_LoginSuccessful extends MyMaidLibrary implements Listener, Ev
                         statement.executeUpdate();
                     }
                 }catch (SQLException e){
-                    e.printStackTrace();
+                    MyMaidLibrary.reportError(getClass(), e);
                 }
 
             }

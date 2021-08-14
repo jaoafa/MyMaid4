@@ -102,7 +102,7 @@ public class PlayerVoteDataMono extends MyMaidLibrary {
                 }
             }
         } catch (UnsupportedOperationException | NullPointerException | NumberFormatException | SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(PlayerVoteDataMono.class, e);
             return false; // エラー発生したらその日の初めての投票ではないとみなす。ただしエラー通知はする
         }
         return true; // だれも投票してなかったら、trueを返す
@@ -151,6 +151,7 @@ public class PlayerVoteDataMono extends MyMaidLibrary {
                 }
             }
         } catch (UnsupportedOperationException | NullPointerException | NumberFormatException e) {
+            MyMaidLibrary.reportError(getClass(), e);
             return false; // エラー発生したら投票してないものとみなす
         }
         return true; // どれもひっかからなかったら投票したものとみなす
@@ -275,7 +276,7 @@ public class PlayerVoteDataMono extends MyMaidLibrary {
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
         }
     }
 
@@ -313,7 +314,7 @@ public class PlayerVoteDataMono extends MyMaidLibrary {
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
         }
     }
 

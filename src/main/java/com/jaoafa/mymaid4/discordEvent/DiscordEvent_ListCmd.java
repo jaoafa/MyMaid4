@@ -14,6 +14,7 @@ package com.jaoafa.mymaid4.discordEvent;
 import com.jaoafa.jaosuperachievement2.api.Achievementjao;
 import com.jaoafa.jaosuperachievement2.lib.Achievement;
 import com.jaoafa.mymaid4.lib.MyMaidData;
+import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -76,7 +77,7 @@ public class DiscordEvent_ListCmd {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
         }
     }
 }

@@ -68,10 +68,10 @@ public class Blacklist {
             }
         } catch (IOException e) {
             plugin.getLogger().warning("blacklist.json を読み込むときに IOException が発生しました。");
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
         } catch (JSONException e) {
             plugin.getLogger().warning("blacklist.json を読み込むときに JSONException が発生しました。");
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
         }
     }
 

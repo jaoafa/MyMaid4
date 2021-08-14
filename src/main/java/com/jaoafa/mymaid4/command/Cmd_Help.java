@@ -134,6 +134,7 @@ public class Cmd_Help extends MyMaidLibrary implements CommandPremise {
         } catch (IOException e) {
             SendMessage(player, details(), String.format("ヘルプブックが登録できませんでした: %s", e.getMessage()));
             e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
         }
     }
 }
