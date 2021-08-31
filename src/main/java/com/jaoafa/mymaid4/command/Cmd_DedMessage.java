@@ -209,10 +209,10 @@ public class Cmd_DedMessage extends MyMaidLibrary implements CommandPremise {
         });
         Component footer = Component.text().append(
             Component.text("---<< ")
-                .clickEvent(ClickEvent.runCommand(String.format("/dt list %d", page - 1))),
+                .clickEvent(ClickEvent.runCommand(String.format("/dedmessage list %d", page - 1))),
             Component.text("[" + (page - 1) + "] PAGE", NamedTextColor.GOLD),
             Component.text(" >>---")
-                .clickEvent(ClickEvent.runCommand(String.format("/dt list %d", page + 1)))
+                .clickEvent(ClickEvent.runCommand(String.format("/dedmessage list %d", page + 1)))
         ).build();
         SendMessage(player, details(), footer);
     }
