@@ -139,6 +139,7 @@ public class DedMessage {
      * @return リストのDedMessage.Details
      */
     public static Set<Details> getAll() {
+        DBSync(false);
         return cache;
     }
 
