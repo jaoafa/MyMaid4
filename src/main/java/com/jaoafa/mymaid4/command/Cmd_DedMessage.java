@@ -165,7 +165,7 @@ public class Cmd_DedMessage extends MyMaidLibrary implements CommandPremise {
         int page = context.<Integer>get("page");
 
         Set<DedMessage.Details> details = DedMessage.getAll();
-        
+
         int pageItemNum = 5;
         int skipNum = (page - 1) * pageItemNum;
 
