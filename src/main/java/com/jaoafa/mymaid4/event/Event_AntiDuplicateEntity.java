@@ -35,7 +35,7 @@ public class Event_AntiDuplicateEntity extends MyMaidLibrary implements Listener
 
         for (String cmdStart : limitedCmd) {
             if (cmd.startsWith(cmdStart) && cmd.contains("-e")) {
-                event.getPlayer().sendMessage("[AntiDuplicateEntity] あなたの権限ではエンティティを複製することが出来ません！");
+                event.getPlayer().sendMessage(Component.text("[AntiDuplicateEntity] あなたの権限ではエンティティを複製することが出来ません！",NamedTextColor.RED));
                 event.setCancelled(true);
                 return;
             }
