@@ -275,6 +275,7 @@ public class Jail {
                     Component.text(Objects.requireNonNull(player.getName()), NamedTextColor.GREEN)
                         .hoverEvent(HoverEvent.showEntity(Key.key("player"), player.getUniqueId(), Component.text(player.getName()))),
                     Component.text("」が遺言を残しました。", NamedTextColor.GREEN),
+                    Component.newline(),
                     Component.text("遺言:「", NamedTextColor.GREEN),
                     Component.text(testment, NamedTextColor.GREEN),
                     Component.text("」", NamedTextColor.GREEN)
