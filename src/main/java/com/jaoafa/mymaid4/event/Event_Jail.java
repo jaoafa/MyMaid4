@@ -107,9 +107,10 @@ public class Event_Jail implements Listener, EventPremise {
             return;
         }
         double distance = prison.distance(to);
-        if (distance >= 40D) {
+        if (distance >= 50D || to.getBlockY() < 55) {
+            // 中央からの距離が50ブロック or y値が55未満
             player.sendMessage("[Jail] " + ChatColor.GREEN + "あなたは南の楽園から出られません！");
-            if (distance >= 50D) {
+            if (distance >= 60D) {
                 if (!player.teleport(prison, TeleportCause.PLUGIN)) {
                     // 失敗時
                     Location oldBed = player.getBedSpawnLocation();
