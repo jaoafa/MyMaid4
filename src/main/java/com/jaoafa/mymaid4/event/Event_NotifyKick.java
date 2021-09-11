@@ -14,7 +14,10 @@ package com.jaoafa.mymaid4.event;
 import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -29,6 +32,7 @@ public class Event_NotifyKick extends MyMaidLibrary implements Listener, EventPr
     @EventHandler(priority = EventPriority.MONITOR,
                   ignoreCancelled = true)
     public void onKick(PlayerKickEvent event) {
+        String reason = PlainComponentSerializer.plain().serialize(event.reason());
         sendAM(Component.text().append(
             Component.text("[Kick]"),
             Component.space(),
@@ -36,6 +40,11 @@ public class Event_NotifyKick extends MyMaidLibrary implements Listener, EventPr
             Component.text(event.getPlayer().getName(), NamedTextColor.GREEN),
             Component.text("」は「", NamedTextColor.GREEN),
             event.reason(),
+            Component.text(" (", NamedTextColor.GREEN),
+            Component.text(reason)
+                .hoverEvent(HoverEvent.showText(Component.text("PlayerKickEvent.Cause." + event.getCause().name())))
+                .clickEvent(ClickEvent.copyToClipboard(reason)),
+            Component.text(")", NamedTextColor.GREEN),
             Component.text("」という理由でキックされました。", NamedTextColor.GREEN)
         ).build());
     }
