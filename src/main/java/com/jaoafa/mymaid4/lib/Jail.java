@@ -274,8 +274,11 @@ public class Jail {
                     Component.text("プレイヤー「", NamedTextColor.GREEN),
                     Component.text(Objects.requireNonNull(player.getName()), NamedTextColor.GREEN)
                         .hoverEvent(HoverEvent.showEntity(Key.key("player"), player.getUniqueId(), Component.text(player.getName()))),
-                    Component.text("」が遺言を残しました。", NamedTextColor.GREEN),
-                    Component.newline(),
+                    Component.text("」が遺言を残しました。", NamedTextColor.GREEN)
+                ));
+                Bukkit.getServer().sendMessage(Component.text().append(
+                    Component.text("[Jail]"),
+                    Component.space(),
                     Component.text("遺言:「", NamedTextColor.GREEN),
                     Component.text(testment, NamedTextColor.GREEN),
                     Component.text("」", NamedTextColor.GREEN)
