@@ -27,13 +27,11 @@ public class Event_DisableKicks extends MyMaidLibrary implements Listener, Event
     @EventHandler
     public void onKick(PlayerKickEvent event) {
         String reason = PlainComponentSerializer.plain().serialize(event.reason());
-        // Kicked for spamming
-        if (reason.equals("Kicked for spamming")) {
+        if (reason.equals("disconnect.spam") || event.getCause() == PlayerKickEvent.Cause.SPAM) {
             event.setCancelled(true);
         }
         if (reason.startsWith("You dropped your items too quickly")) {
             event.setCancelled(true);
         }
     }
-
 }
