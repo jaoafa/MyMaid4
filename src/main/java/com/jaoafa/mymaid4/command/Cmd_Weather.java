@@ -41,7 +41,6 @@ public class Cmd_Weather extends MyMaidLibrary implements CommandPremise {
         return new MyMaidCommand.Cmd(
             builder
                 .meta(CommandMeta.DESCRIPTION, "自分だけに適用される天気を設定します。")
-                .literal("set")
                 .argument(StringArgument
                     .<CommandSender>newBuilder("weatherName")
                     .withSuggestionsProvider(this::suggestWeatherName), ArgumentDescription.of("天気名"))
@@ -54,15 +53,23 @@ public class Cmd_Weather extends MyMaidLibrary implements CommandPremise {
     void weatherSetByName(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
         String weatherName = context.get("weatherName");
-        if (weatherName.equalsIgnoreCase("rain")) {
-            weatherName = "downfall";
+        if (weatherName.equalsIgnoreCase("rain")) weatherName = "downfall";
+
+        boolean isValidWeatherName = false;
+        for (WeatherType weather : WeatherType.values()) {
+            if (!isValidWeatherName) isValidWeatherName = weather.name().equalsIgnoreCase(weatherName);
+        }
+
+        if (!isValidWeatherName) {
+            SendMessage(player, details(), "そのような天気はありません！");
+            return;
         }
 
         WeatherType weatherType = WeatherType.valueOf(weatherName.toUpperCase());
         //設定
         player.setPlayerWeather(weatherType);
         //お知らせ
-        SendMessage(player, details(), String.format("あなたの天気を%sに設定しました！", weatherType.name()));
+        SendMessage(player, details(), "あなたの天気を%sに設定しました！".formatted(weatherType.name()));
     }
 
     List<String> suggestWeatherName(final CommandContext<CommandSender> context, final String current) {
