@@ -69,7 +69,7 @@ public class Cmd_Weather extends MyMaidLibrary implements CommandPremise {
         //設定
         player.setPlayerWeather(weatherType);
         //お知らせ
-        SendMessage(player, details(), "あなたの天気を%sに設定しました！".formatted(weatherType.name()));
+        SendMessage(player, details(), String.format("あなたの天気を%sに設定しました！", weatherType.name()));
     }
 
     List<String> suggestWeatherName(final CommandContext<CommandSender> context, final String current) {
