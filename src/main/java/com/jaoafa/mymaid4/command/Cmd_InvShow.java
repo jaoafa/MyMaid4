@@ -26,7 +26,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.PlayerInventory;
 
-public class Cmd_Invshow extends MyMaidLibrary implements CommandPremise {
+public class Cmd_InvShow extends MyMaidLibrary implements CommandPremise {
     @Override
     public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
@@ -51,6 +51,10 @@ public class Cmd_Invshow extends MyMaidLibrary implements CommandPremise {
         CommandSender sender = context.getSender();
         Player player = (Player) sender;
         Player target = context.get("target");
+        if (!isAMR(player)) {
+            SendMessage(sender, details(), "あなたの権限ではこのコマンドを使用できません。");
+            return;
+        }
 
         PlayerInventory inv = target.getInventory();
         Inventory inventory = Bukkit.getServer().createInventory(player, 6 * 9, Component.text(target.getName() + "のインベントリ"));

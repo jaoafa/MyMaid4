@@ -47,6 +47,10 @@ public class Cmd_InvEdit extends MyMaidLibrary implements CommandPremise {
         CommandSender sender = context.getSender();
         Player player = (Player) sender;
         Player target = context.get("target");
+        if (!isAM(player)) {
+            SendMessage(sender, details(), "あなたの権限ではこのコマンドを使用できません。");
+            return;
+        }
 
         player.openInventory(target.getInventory());
     }
