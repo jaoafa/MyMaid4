@@ -107,7 +107,7 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
             if (args.length == 1) {
                 return;
             }
-            if (args[1].equalsIgnoreCase("@p") || args[1].equalsIgnoreCase(player.getName())) {
+            if (args[1].equalsIgnoreCase("@p") || args[1].equalsIgnoreCase("@s") || args[1].equalsIgnoreCase(player.getName())) {
                 player.setHealth(0D);
                 event.setCancelled(true);
                 return;
