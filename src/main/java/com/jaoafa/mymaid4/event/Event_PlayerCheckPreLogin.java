@@ -111,7 +111,9 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
         if (country != null && !countryName.equalsIgnoreCase("Japan")) {
             disallow(event, Component.text().append(
                 Component.text("海外からのログインと判定されました。", NamedTextColor.WHITE),
-                Component.text("当サーバでは、日本国外からのログインを禁止しています。", NamedTextColor.AQUA)
+                Component.text("当サーバでは、日本国外からのログインを禁止しています。", NamedTextColor.AQUA),
+                Component.text("Your login has been determined to be from outside Japan.", NamedTextColor.WHITE),
+                Component.text("Logging in from outside Japan is prohibited on this server.", NamedTextColor.AQUA)
             ).build(), "Region restricted", countryName + " " + cityName);
             return;
         }
