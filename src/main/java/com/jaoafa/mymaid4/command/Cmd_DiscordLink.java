@@ -34,6 +34,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Locale;
 
 public class Cmd_DiscordLink extends MyMaidLibrary implements CommandPremise {
     @Override
@@ -174,6 +175,29 @@ public class Cmd_DiscordLink extends MyMaidLibrary implements CommandPremise {
             return;
         }
 
+        String old_perm = null;
+        try {
+            try (PreparedStatement stmt = conn.prepareStatement("SELECT * FROM discordlink WHERE disid = ? AND disabled = ? AND dead_at > (NOW() - INTERVAL 7 DAY) ORDER BY id LIMIT 1")) {
+                stmt.setString(1, disid);
+                stmt.setBoolean(2, false);
+                try (ResultSet res = stmt.executeQuery()) {
+                    if (res.next()) {
+                        old_perm = res.getString("dead_perm");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            reportError(getClass(), e);
+            SendMessage(player, details(), "操作に失敗しました。");
+            SendMessage(player, details(), "詳しくはサーバコンソールをご確認ください");
+            SendMessage(player, details(), "再度実行しなおすと動作するかもしれません。");
+            return;
+        }
+
+        if (old_perm != null) {
+            SendMessage(player, details(), String.format("自動切断から1週間以内に再連携されたため、元の権限(%s)に復元します。", old_perm.toLowerCase(Locale.ROOT)));
+        }
+
         try {
             try (PreparedStatement stmt = conn.prepareStatement("DELETE FROM discordlink_waiting WHERE id = ?")) {
                 stmt.setInt(1, id);
@@ -186,6 +210,7 @@ public class Cmd_DiscordLink extends MyMaidLibrary implements CommandPremise {
             SendMessage(player, details(), "再度実行しなおすと動作するかもしれません。");
             return;
         }
+
 
         String group = getPermissionMainGroup(player);
         try {
@@ -212,10 +237,17 @@ public class Cmd_DiscordLink extends MyMaidLibrary implements CommandPremise {
             Main.getJavaPlugin().getLogger().warning("general が null です。");
             return;
         }
-        general.sendMessage(
-            ":loudspeaker:<@" + disid + ">さんのMinecraftアカウント連携を完了しました！ MinecraftID: `" + player.getName() + "`")
-            .queue();
-        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getUniqueId() + " parent set verified");
+        if (old_perm != null) {
+            general.sendMessage(
+                    ":loudspeaker:<@" + disid + ">さんのMinecraftアカウント連携を完了しました！地頭切断から1週間以内の再連携のため、元の権限(" + old_perm.toLowerCase(Locale.ROOT) + ")に自動復元されます。 MinecraftID: `" + player.getName() + "`")
+                .queue();
+            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getUniqueId() + " parent set " + old_perm.toLowerCase(Locale.ROOT));
+        } else {
+            general.sendMessage(
+                    ":loudspeaker:<@" + disid + ">さんのMinecraftアカウント連携を完了しました！ MinecraftID: `" + player.getName() + "`")
+                .queue();
+            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getUniqueId() + " parent set verified");
+        }
 
         Role minecraftConnected = guild.getRoleById(604011598952136853L);
         Role verified = guild.getRoleById(597405176969560064L);
