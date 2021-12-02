@@ -124,9 +124,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.destroystokyo.paper</groupId>
+            <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <version>1.18-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -142,7 +142,7 @@
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.15</version>
+            <version>20041127.091804</version>
         </dependency>
         <dependency>
             <groupId>net.dv8tion</groupId>
@@ -199,7 +199,7 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
-            <version>3.13.0</version>
+            <version>4.9.2</version>
         </dependency>
         <dependency>
             <groupId>com.sk89q.worldedit</groupId>
@@ -221,7 +221,7 @@
         </dependency>
         <dependency>
             <groupId>com.rollbar</groupId>
-            <version>[1.0,)</version>
+            <version>1.7.10</version>
             <artifactId>rollbar-java</artifactId>
         </dependency>
     </dependencies>
