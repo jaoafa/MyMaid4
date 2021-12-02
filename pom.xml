@@ -57,7 +57,7 @@
                                     <artifact>*:*</artifact>
                                     <excludes>
                                         <exclude>module-info.class</exclude>
-                                        <exclude>META-INF/*</exclude>
+                                        <exclude>META-INF*</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
@@ -223,6 +223,12 @@
             <groupId>com.rollbar</groupId>
             <version>1.7.10</version>
             <artifactId>rollbar-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
