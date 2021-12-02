@@ -26,6 +26,7 @@ jobs:
         run: mvn -B package --file pom.xml
 
       - name: Test
-        uses: jaoafa/CheckPluginEnabling@v1.3
+        uses: jaoafa/CheckPluginEnabling@v2.0
         with:
           plugin-name: MyMaid4
+          minecraft-version: 1.18
