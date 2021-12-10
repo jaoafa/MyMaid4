@@ -1,0 +1,67 @@
+name: Update dependencies packages
+
+on: workflow_dispatch
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+      - name: Create new branch
+        run: hub checkout -b dependencies-update-${{ steps.date.outputs.date }}
+
+      - name: Set up JDK 16
+        uses: actions/setup-java@v1
+        with:
+          java-version: 16
+
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Update dependencies
+        id: update-dependencies
+        run: |
+          mvn versions:display-dependency-updates
+          mvn versions:display-dependency-updates | tee ../dependency-updates.md
+          mvn versions:use-next-releases
+
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+
+      - name: Set git config
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Is modified
+        id: is-modified
+        run: |
+          git status | grep modified
+          echo "::set-output name=modified::`echo $?`"
+
+      - name: Create pull request
+        if: ${{ steps.is-modified.outputs.modified == '0' }}
+        run: |
+          hub add -A
+          hub commit -m "chore: Update dependencies packages"
+          hub push --set-upstream origin dependencies-update-${{ steps.date.outputs.date }}
+          echo -e "Update dependencies packages\n\n" > description.md
+          echo "\`\`\`" >> description.md
+          cat ../dependency-updates.md >> description.md
+          echo "\`\`\`" >> description.md
+
+          hub pull-request -b master -F description.md -r book000
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
