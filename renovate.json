@@ -1,7 +1,6 @@
 {
   "extends": [
-    "config:base",
-    ":dependencyDashboard"
+    "config:base"
   ],
   "ignorePresets": [
     ":prHourlyLimit2"
@@ -10,6 +9,7 @@
   "schedule": [
     "at 9:00am on friday"
   ],
+  "dependencyDashboard": false,
   "automerge": true,
   "branchConcurrentLimit": 0
 }
