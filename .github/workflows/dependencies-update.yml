@@ -18,7 +18,7 @@ jobs:
         run: hub checkout -b dependencies-update-${{ steps.date.outputs.date }}
 
       - name: Set up JDK 16
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
           java-version: 16
 
