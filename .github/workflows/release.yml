@@ -60,8 +60,7 @@ jobs:
           prerelease: true
           body: |
             ${{ github.event.pull_request.body }}
-            jaoweb sha: [${{ steps.jaoweb-vars.outputs.SHORT_SHA }}](https://github.com/jaoafa/jaoweb/commit/${{ steps.jaoweb-vars.outputs.SHORT_SHA }})
-            jaoweb-docs sha: ${{ steps.docs-vars.outputs.SHORT_SHA }}
+            sha: [${{ steps.jaoweb-vars.outputs.SHORT_SHA }}](https://github.com/jaoafa/MyMaid4/commit/${{ steps.jaoweb-vars.outputs.SHORT_SHA }})
 
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1.0.1
@@ -75,6 +74,7 @@ jobs:
 
       - name: Released comment
         uses: actions/github-script@v4
+        if: github.event_name == 'pull_request_target'
         with:
           script: |
             github.issues.createComment({
