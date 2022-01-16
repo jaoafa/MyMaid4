@@ -16,7 +16,7 @@ if not exist server\plugins (
 )
 
 if not exist server\paper.jar (
-    curl -o server\paper.jar -L "https://papermc.io/api/v1/paper/1.16.5/latest/download"
+    curl -o server\paper.jar -L "https://api.tomacheese.com/papermc/1.18.1/latest"
 )
 
 if not exist server\mcrconapi-1.1.1.jar (
@@ -56,9 +56,9 @@ if %errorlevel% == 0 (
    set SELECTED_JAVA=java
 )
 
-where java11 2>nul
+where java17 2>nul
 if %errorlevel% == 0 (
-   set SELECTED_JAVA=java11
+   set SELECTED_JAVA=java17
 )
 
 if %SELECTED_JAVA% == "notfound" (
@@ -73,8 +73,8 @@ for /f tokens^=2-5^ delims^=-_^" %%j in ('%SELECTED_JAVA% -fullversion 2^>^&1') 
 
 echo Java Version: %JAVA_VERSION% (%JAVA_VERSION:~0,3%)
 
-if /i not "%JAVA_VERSION:~0,3%" == "11." (
-    echo Paperサーバの起動にはJava 11が必要です。
+if /i not "%JAVA_VERSION:~0,3%" == "17." (
+    echo Paperサーバの起動にはJava 17が必要です。
 
     echo 5秒後にクローズします。
     timeout 5 /NOBREAK

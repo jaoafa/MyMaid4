@@ -1,0 +1,132 @@
+name: Release
+
+on:
+  workflow_dispatch:
+  pull_request_target:
+    branches:
+      - main
+    types:
+      - closed
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
+
+    steps:
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=datetime::$(date +'%Y%m%d-%H%M%S')"
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          distribution: adopt
+
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Sed Version
+        run: |
+          sed -r -i '1,/version/s#<version>(.+?)</version>#<version>test</version>#' pom.xml
+          git diff
+
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+
+      - name: Set SHORT_SHA
+        id: vars
+        run: |
+          echo "::set-output name=SHORT_SHA::$(git rev-parse --short HEAD)"
+
+      - name: Create a Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.date.outputs.datetime }}
+          release_name: Release v${{ steps.date.outputs.datetime }}
+          draft: false
+          prerelease: true
+          body: |
+            ${{ github.event.pull_request.body }}
+            jaoweb sha: [${{ steps.jaoweb-vars.outputs.SHORT_SHA }}](https://github.com/jaoafa/jaoweb/commit/${{ steps.jaoweb-vars.outputs.SHORT_SHA }})
+            jaoweb-docs sha: ${{ steps.docs-vars.outputs.SHORT_SHA }}
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: target/MyMaid4.jar
+          asset_name: MyMaid4.jar
+          asset_content_type: application/zip
+
+      - name: Released comment
+        uses: actions/github-script@v4
+        with:
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `# リリースが完了しました\n\n${{ steps.create_release.outputs.html_url }}`
+            })
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: release
+    if: github.event.pull_request.merged == true
+
+    steps:
+      - name: Deploy
+        id: deployRequest
+        uses: fjogeleit/http-request-action@master
+        with:
+          url: ${{ secrets.DEPLOY_URL }}
+          method: 'POST'
+          bearerToken: ${{ secrets.DEPLOY_KEY }}
+          ignoreStatusCodes: '500'
+          timeout: 600000
+
+      - name: Show Response
+        run: echo ${{ steps.deployRequest.outputs.response }}
+
+      - name: Is Successful Deploy
+        if: ${{ fromJson(steps.deployRequest.outputs.response).status == 'SUCCESSFUL' }}
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            # :white_check_mark: デプロイが完了しました
+
+            プルリクエストがマージされたため、本番環境へのデプロイを行いました。
+            バージョンは `${{ fromJson(steps.deployRequest.outputs.response).version }}` です。稼働中バージョンの確認は Minecraft サーバ内で `/ver MyMaid4` を実行することで確認できます。
+            反映は本番環境の再起動後ですので、アクティブログインユーザーの同意を得て再起動するか、3時の自動再起動を待ってください。
+
+      - name: Is Failed Deploy
+        if: ${{ fromJson(steps.deployRequest.outputs.response).status == 'ERROR' }}
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            # :x: デプロイに失敗しました
+
+            プルリクエストがマージされたため、本番環境へのデプロイを行おうとしましたが失敗しました。
+            エラー内容は以下の通りです。
+
+            ```
+            ${{ fromJson(steps.deployRequest.outputs.response).type }} (${{ fromJson(steps.deployRequest.outputs.response).type_ja }}) - ${{ fromJson(steps.deployRequest.outputs.response).status }} (${{ fromJson(steps.deployRequest.outputs.response).status_ja }})
+            ${{ fromJson(steps.deployRequest.outputs.response).message }}
+            ```
