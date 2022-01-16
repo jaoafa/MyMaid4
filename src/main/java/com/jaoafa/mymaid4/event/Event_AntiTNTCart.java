@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -14,6 +14,7 @@ package com.jaoafa.mymaid4.event;
 import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Vehicle;
@@ -35,7 +36,7 @@ public class Event_AntiTNTCart extends MyMaidLibrary implements Listener, EventP
         }
         Location loc = vehicle.getLocation();
         loc = loc.add(0, 0.5, 0);
-        loc.getWorld().spawnParticle(Particle.BARRIER, loc, 1, 0, 0, 0);
+        loc.getWorld().spawnParticle(Particle.BLOCK_MARKER, loc, 1, 0, 0, 0, Material.BARRIER.createBlockData());
         vehicle.remove();
     }
 }
