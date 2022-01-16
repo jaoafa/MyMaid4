@@ -132,17 +132,17 @@
         <dependency>
             <groupId>cloud.commandframework</groupId>
             <artifactId>cloud-paper</artifactId>
-            <version>1.5.0</version>
+            <version>1.6.1</version>
         </dependency>
         <dependency>
             <groupId>cloud.commandframework</groupId>
             <artifactId>cloud-minecraft-extras</artifactId>
-            <version>1.5.0</version>
+            <version>1.6.1</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>20041127.091804</version>
+            <version>1.15</version>
         </dependency>
         <dependency>
             <groupId>net.dv8tion</groupId>
@@ -177,7 +177,7 @@
         <dependency>
             <groupId>com.maxmind.geoip2</groupId>
             <artifactId>geoip2</artifactId>
-            <version>2.15.0</version>
+            <version>2.16.1</version>
         </dependency>
         <dependency>
             <groupId>com.vexsoftware</groupId>
@@ -199,7 +199,7 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
-            <version>4.9.2</version>
+            <version>4.9.3</version>
         </dependency>
         <dependency>
             <groupId>com.sk89q.worldedit</groupId>
@@ -221,7 +221,7 @@
         </dependency>
         <dependency>
             <groupId>com.rollbar</groupId>
-            <version>1.7.10</version>
+            <version>1.8.1</version>
             <artifactId>rollbar-java</artifactId>
         </dependency>
         <dependency>
