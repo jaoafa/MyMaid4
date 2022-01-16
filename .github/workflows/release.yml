@@ -73,7 +73,7 @@ jobs:
           asset_content_type: application/zip
 
       - name: Released comment
-        uses: actions/github-script@v4
+        uses: actions/github-script@v5
         if: github.event_name == 'pull_request_target'
         with:
           script: |
