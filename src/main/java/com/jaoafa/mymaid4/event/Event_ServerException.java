@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -28,6 +28,9 @@ public class Event_ServerException extends MyMaidLibrary implements Listener, Ev
     @EventHandler
     public void onServerException(ServerExceptionEvent event) {
         ServerException exception = event.getException();
+        if (Main.getRollbar() == null) {
+            return;
+        }
         Main.getRollbar().critical(exception, "onServerExceptionEvent");
     }
 }

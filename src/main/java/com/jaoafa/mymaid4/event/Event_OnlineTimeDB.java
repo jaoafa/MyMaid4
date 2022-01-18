@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -50,6 +50,9 @@ public class Event_OnlineTimeDB extends MyMaidLibrary implements Listener, Event
     @EventHandler(priority = EventPriority.MONITOR,
                   ignoreCancelled = true)
     public void OnEvent_QuitDBInsert(PlayerQuitEvent event) {
+        if (!MyMaidData.isMainDBActive()) {
+            return;
+        }
         Player player = event.getPlayer();
         int onlineTime = player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20;
         if (!exists(player)) {
