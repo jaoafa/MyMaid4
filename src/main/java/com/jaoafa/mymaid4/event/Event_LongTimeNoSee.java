@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -36,6 +36,9 @@ public class Event_LongTimeNoSee extends MyMaidLibrary implements Listener, Even
 
     @EventHandler
     public void OnJoin(PlayerJoinEvent event) {
+        if (!MyMaidData.isMainDBActive()) {
+            return;
+        }
         Player player = event.getPlayer();
         String uuid = player.getUniqueId().toString();
 
