@@ -97,18 +97,6 @@
             <url>https://repo.mikeprimm.com/</url>
         </repository>
         <repository>
-            <id>github</id>
-            <name>GitHub jaoafa Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/jaoafa/jao-Super-Achievement2</url>
-            <!-- read:packages のみを許可した jaotan の Personal access token を使っています -->
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
             <id>tomacheese-repo</id>
             <url>https://repo.tomacheese.com</url>
         </repository>
@@ -171,7 +159,7 @@
         <dependency>
             <groupId>com.jaoafa</groupId>
             <artifactId>jaosuperachievement2</artifactId>
-            <version>b15b017</version>
+            <version>2.3.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
