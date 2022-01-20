@@ -14,8 +14,9 @@ jobs:
     if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
 
     outputs:
-      version: ${{ steps.tag_version.outputs.new_tag }}
-      release-url: ${{ steps.create_release.outputs.upload_url }}
+      version: ${{ steps.tag_version.outputs.new_version }}
+      release-upload-url: ${{ steps.create_release.outputs.upload_url }}
+      release-html-url: ${{ steps.create_release.outputs.html_url }}
 
     steps:
       - name: Checkout
@@ -44,7 +45,7 @@ jobs:
 
       - name: Sed Version
         run: |
-          sed -r -i "1,/version/s#<version>(.+?)</version>#<version>${{ steps.tag_version.outputs.new_tag }}</version>#" pom.xml
+          sed -r -i "1,/version/s#<version>(.+?)</version>#<version>${{ steps.tag_version.outputs.new_version }}</version>#" pom.xml
           git diff
 
       - name: Set PROJECT_NAME
@@ -62,7 +63,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.tag_version.outputs.new_tag }}
-          release_name: Release ${{ steps.tag_version.outputs.new_tag }}
+          release_name: ${{ steps.tag_version.outputs.new_tag }}
           body: ${{ steps.tag_version.outputs.changelog }}
 
       - name: Upload Release Asset
@@ -121,8 +122,10 @@ jobs:
             # :white_check_mark: デプロイが完了しました
 
             プルリクエストがマージされたため、本番環境へのデプロイを行いました。
-            バージョンは `${{ fromJson(steps.deployRequest.outputs.response).version }}` です。稼働中バージョンの確認は Minecraft サーバ内で `/ver MyMaid4` を実行することで確認できます。
+            バージョンは `${{ needs.release.outputs.version}}` です。稼働中バージョンの確認は Minecraft サーバ内で `/ver MyMaid4` を実行することで確認できます。
             反映は本番環境の再起動後ですので、アクティブログインユーザーの同意を得て再起動するか、3時の自動再起動を待ってください。
+            
+            ${{ needs.release.outputs.release-html-url }}
 
       - name: Is Failed Deploy
         if: ${{ fromJson(steps.deployRequest.outputs.response).status == 'ERROR' }}
