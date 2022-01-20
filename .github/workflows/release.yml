@@ -124,7 +124,7 @@ jobs:
             プルリクエストがマージされたため、本番環境へのデプロイを行いました。
             バージョンは `${{ needs.release.outputs.version}}` です。稼働中バージョンの確認は Minecraft サーバ内で `/ver MyMaid4` を実行することで確認できます。
             反映は本番環境の再起動後ですので、アクティブログインユーザーの同意を得て再起動するか、3時の自動再起動を待ってください。
-            
+
             ${{ needs.release.outputs.release-html-url }}
 
       - name: Is Failed Deploy
