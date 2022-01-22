@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -37,13 +37,17 @@ public class Event_ProtectionOldWorlds extends MyMaidLibrary implements Listener
         "kassi-hp-tk",
         "Jao_Afa_1",
         "Jao_Afa_2",
+        "Jao_Afa_3",
+        "Jao_Afa_nether_1",
+        "Jao_Afa_nether_2",
         "SandBox_1",
         "SandBox_2",
         "SandBox_3",
         "ReJao_Afa",
         "Summer2017",
         "Summer2018",
-        "Summer2020"
+        "Summer2020",
+        "jaoTest1.18.1"
     };
     final Material[] ignoreClickCancel = new Material[]{};
     final Material[] ignoreTargetClickCancel = new Material[]{
@@ -238,7 +242,7 @@ public class Event_ProtectionOldWorlds extends MyMaidLibrary implements Listener
         player.sendMessage(Component.text().append(
             Component.text("[OldWorldProtection-DEBUG]"),
             Component.space(),
-            Component.text(String.format("MyMaid3 Version: %s", Main.getMain().getDescription().getVersion()), NamedTextColor.GREEN)
+            Component.text(String.format("MyMaid4 Version: %s", Main.getMain().getDescription().getVersion()), NamedTextColor.GREEN)
         ));
 
         if (isA(player)) {
