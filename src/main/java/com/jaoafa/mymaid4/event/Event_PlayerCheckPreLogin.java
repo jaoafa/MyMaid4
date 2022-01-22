@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -176,7 +176,7 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
         event.disallow(Result.KICK_FULL, component);
         if (MyMaidData.getJaotanChannel() == null) return;
         MyMaidData.getJaotanChannel().sendMessage(
-            "[MyMaid3-PreLoginCheck] " + event.getName() + " -> `" + reason + "`").queue();
+            "[MyMaid4-PreLoginCheck] " + event.getName() + " -> `" + reason + "`").queue();
     }
 
     private static void disallow(AsyncPlayerPreLoginEvent event, Component message, String reason, String data) {
@@ -190,6 +190,6 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
         event.disallow(Result.KICK_FULL, component);
         if (MyMaidData.getJaotanChannel() == null) return;
         MyMaidData.getJaotanChannel().sendMessage(
-            "[MyMaid3-PreLoginCheck] " + event.getName() + " -> `" + reason + " (" + data + ")`").queue();
+            "[MyMaid4-PreLoginCheck] " + event.getName() + " -> `" + reason + " (" + data + ")`").queue();
     }
 }
