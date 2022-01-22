@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -50,6 +50,7 @@ public class Event_ViaVerCheck extends MyMaidLibrary implements Listener, EventP
                 int i = Via.getAPI().getPlayerVersion(player.getUniqueId());
                 String ver = String.valueOf(i);
 
+                // https://gitlab.bixilon.de/bixilon/minosoft/-/blob/master/src/main/resources/assets/minosoft/mapping/versions.json
                 InputStream is = getClass().getResourceAsStream("/versions.json");
                 if (is == null) {
                     return;
@@ -73,9 +74,9 @@ public class Event_ViaVerCheck extends MyMaidLibrary implements Listener, EventP
                     return;
                 }
 
-                String version = obj.getString(ver);
+                String version = obj.getJSONObject(ver).getString("name");
 
-                if (!version.equals("1.16.5")) {
+                if (!version.equals("1.18.1")) {
                     player.sendMessage(Component.text().append(
                         Component.text("[VersionChecker]"),
                         Component.space(),
@@ -84,13 +85,13 @@ public class Event_ViaVerCheck extends MyMaidLibrary implements Listener, EventP
                     player.sendMessage(Component.text().append(
                         Component.text("[VersionChecker]"),
                         Component.space(),
-                        Component.text("サーババージョンは1.16.5のため、", NamedTextColor.AQUA),
+                        Component.text("サーババージョンは1.18.1のため、", NamedTextColor.AQUA),
                         Component.text("一部のブロック・機能は利用できません。", NamedTextColor.RED)
                     ).build());
                     player.sendMessage(Component.text().append(
                         Component.text("[VersionChecker]"),
                         Component.space(),
-                        Component.text("クライアントバージョンを「1.16.5」にすることを強くお勧めします。", NamedTextColor.AQUA)
+                        Component.text("クライアントバージョンを「1.18.1」にすることを強くお勧めします。", NamedTextColor.AQUA)
                     ).build());
                 }
 
