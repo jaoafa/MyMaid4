@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -32,6 +32,7 @@ import java.util.UUID;
 
 public class Event_PacketLimiterKick extends MyMaidLibrary implements Listener, EventPremise {
     static Map<UUID, Integer> limited = new HashMap<>();
+
     @Override
     public String description() {
         return "PacketLimiterによるキック時に通知を行います。";

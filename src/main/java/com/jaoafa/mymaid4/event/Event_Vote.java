@@ -36,11 +36,6 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise {
-    @Override
-    public String description() {
-        return "各サーバリストサイトからの投票通知を受け取り、処理します。";
-    }
-
     public static void successNotifyMinecraftJP(String name, int oldVote, int newVote, boolean isAutoFill) {
         String autoFillMessage = isAutoFill ? " [自動補填]" : "";
 
@@ -113,24 +108,6 @@ public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise 
         }
     }
 
-    @EventHandler
-    public void onVotifierEvent(VotifierEvent event) {
-        Vote vote = event.getVote();
-        String name = vote.getUsername();
-        String service = vote.getServiceName();
-        System.out.println("onVotifierEvent[MyMaid4]: " + vote.getUsername() + " " + vote.getAddress() + " "
-            + vote.getServiceName() + " " + vote.getTimeStamp());
-        new BukkitRunnable() {
-            public void run() {
-                if (service.equalsIgnoreCase("minecraft.jp")) {
-                    VoteReceive(name);
-                } else if (service.equalsIgnoreCase("monocraft.net")) {
-                    VoteReceiveMonocraftNet(name);
-                }
-            }
-        }.runTaskAsynchronously(Main.getJavaPlugin());
-    }
-
     public static void checkjSA(OfflinePlayer offplayer, boolean isTodayFirst, int newVote) {
         if (isTodayFirst) {
             Achievementjao.getAchievementAsync(offplayer, Achievement.EARLYSHAREHOLDER); // 筆頭株主 - 誰よりも早くjao鯖に投票
@@ -148,6 +125,29 @@ public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise 
         if (newVote >= 1000) {
             Achievementjao.getAchievementAsync(offplayer, Achievement.LEGENDARYSHAREHOLDER); // 伝説の株主 - 1000回投票
         }
+    }
+
+    @Override
+    public String description() {
+        return "各サーバリストサイトからの投票通知を受け取り、処理します。";
+    }
+
+    @EventHandler
+    public void onVotifierEvent(VotifierEvent event) {
+        Vote vote = event.getVote();
+        String name = vote.getUsername();
+        String service = vote.getServiceName();
+        System.out.println("onVotifierEvent[MyMaid4]: " + vote.getUsername() + " " + vote.getAddress() + " "
+            + vote.getServiceName() + " " + vote.getTimeStamp());
+        new BukkitRunnable() {
+            public void run() {
+                if (service.equalsIgnoreCase("minecraft.jp")) {
+                    VoteReceive(name);
+                } else if (service.equalsIgnoreCase("monocraft.net")) {
+                    VoteReceiveMonocraftNet(name);
+                }
+            }
+        }.runTaskAsynchronously(Main.getJavaPlugin());
     }
 
     void VoteReceive(String name) {

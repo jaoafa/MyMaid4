@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -27,11 +27,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Event_CustomJoinMessage extends MyMaidLibrary implements Listener, EventPremise {
-    @Override
-    public String description() {
-        return "独自のログインメッセージを表示するように制御します。";
-    }
-
     static final List<String> JoinMessages = Arrays.asList(
         "the New Generation", "- Super", "Hyper", "Ultra", "Extreme", "Insane", "Gigantic", "Epic", "Amazing", "Beautiful",
         "Special", "Swag", "Lunatic", "Exotic", "God", "Hell", "Heaven", "Mega", "Giga", "Tera", "Refined", "Sharp",
@@ -41,6 +36,11 @@ public class Event_CustomJoinMessage extends MyMaidLibrary implements Listener, 
         "Crazy", "Wrecked", "Elegant", "Expensive", "Rich", "Radioactive", "Automatic", "Honest", "Cosmic", "Galactic",
         "Dimensional", "Sinister", "Evil", "Abyssal", "Hallowed", "Holy", "Sacred", "Omnipotent"
     );
+
+    @Override
+    public String description() {
+        return "独自のログインメッセージを表示するように制御します。";
+    }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEvent_JoinChangeMessage(PlayerJoinEvent event) {

@@ -1,50 +1,50 @@
 name: 不具合報告 - Bug report
 description: 不具合を見つけた場合は、このテンプレートを使用してください。
-labels: ["\U0001F41Bbug"]
+labels: [ "\U0001F41Bbug" ]
 body:
-- type: markdown
-  attributes:
-    value: |
-      jao Minecraft Server の Web サイト([`jaoafa/jaoweb`](https://github.com/jaoafa/jaoweb)) および Javajaotan2([`jaoafa/Javajaotan2`](https://github.com/jaoafa/Javajaotan2)) の不具合報告や新機能の提案は各リポジトリの Issue にてお願いします。どこに提出するべきかわからない場合は [jaoafa/jao-Minecraft-Server](https://github.com/jaoafa/jao-Minecraft-Server) へ。
-      Issue の提出先が間違っていても、メンテナーが移動しますのでご安心ください。
-- type: textarea
-  id: bug-description
-  attributes:
-    label: 不具合の説明
-    description: 不具合の内容を明確・簡潔に説明してください
-    render: markdown
-  validations:
-    required: true
-- type: textarea
-  id: steps-to-reproduce
-  attributes:
-    label: 再現手順
-    description: |
-      バグが発生する手順を示してください。
-      権限グループは `/player` コマンドで調べられます。
-    value: |
-      1. 権限グループ「`Verified`」のプレイヤー「`X4Z`」がコマンド「`/aaa bbb`」を実行する
-      2. エラー「`Hoge`」が表示される
-    render: markdown
-  validations:
-    required: true
-- type: textarea
-  id: screenshots
-  attributes:
-    label: スクリーンショット
-    description: エラーメッセージなどが表示されていたり、状況が分かりやすい場合はスクリーンショット・エラーログなどを添付してください。画像は [Imgur](http://imgur.com/) などを使ってアップロードしてください。
-    render: markdown
-  validations:
-    required: false
-- type: textarea
-  id: additional-info
-  attributes:
-    label: 追加情報
-    description: 何か追加情報がある場合は記載してください。
-    render: markdown
-  validations:
-    required: false
-- type: markdown
-  attributes:
-    value: |
-      送信する前にすでに同じ内容のIssueが作成されていないこと、バグがすでに修正済みではないこと(修正後に再起動していない場合反映されていません)をご確認ください。
+  - type: markdown
+    attributes:
+      value: |
+        jao Minecraft Server の Web サイト([`jaoafa/jaoweb`](https://github.com/jaoafa/jaoweb)) および Javajaotan2([`jaoafa/Javajaotan2`](https://github.com/jaoafa/Javajaotan2)) の不具合報告や新機能の提案は各リポジトリの Issue にてお願いします。どこに提出するべきかわからない場合は [jaoafa/jao-Minecraft-Server](https://github.com/jaoafa/jao-Minecraft-Server) へ。
+        Issue の提出先が間違っていても、メンテナーが移動しますのでご安心ください。
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: 不具合の説明
+      description: 不具合の内容を明確・簡潔に説明してください
+      render: markdown
+    validations:
+      required: true
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: 再現手順
+      description: |
+        バグが発生する手順を示してください。
+        権限グループは `/player` コマンドで調べられます。
+      value: |
+        1. 権限グループ「`Verified`」のプレイヤー「`X4Z`」がコマンド「`/aaa bbb`」を実行する
+        2. エラー「`Hoge`」が表示される
+      render: markdown
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: スクリーンショット
+      description: エラーメッセージなどが表示されていたり、状況が分かりやすい場合はスクリーンショット・エラーログなどを添付してください。画像は [Imgur](http://imgur.com/) などを使ってアップロードしてください。
+      render: markdown
+    validations:
+      required: false
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: 追加情報
+      description: 何か追加情報がある場合は記載してください。
+      render: markdown
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: |
+        送信する前にすでに同じ内容のIssueが作成されていないこと、バグがすでに修正済みではないこと(修正後に再起動していない場合反映されていません)をご確認ください。

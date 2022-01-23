@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -20,11 +20,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class Event_AntiDuplicateEntity extends MyMaidLibrary implements Listener, EventPremise {
-    @Override
-    public String description() {
-        return "Default・Verified権限グループのプレイヤーによるエンティティのコピーを制限します。";
-    }
-
     @EventHandler
     public static void onCommand(PlayerCommandPreprocessEvent event) {
         if (isAMR(event.getPlayer())) return;
@@ -39,5 +34,10 @@ public class Event_AntiDuplicateEntity extends MyMaidLibrary implements Listener
                 return;
             }
         }
+    }
+
+    @Override
+    public String description() {
+        return "Default・Verified権限グループのプレイヤーによるエンティティのコピーを制限します。";
     }
 }

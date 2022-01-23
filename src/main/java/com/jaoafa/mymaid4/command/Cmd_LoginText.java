@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -56,13 +56,13 @@ public class Cmd_LoginText extends MyMaidLibrary implements CommandPremise {
 
         int count = pvd.getVoteCount();
 
-        if(count < 200){
+        if (count < 200) {
             // 200未満の場合カスタムメッセージ変更不可
             SendMessage(player, details(), "あなたの投票数ではカスタムログインテキストの登録ができません。minecraft.jpで200投票を目指しましょう！");
             return;
         }
 
-        if(loginText != null && !PlayerVoteDataMCJP.checkCustomLoginText(loginText)){
+        if (loginText != null && !PlayerVoteDataMCJP.checkCustomLoginText(loginText)) {
             // 200未満の場合カスタムメッセージ変更不可
             SendMessage(player, details(), "指定されたカスタムログインテキストは正しくありません。全角/半角スペースを含めることはできず、30文字以内でなければなりません。");
             return;

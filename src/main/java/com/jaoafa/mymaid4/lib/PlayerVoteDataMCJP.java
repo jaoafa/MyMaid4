@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -41,7 +41,6 @@ public class PlayerVoteDataMCJP extends MyMaidLibrary {
      * 指定したオフラインプレイヤーの投票データを取得します。
      *
      * @param offplayer オフラインプレイヤー
-     * 
      */
     public PlayerVoteDataMCJP(@NotNull OfflinePlayer offplayer) {
         this.offplayer = offplayer;
@@ -55,7 +54,7 @@ public class PlayerVoteDataMCJP extends MyMaidLibrary {
      * 指定したプレイヤーネームの投票データを取得します。
      *
      * @param name プレイヤーネーム
-     * 
+     *
      * @deprecated プレイヤー名で検索するため、思い通りのプレイヤーを取得できない場合があります。
      */
     @Deprecated
@@ -65,17 +64,6 @@ public class PlayerVoteDataMCJP extends MyMaidLibrary {
         changePlayerName();
         restoreCache();
         fetchData(false);
-    }
-
-    void restoreCache(){
-        if(cache.containsKey(offplayer.getUniqueId())){
-            PlayerVoteDataMCJP cached = cache.get(offplayer.getUniqueId());
-            this.id = cached.id;
-            this.count = cached.count;
-            this.voted = cached.voted;
-            this.lastVotedTime = cached.lastVotedTime;
-            this.customLoginMessage = cached.customLoginMessage;
-        }
     }
 
     /**
@@ -126,6 +114,29 @@ public class PlayerVoteDataMCJP extends MyMaidLibrary {
             return false; // エラー発生したらその日の初めての投票ではないとみなす。ただしエラー通知はする
         }
         return true; // だれも投票してなかったら、trueを返す
+    }
+
+    /**
+     * 指定された文字列がカスタムログインテキストとして正しいか調べます。
+     *
+     * @param loginText カスタムログインテキスト
+     *
+     * @return 正しいか
+     */
+    public static boolean checkCustomLoginText(String loginText) {
+        // 全角/半角スペースを含めることはできず、30文字以内という制限
+        return !loginText.contains(" ") && !loginText.contains("　") && loginText.length() <= 30;
+    }
+
+    void restoreCache() {
+        if (cache.containsKey(offplayer.getUniqueId())) {
+            PlayerVoteDataMCJP cached = cache.get(offplayer.getUniqueId());
+            this.id = cached.id;
+            this.count = cached.count;
+            this.voted = cached.voted;
+            this.lastVotedTime = cached.lastVotedTime;
+            this.customLoginMessage = cached.customLoginMessage;
+        }
     }
 
     /**
@@ -181,6 +192,7 @@ public class PlayerVoteDataMCJP extends MyMaidLibrary {
      * ※初めての投票時に作成すること！
      *
      * @return 作成できたかどうか
+     *
      * @throws SQLException         内部でSQLExceptionが発生した場合
      * @throws NullPointerException 内部でNullPointerExceptionが発生した場合
      */
@@ -212,7 +224,6 @@ public class PlayerVoteDataMCJP extends MyMaidLibrary {
      * プレイヤーの投票数データが存在するかどうかを確認します。
      *
      * @return 存在するかどうか
-     * 
      */
     public boolean exists() {
         return exists;
@@ -222,7 +233,8 @@ public class PlayerVoteDataMCJP extends MyMaidLibrary {
      * プレイヤーの投票数に1つ追加します。
      *
      * @return 実行できたかどうか
-     * @throws SQLException         内部でSQLExceptionが発生した場合
+     *
+     * @throws SQLException 内部でSQLExceptionが発生した場合
      */
     public boolean add() throws SQLException {
         return add(System.currentTimeMillis() / 1000L);
@@ -232,8 +244,10 @@ public class PlayerVoteDataMCJP extends MyMaidLibrary {
      * プレイヤーの投票数に1つ追加します。
      *
      * @param unixtime UnixTime
+     *
      * @return 実行できたかどうか
-     * @throws SQLException         内部でSQLExceptionが発生した場合
+     *
+     * @throws SQLException 内部でSQLExceptionが発生した場合
      */
     public boolean add(long unixtime) throws SQLException {
         if (!exists()) {
@@ -340,17 +354,6 @@ public class PlayerVoteDataMCJP extends MyMaidLibrary {
         } catch (SQLException e) {
             MyMaidLibrary.reportError(getClass(), e);
         }
-    }
-
-    /**
-     * 指定された文字列がカスタムログインテキストとして正しいか調べます。
-     *
-     * @param loginText カスタムログインテキスト
-     * @return 正しいか
-     */
-    public static boolean checkCustomLoginText(String loginText){
-        // 全角/半角スペースを含めることはできず、30文字以内という制限
-        return !loginText.contains(" ") && !loginText.contains("　") && loginText.length() <= 30;
     }
 
     /**

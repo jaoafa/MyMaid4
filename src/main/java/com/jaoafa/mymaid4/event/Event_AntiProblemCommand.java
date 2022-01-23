@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -27,11 +27,6 @@ import java.util.Map;
 import java.util.Optional;
 
 public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener, EventPremise {
-    @Override
-    public String description() {
-        return "迷惑コマンドの制限を行います。";
-    }
-
     static final Map<String, AntiCommand> antiCommandMap = new HashMap<>();
 
     static {
@@ -68,6 +63,18 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
         antiCommandMap.put("/advancement", new AntiCmd_Advancement());
         antiCommandMap.put("/minecraft:advancement", new AntiCmd_Advancement());
         antiCommandMap.put("/login", new AntiCmd_Login());
+    }
+
+    static void autoHistoryAdd(Player player, String prefix, String details) {
+        if (isAMRV(player)) {
+            return;
+        }
+        Historyjao.getHistoryjao(player).autoAdd(prefix, details);
+    }
+
+    @Override
+    public String description() {
+        return "迷惑コマンドの制限を行います。";
     }
 
     @EventHandler
@@ -385,12 +392,5 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
             event.setCancelled(true);
             autoHistoryAdd(player, "loginコマンドの実行", "(" + String.join(" ", args) + ")");
         }
-    }
-
-    static void autoHistoryAdd(Player player, String prefix, String details) {
-        if (isAMRV(player)) {
-            return;
-        }
-        Historyjao.getHistoryjao(player).autoAdd(prefix, details);
     }
 }

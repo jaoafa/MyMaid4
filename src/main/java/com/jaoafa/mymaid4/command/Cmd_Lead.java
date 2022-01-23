@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -77,10 +77,10 @@ public class Cmd_Lead extends MyMaidLibrary implements CommandPremise {
         }
 
         if (target == null) {
-            @NotNull List<Entity> entities = player.getNearbyEntities(30,30,30);
+            @NotNull List<Entity> entities = player.getNearbyEntities(30, 30, 30);
             LivingEntity looking = null;
             for (Entity e : entities) {
-                if (!(e instanceof LivingEntity)){
+                if (!(e instanceof LivingEntity)) {
                     continue;
                 }
                 if (isEntityLooking(player, (LivingEntity) e)) {

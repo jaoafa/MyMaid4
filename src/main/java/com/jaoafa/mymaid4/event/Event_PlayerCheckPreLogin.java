@@ -41,11 +41,6 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener, EventPremise {
-    @Override
-    public String description() {
-        return "プレイヤーログイン前に各種チェック等を行います。";
-    }
-
     @EventHandler(priority = EventPriority.LOW)
     public static void OnEvent_PlayerCheckPreLogin(AsyncPlayerPreLoginEvent event) {
         String name = event.getName();
@@ -123,7 +118,7 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
             public void run() {
                 MySQLDBManager MySQLDBManager = MyMaidData.getMainMySQLDBManager();
                 if (MySQLDBManager == null) return;
-                try{
+                try {
                     Connection conn = MySQLDBManager.getConnection();
                     try (PreparedStatement statement = conn.prepareStatement(
                         "INSERT INTO login (player, uuid, ip, host, countryName, city, permission) VALUES (?, ?, ?, ?, ?, ?, ?);")) {
@@ -191,5 +186,10 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
         if (MyMaidData.getJaotanChannel() == null) return;
         MyMaidData.getJaotanChannel().sendMessage(
             "[MyMaid4-PreLoginCheck] " + event.getName() + " -> `" + reason + " (" + data + ")`").queue();
+    }
+
+    @Override
+    public String description() {
+        return "プレイヤーログイン前に各種チェック等を行います。";
     }
 }

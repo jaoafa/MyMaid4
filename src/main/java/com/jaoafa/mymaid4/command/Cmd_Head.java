@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -40,7 +40,7 @@ public class Cmd_Head extends MyMaidLibrary implements CommandPremise {
     public MyMaidCommand.Cmd register(Command.Builder<CommandSender> builder) {
         return new MyMaidCommand.Cmd(
             builder
-                .meta(CommandMeta.DESCRIPTION, "自分の頭ブロックを入手します。" )
+                .meta(CommandMeta.DESCRIPTION, "自分の頭ブロックを入手します。")
                 .senderType(Player.class)
                 .handler(this::giveMyHead)
                 .build(),
@@ -63,12 +63,12 @@ public class Cmd_Head extends MyMaidLibrary implements CommandPremise {
         ItemStack main = inv.getItemInMainHand();
 
         inv.setItemInMainHand(skull);
-        SendMessage(player, details(), "「" + name + "の頭」をメインハンドのアイテムと置きかえました。" );
+        SendMessage(player, details(), "「" + name + "の頭」をメインハンドのアイテムと置きかえました。");
 
         if (main.getType() != Material.AIR) {
             if (player.getInventory().firstEmpty() == -1) {
                 player.getLocation().getWorld().dropItem(player.getLocation(), main);
-                SendMessage(player, details(), "インベントリがいっぱいだったため、既に持っていたアイテムはあなたの足元にドロップしました。" );
+                SendMessage(player, details(), "インベントリがいっぱいだったため、既に持っていたアイテムはあなたの足元にドロップしました。");
             } else {
                 inv.addItem(main);
             }
@@ -91,7 +91,7 @@ public class Cmd_Head extends MyMaidLibrary implements CommandPremise {
         if (main.getType() != Material.AIR) {
             if (player.getInventory().firstEmpty() == -1) {
                 player.getLocation().getWorld().dropItem(player.getLocation(), main);
-                SendMessage(player, details(), "インベントリがいっぱいだったため、既に持っていたアイテムはあなたの足元にドロップしました。" );
+                SendMessage(player, details(), "インベントリがいっぱいだったため、既に持っていたアイテムはあなたの足元にドロップしました。");
             } else {
                 inv.addItem(main);
             }
