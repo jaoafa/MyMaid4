@@ -259,8 +259,7 @@ public class Cmd_Pigeon extends MyMaidLibrary implements CommandPremise {
             return true;
         }
 
-        if (context.getSender() instanceof Player) {
-            Player player = (Player) context.getSender();
+        if (context.getSender() instanceof Player player) {
             if (!isAMR(player)) {
                 speakBird(sender, "残念ながら、あなたはこのコマンドを使えないみたいです...。");
                 return true;

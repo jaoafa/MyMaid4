@@ -19,6 +19,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -88,7 +89,13 @@ public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener,
                     }
                     System.out.println("NewPlayerAutoBlMap: ブロック編集マップ取得完了");
 
-                    channel.sendFile(response.body().byteStream(), player.getUniqueId() + ".png")
+                    ResponseBody body = response.body();
+                    if (body == null) {
+                        System.out.printf("NewPlayerAutoBlMap: ブロック編集マップ取得失敗: body is null.\nhttps://jaoafa.com/cp/?uuid=%s%n", player.getUniqueId());
+                        return;
+                    }
+
+                    channel.sendFile(body.byteStream(), player.getUniqueId() + ".png")
                         .append(String.format("新規プレイヤー「%s」のブロック編集マップ\nhttps://jaoafa.com/cp/?uuid=%s", player.getName(), player.getUniqueId())).queue(msg -> {
                             System.out.println("NewPlayerAutoBlMap: メッセージ送信完了 (" + msg.getJumpUrl() + ")");
                             response.close();

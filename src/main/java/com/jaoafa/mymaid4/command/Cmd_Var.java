@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -307,23 +307,12 @@ public class Cmd_Var extends MyMaidLibrary implements CommandPremise {
     void calcProcess(CommandSender sender, String key, int value1, int value2, MathSign mathSign) {
         VariableManager vm = MyMaidData.getVariableManager();
 
-        int result;
-        switch (mathSign) {
-            case PLUS:
-                result = value1 + value2;
-                break;
-            case MINUS:
-                result = value1 - value2;
-                break;
-            case MULTIPLY:
-                result = value1 * value2;
-                break;
-            case DIVIDE:
-                result = value1 / value2;
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + mathSign);
-        }
+        int result = switch (mathSign) {
+            case PLUS -> value1 + value2;
+            case MINUS -> value1 - value2;
+            case MULTIPLY -> value1 * value2;
+            case DIVIDE -> value1 / value2;
+        };
 
         vm.set(key, result);
         SendMessage(sender, details(), String.format("「%d」%s「%d」を%s結果である「%d」をキー「%s」にセットしました。", value1, mathSign.andOr, value2, mathSign.what, result, key));

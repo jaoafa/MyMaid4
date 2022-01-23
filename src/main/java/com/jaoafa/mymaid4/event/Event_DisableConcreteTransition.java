@@ -24,7 +24,6 @@ import org.bukkit.event.block.BlockFormEvent;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class Event_DisableConcreteTransition extends MyMaidLibrary implements Listener, EventPremise {
     @Override
@@ -41,8 +40,7 @@ public class Event_DisableConcreteTransition extends MyMaidLibrary implements Li
         Location loc = block.getLocation();
         List<Particle> particles = Arrays.stream(Particle.values())
             .filter(p -> p.getDataType() == Void.class)
-            .filter(p -> !p.name().startsWith("LEGACY_"))
-            .collect(Collectors.toList());
+            .filter(p -> !p.name().startsWith("LEGACY_")).toList();
 
         Random rnd = new Random();
         int i = rnd.nextInt(particles.size());

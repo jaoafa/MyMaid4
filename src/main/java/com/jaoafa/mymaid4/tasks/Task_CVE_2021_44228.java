@@ -32,7 +32,7 @@ import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 
 public class Task_CVE_2021_44228 extends BukkitRunnable {
-    Player player;
+    final Player player;
 
     public Task_CVE_2021_44228(Player player) {
         this.player = player;

@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -79,21 +79,13 @@ public class Cmd_ChatBan extends MyMaidLibrary implements CommandPremise {
         ChatBan chatBan = ChatBan.getInstance(player);
         ChatBan.Result result = chatBan.addBan(sender.getName(), reason);
 
-        String message = "原因不明のエラーが発生しました。(成功しているかもしれません)";
-        switch (result) {
-            case ALREADY:
-                message = "このプレイヤーは既にChatBanに追加されています。";
-                break;
-            case DATABASE_NOT_ACTIVE:
-                message = "データベースがアクティブではありません。";
-                break;
-            case DATABASE_ERROR:
-                message = "データベースの操作中にエラーが発生しました。";
-                break;
-            case UNKNOWN_ERROR:
-                message = "何らかのエラーが発生しました。";
-                break;
-        }
+        String message = switch (result) {
+            case ALREADY -> "このプレイヤーは既にChatBanに追加されています。";
+            case DATABASE_NOT_ACTIVE -> "データベースがアクティブではありません。";
+            case DATABASE_ERROR -> "データベースの操作中にエラーが発生しました。";
+            case UNKNOWN_ERROR -> "何らかのエラーが発生しました。";
+            default -> "原因不明のエラーが発生しました。(成功しているかもしれません)";
+        };
 
         SendMessage(sender, details(), String.format("プレイヤー「%s」のChatBan追加に%sしました。",
             player.getName(),
@@ -115,21 +107,13 @@ public class Cmd_ChatBan extends MyMaidLibrary implements CommandPremise {
         ChatBan chatBan = ChatBan.getInstance(player);
         ChatBan.Result result = chatBan.removeBan(sender.getName());
 
-        String message = "原因不明のエラーが発生しました。(成功しているかもしれません)";
-        switch (result) {
-            case ALREADY:
-                message = "このプレイヤーはChatBanされていません。";
-                break;
-            case DATABASE_NOT_ACTIVE:
-                message = "データベースがアクティブではありません。";
-                break;
-            case DATABASE_ERROR:
-                message = "データベースの操作中にエラーが発生しました。";
-                break;
-            case UNKNOWN_ERROR:
-                message = "何らかのエラーが発生しました。";
-                break;
-        }
+        String message = switch (result) {
+            case ALREADY -> "このプレイヤーはChatBanされていません。";
+            case DATABASE_NOT_ACTIVE -> "データベースがアクティブではありません。";
+            case DATABASE_ERROR -> "データベースの操作中にエラーが発生しました。";
+            case UNKNOWN_ERROR -> "何らかのエラーが発生しました。";
+            default -> "原因不明のエラーが発生しました。(成功しているかもしれません)";
+        };
 
         SendMessage(sender, details(), String.format("プレイヤー「%s」のChatBan解除に%sしました。",
             player.getName(),

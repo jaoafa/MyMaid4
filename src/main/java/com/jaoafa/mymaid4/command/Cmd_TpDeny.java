@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -130,7 +130,7 @@ public class Cmd_TpDeny extends MyMaidLibrary implements CommandPremise {
         List<TpDeny.TpDenyData> denys = tpdeny.getDenys();
         SendMessage(player, details(), "TpDeny list / count: " + denys.size());
         for (TpDeny.TpDenyData deny : denys) {
-            SendMessage(player, details(), "[" + deny.id + "] " + deny.target.getName() + " / created_at: " + MyMaidLibrary.sdfFormat(deny.created_at) + " / updated_at: " + MyMaidLibrary.sdfFormat(deny.updated_at));
+            SendMessage(player, details(), "[" + deny.id() + "] " + deny.target().getName() + " / created_at: " + MyMaidLibrary.sdfFormat(deny.created_at()) + " / updated_at: " + MyMaidLibrary.sdfFormat(deny.updated_at()));
         }
     }
 

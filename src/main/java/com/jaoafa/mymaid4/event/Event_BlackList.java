@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -110,8 +110,7 @@ public class Event_BlackList extends MyMaidLibrary implements Listener, EventPre
 
         Entity target = event.getEntity();
 
-        if (target instanceof Item) {
-            Item item = (Item) target;
+        if (target instanceof Item item) {
 
             Material material = Materials.getRelatedMaterial(item.getType());
             if (material == null) {
@@ -238,8 +237,7 @@ public class Event_BlackList extends MyMaidLibrary implements Listener, EventPre
         HumanEntity entity = event.getWhoClicked();
         ItemStack item = event.getCursor();
 
-        if (item.getType() != Material.AIR && entity instanceof Player) {
-            Player player = (Player) entity;
+        if (item.getType() != Material.AIR && entity instanceof Player player) {
 
             boolean bool = checkBlacklist(Blacklist.BlacklistEvent.ACQUIRE, item.getType(), player, entity.getLocation());
             if (!bool) {
@@ -266,8 +264,7 @@ public class Event_BlackList extends MyMaidLibrary implements Listener, EventPre
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockDispenseArmor(BlockDispenseArmorEvent event) {
-        if (!(event.getTargetEntity() instanceof Player)) return;
-        Player player = ((Player) event.getTargetEntity());
+        if (!(event.getTargetEntity() instanceof Player player)) return;
         ItemStack stack = event.getItem();
 
         boolean bool = checkBlacklist(Blacklist.BlacklistEvent.EQUIP, stack.getType(), player, player.getLocation());

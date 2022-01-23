@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -86,21 +86,13 @@ public class Cmd_Jail extends MyMaidLibrary implements CommandPremise {
         Jail jail = Jail.getInstance(player);
         Jail.Result result = jail.addBan(sender.getName(), reason);
 
-        String message = "原因不明のエラーが発生しました。(成功しているかもしれません)";
-        switch (result) {
-            case ALREADY:
-                message = "このプレイヤーは既にJailに追加されています。";
-                break;
-            case DATABASE_NOT_ACTIVE:
-                message = "データベースがアクティブではありません。";
-                break;
-            case DATABASE_ERROR:
-                message = "データベースの操作中にエラーが発生しました。";
-                break;
-            case UNKNOWN_ERROR:
-                message = "何らかのエラーが発生しました。";
-                break;
-        }
+        String message = switch (result) {
+            case ALREADY -> "このプレイヤーは既にJailに追加されています。";
+            case DATABASE_NOT_ACTIVE -> "データベースがアクティブではありません。";
+            case DATABASE_ERROR -> "データベースの操作中にエラーが発生しました。";
+            case UNKNOWN_ERROR -> "何らかのエラーが発生しました。";
+            default -> "原因不明のエラーが発生しました。(成功しているかもしれません)";
+        };
 
         SendMessage(sender, details(), String.format("プレイヤー「%s」のJail追加に%sしました。",
             player.getName(),
@@ -122,21 +114,13 @@ public class Cmd_Jail extends MyMaidLibrary implements CommandPremise {
         Jail jail = Jail.getInstance(player);
         Jail.Result result = jail.removeBan(sender.getName());
 
-        String message = "原因不明のエラーが発生しました。(成功しているかもしれません)";
-        switch (result) {
-            case ALREADY:
-                message = "このプレイヤーはJailされていません。";
-                break;
-            case DATABASE_NOT_ACTIVE:
-                message = "データベースがアクティブではありません。";
-                break;
-            case DATABASE_ERROR:
-                message = "データベースの操作中にエラーが発生しました。";
-                break;
-            case UNKNOWN_ERROR:
-                message = "何らかのエラーが発生しました。";
-                break;
-        }
+        String message = switch (result) {
+            case ALREADY -> "このプレイヤーはJailされていません。";
+            case DATABASE_NOT_ACTIVE -> "データベースがアクティブではありません。";
+            case DATABASE_ERROR -> "データベースの操作中にエラーが発生しました。";
+            case UNKNOWN_ERROR -> "何らかのエラーが発生しました。";
+            default -> "原因不明のエラーが発生しました。(成功しているかもしれません)";
+        };
 
         SendMessage(sender, details(), String.format("プレイヤー「%s」のJail解除に%sしました。",
             player.getName(),
@@ -223,24 +207,14 @@ public class Cmd_Jail extends MyMaidLibrary implements CommandPremise {
         }
 
         Jail.Result result = jail.setTestment(testment);
-        String message = "原因不明のエラーが発生しました。(成功しているかもしれません)";
-        switch (result) {
-            case ALREADY:
-                message = "既にあなたは遺言を書いています。";
-                break;
-            case NOT_BANNED:
-                message = "あなたはJailされていないようです。";
-                break;
-            case DATABASE_NOT_ACTIVE:
-                message = "データベースがアクティブではありません。";
-                break;
-            case DATABASE_ERROR:
-                message = "データベースの操作中にエラーが発生しました。";
-                break;
-            case UNKNOWN_ERROR:
-                message = "何らかのエラーが発生しました。";
-                break;
-        }
+        String message = switch (result) {
+            case ALREADY -> "既にあなたは遺言を書いています。";
+            case NOT_BANNED -> "あなたはJailされていないようです。";
+            case DATABASE_NOT_ACTIVE -> "データベースがアクティブではありません。";
+            case DATABASE_ERROR -> "データベースの操作中にエラーが発生しました。";
+            case UNKNOWN_ERROR -> "何らかのエラーが発生しました。";
+            default -> "原因不明のエラーが発生しました。(成功しているかもしれません)";
+        };
 
         SendMessage(player, details(), String.format("遺言の記述に%sしました。",
             result == Jail.Result.SUCCESS ? "成功" : "失敗"));

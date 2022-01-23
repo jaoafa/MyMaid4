@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -24,12 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class TpDeny {
-    final Player player;
-
-    public TpDeny(Player player) {
-        this.player = player;
-    }
+public record TpDeny(Player player) {
 
     /**
      * targetがコマンド実行者であった場合、テレポートを拒否するか
@@ -206,21 +201,7 @@ public class TpDeny {
         }
     }
 
-    public static class TpDenyData {
-        public final int id;
-        public final OfflinePlayer player;
-        public final OfflinePlayer target;
-        public final boolean disabled;
-        public final Date created_at;
-        public final Date updated_at;
-
-        TpDenyData(int id, OfflinePlayer player, OfflinePlayer target, boolean disabled, Date created_at, Date updated_at) {
-            this.id = id;
-            this.player = player;
-            this.target = target;
-            this.disabled = disabled;
-            this.created_at = created_at;
-            this.updated_at = updated_at;
-        }
+    public record TpDenyData(int id, OfflinePlayer player, OfflinePlayer target, boolean disabled,
+                             Date created_at, Date updated_at) {
     }
 }

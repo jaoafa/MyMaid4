@@ -47,10 +47,9 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryCreative(InventoryCreativeEvent event) {
-        if (!(event.getWhoClicked() instanceof Player)) {
+        if (!(event.getWhoClicked() instanceof Player player)) {
             return;
         }
-        Player player = (Player) event.getWhoClicked();
         if (isAMR(player)) {
             return;
         }

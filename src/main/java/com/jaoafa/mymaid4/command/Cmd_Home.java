@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -101,8 +101,8 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
         }
 
         Home.Detail detail = home.get(name);
-        if (Bukkit.getWorld(detail.worldName) == null) {
-            SendMessage(player, details(), String.format("ホーム「%s」のワールド「%s」が見つかりませんでした。", name, detail.worldName));
+        if (Bukkit.getWorld(detail.worldName()) == null) {
+            SendMessage(player, details(), String.format("ホーム「%s」のワールド「%s」が見つかりませんでした。", name, detail.worldName()));
             return;
         }
         player.teleport(detail.getLocation());
@@ -140,14 +140,14 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
         int finalVisualPagenumBefore = visualPagenum - 1;
         int finalVisualPagenumAfter = visualPagenum + 1;
         home.getHomes().stream().skip(listBeginnum).limit(5).forEach(s -> {
-            String homename = cutHomeName(s.name);
+            String homename = cutHomeName(s.name());
             Component componentHomeInfo = Component.text().append(
                 Component.text("["),
-                Component.text(homename, Style.style().color(NamedTextColor.GOLD).clickEvent(ClickEvent.runCommand("/home " + s.name)).build()),
+                Component.text(homename, Style.style().color(NamedTextColor.GOLD).clickEvent(ClickEvent.runCommand("/home " + s.name())).build()),
                 Component.text("] "),
                 Component.text(" ("),
-                Component.text(s.worldName, NamedTextColor.AQUA),
-                Component.text(" x:" + String.valueOf(s.x).split("\\.")[0] + " y:" + String.valueOf(s.y).split("\\.")[0] + " z:" + String.valueOf(s.z).split("\\.")[0] + ")")
+                Component.text(s.worldName(), NamedTextColor.AQUA),
+                Component.text(" x:" + String.valueOf(s.x()).split("\\.")[0] + " y:" + String.valueOf(s.y()).split("\\.")[0] + " z:" + String.valueOf(s.z()).split("\\.")[0] + ")")
             ).build();
             SendMessage(player, details(), componentHomeInfo);
         });
@@ -171,15 +171,15 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
 
         Home.Detail detail = home.get(name);
 
-        SendMessage(player, details(), String.format("----- %s -----", detail.name));
+        SendMessage(player, details(), String.format("----- %s -----", detail.name()));
         SendMessage(player, details(), String.format(
             "Location: %s %.2f %.2f %.2f %.2f %.2f",
-            detail.worldName,
-            detail.x,
-            detail.y,
-            detail.z,
-            detail.yaw,
-            detail.pitch
+            detail.worldName(),
+            detail.x(),
+            detail.y(),
+            detail.z(),
+            detail.yaw(),
+            detail.pitch()
         ));
         SendMessage(player, details(), "作成日時: " + detail.getDate());
     }
@@ -189,9 +189,7 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
         if (homenameLength >= 8) {
             homename = homename.substring(0, 5) + "...";
         } else {
-            for (int count = 0; count < 8 - homenameLength; count++) {
-                homename = homename + " ";
-            }
+            homename = homename + " ".repeat(8 - homenameLength);
         }
         return homename;
     }

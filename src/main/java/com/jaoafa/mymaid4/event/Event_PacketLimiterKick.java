@@ -16,7 +16,7 @@ import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -31,7 +31,7 @@ import java.util.Random;
 import java.util.UUID;
 
 public class Event_PacketLimiterKick extends MyMaidLibrary implements Listener, EventPremise {
-    static Map<UUID, Integer> limited = new HashMap<>();
+    static final Map<UUID, Integer> limited = new HashMap<>();
 
     @Override
     public String description() {
@@ -40,7 +40,7 @@ public class Event_PacketLimiterKick extends MyMaidLibrary implements Listener, 
 
     @EventHandler
     public void onKick(PlayerKickEvent event) {
-        String reason = PlainComponentSerializer.plain().serialize(event.reason());
+        String reason = PlainTextComponentSerializer.plainText().serialize(event.reason());
         if (!reason.equalsIgnoreCase("You are sending too many packets!") &&
             !reason.equalsIgnoreCase("You are sending too many packets, :(")) {
             return;

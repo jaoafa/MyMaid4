@@ -361,8 +361,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
         MarkerAPI markerAPI = dynmapAPI.getMarkerAPI();
 
         List<Marker> markers = markerAPI.getMarkerSets().stream()
-            .flatMap(sets -> sets.getMarkers().stream())
-            .collect(Collectors.toList());
+            .flatMap(sets -> sets.getMarkers().stream()).toList();
 
         int pageItemNum = 5;
         int skipNum = (page - 1) * pageItemNum;
@@ -425,8 +424,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
         MarkerAPI markerAPI = dynmapAPI.getMarkerAPI();
 
         return markerAPI.getMarkerSets().stream()
-            .flatMap(a -> a.getMarkers().stream())
-            .collect(Collectors.toList()).stream()
+            .flatMap(a -> a.getMarkers().stream()).toList().stream()
             .map(GenericMarker::getLabel)
             .filter(label -> label.startsWith(current))
             .collect(Collectors.toList());
