@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
 
 public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
     private static final Map<UUID, Long> DTCooldown = new HashMap<>();
-    
+
     @Override
     public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(

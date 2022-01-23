@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -44,10 +44,10 @@ public class Cmd_Dedbull extends MyMaidLibrary implements CommandPremise {
 
     void addDedBull(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
-        if (player.hasPotionEffect(PotionEffectType.NIGHT_VISION)){
+        if (player.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
             player.removePotionEffect(PotionEffectType.NIGHT_VISION);
             SendMessage(player, details(), "Dedbullの効果を除去しました。");
-        }else {
+        } else {
             player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 1, false, false));
             SendMessage(player, details(), "Dedbullを飲みました。");
         }

@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -25,26 +25,26 @@ import java.util.stream.Collectors;
  * 複数のクラスを跨いで使用されるリストなどの変数をまとめるクラス
  */
 public class MyMaidData {
-    private static TextChannel reportChannel = null;
-    private static TextChannel serverChatChannel = null;
-    private static TextChannel jaotanChannel = null;
-    private static TextChannel generalChannel = null;
     private static final Map<String, Location> lastDed = new HashMap<>();
-    private static MySQLDBManager mainMySQLDBManager = null;
-    private static MySQLDBManager zkrhatMySQLDBManager = null;
     private static final Map<UUID, Integer> SpamCount = new HashMap<>();
     private static final Map<UUID, Long> SpamTime = new HashMap<>();
     private static final Set<UUID> hid = new HashSet<>();
     private static final Set<Player> tempMuting = new HashSet<>();
-    private static CarrierPigeon carrierPigeon = null;
     private static final JSONObject getDocsData = new JSONObject();
     private static final Map<UUID, UUID> looking = new HashMap<>();
     private static final Map<UUID, Float> flyspeed = new HashMap<>();
     private static final Set<UUID> signEditing = new HashSet<>();
     private static final Map<UUID, Location> selectedSign = new HashMap<>();
+    private static final VariableManager variableManager = new VariableManager();
+    private static TextChannel reportChannel = null;
+    private static TextChannel serverChatChannel = null;
+    private static TextChannel jaotanChannel = null;
+    private static TextChannel generalChannel = null;
+    private static MySQLDBManager mainMySQLDBManager = null;
+    private static MySQLDBManager zkrhatMySQLDBManager = null;
+    private static CarrierPigeon carrierPigeon = null;
     private static Blacklist blacklist;
     private static Map<Material, List<String>> creativeInventoryWithNBTs = new HashMap<>(); // material : nbt
-    private static final VariableManager variableManager = new VariableManager();
 
     @Nullable
     public static TextChannel getReportChannel() {

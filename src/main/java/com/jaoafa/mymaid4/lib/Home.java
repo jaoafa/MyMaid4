@@ -84,6 +84,7 @@ public class Home extends MyMaidLibrary {
      * ホーム情報を取得する
      *
      * @param name ホームネーム
+     *
      * @return ホームの場所。なければNull
      */
     public Detail get(String name) {
@@ -102,6 +103,7 @@ public class Home extends MyMaidLibrary {
      *
      * @param name ホームネーム
      * @param loc  ホームの場所
+     *
      * @return 成功したか
      */
     public boolean set(String name, Location loc) {
@@ -142,6 +144,7 @@ public class Home extends MyMaidLibrary {
      * ホームを削除する
      *
      * @param name ホームネーム
+     *
      * @return 成功したか
      */
     public boolean remove(String name) {
@@ -175,6 +178,7 @@ public class Home extends MyMaidLibrary {
      * ホームが存在するかどうかをチェックする
      *
      * @param name ホームネーム
+     *
      * @return ホームが存在すればTrue
      */
     public boolean exists(String name) {

@@ -35,12 +35,12 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener, EventPremise {
+    final Set<UUID> firstLoginer = new HashSet<>();
+
     @Override
     public String description() {
         return "新規プレイヤーがログアウトした際にブロック編集情報を通知します。";
     }
-
-    final Set<UUID> firstLoginer = new HashSet<>();
 
     @EventHandler
     public void OnEvent_FirstLogin(PlayerJoinEvent event) {

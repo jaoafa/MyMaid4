@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -66,9 +66,9 @@ public class Event_FirstLogin extends MyMaidLibrary implements Listener, EventPr
             players.add(p.getName());
         }
 
-        if(Main.getMyMaidConfig().getJDA() != null) {
+        if (Main.getMyMaidConfig().getJDA() != null) {
             TextChannel jaotan = MyMaidData.getJaotanChannel();
-            if(jaotan == null){
+            if (jaotan == null) {
                 return;
             }
 

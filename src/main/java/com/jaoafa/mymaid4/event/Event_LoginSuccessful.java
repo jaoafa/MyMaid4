@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -46,7 +46,7 @@ public class Event_LoginSuccessful extends MyMaidLibrary implements Listener, Ev
                 if (MySQLDBManager == null) {
                     return;
                 }
-                try{
+                try {
                     Connection conn = MySQLDBManager.getConnection();
                     try (PreparedStatement statement = conn.prepareStatement(
                         "UPDATE login SET login_success = ? WHERE uuid = ? ORDER BY id DESC LIMIT 1")) {
@@ -54,7 +54,7 @@ public class Event_LoginSuccessful extends MyMaidLibrary implements Listener, Ev
                         statement.setString(2, uuid.toString());
                         statement.executeUpdate();
                     }
-                }catch (SQLException e){
+                } catch (SQLException e) {
                     MyMaidLibrary.reportError(getClass(), e);
                 }
 

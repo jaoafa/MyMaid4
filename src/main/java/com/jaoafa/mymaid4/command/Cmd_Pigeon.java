@@ -276,10 +276,10 @@ public class Cmd_Pigeon extends MyMaidLibrary implements CommandPremise {
         // スピーカーとIdを返す
         CarrierPigeon carrierPigeon = MyMaidData.getCarrierPigeon();
         return Stream.concat(
-            carrierPigeon.getSpeakers().stream(),
-            IntStream.range(0, carrierPigeon.getSpeakers().size())
-                .mapToObj(Integer::toString)
-        ).filter(s -> s.startsWith(current))
+                carrierPigeon.getSpeakers().stream(),
+                IntStream.range(0, carrierPigeon.getSpeakers().size())
+                    .mapToObj(Integer::toString)
+            ).filter(s -> s.startsWith(current))
             .collect(Collectors.toList());
     }
 
@@ -291,10 +291,10 @@ public class Cmd_Pigeon extends MyMaidLibrary implements CommandPremise {
         // メッセージとIdを返す
         CarrierPigeon carrierPigeon = MyMaidData.getCarrierPigeon();
         return Stream.concat(
-            carrierPigeon.getMessages().stream(),
-            IntStream.range(0, carrierPigeon.getMessages().size())
-                .mapToObj(Integer::toString)
-        ).filter(s -> s.startsWith(current))
+                carrierPigeon.getMessages().stream(),
+                IntStream.range(0, carrierPigeon.getMessages().size())
+                    .mapToObj(Integer::toString)
+            ).filter(s -> s.startsWith(current))
             .collect(Collectors.toList());
     }
 

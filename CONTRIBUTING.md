@@ -52,30 +52,35 @@ Eclipse などでも開発できますが、開発のサポートやテストサ
 
 ## Specifications
 
-- 全てのコマンドは [`src/main/java/com/jaoafa/mymaid4/command/Cmd_<CommandName>.java`](src/main/java/com/jaoafa/mymaid4/command) に作成される必要があります。
-- 全てのイベント駆動の機能は [`src/main/java/com/jaoafa/mymaid4/event/Event_<FuncName>.java`](src/main/java/com/jaoafa/mymaid4/event) に作成される必要があります。
+- 全てのコマンドは [`src/main/java/com/jaoafa/mymaid4/command/Cmd_<CommandName>.java`](src/main/java/com/jaoafa/mymaid4/command)
+  に作成される必要があります。
+- 全てのイベント駆動の機能は [`src/main/java/com/jaoafa/mymaid4/event/Event_<FuncName>.java`](src/main/java/com/jaoafa/mymaid4/event)
+  に作成される必要があります。
 - コマンドは コマンドフレームワーク [Incendo/cloud](https://github.com/Incendo/cloud) を使用しています。
 - `config.yml` で設定される設定情報は `MyMaidConfig` にあり、 `Main.getMyMaidConfig()` から取得できます。
 - 複数のクラスにわたって使用される変数は `MyMaidData` に変数を作成し、 Getter と Setter を使用して管理してください。
 - 複数のクラスにわたって多く使用される関数は `MyMaidLibrary` に関数を作成し、Javadoc を書いたうえで `extends MyMaidLibrary` して利用してください。
-- データベースは jaoMain と ZakuroHat の二つがありますが、原則 jaoMain が使用されます。それぞれ `MyMaidData.getMainMySQLDBManager` `MyMaidData.getZKRHatMySQLDBManager` で取得できます。
-- 開発サーバかどうかは `MyMaidConfig.isDevelopmentServer()` で判定できます。`plugins/MyMaid4/this-server-is-development` ファイルの存在有無で確認しています。
+- データベースは jaoMain と ZakuroHat の二つがありますが、原則 jaoMain
+  が使用されます。それぞれ `MyMaidData.getMainMySQLDBManager` `MyMaidData.getZKRHatMySQLDBManager` で取得できます。
+- 開発サーバかどうかは `MyMaidConfig.isDevelopmentServer()` で判定できます。`plugins/MyMaid4/this-server-is-development`
+  ファイルの存在有無で確認しています。
 - 全てのコマンドのパーミッションノードは小文字の `mymaid.<CommandName>` でなければなりません。このパーミッションノードは自動で付与されます。
 
 ### General
 
 - コマンド・機能の開発を始める前に、次の作業を実施することを強くお勧めします。
-  - **`upstream/master` からブランチを作成するなどを行い、最新の状態から開発する**
-  - **[Projects](https://github.com/jaoafa/MyMaid4/projects/1) で、該当する看板があれば `In Progress` に移動する**
-  - 該当する Issue の `Assignees` に自分を追加する
+    - **`upstream/master` からブランチを作成するなどを行い、最新の状態から開発する**
+    - **[Projects](https://github.com/jaoafa/MyMaid4/projects/1) で、該当する看板があれば `In Progress` に移動する**
+    - 該当する Issue の `Assignees` に自分を追加する
 - ローカル変数はなにかしらの理由がある場合を除き小文字で始めてください。
 - 将来的に追加・修正などを行わなければならない項目がある場合は、 `// TODO <Message>` で TODO を登録してください。
 
 ### Command
 
 - 使用しているコマンドフレームワークは [Incendo/cloud](https://github.com/Incendo/cloud) です。
-  - ドキュメントは [こちら](https://incendo.github.io/cloud) です。
-- 全てのコマンドは [`src/main/java/com/jaoafa/mymaid4/command/Cmd_<CommandName>.java`](src/main/java/com/jaoafa/mymaid4/command) に配置され、これらが自動で読み込まれます。
+    - ドキュメントは [こちら](https://incendo.github.io/cloud) です。
+- 全てのコマンドは [`src/main/java/com/jaoafa/mymaid4/command/Cmd_<CommandName>.java`](src/main/java/com/jaoafa/mymaid4/command)
+  に配置され、これらが自動で読み込まれます。
 - 同時に、クラス名は `Cmd_<CommandName>` でなければなりません。`<CommandName>` は大文字・小文字を問いません。
 - また、ここに配置されるコマンドクラスは `com.jaoafa.mymaid4.lib.CommandPremise` インターフェースを実装する必要があります。（`implements CommandPremise`）
 - コマンドを実行したユーザーにメッセージを送る場合は `MyMaidLibrary` にある `SendMessage` メソッドを利用してください。
@@ -84,10 +89,12 @@ Eclipse などでも開発できますが、開発のサポートやテストサ
 
 ### Event
 
-- 全てのイベント駆動の機能は [`src/main/java/com/jaoafa/mymaid4/event/Event_<FuncName>.java`](src/main/java/com/jaoafa/mymaid4/event) に配置され、これらが自動で読み込まれます。
+- 全てのイベント駆動の機能は [`src/main/java/com/jaoafa/mymaid4/event/Event_<FuncName>.java`](src/main/java/com/jaoafa/mymaid4/event)
+  に配置され、これらが自動で読み込まれます。
 - 同時に、クラス名は `Event_<FuncName>` でなければなりません。
 - `<FuncName>` は自由で構いません。
-- また、ここに配置されるコマンドクラスは `org.bukkit.event.Listener` と `com.jaoafa.mymaid4.lib.EventPremise` インターフェースを実装する必要があります。（`implements Listener, EventPremise`）
+- また、ここに配置されるコマンドクラスは `org.bukkit.event.Listener` と `com.jaoafa.mymaid4.lib.EventPremise`
+  インターフェースを実装する必要があります。（`implements Listener, EventPremise`）
 - そのクラス(イベント)が持つ機能の情報は `description()` で定義します。
 
 ## Git
@@ -95,21 +102,25 @@ Eclipse などでも開発できますが、開発のサポートやテストサ
 ### Commit
 
 - 発生しているエラーなどはコミット・プルリクエスト前にすべて修正してください。
-- コミットメッセージは **[CommitLint のルール](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional#rules) である以下に沿っていることを期待しますが、必須ではありません。**
+-
+
+コミットメッセージは **[CommitLint のルール](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional#rules)
+である以下に沿っていることを期待しますが、必須ではありません。**
+
 - 次の形式でコミットメッセージを指定してください: `type(scope): subject` (e.g. `fix(home): message`)
-  - `type`, `subject` は必須、 `scope` は必須ではありません
+    - `type`, `subject` は必須、 `scope` は必須ではありません
 - `type-enum`: `type` は必ず次のいずれかにしなければなりません
-  - `build`: ビルド関連
-  - `ci`: CI 関連
-  - `chore`: いろいろ
-  - `docs`: ドキュメント関連
-  - `feat`: 新機能
-  - `fix`: 修正
-  - `perf`: パフォーマンス改善
-  - `refactor`: リファクタリング
-  - `revert`: コミットの取り消し
-  - `style`: コードスタイルの修正
-  - `test`: テストコミット
+    - `build`: ビルド関連
+    - `ci`: CI 関連
+    - `chore`: いろいろ
+    - `docs`: ドキュメント関連
+    - `feat`: 新機能
+    - `fix`: 修正
+    - `perf`: パフォーマンス改善
+    - `refactor`: リファクタリング
+    - `revert`: コミットの取り消し
+    - `style`: コードスタイルの修正
+    - `test`: テストコミット
 - `type-case`: `type` は必ず小文字でなければなりません (NG: `FIX` / OK: `fix`)
 - `type-empty`: `type` は必ず含めなければなりません (NG: `test message` / OK: `test: message`)
 - `scope-case`: `scope` は必ず小文字でなければなりません (NG: `fix(HOME): message` / OK: `fix:(home): message`)
