@@ -32,6 +32,7 @@ import com.jaoafa.mymaid4.tasks.Task_TabList;
 import com.rollbar.notifier.Rollbar;
 import com.rollbar.notifier.config.ConfigBuilder;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import de.tr7zw.nbtinjector.NBTInjector;
 import net.dv8tion.jda.api.JDABuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -161,6 +162,8 @@ public final class Main extends JavaPlugin {
 
         CarrierPigeon carrierPigeon = new CarrierPigeon(new File(this.getDataFolder(), "carrierPigeon.yml"));
         MyMaidData.setCarrierPigeon(carrierPigeon);
+
+        NBTInjector.inject();
 
         registerCommand();
         if (!isEnabled())
@@ -433,7 +436,7 @@ public final class Main extends JavaPlugin {
                             .filter(m -> m.getParameterCount() == 1)
                             .filter(m -> Arrays.stream(m.getDeclaredAnnotations())
                                 .anyMatch(a -> a.annotationType().equals(EventHandler.class)))
-                            .collect(Collectors.toList());
+                            .toList();
 
                         JSONArray methodArray = new JSONArray();
                         eventMethods.forEach(method -> {
