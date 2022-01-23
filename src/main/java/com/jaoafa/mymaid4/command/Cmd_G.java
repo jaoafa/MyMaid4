@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -190,8 +190,7 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
         List<String> list = new ArrayList<>();
         list.addAll(Arrays.asList("1", "2", "3", "s", "c", "a", "sp"));
         list.addAll(Arrays.stream(GameMode.values())
-            .map(Enum::name)
-            .collect(Collectors.toList()));
+            .map(Enum::name).toList());
 
         return list.stream()
             .filter(s -> s.toLowerCase().startsWith(current.toLowerCase()))

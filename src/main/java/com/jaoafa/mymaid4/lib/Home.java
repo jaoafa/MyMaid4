@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -67,14 +67,13 @@ public class Home extends MyMaidLibrary {
 
     public static List<String> suggestHomeName(final CommandContext<CommandSender> context, final String current) {
         List<String> list = new ArrayList<>();
-        if (!(context.getSender() instanceof Player)) {
+        if (!(context.getSender() instanceof Player player)) {
             return list;
         }
-        Player player = (Player) context.getSender();
         if (!homeNames.containsKey(player.getUniqueId())) {
             fetchHomeNames(player);
         }
-        list.addAll(homeNames.get(player.getUniqueId()).stream().map(detail -> detail.name).collect(Collectors.toList()));
+        list.addAll(homeNames.get(player.getUniqueId()).stream().map(detail -> detail.name).toList());
 
         return list.stream()
             .filter(s -> s.toLowerCase().startsWith(current.toLowerCase()))
@@ -209,27 +208,8 @@ public class Home extends MyMaidLibrary {
         return homeNames.get(player.getUniqueId());
     }
 
-    public static class Detail {
-        public final String name;
-        public final String worldName;
-        public final double x;
-        public final double y;
-        public final double z;
-        public final float yaw;
-        public final float pitch;
-        public final Timestamp create_at;
-
-        public Detail(String name, String worldName, double x, double y, double z, float yaw, float pitch, Timestamp create_at) {
-            this.name = name;
-            this.worldName = worldName;
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.yaw = yaw;
-            this.pitch = pitch;
-            this.create_at = create_at; // created_atに変えたい
-        }
-
+    public record Detail(String name, String worldName, double x, double y, double z, float yaw,
+                         float pitch, Timestamp create_at) {
         public Location getLocation() {
             return new Location(
                 Bukkit.getWorld(worldName),

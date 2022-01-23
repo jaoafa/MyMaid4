@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -204,10 +204,9 @@ public class Event_Jail implements Listener, EventPremise {
 
     @EventHandler
     public void onPlayerPickupItemEvent(EntityPickupItemEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
+        if (!(event.getEntity() instanceof Player player)) {
             return;
         }
-        Player player = (Player) event.getEntity();
         Jail jail = Jail.getInstance(player);
         if (!jail.isStatus()) { // Jailされてる
             return;
@@ -251,10 +250,9 @@ public class Event_Jail implements Listener, EventPremise {
 
     @EventHandler
     public void onProjectileLaunchEvent(ProjectileLaunchEvent event) {
-        if (!(event.getEntity().getShooter() instanceof Player)) {
+        if (!(event.getEntity().getShooter() instanceof Player player)) {
             return;
         }
-        Player player = (Player) event.getEntity().getShooter();
         Jail jail = Jail.getInstance(player);
         if (!jail.isStatus()) { // Jailされてる
             return;
@@ -264,10 +262,9 @@ public class Event_Jail implements Listener, EventPremise {
 
     @EventHandler
     public void onPotionSplashEvent(PotionSplashEvent event) {
-        if (!(event.getEntity().getShooter() instanceof Player)) {
+        if (!(event.getEntity().getShooter() instanceof Player player)) {
             return;
         }
-        Player player = (Player) event.getEntity().getShooter();
         Jail jail = Jail.getInstance(player);
         if (!jail.isStatus()) { // Jailされてる
             return;

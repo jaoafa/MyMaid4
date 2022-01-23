@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -363,7 +363,7 @@ public final class Main extends JavaPlugin {
                             .filter(m -> m.getParameterCount() == 1)
                             .filter(m -> Arrays.stream(m.getDeclaredAnnotations())
                                 .anyMatch(a -> a.annotationType().equals(EventHandler.class)))
-                            .collect(Collectors.toList());
+                            .toList();
 
                         JSONArray methodArray = new JSONArray();
                         eventMethods.forEach(method -> {

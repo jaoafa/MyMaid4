@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -259,8 +259,7 @@ public class Cmd_Pigeon extends MyMaidLibrary implements CommandPremise {
             return true;
         }
 
-        if (context.getSender() instanceof Player) {
-            Player player = (Player) context.getSender();
+        if (context.getSender() instanceof Player player) {
             if (!isAMR(player)) {
                 speakBird(sender, "残念ながら、あなたはこのコマンドを使えないみたいです...。");
                 return true;

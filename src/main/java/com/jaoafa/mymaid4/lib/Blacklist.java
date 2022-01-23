@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -89,7 +89,7 @@ public class Blacklist {
 
     BlacklistAction[] getMatchActions(List<String> list) {
         BlacklistAction[] actions = Arrays.stream(BlacklistAction.values())
-            .filter(a -> list.stream().map(String::toUpperCase).collect(Collectors.toList()).contains(a.name()))
+            .filter(a -> list.stream().map(String::toUpperCase).toList().contains(a.name()))
             .toArray(BlacklistAction[]::new);
         return actions.length != 0 ? actions : null;
     }
@@ -192,18 +192,9 @@ public class Blacklist {
             boolean execute(@NotNull BlacklistContext context);
         }
 
-        public static class BlacklistContext {
-            private final BlacklistItem blacklistItem;
-            private final BlacklistEvent blacklistEvent;
-            private final Player player;
-            private final Location location;
-
-            public BlacklistContext(BlacklistItem blacklistItem, BlacklistEvent blacklistEvent, Player player, Location location) {
-                this.blacklistItem = blacklistItem;
-                this.blacklistEvent = blacklistEvent;
-                this.player = player;
-                this.location = location;
-            }
+        public record BlacklistContext(BlacklistItem blacklistItem,
+                                       BlacklistEvent blacklistEvent,
+                                       Player player, Location location) {
 
             public BlacklistItem getBlacklistItem() {
                 return blacklistItem;

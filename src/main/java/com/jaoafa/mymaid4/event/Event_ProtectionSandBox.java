@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -144,10 +144,9 @@ public class Event_ProtectionSandBox extends MyMaidLibrary implements Listener, 
 
     @EventHandler
     public void onProjectileLaunchEvent(ProjectileLaunchEvent event) {
-        if (!(event.getEntity().getShooter() instanceof Player)) {
+        if (!(event.getEntity().getShooter() instanceof Player player)) {
             return;
         }
-        Player player = (Player) event.getEntity().getShooter();
         Location loc = player.getLocation();
         World world = loc.getWorld();
 
@@ -208,10 +207,9 @@ public class Event_ProtectionSandBox extends MyMaidLibrary implements Listener, 
 
     @EventHandler
     public void onDamageArmorStand(EntityDamageByEntityEvent event) {
-        if (!(event.getDamager() instanceof Player)) {
+        if (!(event.getDamager() instanceof Player player)) {
             return;
         }
-        Player player = (Player) event.getDamager();
         World world = player.getWorld();
         if (event.getEntity().getType() != EntityType.ARMOR_STAND) {
             return;

@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -18,7 +18,7 @@ import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -40,7 +40,7 @@ public class Event_ChatBan implements Listener, EventPremise {
     public void onChat(AsyncChatEvent event) {
         Player player = event.getPlayer();
         Component component = event.message();
-        String message = PlainComponentSerializer.plain().serialize(component);
+        String message = PlainTextComponentSerializer.plainText().serialize(component);
         ChatBan chatBan = ChatBan.getInstance(player);
 
         if (!chatBan.isStatus()) return;

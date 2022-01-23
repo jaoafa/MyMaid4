@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -74,8 +74,7 @@ public class Cmd_Weather extends MyMaidLibrary implements CommandPremise {
 
     List<String> suggestWeatherName(final CommandContext<CommandSender> context, final String current) {
         List<String> list = Arrays.stream(WeatherType.values())
-            .map(Enum::name)
-            .collect(Collectors.toList());
+            .map(Enum::name).toList();
 
         return list.stream()
             .filter(s -> s.toLowerCase().startsWith(current.toLowerCase()))

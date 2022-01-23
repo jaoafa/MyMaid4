@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -15,7 +15,7 @@ import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.lib.*;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -44,7 +44,7 @@ public class Event_EBan implements Listener, EventPremise {
     public void onEvent_ChatLiquidBounce(AsyncChatEvent event) {
         Player player = event.getPlayer();
         Component component = event.message();
-        String message = PlainComponentSerializer.plain().serialize(component);
+        String message = PlainTextComponentSerializer.plainText().serialize(component);
         EBan eban = EBan.getInstance(player);
 
         if (!eban.isStatus()) return;
@@ -195,8 +195,7 @@ public class Event_EBan implements Listener, EventPremise {
 
     @EventHandler
     public void onPlayerPickupItemEvent(EntityPickupItemEvent event) {
-        if (!(event.getEntity() instanceof Player)) return;
-        Player player = (Player) event.getEntity();
+        if (!(event.getEntity() instanceof Player player)) return;
         EBan eban = EBan.getInstance(player);
         // EBanされてる
         if (!eban.isStatus()) return;
@@ -225,8 +224,7 @@ public class Event_EBan implements Listener, EventPremise {
 
     @EventHandler
     public void onProjectileLaunchEvent(ProjectileLaunchEvent event) {
-        if (!(event.getEntity().getShooter() instanceof Player)) return;
-        Player player = (Player) event.getEntity().getShooter();
+        if (!(event.getEntity().getShooter() instanceof Player player)) return;
         EBan eban = EBan.getInstance(player);
         // EBanされてる
         if (!eban.isStatus()) return;
@@ -235,8 +233,7 @@ public class Event_EBan implements Listener, EventPremise {
 
     @EventHandler
     public void onPotionSplashEvent(PotionSplashEvent event) {
-        if (!(event.getEntity().getShooter() instanceof Player)) return;
-        Player player = (Player) event.getEntity().getShooter();
+        if (!(event.getEntity().getShooter() instanceof Player player)) return;
         EBan eban = EBan.getInstance(player);
         // EBanされてる
         if (!eban.isStatus()) return;

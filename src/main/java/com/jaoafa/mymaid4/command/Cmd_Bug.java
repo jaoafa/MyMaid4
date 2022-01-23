@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -24,7 +24,7 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import okhttp3.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -182,13 +182,13 @@ public class Cmd_Bug extends MyMaidLibrary implements CommandPremise {
         List<Component> pages = meta.pages();
         String body = pages.stream()
             .skip(1)
-            .map(o -> ChatColor.stripColor(PlainComponentSerializer.plain().serialize(o)))
+            .map(o -> ChatColor.stripColor(PlainTextComponentSerializer.plainText().serialize(o)))
             .collect(Collectors.joining("\n")) +
-            MessageFormat.format("\n" +
-                    "## システム追加情報\n" +
-                    "\n" +
-                    "- 作成者: [{0} (`{1}`)]({2})\n" +
-                    "- 執筆者: {3}",
+            MessageFormat.format("""
+                    ## システム追加情報
+
+                    - 作成者: [{0} (`{1}`)]({2})
+                    - 執筆者: {3}""",
                 player.getName(),
                 player.getUniqueId().toString(),
                 String.format("https://users.jaoafa.com/%s", player.getUniqueId()),
@@ -212,7 +212,7 @@ public class Cmd_Bug extends MyMaidLibrary implements CommandPremise {
 
                 try {
                     OkHttpClient client = new OkHttpClient();
-                    RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=UTF-8"), json.toString());
+                    RequestBody requestBody = RequestBody.create(json.toString(), MediaType.parse("application/json; charset=UTF-8"));
                     Request request = new Request.Builder()
                         .url(url)
                         .header("Authorization", String.format("token %s", accessToken))

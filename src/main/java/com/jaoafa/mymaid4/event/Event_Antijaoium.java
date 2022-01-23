@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -11,7 +11,6 @@
 
 package com.jaoafa.mymaid4.event;
 
-import com.google.common.io.Files;
 import com.jaoafa.jaosuperachievement2.api.Achievementjao;
 import com.jaoafa.jaosuperachievement2.lib.Achievement;
 import com.jaoafa.mymaid4.Main;
@@ -19,7 +18,7 @@ import com.jaoafa.mymaid4.lib.*;
 import com.jaoafa.mymaid4.tasks.Task_AutoRemoveJailByjaoium;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -50,7 +49,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.text.MessageFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -76,7 +75,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
         if (component == null) {
             return null;
         }
-        String displayName = PlainComponentSerializer.plain().serialize(component);
+        String displayName = PlainTextComponentSerializer.plainText().serialize(component);
         if (displayName.contains("§4§lDEATH")) {
             // Wurst?
             return "Wurst";
@@ -112,8 +111,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
         boolean exists = file.exists();
         if (!exists) {
             try {
-                //noinspection UnstableApiUsage
-                Files.write(output, file, Charset.defaultCharset());
+                Files.writeString(file.toPath(), output);
             } catch (IOException e) {
                 reportError(getClass(), e);
             }
@@ -124,9 +122,9 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
         if (is.getType() == Material.SPLASH_POTION || is.getType() == Material.LINGERING_POTION) {
             PotionMeta meta = (PotionMeta) is.getItemMeta();
             Component componentDisplayName = meta.displayName();
-            displayName = componentDisplayName != null ? PlainComponentSerializer.plain().serialize(componentDisplayName) : "";
+            displayName = componentDisplayName != null ? PlainTextComponentSerializer.plainText().serialize(componentDisplayName) : "";
             List<Component> componentLore = meta.lore();
-            String lore = componentLore != null ? componentLore.stream().map(c -> PlainComponentSerializer.plain().serialize(c)).collect(Collectors.joining()) : "";
+            String lore = componentLore != null ? componentLore.stream().map(c -> PlainTextComponentSerializer.plainText().serialize(c)).collect(Collectors.joining()) : "";
             if (!displayName.contains("jaoium") && !lore.contains("jaoium")) {
                 isWarning = true;
             }
@@ -155,10 +153,9 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void OnPickup(EntityPickupItemEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
+        if (!(event.getEntity() instanceof Player player)) {
             return;
         }
-        Player player = (Player) event.getEntity();
         Item item = event.getItem();
         ItemStack hand = item.getItemStack();
         if (hand.getType() != Material.SPLASH_POTION && hand.getType() != Material.LINGERING_POTION) {
@@ -174,10 +171,9 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void InvClick(InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player)) {
+        if (!(event.getWhoClicked() instanceof Player player)) {
             return;
         }
-        Player player = (Player) event.getWhoClicked();
         Inventory click_inv = event.getClickedInventory();
 
         check(event, player, click_inv, false);
@@ -295,9 +291,9 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
 
         PotionMeta meta = (PotionMeta) is.getItemMeta();
         Component componentDisplayName = meta.displayName();
-        String displayName = componentDisplayName != null ? PlainComponentSerializer.plain().serialize(componentDisplayName) : "";
+        String displayName = componentDisplayName != null ? PlainTextComponentSerializer.plainText().serialize(componentDisplayName) : "";
         List<Component> componentLore = meta.lore();
-        String lore = componentLore != null ? componentLore.stream().map(c -> PlainComponentSerializer.plain().serialize(c)).collect(Collectors.joining()) : "";
+        String lore = componentLore != null ? componentLore.stream().map(c -> PlainTextComponentSerializer.plainText().serialize(c)).collect(Collectors.joining()) : "";
         if (!displayName.contains("jaoium") && !lore.contains("jaoium") && !isAMRV(player)) {
             Historyjao.getHistoryjao(player).autoAdd("jaoiumの所持・使用", "(" + displayName + ")");
         }
@@ -403,13 +399,11 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void ByCommandBlock(ServerCommandEvent event) {
-        if (!(event.getSender() instanceof BlockCommandSender))
+        if (!(event.getSender() instanceof BlockCommandSender sender))
             return;
-        BlockCommandSender sender = (BlockCommandSender) event.getSender();
 
-        if (!(sender.getBlock().getState() instanceof CommandBlock))
+        if (!(sender.getBlock().getState() instanceof CommandBlock cmdb))
             return;
-        CommandBlock cmdb = (CommandBlock) sender.getBlock().getState();
 
         String command = cmdb.getCommand();
         if (!command.startsWith("/give") && !command.startsWith("give")) {
@@ -472,10 +466,9 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void ByItemPickup(EntityPickupItemEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
+        if (!(event.getEntity() instanceof Player player)) {
             return;
         }
-        Player player = (Player) event.getEntity();
         Item item = event.getItem();
         ItemStack hand = item.getItemStack();
         if (hand.getType() == Material.SPLASH_POTION || hand.getType() == Material.LINGERING_POTION) {

@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -64,12 +64,9 @@ public class MyMaidCommand {
         }
     }
 
-    public static class Cmd {
-        private final Command<CommandSender>[] commands;
-
+    public record Cmd(Command<CommandSender>... commands) {
         @SafeVarargs
-        public Cmd(Command<CommandSender>... commands) {
-            this.commands = commands;
+        public Cmd {
         }
 
         /**

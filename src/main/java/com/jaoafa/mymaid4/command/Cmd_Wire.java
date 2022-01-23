@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -154,9 +154,8 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             return;
         }
 
-        if (region instanceof CuboidRegion) {
+        if (region instanceof CuboidRegion cuboidRegion) {
 
-            CuboidRegion cuboidRegion = (CuboidRegion) region;
             BlockVector3 locationArgumentWePos1 = cuboidRegion.getPos1();
             BlockVector3 locationArgumentWePos2 = cuboidRegion.getPos2();
             Location loc1 = new Location(player.getWorld(), locationArgumentWePos1.getX() + 0.5, locationArgumentWePos1.getY() + 0.1725, locationArgumentWePos1.getZ() + 0.5);
@@ -168,7 +167,7 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             }
             summonBat(player, loc1, loc2, true);
 
-        } else if (region instanceof Polygonal2DRegion) {
+        } else if (region instanceof Polygonal2DRegion polyRegion) {
 
             int summonCount = 0;
 
@@ -178,7 +177,6 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
                 return;
             }
 
-            Polygonal2DRegion polyRegion = (Polygonal2DRegion) region;
             List<BlockVector2> polylist = polyRegion.getPoints();
             int polyPosY = polyRegion.getMaximumY();
 
@@ -236,9 +234,8 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             return;
         }
 
-        if (region instanceof CuboidRegion) {
+        if (region instanceof CuboidRegion cuboidRegion) {
 
-            CuboidRegion cuboidRegion = (CuboidRegion) region;
             BlockVector3 locationArgumentWePos1 = cuboidRegion.getPos1();
             BlockVector3 locationArgumentWePos2 = cuboidRegion.getPos2();
             Location loc1 = new Location(player.getWorld(), locationArgumentWePos1.getX() + 0.5, locationArgumentWePos1.getY() + 0.1725, locationArgumentWePos1.getZ() + 0.5);
@@ -249,7 +246,7 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
             removeBat(loc1entities, loc2entities);
             SendMessage(player, details(), "指定した座標間のリードを撤去する操作を行いました。実際には撤去されていないことがあります。");
 
-        } else if (region instanceof Polygonal2DRegion) {
+        } else if (region instanceof Polygonal2DRegion polyRegion) {
 
             if (region.getHeight() != 1) {
                 SendMessage(player, details(), "3つ以上の座標を指定した場合は、全てのY座標が同じ高さでなければ実行できません。");
@@ -257,7 +254,6 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
                 return;
             }
 
-            Polygonal2DRegion polyRegion = (Polygonal2DRegion) region;
             List<BlockVector2> polylist = polyRegion.getPoints();
             int polyPosY = polyRegion.getMaximumY();
             int wireRemoveCount = 0;

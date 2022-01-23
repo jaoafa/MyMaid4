@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -129,6 +129,10 @@ public class Cmd_DedMessage extends MyMaidLibrary implements CommandPremise {
         String deathMessage = context.getOrDefault("message", null);
         try {
             World selectionWorld = we.getSession(player).getSelectionWorld();
+            if (selectionWorld == null) {
+                SendMessage(player, details(), "WorldEditで範囲を指定してください。");
+                return;
+            }
             Region region = we.getSession(player).getSelection(selectionWorld);
             BlockVector3 blockMin = region.getMinimumPoint();
             Vector vectorMin = new Vector(blockMin.getBlockX(), blockMin.getBlockY(), blockMin.getBlockZ());

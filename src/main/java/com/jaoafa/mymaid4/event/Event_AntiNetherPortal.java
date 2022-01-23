@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -31,11 +31,10 @@ public class Event_AntiNetherPortal extends MyMaidLibrary implements Listener, E
 
     @EventHandler
     public void onEntityCreatePortalEvent(PortalCreateEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
+        if (!(event.getEntity() instanceof Player player)) {
             event.setCancelled(true);
             return;
         }
-        Player player = (Player) event.getEntity();
         if (isAM(player)) {
             player.sendMessage(Component.text().append(
                 Component.text("["),

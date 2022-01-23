@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -13,7 +13,7 @@ package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
-import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -26,7 +26,7 @@ public class Event_DisableKicks extends MyMaidLibrary implements Listener, Event
 
     @EventHandler
     public void onKick(PlayerKickEvent event) {
-        String reason = PlainComponentSerializer.plain().serialize(event.reason());
+        String reason = PlainTextComponentSerializer.plainText().serialize(event.reason());
         if (reason.equals("disconnect.spam") || event.getCause() == PlayerKickEvent.Cause.SPAM) {
             event.setCancelled(true);
         }

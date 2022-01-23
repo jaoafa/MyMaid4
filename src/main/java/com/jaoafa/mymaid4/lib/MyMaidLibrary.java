@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -598,42 +598,25 @@ public class MyMaidLibrary {
     }
 
     public static NamedTextColor getNamedTextColor(String color) {
-        switch (color.toUpperCase()) {
-            case "BLACK":
-                return NamedTextColor.BLACK;
-            case "DARK_BLUE":
-                return NamedTextColor.DARK_BLUE;
-            case "DARK_GREEN":
-                return NamedTextColor.DARK_GREEN;
-            case "DARK_AQUA":
-                return NamedTextColor.DARK_AQUA;
-            case "DARK_RED":
-                return NamedTextColor.DARK_RED;
-            case "DARK_PURPLE":
-                return NamedTextColor.DARK_PURPLE;
-            case "GOLD":
-                return NamedTextColor.GOLD;
-            case "GRAY":
-                return NamedTextColor.GRAY;
-            case "DARK_GRAY":
-                return NamedTextColor.DARK_GRAY;
-            case "BLUE":
-                return NamedTextColor.BLUE;
-            case "GREEN":
-                return NamedTextColor.GREEN;
-            case "AQUA":
-                return NamedTextColor.AQUA;
-            case "RED":
-                return NamedTextColor.RED;
-            case "LIGHT_PURPLE":
-                return NamedTextColor.LIGHT_PURPLE;
-            case "YELLOW":
-                return NamedTextColor.YELLOW;
-            case "WHITE":
-                return NamedTextColor.WHITE;
-            default:
-                return null;
-        }
+        return switch (color.toUpperCase()) {
+            case "BLACK" -> NamedTextColor.BLACK;
+            case "DARK_BLUE" -> NamedTextColor.DARK_BLUE;
+            case "DARK_GREEN" -> NamedTextColor.DARK_GREEN;
+            case "DARK_AQUA" -> NamedTextColor.DARK_AQUA;
+            case "DARK_RED" -> NamedTextColor.DARK_RED;
+            case "DARK_PURPLE" -> NamedTextColor.DARK_PURPLE;
+            case "GOLD" -> NamedTextColor.GOLD;
+            case "GRAY" -> NamedTextColor.GRAY;
+            case "DARK_GRAY" -> NamedTextColor.DARK_GRAY;
+            case "BLUE" -> NamedTextColor.BLUE;
+            case "GREEN" -> NamedTextColor.GREEN;
+            case "AQUA" -> NamedTextColor.AQUA;
+            case "RED" -> NamedTextColor.RED;
+            case "LIGHT_PURPLE" -> NamedTextColor.LIGHT_PURPLE;
+            case "YELLOW" -> NamedTextColor.YELLOW;
+            case "WHITE" -> NamedTextColor.WHITE;
+            default -> null;
+        };
     }
 
     @Nullable
@@ -687,7 +670,6 @@ public class MyMaidLibrary {
                 .clickEvent(ClickEvent.openUrl(url.content()))).build());
     }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted") // isNotSignは不適切
     public static boolean isSign(Material material) {
         return Arrays.stream(Material.values())
             .filter(m -> m.data == Sign.class || m.data == WallSign.class)

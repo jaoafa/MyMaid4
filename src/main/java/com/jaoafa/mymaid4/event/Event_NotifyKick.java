@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -17,7 +17,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -32,7 +32,7 @@ public class Event_NotifyKick extends MyMaidLibrary implements Listener, EventPr
     @EventHandler(priority = EventPriority.MONITOR,
                   ignoreCancelled = true)
     public void onKick(PlayerKickEvent event) {
-        String reason = PlainComponentSerializer.plain().serialize(event.reason());
+        String reason = PlainTextComponentSerializer.plainText().serialize(event.reason());
         sendAM(Component.text().append(
             Component.text("[Kick]"),
             Component.space(),
