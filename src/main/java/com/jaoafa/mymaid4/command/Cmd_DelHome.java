@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -84,19 +84,19 @@ public class Cmd_DelHome extends MyMaidLibrary implements CommandPremise {
         }
 
         Home.Detail detail = home.get(name);
-        if (Bukkit.getWorld(detail.worldName) == null) {
-            SendMessage(player, details(), String.format("ホーム「%s」のワールド「%s」が見つかりませんでした。", name, detail.worldName));
+        if (Bukkit.getWorld(detail.worldName()) == null) {
+            SendMessage(player, details(), String.format("ホーム「%s」のワールド「%s」が見つかりませんでした。", name, detail.worldName()));
             return;
         }
         home.remove(name);
 
         SendMessage(player, details(), String.format("ホーム「%s (%s %.2f %.2f %.2f %.2f %.2f)」を削除しました。",
             name,
-            detail.worldName,
-            detail.x,
-            detail.y,
-            detail.z,
-            detail.yaw,
-            detail.pitch));
+            detail.worldName(),
+            detail.x(),
+            detail.y(),
+            detail.z(),
+            detail.yaw(),
+            detail.pitch()));
     }
 }
