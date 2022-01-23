@@ -32,6 +32,7 @@ import java.util.UUID;
 
 public class Event_PacketLimiterKick extends MyMaidLibrary implements Listener, EventPremise {
     static final Map<UUID, Integer> limited = new HashMap<>();
+
     @Override
     public String description() {
         return "PacketLimiterによるキック時に通知を行います。";
