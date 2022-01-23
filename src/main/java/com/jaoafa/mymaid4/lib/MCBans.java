@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -11,7 +11,10 @@
 
 package com.jaoafa.mymaid4.lib;
 
-import okhttp3.*;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.bukkit.OfflinePlayer;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -42,7 +45,7 @@ public class MCBans {
         }
 
         ResponseBody body = response.body();
-        if(body == null) throw new RuntimeException();
+        if (body == null) throw new RuntimeException();
 
         JSONObject json = new JSONObject(body.string());
         response.close();
@@ -134,7 +137,7 @@ public class MCBans {
             }
 
             ResponseBody body = response.body();
-            if(body == null) throw new RuntimeException();
+            if (body == null) throw new RuntimeException();
 
             JSONObject json = new JSONObject(body.string());
             response.close();

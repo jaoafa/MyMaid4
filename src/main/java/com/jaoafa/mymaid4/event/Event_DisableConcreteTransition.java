@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -52,7 +52,7 @@ public class Event_DisableConcreteTransition extends MyMaidLibrary implements Li
         event.setCancelled(true);
     }
 
-    boolean isConcretePowder(Material material){
+    boolean isConcretePowder(Material material) {
         List<Material> concretes = Arrays.asList(
             Material.WHITE_CONCRETE_POWDER,
             Material.ORANGE_CONCRETE_POWDER,

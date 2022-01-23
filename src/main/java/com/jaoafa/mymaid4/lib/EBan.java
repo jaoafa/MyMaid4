@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -202,8 +202,8 @@ public class EBan {
 
                 TextChannel sendTo = getDiscordSendTo();
                 sendTo.sendMessage(
-                    String.format("__**EBan[解除]**__: プレイヤー「%s」のEBanを「%s」によって解除されました。",
-                        MyMaidLibrary.DiscordEscape(player.getName()), MyMaidLibrary.DiscordEscape(remover)))
+                        String.format("__**EBan[解除]**__: プレイヤー「%s」のEBanを「%s」によって解除されました。",
+                            MyMaidLibrary.DiscordEscape(player.getName()), MyMaidLibrary.DiscordEscape(remover)))
                     .queue();
                 if (MyMaidData.getServerChatChannel() != null) {
                     MyMaidData.getServerChatChannel().sendMessage(

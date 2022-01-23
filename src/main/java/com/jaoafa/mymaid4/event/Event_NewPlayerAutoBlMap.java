@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -34,12 +34,12 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener, EventPremise {
+    final Set<UUID> firstLoginer = new HashSet<>();
+
     @Override
     public String description() {
         return "新規プレイヤーがログアウトした際にブロック編集情報を通知します。";
     }
-
-    final Set<UUID> firstLoginer = new HashSet<>();
 
     @EventHandler
     public void OnEvent_FirstLogin(PlayerJoinEvent event) {
@@ -90,13 +90,13 @@ public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener,
 
                     channel.sendFile(response.body().byteStream(), player.getUniqueId() + ".png")
                         .append(String.format("新規プレイヤー「%s」のブロック編集マップ\nhttps://jaoafa.com/cp/?uuid=%s", player.getName(), player.getUniqueId())).queue(msg -> {
-                        System.out.println("NewPlayerAutoBlMap: メッセージ送信完了 (" + msg.getJumpUrl() + ")");
-                        response.close();
-                    }, failure -> {
-                        System.out.println("NewPlayerAutoBlMap: メッセージ送信失敗 (" + failure.getMessage() + ")");
-                        failure.printStackTrace();
-                        response.close();
-                    });
+                            System.out.println("NewPlayerAutoBlMap: メッセージ送信完了 (" + msg.getJumpUrl() + ")");
+                            response.close();
+                        }, failure -> {
+                            System.out.println("NewPlayerAutoBlMap: メッセージ送信失敗 (" + failure.getMessage() + ")");
+                            failure.printStackTrace();
+                            response.close();
+                        });
                 } catch (IOException ex) {
                     System.out.println("NewPlayerAutoBlMap: APIサーバへの接続に失敗: " + ex.getMessage());
                 }

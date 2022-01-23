@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -27,6 +27,7 @@ public class Event_ClearSelection extends MyMaidLibrary implements Listener, Eve
     public String description() {
         return "走りながら空気をクリックして/selを実行します。";
     }
+
     @EventHandler
     public void onAirClick(PlayerInteractEvent event) {
         Player player = event.getPlayer();

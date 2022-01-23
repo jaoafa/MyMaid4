@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -176,6 +176,7 @@ public class Jail {
      * このユーザーのJailを解除します。
      *
      * @param remover 解除者
+     *
      * @return Result
      */
     public Result removeBan(String remover) {
@@ -209,8 +210,8 @@ public class Jail {
 
                 TextChannel sendTo = getDiscordSendTo();
                 sendTo.sendMessage(
-                    String.format("__**Jail[解除]**__: プレイヤー「%s」のJailを「%s」によって解除されました。",
-                        MyMaidLibrary.DiscordEscape(player.getName()), MyMaidLibrary.DiscordEscape(remover)))
+                        String.format("__**Jail[解除]**__: プレイヤー「%s」のJailを「%s」によって解除されました。",
+                            MyMaidLibrary.DiscordEscape(player.getName()), MyMaidLibrary.DiscordEscape(remover)))
                     .queue();
                 if (MyMaidData.getServerChatChannel() != null) {
                     MyMaidData.getServerChatChannel().sendMessage(
@@ -245,6 +246,7 @@ public class Jail {
      * 遺言を設定します。
      *
      * @param testment 遺言
+     *
      * @return Result
      */
     public Result setTestment(String testment) {
@@ -285,8 +287,8 @@ public class Jail {
                 ));
                 TextChannel sendTo = getDiscordSendTo();
                 sendTo.sendMessage(
-                    "__**Jail[遺言]**__: プレイヤー「" + MyMaidLibrary.DiscordEscape(player.getName()) + "」が「" + MyMaidLibrary.DiscordEscape(testment)
-                        + "」という遺言を残しました。")
+                        "__**Jail[遺言]**__: プレイヤー「" + MyMaidLibrary.DiscordEscape(player.getName()) + "」が「" + MyMaidLibrary.DiscordEscape(testment)
+                            + "」という遺言を残しました。")
                     .queue();
                 if (MyMaidData.getServerChatChannel() != null) {
                     MyMaidData.getServerChatChannel()

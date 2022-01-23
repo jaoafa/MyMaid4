@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -21,11 +21,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class Event_CmdLengthLimiter extends MyMaidLibrary implements Listener, EventPremise {
-    @Override
-    public String description() {
-        return "Default権限グループのプレイヤーによる100文字を超えるコマンドの実行を制限します。";
-    }
-
     @EventHandler
     public static void onCommand(PlayerCommandPreprocessEvent event) {
         String command = event.getMessage();
@@ -40,5 +35,10 @@ public class Event_CmdLengthLimiter extends MyMaidLibrary implements Listener, E
             Component.text("あなたは100文字以上のコマンドを実行することが出来ません！", NamedTextColor.GREEN)
         ).build();
         player.sendMessage(component);
+    }
+
+    @Override
+    public String description() {
+        return "Default権限グループのプレイヤーによる100文字を超えるコマンドの実行を制限します。";
     }
 }

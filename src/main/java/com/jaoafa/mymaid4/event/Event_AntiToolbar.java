@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -37,14 +37,13 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventPremise {
+    final Pattern damagePattern = Pattern.compile("\\{Damage:[0-9]+}");
+    final Map<UUID, ItemStack> pickupItems = new HashMap<>();
+
     @Override
     public String description() {
         return "ツールバーの利用を制限します。";
     }
-
-    final Pattern damagePattern = Pattern.compile("\\{Damage:[0-9]+}");
-
-    final Map<UUID, ItemStack> pickupItems = new HashMap<>();
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryCreative(InventoryCreativeEvent event) {

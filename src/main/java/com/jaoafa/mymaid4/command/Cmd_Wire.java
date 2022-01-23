@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -44,6 +44,9 @@ import java.util.List;
 import static com.jaoafa.mymaid4.Main.getWorldEdit;
 
 public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
+    final double maxDistance = 128.0;
+    final int searchBatRadius = 2;
+
     @Override
     public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
@@ -118,9 +121,6 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
                 .build()
         );
     }
-
-    final double maxDistance = 128.0;
-    final int searchBatRadius = 2;
 
     void setWire(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();

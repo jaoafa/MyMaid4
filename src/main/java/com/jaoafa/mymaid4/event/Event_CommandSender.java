@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -28,6 +28,38 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class Event_CommandSender extends MyMaidLibrary implements Listener, EventPremise {
+    private static void sendCmd(Player player, Player executer, String group, String command, PlayerCommandPreprocessEvent event) {
+        player.sendMessage(
+            Component.text()
+                .color(NamedTextColor.DARK_GRAY)
+                .append(
+                    // [Group/PlayerName] command test test (取り消し済み)
+                    Component.text(
+                        String.format("[%s|", group),
+                        NamedTextColor.GRAY
+                    ),
+                    Component.text(
+                        executer.getName(),
+                        Style.style()
+                            .color(NamedTextColor.GRAY)
+                            .decorate(TextDecoration.UNDERLINED)
+                            .clickEvent(ClickEvent.runCommand("/secrettp " + executer.getName()))
+                            .hoverEvent(HoverEvent.showText(
+                                Component.text(String.format("スペクテイターで%sにテレポート", executer.getName()))
+                            ))
+                            .build()
+                    ),
+                    Component.text(
+                        "] ",
+                        NamedTextColor.GRAY
+                    ),
+                    Component.text(command, NamedTextColor.YELLOW),
+                    Component.text((event.isCancelled() ? " (拒否)" : ""), NamedTextColor.RED)
+                )
+        );
+
+    }
+
     @Override
     public String description() {
         return "実行されたコマンドを特定権限に通知します。";
@@ -131,38 +163,6 @@ public class Event_CommandSender extends MyMaidLibrary implements Listener, Even
             }
         }
         */
-
-    }
-
-    private static void sendCmd(Player player, Player executer, String group, String command, PlayerCommandPreprocessEvent event) {
-        player.sendMessage(
-            Component.text()
-                .color(NamedTextColor.DARK_GRAY)
-                .append(
-                    // [Group/PlayerName] command test test (取り消し済み)
-                    Component.text(
-                        String.format("[%s|", group),
-                        NamedTextColor.GRAY
-                    ),
-                    Component.text(
-                        executer.getName(),
-                        Style.style()
-                            .color(NamedTextColor.GRAY)
-                            .decorate(TextDecoration.UNDERLINED)
-                            .clickEvent(ClickEvent.runCommand("/secrettp " + executer.getName()))
-                            .hoverEvent(HoverEvent.showText(
-                                Component.text(String.format("スペクテイターで%sにテレポート", executer.getName()))
-                            ))
-                            .build()
-                    ),
-                    Component.text(
-                        "] ",
-                        NamedTextColor.GRAY
-                    ),
-                    Component.text(command, NamedTextColor.YELLOW),
-                    Component.text((event.isCancelled() ? " (拒否)" : ""), NamedTextColor.RED)
-                )
-        );
 
     }
 }

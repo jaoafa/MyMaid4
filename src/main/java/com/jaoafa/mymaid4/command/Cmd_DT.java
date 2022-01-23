@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
 
 public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
     private static final Map<UUID, Long> DTCooldown = new HashMap<>();
-    
+
     @Override
     public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
