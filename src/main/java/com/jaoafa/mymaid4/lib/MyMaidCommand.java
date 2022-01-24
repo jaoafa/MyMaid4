@@ -64,9 +64,13 @@ public class MyMaidCommand {
         }
     }
 
-    public record Cmd(Command<CommandSender>... commands) {
+    @SuppressWarnings("ClassCanBeRecord")
+    public static class Cmd {
+        private final Command<CommandSender>[] commands;
+
         @SafeVarargs
-        public Cmd {
+        public Cmd(Command<CommandSender>... commands) {
+            this.commands = commands;
         }
 
         /**
