@@ -7,6 +7,9 @@ on:
       - master
     types:
       - closed
+    paths:
+      - src
+      - pom.xml
 
 jobs:
   release:
