@@ -98,7 +98,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
         File saveDir = new File(Main.getJavaPlugin().getDataFolder(), "jaoium");
         if (!saveDir.exists()) {
             boolean bool = saveDir.mkdirs();
-            System.out.println("Create jaoium data directory: " + bool);
+            Main.getMyMaidLogger().info("Create jaoium data directory: " + bool);
             if (!bool) return;
         }
 

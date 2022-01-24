@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -151,7 +151,7 @@ public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener, E
                 try {
                     String url = String.format("https://api.jaoafa.com/users/mcbans/%s", uuid);
 
-                    System.out.println(MessageFormat.format("OnLoginAfterCheck: APIサーバへの接続を開始: {0} -> {1}", player.getName(), url));
+                    Main.getMyMaidLogger().info(MessageFormat.format("OnLoginAfterCheck: APIサーバへの接続を開始: {0} -> {1}", player.getName(), url));
                     OkHttpClient client = new OkHttpClient();
                     Request request = new Request.Builder().url(url).get().build();
                     JSONObject json;
@@ -163,7 +163,7 @@ public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener, E
                         }
                         try (ResponseBody body = response.body()) {
                             if (body == null) {
-                                System.out.println(MessageFormat.format("OnLoginAfterCheck: APIサーバへの接続に失敗: {0} -> response.body() is null.", url));
+                                Main.getMyMaidLogger().info(MessageFormat.format("OnLoginAfterCheck: APIサーバへの接続に失敗: {0} -> response.body() is null.", url));
                                 response.close();
                                 return;
                             }
@@ -173,15 +173,15 @@ public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener, E
                     }
 
                     if (!json.has("status")) {
-                        System.out.println("OnLoginAfterCheck: レスポンスの解析に失敗: status not found.");
+                        Main.getMyMaidLogger().info("OnLoginAfterCheck: レスポンスの解析に失敗: status not found.");
                         return;
                     }
                     if (!json.getBoolean("status")) {
-                        System.out.println("OnLoginAfterCheck: レスポンスの解析に失敗: status not boolean.");
+                        Main.getMyMaidLogger().info("OnLoginAfterCheck: レスポンスの解析に失敗: status not boolean.");
                         return;
                     }
                     if (!json.has("data")) {
-                        System.out.println("OnLoginAfterCheck: レスポンスの解析に失敗: data not found.");
+                        Main.getMyMaidLogger().info("OnLoginAfterCheck: レスポンスの解析に失敗: data not found.");
                         return;
                     }
 
@@ -211,9 +211,9 @@ public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener, E
                         }.runTask(Main.getJavaPlugin());
                     }
                 } catch (SocketTimeoutException e) {
-                    System.out.println("OnLoginAfterCheck: Timeout");
+                    Main.getMyMaidLogger().info("OnLoginAfterCheck: Timeout");
                 } catch (IOException e) {
-                    System.out.println("OnLoginAfterCheck: IOException Error...");
+                    Main.getMyMaidLogger().info("OnLoginAfterCheck: IOException Error...");
                     MyMaidLibrary.reportError(getClass(), e);
                 }
             }

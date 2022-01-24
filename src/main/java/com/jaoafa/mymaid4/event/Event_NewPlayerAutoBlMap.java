@@ -49,7 +49,7 @@ public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener,
             firstLoginer.remove(player.getUniqueId());
             return;
         }
-        System.out.println("NewPlayerAutoBlMap: 初ログインユーザーがログイン");
+        Main.getMyMaidLogger().info("NewPlayerAutoBlMap: 初ログインユーザーがログイン");
         firstLoginer.add(player.getUniqueId());
     }
 
@@ -59,7 +59,7 @@ public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener,
         if (!firstLoginer.contains(player.getUniqueId())) {
             return;
         }
-        System.out.println("NewPlayerAutoBlMap: 初ログインユーザーがログアウト");
+        Main.getMyMaidLogger().info("NewPlayerAutoBlMap: 初ログインユーザーがログアウト");
         new BukkitRunnable() {
             public void run() {
                 firstLoginer.remove(player.getUniqueId());
@@ -87,7 +87,7 @@ public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener,
                         response.close();
                         return;
                     }
-                    System.out.println("NewPlayerAutoBlMap: ブロック編集マップ取得完了");
+                    Main.getMyMaidLogger().info("NewPlayerAutoBlMap: ブロック編集マップ取得完了");
 
                     ResponseBody body = response.body();
                     if (body == null) {
@@ -97,15 +97,15 @@ public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener,
 
                     channel.sendFile(body.byteStream(), player.getUniqueId() + ".png")
                         .append(String.format("新規プレイヤー「%s」のブロック編集マップ\nhttps://jaoafa.com/cp/?uuid=%s", player.getName(), player.getUniqueId())).queue(msg -> {
-                            System.out.println("NewPlayerAutoBlMap: メッセージ送信完了 (" + msg.getJumpUrl() + ")");
+                            Main.getMyMaidLogger().info("NewPlayerAutoBlMap: メッセージ送信完了 (" + msg.getJumpUrl() + ")");
                             response.close();
                         }, failure -> {
-                            System.out.println("NewPlayerAutoBlMap: メッセージ送信失敗 (" + failure.getMessage() + ")");
+                            Main.getMyMaidLogger().info("NewPlayerAutoBlMap: メッセージ送信失敗 (" + failure.getMessage() + ")");
                             failure.printStackTrace();
                             response.close();
                         });
                 } catch (IOException ex) {
-                    System.out.println("NewPlayerAutoBlMap: APIサーバへの接続に失敗: " + ex.getMessage());
+                    Main.getMyMaidLogger().info("NewPlayerAutoBlMap: APIサーバへの接続に失敗: " + ex.getMessage());
                 }
             }
         }.runTaskAsynchronously(Main.getJavaPlugin());
