@@ -61,6 +61,9 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
         if (event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
             pickupItems.put(player.getUniqueId(), event.getCurrentItem());
         }
+        if (event.getCursor().getType() == Material.AIR) {
+            return;
+        }
 
         boolean isDeny = isDenyItemStack(event.getCursor());
         ItemStack is = event.getCursor();
