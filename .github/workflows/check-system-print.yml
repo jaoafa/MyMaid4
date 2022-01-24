@@ -16,7 +16,7 @@ jobs:
       - name: Check using System.out.print
         run: |
           COUNT=`grep -rE "System\.(out|err)\.print" --include=*.java src/main > ../system-prints.txt || true`
-          cat ../system-prints.txt | reviewdog -efm="%f:%l" -name="Check using System.out/err.print" -reporter=github-pr-check -level=warning
+          cat ../system-prints.txt | reviewdog -efm="%f:%l" -name="Check using System.out/err.print" -reporter=github-pr-review -level=warning
           cat ../system-prints.txt
           if [ "$COUNT" != "0" ]; then
             echo "Found System.out/err.print in Java source files"
