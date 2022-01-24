@@ -1,6 +1,6 @@
 name: Check using System.out/err.print
 
-on: [ push, pull_request_target ]
+on: [ pull_request_target ]
 
 jobs:
   check-system-print:
@@ -15,9 +15,10 @@ jobs:
 
       - name: Check using System.out.print
         run: |
-          COUNT=`grep -rE "System\.(out|err)\.print" --include=*.java src/main > ../system-prints.txt || true`
-          cat ../system-prints.txt | reviewdog -efm="%f:%l" -name="Check using System.out/err.print" -reporter=github-pr-review -level=warning
+          COUNT=`grep -rE "System\.(out|err)\.print" --include=*.java src/main | tee ../system-prints.txt | wc -l || true`
+          echo count: $COUNT
           cat ../system-prints.txt
+          cat ../system-prints.txt | reviewdog -efm="%f:%l" -name="Check using System.out/err.print" -reporter=github-pr-review -level=warning
           if [ "$COUNT" != "0" ]; then
             echo "Found System.out/err.print in Java source files"
             exit 1
