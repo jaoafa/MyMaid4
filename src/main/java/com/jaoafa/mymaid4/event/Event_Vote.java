@@ -137,7 +137,7 @@ public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise 
         Vote vote = event.getVote();
         String name = vote.getUsername();
         String service = vote.getServiceName();
-        System.out.println("onVotifierEvent[MyMaid4]: " + vote.getUsername() + " " + vote.getAddress() + " "
+        Main.getMyMaidLogger().info("onVotifierEvent[MyMaid4]: " + vote.getUsername() + " " + vote.getAddress() + " "
             + vote.getServiceName() + " " + vote.getTimeStamp());
         new BukkitRunnable() {
             public void run() {

@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.event;
 
+import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.lib.EBan;
 import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidData;
@@ -85,7 +86,7 @@ public class Event_PacketLimiterKick extends MyMaidLibrary implements Listener, 
 
         Location teleportLoc = new Location(Bukkit.getWorld("Jao_Afa"), x, 70, z);
         event.getPlayer().teleport(teleportLoc);
-        System.out.println("[PacketLimiter_AutoTP] teleport to Jao_Afa " + x + " 70 " + z);
+        Main.getMyMaidLogger().info("[PacketLimiter_AutoTP] teleport to Jao_Afa " + x + " 70 " + z);
 
         if (MyMaidData.getJaotanChannel() == null) {
             return;

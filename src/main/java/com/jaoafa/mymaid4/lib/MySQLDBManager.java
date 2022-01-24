@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -10,6 +10,8 @@
  */
 
 package com.jaoafa.mymaid4.lib;
+
+import com.jaoafa.mymaid4.Main;
 
 import java.sql.*;
 
@@ -40,7 +42,7 @@ public class MySQLDBManager {
                 if (diff < WAIT_TIMEOUT) {
                     return conn;
                 } else {
-                    System.out.println("MySQL TIMEOUT! WAIT_TIMEOUT: " + WAIT_TIMEOUT + " / DIFF: " + diff);
+                    Main.getMyMaidLogger().info("MySQL TIMEOUT! WAIT_TIMEOUT: " + WAIT_TIMEOUT + " / DIFF: " + diff);
                 }
             }
             LAST_PACKET = System.currentTimeMillis();
@@ -63,7 +65,7 @@ public class MySQLDBManager {
             ResultSet res = statement.executeQuery();
             if (res.next()) {
                 WAIT_TIMEOUT = res.getInt("Value");
-                System.out.println("MySQL WAIT_TIMEOUT: " + WAIT_TIMEOUT);
+                Main.getMyMaidLogger().info("MySQL WAIT_TIMEOUT: " + WAIT_TIMEOUT);
             } else {
                 WAIT_TIMEOUT = -1;
             }

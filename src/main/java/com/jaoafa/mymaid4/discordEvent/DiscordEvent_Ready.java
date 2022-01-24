@@ -20,7 +20,7 @@ import net.dv8tion.jda.api.hooks.SubscribeEvent;
 public class DiscordEvent_Ready extends ListenerAdapter {
     @SubscribeEvent
     public void onReady(ReadyEvent event) {
-        System.out.println("Ready: " + event.getJDA().getSelfUser().getName());
+        Main.getMyMaidLogger().info("Ready: " + event.getJDA().getSelfUser().getName());
 
         MyMaidData.setReportChannel(event.getJDA().getTextChannelById(Main.getMyMaidConfig().getReportChannelId()));
         MyMaidData.setJaotanChannel(event.getJDA().getTextChannelById(Main.getMyMaidConfig().getJaotanChannelId()));
