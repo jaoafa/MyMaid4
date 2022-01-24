@@ -39,6 +39,7 @@ import java.util.regex.Pattern;
 public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventPremise {
     final Pattern damagePattern = Pattern.compile("\\{Damage:[0-9]+}");
     final Map<UUID, ItemStack> pickupItems = new HashMap<>();
+    final boolean isCollectCreativeItems = false;
 
     @Override
     public String description() {
@@ -51,6 +52,44 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
             return;
         }
         if (isAMR(player)) {
+            return;
+        }
+
+        // マイクラバージョン変更時用、クリエイティブアイテム集積処理
+        if (isCollectCreativeItems) {
+            Path path = Path.of("creative-items.tsv");
+            Path path_all = Path.of("creative-all-items.tsv");
+            try {
+                String prevString = "";
+                if (Files.exists(path)) {
+                    prevString = Files.readString(path);
+                }
+                String allString = "";
+                if (Files.exists(path_all)) {
+                    allString = Files.readString(path_all);
+                }
+                ItemStack is = event.getCursor();
+                Material material = is.getType();
+                String nbt = NMSManager.getNBT(is);
+                if (nbt == null) {
+                    return;
+                }
+                if (allString.contains(material + "\t" + nbt)) {
+                    return;
+                }
+                if (!nbt.equals("{}")) {
+                    prevString += material + "\t" + nbt + "\n";
+                    player.sendMessage(Component.text(material + " " + nbt, NamedTextColor.YELLOW));
+                } else {
+                    player.sendMessage(Component.text(material + " " + nbt, NamedTextColor.GREEN));
+                }
+                allString += material + "\t" + nbt + "\n";
+                Files.writeString(path, prevString);
+                Files.writeString(path_all, allString);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return;
         }
 
