@@ -73,76 +73,6 @@ public final class Main extends JavaPlugin {
     private static Rollbar rollbar = null;
     private MinecraftHelp<CommandSender> minecraftHelp;
 
-    public static void registerDiscordEvent(JDABuilder d) {
-        getJavaPlugin().getLogger().info("----- registerDiscordEvent -----");
-        try {
-            ClassFinder classFinder = new ClassFinder(getMain().getClassLoader());
-            for (Class<?> clazz : classFinder.findClasses("com.jaoafa.mymaid4.discordEvent")) {
-                if (!clazz.getName().startsWith("com.jaoafa.mymaid4.discordEvent.DiscordEvent_")) {
-                    continue;
-                }
-                if (clazz.getEnclosingClass() != null) {
-                    continue;
-                }
-                if (clazz.getName().contains("$")) {
-                    continue;
-                }
-                String name = clazz.getName().substring("com.jaoafa.mymaid4.discordEvent.DiscordEvent_".length())
-                    .toLowerCase();
-                try {
-                    Constructor<?> construct = clazz.getConstructor();
-                    Object instance = construct.newInstance();
-
-                    d.addEventListeners(instance);
-                    getJavaPlugin().getLogger().info(String.format("%s: Discordイベントの登録に成功しました。", clazz.getSimpleName()));
-                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                    getJavaPlugin().getLogger().warning(String.format("%s: Discordイベントの登録に成功しました。", name));
-                    e.printStackTrace();
-                    MyMaidLibrary.reportError(Main.class, e);
-                }
-            }
-        } catch (ClassNotFoundException | IOException e) {
-            getJavaPlugin().getLogger().warning("Discordイベントの登録に失敗しました。");
-            e.printStackTrace();
-            MyMaidLibrary.reportError(Main.class, e);
-        }
-    }
-
-    public static WorldEditPlugin getWorldEdit() {
-        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
-
-        if (!(plugin instanceof WorldEditPlugin)) {
-            return null;
-        }
-
-        return (WorldEditPlugin) plugin;
-    }
-
-    private static Component convertCause(final Throwable throwable) {
-        final Component msg = ComponentMessageThrowable.getOrConvertMessage(throwable);
-        return msg != null ? msg : Component.text("null");
-    }
-
-    public static Main getMain() {
-        return Main;
-    }
-
-    public static JavaPlugin getJavaPlugin() {
-        return Main;
-    }
-
-    public static Logger getMyMaidLogger() {
-        return Main.getLogger();
-    }
-
-    public static MyMaidConfig getMyMaidConfig() {
-        return config;
-    }
-
-    public static Rollbar getRollbar() {
-        return rollbar;
-    }
-
     @Override
     public void onEnable() {
         Main = this;
@@ -194,6 +124,7 @@ public final class Main extends JavaPlugin {
             }
         }
     }
+
 
     private void registerCommand() {
         getLogger().info("----- registerCommand -----");
@@ -473,6 +404,47 @@ public final class Main extends JavaPlugin {
         }
     }
 
+    public static void registerDiscordEvent(JDABuilder d) {
+        getJavaPlugin().getLogger().info("----- registerDiscordEvent -----");
+        try {
+            ClassFinder classFinder = new ClassFinder(getMain().getClassLoader());
+            for (Class<?> clazz : classFinder.findClasses("com.jaoafa.mymaid4.discordEvent")) {
+                if (!clazz.getName().startsWith("com.jaoafa.mymaid4.discordEvent.DiscordEvent_")) {
+                    continue;
+                }
+                if (clazz.getEnclosingClass() != null) {
+                    continue;
+                }
+                if (clazz.getName().contains("$")) {
+                    continue;
+                }
+                String name = clazz.getName().substring("com.jaoafa.mymaid4.discordEvent.DiscordEvent_".length())
+                    .toLowerCase();
+                try {
+                    Constructor<?> construct = clazz.getConstructor();
+                    Object instance = construct.newInstance();
+
+                    d.addEventListeners(instance);
+                    getJavaPlugin().getLogger().info(String.format("%s: Discordイベントの登録に成功しました。", clazz.getSimpleName()));
+                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                    getJavaPlugin().getLogger().warning(String.format("%s: Discordイベントの登録に成功しました。", name));
+                    e.printStackTrace();
+                    MyMaidLibrary.reportError(Main.class, e);
+                }
+            }
+        } catch (ClassNotFoundException | IOException e) {
+            getJavaPlugin().getLogger().warning("Discordイベントの登録に失敗しました。");
+            e.printStackTrace();
+            MyMaidLibrary.reportError(Main.class, e);
+        }
+    }
+
+    private void scheduleTasks() {
+        new MyMaidServer().runTaskAsynchronously(this);
+        new Task_Pigeon().runTaskTimerAsynchronously(this, 200L, 12000L); // 10秒後から10分毎
+        new Task_TabList().runTaskTimerAsynchronously(this, 200L, 1200L); // 10秒後から1分毎
+    }
+
     private void initCreativeInventoryItems() {
         try {
             Path path = Paths.get(getDataFolder().getAbsolutePath(), "creative-items.tsv");
@@ -509,9 +481,39 @@ public final class Main extends JavaPlugin {
         }
     }
 
-    private void scheduleTasks() {
-        new MyMaidServer().runTaskAsynchronously(this);
-        new Task_Pigeon().runTaskTimerAsynchronously(this, 200L, 12000L); // 10秒後から10分毎
-        new Task_TabList().runTaskTimerAsynchronously(this, 200L, 1200L); // 10秒後から1分毎
+    public static WorldEditPlugin getWorldEdit() {
+        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
+
+        if (!(plugin instanceof WorldEditPlugin)) {
+            return null;
+        }
+
+        return (WorldEditPlugin) plugin;
     }
+
+    private static Component convertCause(final Throwable throwable) {
+        final Component msg = ComponentMessageThrowable.getOrConvertMessage(throwable);
+        return msg != null ? msg : Component.text("null");
+    }
+
+    public static Main getMain() {
+        return Main;
+    }
+
+    public static JavaPlugin getJavaPlugin() {
+        return Main;
+    }
+
+    public static Logger getMyMaidLogger() {
+        return Main.getLogger();
+    }
+
+    public static MyMaidConfig getMyMaidConfig() {
+        return config;
+    }
+
+    public static Rollbar getRollbar() {
+        return rollbar;
+    }
+
 }
