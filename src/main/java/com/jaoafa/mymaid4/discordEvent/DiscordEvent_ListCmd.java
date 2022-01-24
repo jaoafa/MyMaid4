@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -15,9 +15,9 @@ import com.jaoafa.jaosuperachievement2.api.Achievementjao;
 import com.jaoafa.jaosuperachievement2.lib.Achievement;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.hooks.SubscribeEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -28,10 +28,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class DiscordEvent_ListCmd {
+public class DiscordEvent_ListCmd extends ListenerAdapter {
     @SubscribeEvent
-    public void onListCommand(MessageReceivedEvent event) {
-        JDA jda = event.getJDA();
+    public void onMessageReceived(MessageReceivedEvent event) {
         if (!event.isFromType(ChannelType.TEXT)) {
             return;
         }
