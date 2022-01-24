@@ -78,12 +78,12 @@ public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener,
 
                     Response response = client.newCall(request).execute();
                     if (response.code() != 200 && response.code() != 302) {
-                        System.out.printf("NewPlayerAutoBlMap: APIサーバへの接続に失敗: %d %s\nhttps://jaoafa.com/cp/?uuid=%s%n", response.code(), Objects.requireNonNull(response.body()).string(), player.getUniqueId());
+                        Main.getMyMaidLogger().info("NewPlayerAutoBlMap: APIサーバへの接続に失敗: %d %s\nhttps://jaoafa.com/cp/?uuid=%s".formatted(response.code(), Objects.requireNonNull(response.body()).string(), player.getUniqueId()));
                         response.close();
                         return;
                     }
                     if (response.body() == null) {
-                        System.out.printf("NewPlayerAutoBlMap: APIサーバへの接続に失敗: response.body() is null.\nhttps://jaoafa.com/cp/?uuid=%s%n", player.getUniqueId());
+                        Main.getMyMaidLogger().info("NewPlayerAutoBlMap: APIサーバへの接続に失敗: response.body() is null.\nhttps://jaoafa.com/cp/?uuid=%s".formatted(player.getUniqueId()));
                         response.close();
                         return;
                     }
@@ -91,7 +91,7 @@ public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener,
 
                     ResponseBody body = response.body();
                     if (body == null) {
-                        System.out.printf("NewPlayerAutoBlMap: ブロック編集マップ取得失敗: body is null.\nhttps://jaoafa.com/cp/?uuid=%s%n", player.getUniqueId());
+                        Main.getMyMaidLogger().info("NewPlayerAutoBlMap: ブロック編集マップ取得失敗: body is null.\nhttps://jaoafa.com/cp/?uuid=%s".formatted(player.getUniqueId()));
                         return;
                     }
 
