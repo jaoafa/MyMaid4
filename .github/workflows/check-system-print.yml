@@ -15,7 +15,7 @@ jobs:
 
       - name: Check using System.out.print
         run: |
-          COUNT=`grep -rE "System\.(out|err)\.print" --include=*.java src/main > ../system-prints.txt || true`
+          COUNT=`grep -rE "System\.(out|err)\.print" --include=*.java src/main | tee ../system-prints.txt | wc -l || true`
           echo count: $COUNT
           cat ../system-prints.txt
           cat ../system-prints.txt | reviewdog -efm="%f:%l" -name="Check using System.out/err.print" -reporter=github-pr-review -level=warning
