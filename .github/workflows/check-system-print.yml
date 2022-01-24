@@ -1,6 +1,6 @@
 name: Check using System.out/err.print
 
-on: [ push, pull_request ]
+on: [ push, pull_request_target ]
 
 jobs:
   check-system-print:
