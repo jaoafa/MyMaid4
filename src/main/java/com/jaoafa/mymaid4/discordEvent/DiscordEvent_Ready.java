@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -14,11 +14,12 @@ package com.jaoafa.mymaid4.discordEvent;
 import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.hooks.SubscribeEvent;
 
-public class DiscordEvent_Ready {
+public class DiscordEvent_Ready extends ListenerAdapter {
     @SubscribeEvent
-    public void onReadyEvent(ReadyEvent event) {
+    public void onReady(ReadyEvent event) {
         System.out.println("Ready: " + event.getJDA().getSelfUser().getName());
 
         MyMaidData.setReportChannel(event.getJDA().getTextChannelById(Main.getMyMaidConfig().getReportChannelId()));
