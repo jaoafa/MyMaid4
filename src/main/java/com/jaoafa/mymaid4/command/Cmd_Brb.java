@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -51,6 +51,7 @@ public class Cmd_Brb extends MyMaidLibrary implements CommandPremise {
     }
 
     void giveBarrier(CommandContext<CommandSender> context) {
+        System.out.println("test");
         Player player = (Player) context.getSender();
         ItemStack is = new ItemStack(Material.BARRIER);
 
