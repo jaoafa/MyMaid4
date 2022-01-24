@@ -157,7 +157,7 @@ public class Event_MCBansLoginCheck extends MyMaidLibrary implements Listener, E
                     JSONObject json;
                     try (Response response = client.newCall(request).execute()) {
                         if (response.code() != 200) {
-                            System.out.printf("OnLoginAfterCheck: APIサーバへの接続に失敗: %s -> %d%n", url, response.code());
+                            Main.getMyMaidLogger().info("OnLoginAfterCheck: APIサーバへの接続に失敗: %s -> %d%n".formatted(url, response.code()));
                             response.close();
                             return;
                         }

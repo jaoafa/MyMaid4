@@ -532,7 +532,7 @@ public class MyMaidLibrary {
         if (!Main.getMyMaidConfig().isDevelopmentServer()) {
             return;
         }
-        System.out.printf("DEBUG -> %s%n", message);
+        Main.getMyMaidLogger().info("DEBUG -> %s".formatted(message));
     }
 
     public static NamedTextColor getNamedTextColor(String color) {
