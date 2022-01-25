@@ -378,7 +378,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
             // 自分(実行者)
             SelectorToMe = true;
         } else {
-            Player p = Bukkit.getPlayer(selector);
+            Player p = Bukkit.getPlayerExact(selector);
             if (p != null) {
                 ToPlayer = selector;
             }
@@ -439,7 +439,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
             // エンティティすべて
             ALLPlayer = true;
         } else {
-            Player p = Bukkit.getPlayer(selector);
+            Player p = Bukkit.getPlayerExact(selector);
             if (p != null) {
                 ToPlayer = selector;
             }
