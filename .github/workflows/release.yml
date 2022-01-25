@@ -8,7 +8,7 @@ on:
     types:
       - closed
     paths:
-      - src
+      - src/**
       - pom.xml
 
 jobs:
