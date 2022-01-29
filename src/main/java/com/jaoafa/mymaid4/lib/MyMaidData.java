@@ -15,6 +15,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.json.JSONObject;
 
 import javax.annotation.Nullable;
@@ -45,6 +46,7 @@ public class MyMaidData {
     private static CarrierPigeon carrierPigeon = null;
     private static Blacklist blacklist;
     private static Map<Material, List<String>> creativeInventoryWithNBTs = new HashMap<>(); // material : nbt
+    private static final Map<UUID, List<ItemStack>> jaoBoxPrevious = new HashMap<>();
 
     @Nullable
     public static TextChannel getReportChannel() {
@@ -249,5 +251,16 @@ public class MyMaidData {
 
     public static VariableManager getVariableManager() {
         return variableManager;
+    }
+
+    public static void setBoxPrevious(UUID uuid, List<ItemStack> items) {
+        jaoBoxPrevious.put(uuid, items);
+    }
+
+    public static List<ItemStack> getBoxPrevious(UUID uuid) {
+        if (!jaoBoxPrevious.containsKey(uuid)) {
+            return new ArrayList<>();
+        }
+        return jaoBoxPrevious.get(uuid);
     }
 }
