@@ -50,7 +50,7 @@ public class Event_ViaVerCheck extends MyMaidLibrary implements Listener, EventP
                 int i = Via.getAPI().getPlayerVersion(player.getUniqueId());
                 String ver = String.valueOf(i);
 
-                // https://gitlab.bixilon.de/bixilon/minosoft/-/blob/master/src/main/resources/assets/minosoft/mapping/versions.json
+                // https://wiki.vg/Protocol_version_numbers
                 InputStream is = getClass().getResourceAsStream("/versions.json");
                 if (is == null) {
                     return;
