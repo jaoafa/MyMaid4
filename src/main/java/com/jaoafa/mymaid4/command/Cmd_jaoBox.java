@@ -78,6 +78,11 @@ public class Cmd_jaoBox extends MyMaidLibrary implements CommandPremise {
     void jaoBoxRegister(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
 
+        if (!isAMR(player)) {
+            SendMessage(player, details(), "あなたにはjaoBoxを登録モードで開く権限がありません。");
+            return;
+        }
+
         openBox(player, registerTitleComponent);
         SendMessage(player, details(), "jaoBoxを登録モードで開きました。Escキーで閉じると保存します。");
     }
