@@ -11,9 +11,12 @@
 
 package com.jaoafa.mymaid4.event;
 
+import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.command.Cmd_jaoBox;
 import com.jaoafa.mymaid4.lib.EventPremise;
+import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import com.jaoafa.mymaid4.lib.NMSManager;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -31,10 +34,16 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Event_jaoBox extends MyMaidLibrary implements Listener, EventPremise {
     @Override
@@ -52,6 +61,7 @@ public class Event_jaoBox extends MyMaidLibrary implements Listener, EventPremis
         if (event.getView().title() != Cmd_jaoBox.registerTitleComponent) {
             return;
         }
+
         Inventory inventory = event.getInventory();
         YamlConfiguration yaml = new YamlConfiguration();
         yaml.set("items", inventory.getContents());
@@ -60,8 +70,39 @@ public class Event_jaoBox extends MyMaidLibrary implements Listener, EventPremis
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        List<ItemStack> oldItems = MyMaidData.getBoxPrevious(player.getUniqueId());
+        for (int i = 0; i < inventory.getSize(); i++) {
+            ItemStack oldItem = oldItems.get(i);
+            ItemStack newItem = inventory.getItem(i);
+
+            if (Objects.equals(oldItem, newItem)) {
+                continue;
+            }
+
+            logging(player, i, oldItem, newItem);
+        }
+
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CHEST_LOCKED, 1.0F, 1.0F);
         event.getPlayer().sendMessage("[jaoBox] " + ChatColor.GREEN + "jaoBoxを更新しました。");
+    }
+
+    private void logging(Player player, int slot, @Nullable ItemStack oldItem, @Nullable ItemStack newItem) {
+        Path jaoBoxLogPath = Path.of(Main.getJavaPlugin().getDataFolder().getPath(), "jaoBoxLog.tsv");
+        String message = String.join("\t",
+            player.getName(),
+            player.getUniqueId().toString(),
+            Integer.toString(slot),
+            oldItem != null ? oldItem.getType().toString() : null,
+            oldItem != null ? NMSManager.getNBT(oldItem) : null,
+            newItem != null ? newItem.getType().toString() : null,
+            newItem != null ? NMSManager.getNBT(newItem) : null
+        );
+        try {
+            Files.writeString(jaoBoxLogPath, message + "\n", StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

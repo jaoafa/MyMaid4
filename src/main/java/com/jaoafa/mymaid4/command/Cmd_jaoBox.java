@@ -17,6 +17,7 @@ import cloud.commandframework.meta.CommandMeta;
 import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
+import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
@@ -31,6 +32,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -101,10 +103,13 @@ public class Cmd_jaoBox extends MyMaidLibrary implements CommandPremise {
             @SuppressWarnings("unchecked") // 未チェックのキャスト。YamlConfigurationの仕様によるもの
             ItemStack[] items = ((List<ItemStack>) Objects.requireNonNull(yaml.get("items"))).toArray(new ItemStack[0]);
             inventory.setContents(items);
+
+            if (title == registerTitleComponent) {
+                MyMaidData.setBoxPrevious(player.getUniqueId(), Arrays.stream(items).toList());
+            }
         }
 
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CHEST_OPEN, 1.0F, 1.0F);
         player.openInventory(inventory);
-
     }
 }
