@@ -74,7 +74,7 @@ public class Event_ViaVerCheck extends MyMaidLibrary implements Listener, EventP
                     return;
                 }
 
-                String version = obj.getJSONObject(ver).getString("name");
+                String version = obj.getString(ver);
 
                 if (!version.equals("1.18.1")) {
                     player.sendMessage(Component.text().append(
