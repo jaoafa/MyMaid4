@@ -88,7 +88,7 @@ jobs:
           asset_path: target/sha256sum.txt
 
       - name: Released comment
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         if: github.event_name == 'pull_request_target'
         with:
           script: |
