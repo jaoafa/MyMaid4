@@ -63,7 +63,7 @@ public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener,
         new BukkitRunnable() {
             public void run() {
                 firstLoginer.remove(player.getUniqueId());
-                String url = "https://api.jaoafa.com/cities/getblockimg?uuid=" + player.getUniqueId();
+                String url = "https://api.jaoafa.com/cities/getblockimg?uuid=" + player.getUniqueId() + "&crop-chuo";
 
                 TextChannel channel = MyMaidData.getJaotanChannel();
                 if (channel == null) {
