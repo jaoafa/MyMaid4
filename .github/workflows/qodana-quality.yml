@@ -1,0 +1,44 @@
+name: Qodana
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  qodana:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Qodana Scan
+        uses: JetBrains/qodana-action@v4.2.2
+        with:
+          linter: jetbrains/qodana-jvm
+          baseline-path: ./.github/qodana.sarif.json
+          fail-threshold: 1
+          use-annotations: true
+          upload-result: true
+          idea-config-dir: ./.idea
+
+      - name: Qodana - Clone Finder
+        uses: JetBrains/qodana-clone-finder-action@v2.0-eap
+
+      - uses: actions/upload-artifact@v2
+        with:
+          path: ${{ github.workspace }}/qodana
+
+      - uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: ${{ runner.temp }}/qodana/results/qodana.sarif.json
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ${{ runner.temp }}/qodana/results/report
+          destination_dir: ./
