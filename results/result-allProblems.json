@@ -1,0 +1,1201 @@
+{"version":"3","listProblem":[{
+  "tool": "Code Inspection",
+  "category": "Resource management",
+  "type": "I/O resource opened but not safely closed",
+  "severity": "High",
+  "comment": "'InputStreamReader' should be opened in front of a 'try' block and closed in the corresponding 'finally' block",
+  "detailsInfo": "Reports I/O resources that are not safely closed. I/O resources checked by this inspection include `java.io.InputStream`, `java.io.OutputStream`, `java.io.Reader`, `java.io.Writer`, `java.util.zip.ZipFile`, `java.io.Closeable` and `java.io.RandomAccessFile`.\n\n\nI/O resources wrapped by other I/O resources are not reported, as the wrapped resource will be closed by the wrapping resource.\n\n\nBy default, the inspection assumes that the resources can be closed by any method with\n'close' or 'cleanup' in its name.\n\n**Example:**\n\n\n      void save() throws IOException {\n        FileWriter writer = new FileWriter(\"filename.txt\"); //warning\n        writer.write(\"sample\");\n      }\n\n\nUse the following options to configure the inspection:\n\n* List I/O resource classes that do not need to be closed and should be ignored by this inspection.\n* Whether an I/O resource is allowed to be opened inside a `try`block. This style is less desirable because it is more verbose than opening a resource in front of a `try` block.\n* Whether the resource can be closed by any method call with the resource passed as argument.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/event/Event_ViaVerCheck.java",
+      "language": "JAVA",
+      "line": 106,
+      "offset": 48,
+      "length": 17,
+      "code": {
+        "startLine": 104,
+        "length": 17,
+        "offset": 113,
+        "surroundingCode": "\n            String toString(InputStream is) throws IOException {\n                InputStreamReader reader = new InputStreamReader(is);\n                StringBuilder builder = new StringBuilder();\n                char[] buf = new char[1024];"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "IOResource",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "179e0891fcf19e4d89078a8002919b2f4756bed003d98703b1de5bcee8b91f49"
+},{
+  "tool": "Code Inspection",
+  "category": "Resource management",
+  "type": "I/O resource opened but not safely closed",
+  "severity": "High",
+  "comment": "'InputStreamReader' should be opened in front of a 'try' block and closed in the corresponding 'finally' block",
+  "detailsInfo": "Reports I/O resources that are not safely closed. I/O resources checked by this inspection include `java.io.InputStream`, `java.io.OutputStream`, `java.io.Reader`, `java.io.Writer`, `java.util.zip.ZipFile`, `java.io.Closeable` and `java.io.RandomAccessFile`.\n\n\nI/O resources wrapped by other I/O resources are not reported, as the wrapped resource will be closed by the wrapping resource.\n\n\nBy default, the inspection assumes that the resources can be closed by any method with\n'close' or 'cleanup' in its name.\n\n**Example:**\n\n\n      void save() throws IOException {\n        FileWriter writer = new FileWriter(\"filename.txt\"); //warning\n        writer.write(\"sample\");\n      }\n\n\nUse the following options to configure the inspection:\n\n* List I/O resource classes that do not need to be closed and should be ignored by this inspection.\n* Whether an I/O resource is allowed to be opened inside a `try`block. This style is less desirable because it is more verbose than opening a resource in front of a `try` block.\n* Whether the resource can be closed by any method call with the resource passed as argument.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/httpServer/HTTP_VoteFill.java",
+      "language": "JAVA",
+      "line": 147,
+      "offset": 40,
+      "length": 17,
+      "code": {
+        "startLine": 145,
+        "length": 17,
+        "offset": 108,
+        "surroundingCode": "\n    String InputStreamToString(InputStream is) throws IOException {\n        InputStreamReader reader = new InputStreamReader(is);\n        StringBuilder builder = new StringBuilder();\n        char[] buf = new char[1024];"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "IOResource",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "e9cc465eff3f704580a24b74fbaa40fd033c6b89f9c69de543f52381fd90a48e"
+},{
+  "tool": "Code Inspection",
+  "category": "Performance",
+  "type": "Field can be made 'static'",
+  "severity": "High",
+  "comment": "Field `notify` may be 'static'",
+  "detailsInfo": "Reports instance variables that can safely be made `static`. A field can be static if it is declared `final` and initialized with a constant.\n\n**Example:**\n\n\n      public final String str = \"sample\";\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/lib/Historyjao.java",
+      "language": "JAVA",
+      "line": 34,
+      "offset": 19,
+      "length": 6,
+      "code": {
+        "startLine": 32,
+        "length": 6,
+        "offset": 51,
+        "surroundingCode": "\n    final OfflinePlayer player;\n    final boolean notify = true;\n    final List<Data> data = new ArrayList<>();\n    String name;"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "FieldMayBeStatic",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "b05fff3e20843b1759cfe8a70127640be6e8bd0d9e455a628b9dc2a529d4e0a2"
+},{
+  "tool": "Code Inspection",
+  "category": "Performance",
+  "type": "Field can be made 'static'",
+  "severity": "High",
+  "comment": "Field `isCollectCreativeItems` may be 'static'",
+  "detailsInfo": "Reports instance variables that can safely be made `static`. A field can be static if it is declared `final` and initialized with a constant.\n\n**Example:**\n\n\n      public final String str = \"sample\";\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/event/Event_AntiToolbar.java",
+      "language": "JAVA",
+      "line": 42,
+      "offset": 19,
+      "length": 22,
+      "code": {
+        "startLine": 40,
+        "length": 22,
+        "offset": 152,
+        "surroundingCode": "    final Pattern damagePattern = Pattern.compile(\"\\\\{Damage:[0-9]+}\");\n    final Map<UUID, ItemStack> pickupItems = new HashMap<>();\n    final boolean isCollectCreativeItems = false;\n\n    @Override"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "FieldMayBeStatic",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "26252a130e09d91b19c09bbdfc23dcabb7d827458535509fff9af01b7c92dfba"
+},{
+  "tool": "Code Inspection",
+  "category": "Performance",
+  "type": "Field can be made 'static'",
+  "severity": "High",
+  "comment": "Field `searchBatRadius` may be 'static'",
+  "detailsInfo": "Reports instance variables that can safely be made `static`. A field can be static if it is declared `final` and initialized with a constant.\n\n**Example:**\n\n\n      public final String str = \"sample\";\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/command/Cmd_Wire.java",
+      "language": "JAVA",
+      "line": 48,
+      "offset": 15,
+      "length": 15,
+      "code": {
+        "startLine": 46,
+        "length": 15,
+        "offset": 124,
+        "surroundingCode": "public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {\n    final double maxDistance = 128.0;\n    final int searchBatRadius = 2;\n\n    @Override"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "FieldMayBeStatic",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "00924585c87ea0270a4477b6aeded0c85a2dd0dd3c7baa187bc5ee9e5046fc77"
+},{
+  "tool": "Code Inspection",
+  "category": "Performance",
+  "type": "Field can be made 'static'",
+  "severity": "High",
+  "comment": "Field `maxDistance` may be 'static'",
+  "detailsInfo": "Reports instance variables that can safely be made `static`. A field can be static if it is declared `final` and initialized with a constant.\n\n**Example:**\n\n\n      public final String str = \"sample\";\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/command/Cmd_Wire.java",
+      "language": "JAVA",
+      "line": 47,
+      "offset": 18,
+      "length": 11,
+      "code": {
+        "startLine": 45,
+        "length": 11,
+        "offset": 90,
+        "surroundingCode": "\npublic class Cmd_Wire extends MyMaidLibrary implements CommandPremise {\n    final double maxDistance = 128.0;\n    final int searchBatRadius = 2;\n"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "FieldMayBeStatic",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "ae6d9cde5cc690c1dfd5edf1c39d591fe3cca62333f043cc6fad0675182dd03d"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/lib/MyMaidLibrary.java",
+      "language": "JAVA",
+      "line": 89,
+      "offset": 11,
+      "length": 15,
+      "code": {
+        "startLine": 87,
+        "length": 15,
+        "offset": 84,
+        "surroundingCode": "     */\n    public static void reportError(Class<?> clazz, Throwable e) {\n        e.printStackTrace();\n\n        if (Main.getMyMaidConfig().isDevelopmentServer()) {"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "aa5e25520338a848c520651171e33fb344f89d6fb15467d837a3131cecef9930"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/lib/TeleportAlias.java",
+      "language": "JAVA",
+      "line": 61,
+      "offset": 15,
+      "length": 15,
+      "code": {
+        "startLine": 59,
+        "length": 15,
+        "offset": 119,
+        "surroundingCode": "            Files.writeString(path, new JSONObject(alias).toString());\n        } catch (IOException e) {\n            e.printStackTrace();\n        }\n    }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "d84f8f5833c1ae93a2a433013823cb2695cd1bcec7a9a035496cf01a8af7fb08"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/lib/TeleportAlias.java",
+      "language": "JAVA",
+      "line": 74,
+      "offset": 15,
+      "length": 15,
+      "code": {
+        "startLine": 72,
+        "length": 15,
+        "offset": 83,
+        "surroundingCode": "            alias = toMap(object);\n        } catch (IOException e) {\n            e.printStackTrace();\n        }\n    }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "9ed5a8480a1e3ed3bf6c8eba2cade454a97c98356f11b370dad75b9de73337c6"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/event/Event_jaoBox.java",
+      "language": "JAVA",
+      "line": 71,
+      "offset": 15,
+      "length": 15,
+      "code": {
+        "startLine": 69,
+        "length": 15,
+        "offset": 88,
+        "surroundingCode": "            yaml.save(Cmd_jaoBox.file);\n        } catch (IOException e) {\n            e.printStackTrace();\n        }\n"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "5113b6fda986d0bb097f08223b602068505a43af6f4a79be50a6f4aed6e5df59"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/event/Event_jaoBox.java",
+      "language": "JAVA",
+      "line": 104,
+      "offset": 15,
+      "length": 15,
+      "code": {
+        "startLine": 102,
+        "length": 15,
+        "offset": 164,
+        "surroundingCode": "            Files.writeString(jaoBoxLogPath, message + \"\\n\", StandardOpenOption.CREATE, StandardOpenOption.APPEND);\n        } catch (IOException e) {\n            e.printStackTrace();\n        }\n    }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "7210b3d5081f6ab4c63ca96954a7bcd301d59e128e4c7402152507370e560d8e"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/event/Event_AntiToolbar.java",
+      "language": "JAVA",
+      "line": 91,
+      "offset": 19,
+      "length": 15,
+      "code": {
+        "startLine": 89,
+        "length": 15,
+        "offset": 57,
+        "surroundingCode": "\n            } catch (IOException e) {\n                e.printStackTrace();\n            }\n            return;"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "4ef42da3f60ae23dbe2057aba03710dd4ea30892e894597e043b2893a29078e1"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/event/Event_NewPlayerAutoBlMap.java",
+      "language": "JAVA",
+      "line": 104,
+      "offset": 37,
+      "length": 15,
+      "code": {
+        "startLine": 102,
+        "length": 15,
+        "offset": 197,
+        "surroundingCode": "                        }, failure -> {\n                            Main.getMyMaidLogger().info(\"NewPlayerAutoBlMap: メッセージ送信失敗 (\" + failure.getMessage() + \")\");\n                            failure.printStackTrace();\n                            response.close();\n                        });"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "d806ea82467b4484884a19bc49517753cd7dd985de45e155dc0c63ec890aa8f1"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/tasks/Task_CVE_2021_44228.java",
+      "language": "JAVA",
+      "line": 119,
+      "offset": 15,
+      "length": 15,
+      "code": {
+        "startLine": 117,
+        "length": 15,
+        "offset": 91,
+        "surroundingCode": "            return object.getInt(\"count\");\n        } catch (IOException e) {\n            e.printStackTrace();\n            return -1;\n        }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "2455149699f48ab4fc59a695876e4178b36f3b1c9b58a9c9b8cc1d0ea4f55b26"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/command/Cmd_Bug.java",
+      "language": "JAVA",
+      "line": 243,
+      "offset": 23,
+      "length": 15,
+      "code": {
+        "startLine": 241,
+        "length": 15,
+        "offset": 167,
+        "surroundingCode": "                } catch (IOException e) {\n                    SendMessage(player, details(), String.format(\"不具合報告に失敗しました: %s\", e.getMessage()));\n                    e.printStackTrace();\n                    MyMaidLibrary.reportError(getClass(), e);\n                }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "fc64d0d1b2388ea68f57552015a3d47883413ea82c23687c287784fecd283529"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/command/Cmd_Help.java",
+      "language": "JAVA",
+      "line": 136,
+      "offset": 15,
+      "length": 15,
+      "code": {
+        "startLine": 134,
+        "length": 15,
+        "offset": 148,
+        "surroundingCode": "        } catch (IOException e) {\n            SendMessage(player, details(), String.format(\"ヘルプブックが登録できませんでした: %s\", e.getMessage()));\n            e.printStackTrace();\n            MyMaidLibrary.reportError(getClass(), e);\n        }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "4c18d7bf0ef5a189a511463f6556964f6d3c1d9d44af64f3bdcfd92ce4c4d073"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
+      "language": "JAVA",
+      "line": 428,
+      "offset": 23,
+      "length": 15,
+      "code": {
+        "startLine": 426,
+        "length": 15,
+        "offset": 260,
+        "surroundingCode": "                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {\n                    getJavaPlugin().getLogger().warning(String.format(\"%s: Discordイベントの登録に成功しました。\", name));\n                    e.printStackTrace();\n                    MyMaidLibrary.reportError(Main.class, e);\n                }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "68509746c653ddf0287ae48cd547dcf708d0c494d698f41110022a3c952f6780"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
+      "language": "JAVA",
+      "line": 434,
+      "offset": 15,
+      "length": 15,
+      "code": {
+        "startLine": 432,
+        "length": 15,
+        "offset": 148,
+        "surroundingCode": "        } catch (ClassNotFoundException | IOException e) {\n            getJavaPlugin().getLogger().warning(\"Discordイベントの登録に失敗しました。\");\n            e.printStackTrace();\n            MyMaidLibrary.reportError(Main.class, e);\n        }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "dc2bfa7f6e81263e44b83d7b387b59dc9f5416aeef9092557dc13e1b4f0355ab"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
+      "language": "JAVA",
+      "line": 476,
+      "offset": 15,
+      "length": 15,
+      "code": {
+        "startLine": 474,
+        "length": 15,
+        "offset": 108,
+        "surroundingCode": "            MyMaidData.setCreativeInventoryWithNBTs(items);\n        } catch (IOException e) {\n            e.printStackTrace();\n            MyMaidLibrary.reportError(getClass(), e);\n        }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "b626c216b9793ca514eff4ce8e5294ff40485eb79238faf326a019a51b1df9ac"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
+      "language": "JAVA",
+      "line": 120,
+      "offset": 19,
+      "length": 15,
+      "code": {
+        "startLine": 118,
+        "length": 15,
+        "offset": 91,
+        "surroundingCode": "                rollbar.close(true);\n            } catch (Exception e) {\n                e.printStackTrace();\n            }\n        }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "d6bd587dd7bea047dc7a57810e82ddefafc0b8a6ecd93ee72fcfc06ee186033f"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
+      "language": "JAVA",
+      "line": 142,
+      "offset": 15,
+      "length": 15,
+      "code": {
+        "startLine": 140,
+        "length": 15,
+        "offset": 126,
+        "surroundingCode": "        } catch (Exception e) {\n            getLogger().warning(\"コマンドの登録に失敗しました。PaperCommandManagerを取得できません。\");\n            e.printStackTrace();\n            MyMaidLibrary.reportError(getClass(), e);\n            return;"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "f8adc2dd7a29ced2490510aa1b51bb9fbfdc5f71c67e0a6be42519237a983092"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
+      "language": "JAVA",
+      "line": 201,
+      "offset": 27,
+      "length": 15,
+      "code": {
+        "startLine": 199,
+        "length": 15,
+        "offset": 102,
+        "surroundingCode": "                {\n                    final Throwable cause = e.getCause();\n                    cause.printStackTrace();\n\n                    MyMaidLibrary.reportError(getClass(), e);"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "8a7614a8da742841407609861e209a90b105c52976f1b782310a4f673f0434df"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
+      "language": "JAVA",
+      "line": 318,
+      "offset": 23,
+      "length": 15,
+      "code": {
+        "startLine": 316,
+        "length": 15,
+        "offset": 267,
+        "surroundingCode": "                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | NoClassDefFoundError e) {\n                    getLogger().warning(String.format(\"%s: コマンドの登録に失敗しました。\", commandName));\n                    e.printStackTrace();\n                    MyMaidLibrary.reportError(getClass(), e);\n                }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "231c5eb282fea1f05faf1e0989a676af5976788857a14e24a47fe0e42ea7c318"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
+      "language": "JAVA",
+      "line": 325,
+      "offset": 15,
+      "length": 15,
+      "code": {
+        "startLine": 323,
+        "length": 15,
+        "offset": 125,
+        "surroundingCode": "        } catch (ClassNotFoundException | IOException e) {\n            getLogger().warning(\"コマンドの登録に失敗しました。\");\n            e.printStackTrace();\n            MyMaidLibrary.reportError(getClass(), e);\n        }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "4ad31282a4e9d7210134ff5bc10a697a8ca1a871f17fee68fb00a2c43d517c79"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
+      "language": "JAVA",
+      "line": 392,
+      "offset": 23,
+      "length": 15,
+      "code": {
+        "startLine": 390,
+        "length": 15,
+        "offset": 260,
+        "surroundingCode": "                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | NoClassDefFoundError e) {\n                    getLogger().warning(String.format(\"%s: イベントの登録に失敗しました。\", name));\n                    e.printStackTrace();\n                    MyMaidLibrary.reportError(getClass(), e);\n                }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "e86abda82d5a8a73dc767bcae9c5711bbe7c0cbfbf5a95b5a33c8e34bcbdf192"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
+      "language": "JAVA",
+      "line": 399,
+      "offset": 15,
+      "length": 15,
+      "code": {
+        "startLine": 397,
+        "length": 15,
+        "offset": 125,
+        "surroundingCode": "        } catch (ClassNotFoundException | IOException e) {\n            getLogger().warning(\"イベントの登録に失敗しました。\");\n            e.printStackTrace();\n            MyMaidLibrary.reportError(getClass(), e);\n        }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "4131409efb9416861dc72b28504140e604792808c89092f47a726798053c8036"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/httpServer/MyMaidServer.java",
+      "language": "JAVA",
+      "line": 44,
+      "offset": 15,
+      "length": 15,
+      "code": {
+        "startLine": 42,
+        "length": 15,
+        "offset": 76,
+        "surroundingCode": "            server.start();\n        } catch (IOException e) {\n            e.printStackTrace();\n        }\n    }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "99ef70381c26c4db6eb4854e1c7ae83c3a7b64e2a3085408789d351eb83eca64"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/httpServer/HTTP_VoteFill.java",
+      "language": "JAVA",
+      "line": 134,
+      "offset": 15,
+      "length": 15,
+      "code": {
+        "startLine": 132,
+        "length": 15,
+        "offset": 131,
+        "surroundingCode": "        } catch (SQLException e) {\n            createResponse(500, false, \"Caught SQLException: \" + e.getMessage());\n            e.printStackTrace();\n        }\n    }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "40d3835d61fc336a673c3d7bc06bb0e6acc3ed45bf48a97f64a8cd8c13b62397"
+},{
+  "tool": "Code Inspection",
+  "category": "Performance",
+  "type": "Concatenation with empty string",
+  "severity": "High",
+  "comment": "Empty string used in concatenation",
+  "detailsInfo": "Reports string concatenations where one of the arguments is the empty string. Such a concatenation is unnecessary and inefficient, particularly when used as an idiom for formatting non-`String` objects or primitives into `String`s.\n\n\nA quick-fix is suggested to simplify the concatenation.\n\n**Example:**\n\n\n      void foo(int x, int y) {\n        String s = \"\" + x + \" ; \" + y;\n      }\n\nAfter the quick-fix is applied:\n\n\n      void foo(int x, int y) {\n        String s = x + \" ; \" + y;\n      }\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/event/Event_Ded.java",
+      "language": "JAVA",
+      "line": 36,
+      "offset": 55,
+      "length": 2,
+      "code": {
+        "startLine": 34,
+        "length": 2,
+        "offset": 198,
+        "surroundingCode": "        MyMaidData.setLastDed(player.getName(), loc);\n        player.sendMessage(\"[DED] \" + ChatColor.GREEN + \"死亡した場所に戻るには「/ded」コマンドが使用できます。\");\n        player.sendMessage(\"[DED] \" + ChatColor.RED + \"\" + ChatColor.BOLD + \"=== [!] 警告 ===\");\n        player.sendMessage(\"[DED] \" + ChatColor.RED + \"\" + ChatColor.BOLD + \"PvP等での「/ded」コマンドの利用は原則禁止です。\");\n        player.sendMessage(\"[DED] \" + ChatColor.RED + \"\" + ChatColor.BOLD + \"多く使用すると迷惑行為として認識される場合もあります！\");"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "TrivialStringConcatenation",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "a46c9c489aea93e2da22187865232163dfadef2001ac372cfa28be014de1d4f3"
+},{
+  "tool": "Code Inspection",
+  "category": "Performance",
+  "type": "Concatenation with empty string",
+  "severity": "High",
+  "comment": "Empty string used in concatenation",
+  "detailsInfo": "Reports string concatenations where one of the arguments is the empty string. Such a concatenation is unnecessary and inefficient, particularly when used as an idiom for formatting non-`String` objects or primitives into `String`s.\n\n\nA quick-fix is suggested to simplify the concatenation.\n\n**Example:**\n\n\n      void foo(int x, int y) {\n        String s = \"\" + x + \" ; \" + y;\n      }\n\nAfter the quick-fix is applied:\n\n\n      void foo(int x, int y) {\n        String s = x + \" ; \" + y;\n      }\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/event/Event_Ded.java",
+      "language": "JAVA",
+      "line": 37,
+      "offset": 55,
+      "length": 2,
+      "code": {
+        "startLine": 35,
+        "length": 2,
+        "offset": 239,
+        "surroundingCode": "        player.sendMessage(\"[DED] \" + ChatColor.GREEN + \"死亡した場所に戻るには「/ded」コマンドが使用できます。\");\n        player.sendMessage(\"[DED] \" + ChatColor.RED + \"\" + ChatColor.BOLD + \"=== [!] 警告 ===\");\n        player.sendMessage(\"[DED] \" + ChatColor.RED + \"\" + ChatColor.BOLD + \"PvP等での「/ded」コマンドの利用は原則禁止です。\");\n        player.sendMessage(\"[DED] \" + ChatColor.RED + \"\" + ChatColor.BOLD + \"多く使用すると迷惑行為として認識される場合もあります！\");\n    }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "TrivialStringConcatenation",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "d5a8f07ca5e59d8ae98da28cf29b4b2845745ce5fb285351b38f0ff362095e51"
+},{
+  "tool": "Code Inspection",
+  "category": "Performance",
+  "type": "Concatenation with empty string",
+  "severity": "High",
+  "comment": "Empty string used in concatenation",
+  "detailsInfo": "Reports string concatenations where one of the arguments is the empty string. Such a concatenation is unnecessary and inefficient, particularly when used as an idiom for formatting non-`String` objects or primitives into `String`s.\n\n\nA quick-fix is suggested to simplify the concatenation.\n\n**Example:**\n\n\n      void foo(int x, int y) {\n        String s = \"\" + x + \" ; \" + y;\n      }\n\nAfter the quick-fix is applied:\n\n\n      void foo(int x, int y) {\n        String s = x + \" ; \" + y;\n      }\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/event/Event_Ded.java",
+      "language": "JAVA",
+      "line": 38,
+      "offset": 55,
+      "length": 2,
+      "code": {
+        "startLine": 36,
+        "length": 2,
+        "offset": 257,
+        "surroundingCode": "        player.sendMessage(\"[DED] \" + ChatColor.RED + \"\" + ChatColor.BOLD + \"=== [!] 警告 ===\");\n        player.sendMessage(\"[DED] \" + ChatColor.RED + \"\" + ChatColor.BOLD + \"PvP等での「/ded」コマンドの利用は原則禁止です。\");\n        player.sendMessage(\"[DED] \" + ChatColor.RED + \"\" + ChatColor.BOLD + \"多く使用すると迷惑行為として認識される場合もあります！\");\n    }\n}"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "TrivialStringConcatenation",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "c85a0d5de789030b6395c48ca00608fa9232c9bc7f4353c4bb298203d292b39b"
+},{
+  "tool": "Code Inspection",
+  "category": "Performance",
+  "type": "Concatenation with empty string",
+  "severity": "High",
+  "comment": "Empty string used in concatenation",
+  "detailsInfo": "Reports string concatenations where one of the arguments is the empty string. Such a concatenation is unnecessary and inefficient, particularly when used as an idiom for formatting non-`String` objects or primitives into `String`s.\n\n\nA quick-fix is suggested to simplify the concatenation.\n\n**Example:**\n\n\n      void foo(int x, int y) {\n        String s = \"\" + x + \" ; \" + y;\n      }\n\nAfter the quick-fix is applied:\n\n\n      void foo(int x, int y) {\n        String s = x + \" ; \" + y;\n      }\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/command/Cmd_Ded.java",
+      "language": "JAVA",
+      "line": 52,
+      "offset": 60,
+      "length": 2,
+      "code": {
+        "startLine": 50,
+        "length": 2,
+        "offset": 216,
+        "surroundingCode": "            SendMessage(player, details(), \"Dedコマンドはサバイバル・アドベンチャーモードでは利用できません。\");\n            SendMessage(player, details(), \"クリエイティブモードに切り替えてから実行してください。\");\n            SendMessage(player, details(), ChatColor.RED + \"\" + ChatColor.BOLD + \"=== [!] 警告 ===\");\n            SendMessage(player, details(), ChatColor.RED + \"\" + ChatColor.BOLD + \"PvP等での「/ded」コマンドの利用は原則禁止です！\");\n            SendMessage(player, details(), ChatColor.RED + \"\" + ChatColor.BOLD + \"多く使用すると迷惑行為として認識される場合もあります！\");"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "TrivialStringConcatenation",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "004d5be0a75910397ada5047386950c8409cf36126ece4ef2c15d57a62882e27"
+},{
+  "tool": "Code Inspection",
+  "category": "Performance",
+  "type": "Concatenation with empty string",
+  "severity": "High",
+  "comment": "Empty string used in concatenation",
+  "detailsInfo": "Reports string concatenations where one of the arguments is the empty string. Such a concatenation is unnecessary and inefficient, particularly when used as an idiom for formatting non-`String` objects or primitives into `String`s.\n\n\nA quick-fix is suggested to simplify the concatenation.\n\n**Example:**\n\n\n      void foo(int x, int y) {\n        String s = \"\" + x + \" ; \" + y;\n      }\n\nAfter the quick-fix is applied:\n\n\n      void foo(int x, int y) {\n        String s = x + \" ; \" + y;\n      }\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/command/Cmd_Ded.java",
+      "language": "JAVA",
+      "line": 53,
+      "offset": 60,
+      "length": 2,
+      "code": {
+        "startLine": 51,
+        "length": 2,
+        "offset": 234,
+        "surroundingCode": "            SendMessage(player, details(), \"クリエイティブモードに切り替えてから実行してください。\");\n            SendMessage(player, details(), ChatColor.RED + \"\" + ChatColor.BOLD + \"=== [!] 警告 ===\");\n            SendMessage(player, details(), ChatColor.RED + \"\" + ChatColor.BOLD + \"PvP等での「/ded」コマンドの利用は原則禁止です！\");\n            SendMessage(player, details(), ChatColor.RED + \"\" + ChatColor.BOLD + \"多く使用すると迷惑行為として認識される場合もあります！\");\n"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "TrivialStringConcatenation",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "277e18e4a4c933d600194a4322cce2804dfa92ecc52dddc98be8f8583acf8a3f"
+},{
+  "tool": "Code Inspection",
+  "category": "Performance",
+  "type": "Concatenation with empty string",
+  "severity": "High",
+  "comment": "Empty string used in concatenation",
+  "detailsInfo": "Reports string concatenations where one of the arguments is the empty string. Such a concatenation is unnecessary and inefficient, particularly when used as an idiom for formatting non-`String` objects or primitives into `String`s.\n\n\nA quick-fix is suggested to simplify the concatenation.\n\n**Example:**\n\n\n      void foo(int x, int y) {\n        String s = \"\" + x + \" ; \" + y;\n      }\n\nAfter the quick-fix is applied:\n\n\n      void foo(int x, int y) {\n        String s = x + \" ; \" + y;\n      }\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/command/Cmd_Ded.java",
+      "language": "JAVA",
+      "line": 54,
+      "offset": 60,
+      "length": 2,
+      "code": {
+        "startLine": 52,
+        "length": 2,
+        "offset": 272,
+        "surroundingCode": "            SendMessage(player, details(), ChatColor.RED + \"\" + ChatColor.BOLD + \"=== [!] 警告 ===\");\n            SendMessage(player, details(), ChatColor.RED + \"\" + ChatColor.BOLD + \"PvP等での「/ded」コマンドの利用は原則禁止です！\");\n            SendMessage(player, details(), ChatColor.RED + \"\" + ChatColor.BOLD + \"多く使用すると迷惑行為として認識される場合もあります！\");\n\n            return;"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "TrivialStringConcatenation",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "c23af0a583d5afbc0914280f95299dba7070c69108995f076d76829d1f950982"
+},{
+  "tool": "Code Inspection",
+  "category": "Performance",
+  "type": "Concatenation with empty string",
+  "severity": "High",
+  "comment": "Empty string used in concatenation",
+  "detailsInfo": "Reports string concatenations where one of the arguments is the empty string. Such a concatenation is unnecessary and inefficient, particularly when used as an idiom for formatting non-`String` objects or primitives into `String`s.\n\n\nA quick-fix is suggested to simplify the concatenation.\n\n**Example:**\n\n\n      void foo(int x, int y) {\n        String s = \"\" + x + \" ; \" + y;\n      }\n\nAfter the quick-fix is applied:\n\n\n      void foo(int x, int y) {\n        String s = x + \" ; \" + y;\n      }\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/command/Cmd_Ded.java",
+      "language": "JAVA",
+      "line": 65,
+      "offset": 60,
+      "length": 2,
+      "code": {
+        "startLine": 63,
+        "length": 2,
+        "offset": 330,
+        "surroundingCode": "            String locationDescription = String.format(\"( X:%s Y:%s Z:%s )\", location.getBlockX(), location.getBlockY(), location.getBlockZ());\n            SendMessage(player, details(), \"最終死亡場所\" + ChatColor.BOLD + locationDescription + ChatColor.RESET + \"にテレポートしました。\");\n            SendMessage(player, details(), ChatColor.RED + \"\" + ChatColor.BOLD + \"=== [!] 警告 ===\");\n            SendMessage(player, details(), ChatColor.RED + \"\" + ChatColor.BOLD + \"PvP等での「/ded」コマンドの利用は原則禁止です！\");\n            SendMessage(player, details(), ChatColor.RED + \"\" + ChatColor.BOLD + \"多く使用すると迷惑行為として認識される場合もあります！\");"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "TrivialStringConcatenation",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "93f88f46008983248b996519bdda732a43c566b8ea12c8d3f56b879fabeadc3f"
+},{
+  "tool": "Code Inspection",
+  "category": "Performance",
+  "type": "Concatenation with empty string",
+  "severity": "High",
+  "comment": "Empty string used in concatenation",
+  "detailsInfo": "Reports string concatenations where one of the arguments is the empty string. Such a concatenation is unnecessary and inefficient, particularly when used as an idiom for formatting non-`String` objects or primitives into `String`s.\n\n\nA quick-fix is suggested to simplify the concatenation.\n\n**Example:**\n\n\n      void foo(int x, int y) {\n        String s = \"\" + x + \" ; \" + y;\n      }\n\nAfter the quick-fix is applied:\n\n\n      void foo(int x, int y) {\n        String s = x + \" ; \" + y;\n      }\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/command/Cmd_Ded.java",
+      "language": "JAVA",
+      "line": 66,
+      "offset": 60,
+      "length": 2,
+      "code": {
+        "startLine": 64,
+        "length": 2,
+        "offset": 286,
+        "surroundingCode": "            SendMessage(player, details(), \"最終死亡場所\" + ChatColor.BOLD + locationDescription + ChatColor.RESET + \"にテレポートしました。\");\n            SendMessage(player, details(), ChatColor.RED + \"\" + ChatColor.BOLD + \"=== [!] 警告 ===\");\n            SendMessage(player, details(), ChatColor.RED + \"\" + ChatColor.BOLD + \"PvP等での「/ded」コマンドの利用は原則禁止です！\");\n            SendMessage(player, details(), ChatColor.RED + \"\" + ChatColor.BOLD + \"多く使用すると迷惑行為として認識される場合もあります！\");\n        }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "TrivialStringConcatenation",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "7ca4be8f539b24fe871f7a0bd4acefcc3aa4667cb61ab581a7c28718a818ab29"
+},{
+  "tool": "Code Inspection",
+  "category": "Performance",
+  "type": "Concatenation with empty string",
+  "severity": "High",
+  "comment": "Empty string used in concatenation",
+  "detailsInfo": "Reports string concatenations where one of the arguments is the empty string. Such a concatenation is unnecessary and inefficient, particularly when used as an idiom for formatting non-`String` objects or primitives into `String`s.\n\n\nA quick-fix is suggested to simplify the concatenation.\n\n**Example:**\n\n\n      void foo(int x, int y) {\n        String s = \"\" + x + \" ; \" + y;\n      }\n\nAfter the quick-fix is applied:\n\n\n      void foo(int x, int y) {\n        String s = x + \" ; \" + y;\n      }\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/command/Cmd_Ded.java",
+      "language": "JAVA",
+      "line": 67,
+      "offset": 60,
+      "length": 2,
+      "code": {
+        "startLine": 65,
+        "length": 2,
+        "offset": 272,
+        "surroundingCode": "            SendMessage(player, details(), ChatColor.RED + \"\" + ChatColor.BOLD + \"=== [!] 警告 ===\");\n            SendMessage(player, details(), ChatColor.RED + \"\" + ChatColor.BOLD + \"PvP等での「/ded」コマンドの利用は原則禁止です！\");\n            SendMessage(player, details(), ChatColor.RED + \"\" + ChatColor.BOLD + \"多く使用すると迷惑行為として認識される場合もあります！\");\n        }\n    }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "TrivialStringConcatenation",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "545a0fa3a12b9fc9e1c65d0001f034cb6c15e25383df5b2af4d78ac69db8fa0e"
+},{
+  "tool": "Code Inspection",
+  "category": "Initialization",
+  "type": "Double brace initialization",
+  "severity": "High",
+  "comment": "Double brace initialization",
+  "detailsInfo": "Reports [Double Brace Initialization](https://www.c2.com/cgi/wiki?DoubleBraceInitialization).\n\nDouble brace initialization may cause memory leaks when used in a non-static context because it creates an anonymous class\nthat will reference the surrounding object.\n\nCompared to regular initialization, double brace initialization provides worse performance since it requires loading an\nadditional class.\n\nIt may also cause failure of `equals()` comparisons if the `equals()` method doesn't accept subclasses as\nparameters.\n\nIn addition, before Java 9, double brace initialization couldn't be combined with the diamond operator since it was incompatible\nwith anonymous classes.\n\n**Example:**\n\n\n      List<Integer> list = new ArrayList<>() {{\n        add(1);\n        add(2);\n      }};\n\nAfter the quick-fix is applied:\n\n\n      List<Integer> list = new ArrayList<>();\n      list.add(1);\n      list.add(2);\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/command/Cmd_Wt.java",
+      "language": "JAVA",
+      "line": 33,
+      "offset": 44,
+      "length": 9,
+      "code": {
+        "startLine": 31,
+        "length": 9,
+        "offset": 114,
+        "surroundingCode": "public class Cmd_Wt extends MyMaidLibrary implements CommandPremise {\n\n    final Map<String, String> worlds = new HashMap<>() {\n        {\n            put(\"1\", \"Jao_Afa\");"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "DoubleBraceInitialization",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "8d4efa44ae62dedcb54a3db52e0b800beb53fdae610c4bbb7b479eb597255b6e"
+},{
+  "tool": "Code Inspection",
+  "category": "Control flow issues",
+  "type": "'switch' statement without 'default' branch",
+  "severity": "High",
+  "comment": "`switch` statement without 'default' branch",
+  "detailsInfo": "Reports `switch` statements that do not contain `default` labels.\n\nAdding the `default` label guarantees that all possible scenarios are covered, and it becomes\neasier to make assumptions about the current state of the program.\n\n\nNote that by default, the inspection does not report `switch` statements if all cases for enums or `sealed` classes are covered.\nUse the **Ignore exhaustive switch statements** option if you want to change this behavior.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/command/Cmd_G.java",
+      "language": "JAVA",
+      "line": 223,
+      "offset": 9,
+      "length": 6,
+      "code": {
+        "startLine": 221,
+        "length": 6,
+        "offset": 70,
+        "surroundingCode": "    @Nullable\n    GameMode getGameModeStartWith(String str) {\n        switch (str) {\n            case \"0\":\n                return GameMode.SURVIVAL;"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "SwitchStatementsWithoutDefault",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "bc21a06f9f4759ac78fd498b5ac09c7981d199806e8476bd309f088b29fb8f85"
+},{
+  "tool": "Code Inspection",
+  "category": "Control flow issues",
+  "type": "'switch' statement without 'default' branch",
+  "severity": "High",
+  "comment": "`switch` statement without 'default' branch",
+  "detailsInfo": "Reports `switch` statements that do not contain `default` labels.\n\nAdding the `default` label guarantees that all possible scenarios are covered, and it becomes\neasier to make assumptions about the current state of the program.\n\n\nNote that by default, the inspection does not report `switch` statements if all cases for enums or `sealed` classes are covered.\nUse the **Ignore exhaustive switch statements** option if you want to change this behavior.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/command/Cmd_VarCmd.java",
+      "language": "JAVA",
+      "line": 93,
+      "offset": 9,
+      "length": 6,
+      "code": {
+        "startLine": 91,
+        "length": 6,
+        "offset": 54,
+        "surroundingCode": "\n    String replaceReservedVars(String key) {\n        switch (key) {\n            case \"DateTime_Year\":\n                return new SimpleDateFormat(\"yyyy\").format(new Date());"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "SwitchStatementsWithoutDefault",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "4616e0f0a8b81eeffcc89f129cb0f2e5123db45078b0fff7763088d68164d87a"
+}]}

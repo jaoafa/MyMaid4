@@ -1,0 +1,435 @@
+{
+  "modules": [
+    {
+      "name": "project",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$",
+          "sourceFolders": [
+            {
+              "path": "file://$PROJECT_DIR$/src/main/java",
+              "type": "Source",
+              "packagePrefix": ""
+            },
+            {
+              "path": "file://$PROJECT_DIR$/src/main/resources",
+              "type": "Resource",
+              "packagePrefix": ""
+            },
+            {
+              "path": "file://$PROJECT_DIR$/src/test/java",
+              "type": "TestSource",
+              "packagePrefix": ""
+            }
+          ]
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "jbr-11",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        },
+        {
+          "name": "Maven: io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: commons-lang:commons-lang:2.6",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.google.guava:guava:31.0.1-jre",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.google.guava:failureaccess:1.0.1",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.google.errorprone:error_prone_annotations:2.7.1",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.google.j2objc:j2objc-annotations:1.3",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.google.code.gson:gson:2.8.8",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: net.md-5:bungeecord-chat:1.16-R0.4",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.yaml:snakeyaml:1.30",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.googlecode.json-simple:json-simple:1.1.1",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: it.unimi.dsi:fastutil:8.5.6",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.apache.logging.log4j:log4j-api:2.17.1",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.slf4j:slf4j-api:1.8.0-beta4",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: net.kyori:adventure-api:4.9.3",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: net.kyori:adventure-key:4.9.3",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: net.kyori:examination-api:1.3.0",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: net.kyori:examination-string:1.3.0",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: net.kyori:adventure-text-serializer-gson:4.9.3",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: net.kyori:adventure-text-serializer-legacy:4.9.3",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: net.kyori:adventure-text-serializer-plain:4.9.3",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.checkerframework:checker-qual:3.21.0",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.ow2.asm:asm:9.2",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.ow2.asm:asm-commons:9.2",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.ow2.asm:asm-tree:9.2",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.ow2.asm:asm-analysis:9.2",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: cloud.commandframework:cloud-paper:1.6.2",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: cloud.commandframework:cloud-bukkit:1.6.2",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: cloud.commandframework:cloud-brigadier:1.6.2",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: cloud.commandframework:cloud-tasks:1.6.2",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: cloud.commandframework:cloud-minecraft-extras:1.6.2",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: cloud.commandframework:cloud-core:1.6.2",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: cloud.commandframework:cloud-services:1.6.2",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: io.leangen.geantyref:geantyref:1.3.13",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: commons-codec:commons-codec:1.15",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: net.dv8tion:JDA:5.0.0-alpha.9",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.google.code.findbugs:jsr305:3.0.2",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.jetbrains:annotations:16.0.1",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.neovisionaries:nv-websocket-client:2.14",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.apache.commons:commons-collections4:4.1",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: net.sf.trove4j:trove4j:3.0.3",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.fasterxml.jackson.core:jackson-databind:2.10.1",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: net.luckperms:api:5.4",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.dynmap:dynmap-api:2.0",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.bukkit:bukkit:1.4.7-R1.0",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.jaoafa:jaosuperachievement2:2.5.10",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.apache.commons:commons-lang3:3.12.0",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.maxmind.geoip2:geoip2:3.0.0",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.maxmind.db:maxmind-db:2.0.0",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.fasterxml.jackson.core:jackson-core:2.13.1",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.fasterxml.jackson.core:jackson-annotations:2.13.1",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.vexsoftware:nuvotifier-universal:2.6.0",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.vexsoftware:nuvotifier-bukkit:2.6.0",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.vexsoftware:nuvotifier-common:2.6.0",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: io.netty:netty-handler:4.1.32.Final",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: io.netty:netty-buffer:4.1.32.Final",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: io.netty:netty-common:4.1.32.Final",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: io.netty:netty-transport:4.1.32.Final",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: io.netty:netty-resolver:4.1.32.Final",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: io.netty:netty-codec:4.1.32.Final",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.vexsoftware:nuvotifier-bungeecord:2.6.0",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.vexsoftware:nuvotifier-sponge:2.6.0",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.vexsoftware:nuvotifier-velocity:2.6.0",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.json:json:20211205",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: us.myles:viaversion:4.0.0-21w16a",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.squareup.okhttp3:okhttp:5.0.0-alpha.3",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.squareup.okio:okio-jvm:3.0.0",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.jetbrains.kotlin:kotlin-stdlib-common:1.5.31",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.jetbrains.kotlin:kotlin-stdlib:1.5.31",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.sk89q.worldedit:worldedit-bukkit:7.2.9",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.sk89q.worldedit.worldedit-libs:bukkit:7.2.9",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: io.papermc:paperlib:1.0.7",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.bstats:bstats-bukkit:2.2.1",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.bstats:bstats-base:2.2.1",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.sk89q.worldedit:worldedit-core:7.2.9",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.sk89q.worldedit.worldedit-libs:core:7.2.9",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.antlr:antlr4:4.9.1",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.antlr:antlr-runtime:3.5.2",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.antlr:ST4:4.3",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.abego.treelayout:org.abego.treelayout.core:1.0.3",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.glassfish:javax.json:1.0.4",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.ibm.icu:icu4j:61.1",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.mozilla:rhino-runtime:1.7.13",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.antlr:antlr4-runtime:4.9.1",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.sk89q.worldguard:worldguard-bukkit:7.0.7",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.sk89q.worldguard:worldguard-core:7.0.7",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.sk89q.worldguard.worldguard-libs:core:7.0.7",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.flywaydb:flyway-core:3.0",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.rollbar:rollbar-java:1.8.1",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.rollbar:rollbar-api:1.8.1",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: junit:junit:4.13.2",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.hamcrest:hamcrest-core:1.3",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: de.tr7zw:item-nbt-api:2.9.2",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: de.tr7zw:functional-annotations:0.1-SNAPSHOT",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: de.tr7zw:nbt-injector:2.9.2",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: org.javassist:javassist:3.28.0-GA",
+          "type": "Library"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "modules": [
+    {
+      "name": "project",
+      "languageLevel": 17
+    }
+  ]
+}

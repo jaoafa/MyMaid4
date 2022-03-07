@@ -1,0 +1,513 @@
+{"version":"3","listProblem":[{
+  "tool": "Code Inspection",
+  "category": "General",
+  "type": "Java annotator",
+  "tags": [
+    "JAVA",
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "'addAll(java.util.Collection<? extends java.lang.String>)' in 'java.util.List' cannot be applied to '(?)'",
+  "detailsInfo": "Allows viewing the problems reported by the Java annotator: compilation problems, unresolved by IDEA references, and so on.",
+  "sources": [
+    {
+      "type": "method",
+      "path": "src/main/java/com/jaoafa/mymaid4/lib/Home.java",
+      "language": "JAVA",
+      "line": 76,
+      "offset": 19,
+      "length": 1,
+      "code": {
+        "startLine": 74,
+        "length": 1,
+        "offset": 65,
+        "surroundingCode": "            fetchHomeNames(player);\n        }\n        list.addAll(homeNames.get(player.getUniqueId()).stream().map(detail -> detail.name).toList());\n\n        return list.stream()"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "JavaAnnotator"
+  },
+  "hash": "6117739372648646446"
+},{
+  "tool": "Code Inspection",
+  "category": "General",
+  "type": "Java annotator",
+  "tags": [
+    "JAVA",
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "Cannot resolve method 'toList' in 'Stream'",
+  "detailsInfo": "Allows viewing the problems reported by the Java annotator: compilation problems, unresolved by IDEA references, and so on.",
+  "sources": [
+    {
+      "type": "method",
+      "path": "src/main/java/com/jaoafa/mymaid4/lib/Home.java",
+      "language": "JAVA",
+      "line": 76,
+      "offset": 92,
+      "length": 6,
+      "code": {
+        "startLine": 74,
+        "length": 6,
+        "offset": 138,
+        "surroundingCode": "            fetchHomeNames(player);\n        }\n        list.addAll(homeNames.get(player.getUniqueId()).stream().map(detail -> detail.name).toList());\n\n        return list.stream()"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "JavaAnnotator"
+  },
+  "hash": "-6991315865832363403"
+},{
+  "tool": "Code Inspection",
+  "category": "General",
+  "type": "Java annotator",
+  "tags": [
+    "JAVA",
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "'reportError(java.lang.Class<?>, java.lang.Throwable)' in 'com.jaoafa.mymaid4.lib.MyMaidLibrary' cannot be applied to '(?, java.sql.SQLException)'",
+  "detailsInfo": "Allows viewing the problems reported by the Java annotator: compilation problems, unresolved by IDEA references, and so on.",
+  "sources": [
+    {
+      "type": "method",
+      "path": "src/main/java/com/jaoafa/mymaid4/lib/TpDeny.java",
+      "language": "JAVA",
+      "line": 172,
+      "offset": 38,
+      "length": 8,
+      "code": {
+        "startLine": 170,
+        "length": 8,
+        "offset": 112,
+        "surroundingCode": "            return bool; // 存在するならdeny\n        } catch (SQLException e) {\n            MyMaidLibrary.reportError(getClass(), e);\n            return true;\n        }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "JavaAnnotator"
+  },
+  "hash": "1132538776367408996"
+},{
+  "tool": "Code Inspection",
+  "category": "General",
+  "type": "Java annotator",
+  "tags": [
+    "JAVA",
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "Cannot resolve method 'getClass' in 'TpDeny'",
+  "detailsInfo": "Allows viewing the problems reported by the Java annotator: compilation problems, unresolved by IDEA references, and so on.",
+  "sources": [
+    {
+      "type": "method",
+      "path": "src/main/java/com/jaoafa/mymaid4/lib/TpDeny.java",
+      "language": "JAVA",
+      "line": 172,
+      "offset": 38,
+      "length": 8,
+      "code": {
+        "startLine": 170,
+        "length": 8,
+        "offset": 112,
+        "surroundingCode": "            return bool; // 存在するならdeny\n        } catch (SQLException e) {\n            MyMaidLibrary.reportError(getClass(), e);\n            return true;\n        }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "JavaAnnotator"
+  },
+  "hash": "-5890564418699692958"
+},{
+  "tool": "Code Inspection",
+  "category": "General",
+  "type": "Java annotator",
+  "tags": [
+    "JAVA",
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "'reportError(java.lang.Class<?>, java.lang.Throwable)' in 'com.jaoafa.mymaid4.lib.MyMaidLibrary' cannot be applied to '(?, java.sql.SQLException)'",
+  "detailsInfo": "Allows viewing the problems reported by the Java annotator: compilation problems, unresolved by IDEA references, and so on.",
+  "sources": [
+    {
+      "type": "method",
+      "path": "src/main/java/com/jaoafa/mymaid4/lib/TpDeny.java",
+      "language": "JAVA",
+      "line": 141,
+      "offset": 38,
+      "length": 8,
+      "code": {
+        "startLine": 139,
+        "length": 8,
+        "offset": 98,
+        "surroundingCode": "            return rets;\n        } catch (SQLException e) {\n            MyMaidLibrary.reportError(getClass(), e);\n            return rets;\n        }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "JavaAnnotator"
+  },
+  "hash": "5082843428103299153"
+},{
+  "tool": "Code Inspection",
+  "category": "General",
+  "type": "Java annotator",
+  "tags": [
+    "JAVA",
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "Cannot resolve method 'getClass' in 'TpDeny'",
+  "detailsInfo": "Allows viewing the problems reported by the Java annotator: compilation problems, unresolved by IDEA references, and so on.",
+  "sources": [
+    {
+      "type": "method",
+      "path": "src/main/java/com/jaoafa/mymaid4/lib/TpDeny.java",
+      "language": "JAVA",
+      "line": 141,
+      "offset": 38,
+      "length": 8,
+      "code": {
+        "startLine": 139,
+        "length": 8,
+        "offset": 98,
+        "surroundingCode": "            return rets;\n        } catch (SQLException e) {\n            MyMaidLibrary.reportError(getClass(), e);\n            return rets;\n        }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "JavaAnnotator"
+  },
+  "hash": "-4881144693052572468"
+},{
+  "tool": "Code Inspection",
+  "category": "General",
+  "type": "Java annotator",
+  "tags": [
+    "JAVA",
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "Cannot resolve method 'toList' in 'Stream'",
+  "detailsInfo": "Allows viewing the problems reported by the Java annotator: compilation problems, unresolved by IDEA references, and so on.",
+  "sources": [
+    {
+      "type": "method",
+      "path": "src/main/java/com/jaoafa/mymaid4/lib/Blacklist.java",
+      "language": "JAVA",
+      "line": 92,
+      "offset": 64,
+      "length": 6,
+      "code": {
+        "startLine": 90,
+        "length": 6,
+        "offset": 199,
+        "surroundingCode": "    BlacklistAction[] getMatchActions(List<String> list) {\n        BlacklistAction[] actions = Arrays.stream(BlacklistAction.values())\n            .filter(a -> list.stream().map(String::toUpperCase).toList().contains(a.name()))\n            .toArray(BlacklistAction[]::new);\n        return actions.length != 0 ? actions : null;"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "JavaAnnotator"
+  },
+  "hash": "-7079335885328666437"
+},{
+  "tool": "Code Inspection",
+  "category": "General",
+  "type": "Java annotator",
+  "tags": [
+    "JAVA",
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "Cannot resolve method 'contains(java.lang.String)'",
+  "detailsInfo": "Allows viewing the problems reported by the Java annotator: compilation problems, unresolved by IDEA references, and so on.",
+  "sources": [
+    {
+      "type": "method",
+      "path": "src/main/java/com/jaoafa/mymaid4/lib/Blacklist.java",
+      "language": "JAVA",
+      "line": 92,
+      "offset": 73,
+      "length": 8,
+      "code": {
+        "startLine": 90,
+        "length": 8,
+        "offset": 208,
+        "surroundingCode": "    BlacklistAction[] getMatchActions(List<String> list) {\n        BlacklistAction[] actions = Arrays.stream(BlacklistAction.values())\n            .filter(a -> list.stream().map(String::toUpperCase).toList().contains(a.name()))\n            .toArray(BlacklistAction[]::new);\n        return actions.length != 0 ? actions : null;"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "JavaAnnotator"
+  },
+  "hash": "-7342397456188854821"
+},{
+  "tool": "Code Inspection",
+  "category": "General",
+  "type": "Java annotator",
+  "tags": [
+    "JAVA",
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "Cannot resolve method 'info(?)'",
+  "detailsInfo": "Allows viewing the problems reported by the Java annotator: compilation problems, unresolved by IDEA references, and so on.",
+  "sources": [
+    {
+      "type": "method",
+      "path": "src/main/java/com/jaoafa/mymaid4/lib/MyMaidLibrary.java",
+      "language": "JAVA",
+      "line": 535,
+      "offset": 35,
+      "length": 1,
+      "code": {
+        "startLine": 533,
+        "length": 1,
+        "offset": 65,
+        "surroundingCode": "            return;\n        }\n        Main.getMyMaidLogger().info(\"DEBUG -> %s\".formatted(message));\n    }\n"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "JavaAnnotator"
+  },
+  "hash": "-4641432132749813188"
+},{
+  "tool": "Code Inspection",
+  "category": "General",
+  "type": "Java annotator",
+  "tags": [
+    "JAVA",
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "Cannot resolve method 'formatted' in 'String'",
+  "detailsInfo": "Allows viewing the problems reported by the Java annotator: compilation problems, unresolved by IDEA references, and so on.",
+  "sources": [
+    {
+      "type": "method",
+      "path": "src/main/java/com/jaoafa/mymaid4/lib/MyMaidLibrary.java",
+      "language": "JAVA",
+      "line": 535,
+      "offset": 50,
+      "length": 9,
+      "code": {
+        "startLine": 533,
+        "length": 9,
+        "offset": 80,
+        "surroundingCode": "            return;\n        }\n        Main.getMyMaidLogger().info(\"DEBUG -> %s\".formatted(message));\n    }\n"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "JavaAnnotator"
+  },
+  "hash": "-7656994837211869713"
+},{
+  "tool": "Code Inspection",
+  "category": "General",
+  "type": "Java annotator",
+  "tags": [
+    "JAVA",
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "Incompatible types. Found: 'null', required: 'java.util.List<org.bukkit.Material>'",
+  "detailsInfo": "Allows viewing the problems reported by the Java annotator: compilation problems, unresolved by IDEA references, and so on.",
+  "sources": [
+    {
+      "type": "method",
+      "path": "src/main/java/com/jaoafa/mymaid4/event/Event_jaoBox.java",
+      "language": "JAVA",
+      "line": 131,
+      "offset": 8,
+      "length": 4,
+      "code": {
+        "startLine": 129,
+        "length": 4,
+        "offset": 70,
+        "surroundingCode": "\n    private org.bukkit.block.Sign getNearSign(Block block) {\n        List<Material> signs = Arrays\n            .stream(Material.values())\n            .filter(material -> material.data == Sign.class || material.data == WallSign.class)"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "JavaAnnotator"
+  },
+  "hash": "-8024654110633957496"
+},{
+  "tool": "Code Inspection",
+  "category": "General",
+  "type": "Java annotator",
+  "tags": [
+    "JAVA",
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "Cannot resolve method 'toList' in 'Stream'",
+  "detailsInfo": "Allows viewing the problems reported by the Java annotator: compilation problems, unresolved by IDEA references, and so on.",
+  "sources": [
+    {
+      "type": "method",
+      "path": "src/main/java/com/jaoafa/mymaid4/event/Event_jaoBox.java",
+      "language": "JAVA",
+      "line": 134,
+      "offset": 13,
+      "length": 6,
+      "code": {
+        "startLine": 132,
+        "length": 6,
+        "offset": 148,
+        "surroundingCode": "            .stream(Material.values())\n            .filter(material -> material.data == Sign.class || material.data == WallSign.class)\n            .toList();\n        for (BlockFace face : BlockFace.values()) {\n            if (signs.contains(block.getRelative(face).getType())) {"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "JavaAnnotator"
+  },
+  "hash": "7971329365326243228"
+},{
+  "tool": "Code Inspection",
+  "category": "General",
+  "type": "Java annotator",
+  "tags": [
+    "JAVA",
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "Cannot resolve method 'info(?)'",
+  "detailsInfo": "Allows viewing the problems reported by the Java annotator: compilation problems, unresolved by IDEA references, and so on.",
+  "sources": [
+    {
+      "type": "method",
+      "path": "src/main/java/com/jaoafa/mymaid4/event/Event_MCBansLoginCheck.java",
+      "language": "JAVA",
+      "line": 160,
+      "offset": 55,
+      "length": 1,
+      "code": {
+        "startLine": 158,
+        "length": 1,
+        "offset": 191,
+        "surroundingCode": "                    try (Response response = client.newCall(request).execute()) {\n                        if (response.code() != 200) {\n                            Main.getMyMaidLogger().info(\"OnLoginAfterCheck: APIサーバへの接続に失敗: %s -> %d%n\".formatted(url, response.code()));\n                            response.close();\n                            return;"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "JavaAnnotator"
+  },
+  "hash": "-3358335050606186870"
+},{
+  "tool": "Code Inspection",
+  "category": "General",
+  "type": "Java annotator",
+  "tags": [
+    "JAVA",
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "Cannot resolve method 'formatted' in 'String'",
+  "detailsInfo": "Allows viewing the problems reported by the Java annotator: compilation problems, unresolved by IDEA references, and so on.",
+  "sources": [
+    {
+      "type": "method",
+      "path": "src/main/java/com/jaoafa/mymaid4/event/Event_MCBansLoginCheck.java",
+      "language": "JAVA",
+      "line": 160,
+      "offset": 103,
+      "length": 9,
+      "code": {
+        "startLine": 158,
+        "length": 9,
+        "offset": 239,
+        "surroundingCode": "                    try (Response response = client.newCall(request).execute()) {\n                        if (response.code() != 200) {\n                            Main.getMyMaidLogger().info(\"OnLoginAfterCheck: APIサーバへの接続に失敗: %s -> %d%n\".formatted(url, response.code()));\n                            response.close();\n                            return;"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "JavaAnnotator"
+  },
+  "hash": "-2830506380944940408"
+},{
+  "tool": "Code Inspection",
+  "category": "General",
+  "type": "Java annotator",
+  "tags": [
+    "JAVA",
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "Cannot resolve method 'info(?)'",
+  "detailsInfo": "Allows viewing the problems reported by the Java annotator: compilation problems, unresolved by IDEA references, and so on.",
+  "sources": [
+    {
+      "type": "method",
+      "path": "src/main/java/com/jaoafa/mymaid4/event/Event_NewPlayerAutoBlMap.java",
+      "language": "JAVA",
+      "line": 81,
+      "offset": 51,
+      "length": 1,
+      "code": {
+        "startLine": 79,
+        "length": 1,
+        "offset": 202,
+        "surroundingCode": "                    Response response = client.newCall(request).execute();\n                    if (response.code() != 200 && response.code() != 302) {\n                        Main.getMyMaidLogger().info(\"NewPlayerAutoBlMap: APIサーバへの接続に失敗: %d %s\\nhttps://jaoafa.com/cp/?uuid=%s\".formatted(response.code(), Objects.requireNonNull(response.body()).string(), player.getUniqueId()));\n                        response.close();\n                        return;"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "JavaAnnotator"
+  },
+  "hash": "-3469105909948916718"
+},{
+  "tool": "Code Inspection",
+  "category": "General",
+  "type": "Java annotator",
+  "tags": [
+    "JAVA",
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "Cannot resolve method 'formatted' in 'String'",
+  "detailsInfo": "Allows viewing the problems reported by the Java annotator: compilation problems, unresolved by IDEA references, and so on.",
+  "sources": [
+    {
+      "type": "method",
+      "path": "src/main/java/com/jaoafa/mymaid4/event/Event_NewPlayerAutoBlMap.java",
+      "language": "JAVA",
+      "line": 81,
+      "offset": 127,
+      "length": 9,
+      "code": {
+        "startLine": 79,
+        "length": 9,
+        "offset": 278,
+        "surroundingCode": "                    Response response = client.newCall(request).execute();\n                    if (response.code() != 200 && response.code() != 302) {\n                        Main.getMyMaidLogger().info(\"NewPlayerAutoBlMap: APIサーバへの接続に失敗: %d %s\\nhttps://jaoafa.com/cp/?uuid=%s\".formatted(response.code(), Objects.requireNonNull(response.body()).string(), player.getUniqueId()));\n                        response.close();\n                        return;"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "JavaAnnotator"
+  },
+  "hash": "-2653190375534706259"
+}]}
