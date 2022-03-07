@@ -17,7 +17,7 @@ jobs:
           fail-threshold: 1
           use-annotations: true
           upload-result: true
-          idea-config-dir: `pwd`/.idea
+          idea-config-dir: ${GITHUB_WORKSPACE}/.idea
 
       - name: Qodana - Clone Finder
         uses: JetBrains/qodana-clone-finder-action@v2.0-eap
