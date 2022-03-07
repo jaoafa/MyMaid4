@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Qodana Scan
-        uses: JetBrains/qodana-action@v4.2.2
+        uses: JetBrains/qodana-action@v4.2.5
         with:
           linter: jetbrains/qodana-jvm
           baseline-path: ./.github/qodana.sarif.json
