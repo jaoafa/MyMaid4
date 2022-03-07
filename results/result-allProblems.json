@@ -123,36 +123,6 @@
   "category": "Performance",
   "type": "Field can be made 'static'",
   "severity": "High",
-  "comment": "Field `maxDistance` may be 'static'",
-  "detailsInfo": "Reports instance variables that can safely be made `static`. A field can be static if it is declared `final` and initialized with a constant.\n\n**Example:**\n\n\n      public final String str = \"sample\";\n",
-  "sources": [
-    {
-      "type": "file",
-      "path": "src/main/java/com/jaoafa/mymaid4/command/Cmd_Wire.java",
-      "language": "JAVA",
-      "line": 47,
-      "offset": 18,
-      "length": 11,
-      "code": {
-        "startLine": 45,
-        "length": 11,
-        "offset": 90,
-        "surroundingCode": "\npublic class Cmd_Wire extends MyMaidLibrary implements CommandPremise {\n    final double maxDistance = 128.0;\n    final int searchBatRadius = 2;\n"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "FieldMayBeStatic",
-    "isTechDebt": "true",
-    "baselineState": "unchanged"
-  },
-  "hash": "ae6d9cde5cc690c1dfd5edf1c39d591fe3cca62333f043cc6fad0675182dd03d"
-},{
-  "tool": "Code Inspection",
-  "category": "Performance",
-  "type": "Field can be made 'static'",
-  "severity": "High",
   "comment": "Field `searchBatRadius` may be 'static'",
   "detailsInfo": "Reports instance variables that can safely be made `static`. A field can be static if it is declared `final` and initialized with a constant.\n\n**Example:**\n\n\n      public final String str = \"sample\";\n",
   "sources": [
@@ -178,6 +148,36 @@
     "baselineState": "unchanged"
   },
   "hash": "00924585c87ea0270a4477b6aeded0c85a2dd0dd3c7baa187bc5ee9e5046fc77"
+},{
+  "tool": "Code Inspection",
+  "category": "Performance",
+  "type": "Field can be made 'static'",
+  "severity": "High",
+  "comment": "Field `maxDistance` may be 'static'",
+  "detailsInfo": "Reports instance variables that can safely be made `static`. A field can be static if it is declared `final` and initialized with a constant.\n\n**Example:**\n\n\n      public final String str = \"sample\";\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/command/Cmd_Wire.java",
+      "language": "JAVA",
+      "line": 47,
+      "offset": 18,
+      "length": 11,
+      "code": {
+        "startLine": 45,
+        "length": 11,
+        "offset": 90,
+        "surroundingCode": "\npublic class Cmd_Wire extends MyMaidLibrary implements CommandPremise {\n    final double maxDistance = 128.0;\n    final int searchBatRadius = 2;\n"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "FieldMayBeStatic",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "ae6d9cde5cc690c1dfd5edf1c39d591fe3cca62333f043cc6fad0675182dd03d"
 },{
   "tool": "Code Inspection",
   "category": "Code maturity",
@@ -220,36 +220,6 @@
       "type": "file",
       "path": "src/main/java/com/jaoafa/mymaid4/lib/TeleportAlias.java",
       "language": "JAVA",
-      "line": 74,
-      "offset": 15,
-      "length": 15,
-      "code": {
-        "startLine": 72,
-        "length": 15,
-        "offset": 83,
-        "surroundingCode": "            alias = toMap(object);\n        } catch (IOException e) {\n            e.printStackTrace();\n        }\n    }"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "ThrowablePrintStackTrace",
-    "isTechDebt": "true",
-    "baselineState": "unchanged"
-  },
-  "hash": "9ed5a8480a1e3ed3bf6c8eba2cade454a97c98356f11b370dad75b9de73337c6"
-},{
-  "tool": "Code Inspection",
-  "category": "Code maturity",
-  "type": "Call to 'printStackTrace()'",
-  "severity": "High",
-  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
-  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "src/main/java/com/jaoafa/mymaid4/lib/TeleportAlias.java",
-      "language": "JAVA",
       "line": 61,
       "offset": 15,
       "length": 15,
@@ -278,16 +248,16 @@
   "sources": [
     {
       "type": "file",
-      "path": "src/main/java/com/jaoafa/mymaid4/event/Event_jaoBox.java",
+      "path": "src/main/java/com/jaoafa/mymaid4/lib/TeleportAlias.java",
       "language": "JAVA",
-      "line": 71,
+      "line": 74,
       "offset": 15,
       "length": 15,
       "code": {
-        "startLine": 69,
+        "startLine": 72,
         "length": 15,
-        "offset": 88,
-        "surroundingCode": "            yaml.save(Cmd_jaoBox.file);\n        } catch (IOException e) {\n            e.printStackTrace();\n        }\n"
+        "offset": 83,
+        "surroundingCode": "            alias = toMap(object);\n        } catch (IOException e) {\n            e.printStackTrace();\n        }\n    }"
       }
     }
   ],
@@ -297,7 +267,7 @@
     "isTechDebt": "true",
     "baselineState": "unchanged"
   },
-  "hash": "5113b6fda986d0bb097f08223b602068505a43af6f4a79be50a6f4aed6e5df59"
+  "hash": "9ed5a8480a1e3ed3bf6c8eba2cade454a97c98356f11b370dad75b9de73337c6"
 },{
   "tool": "Code Inspection",
   "category": "Code maturity",
@@ -328,6 +298,36 @@
     "baselineState": "unchanged"
   },
   "hash": "7210b3d5081f6ab4c63ca96954a7bcd301d59e128e4c7402152507370e560d8e"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/event/Event_jaoBox.java",
+      "language": "JAVA",
+      "line": 71,
+      "offset": 15,
+      "length": 15,
+      "code": {
+        "startLine": 69,
+        "length": 15,
+        "offset": 88,
+        "surroundingCode": "            yaml.save(Cmd_jaoBox.file);\n        } catch (IOException e) {\n            e.printStackTrace();\n        }\n"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "5113b6fda986d0bb097f08223b602068505a43af6f4a79be50a6f4aed6e5df59"
 },{
   "tool": "Code Inspection",
   "category": "Code maturity",
@@ -490,6 +490,66 @@
       "type": "file",
       "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
       "language": "JAVA",
+      "line": 392,
+      "offset": 23,
+      "length": 15,
+      "code": {
+        "startLine": 390,
+        "length": 15,
+        "offset": 260,
+        "surroundingCode": "                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | NoClassDefFoundError e) {\n                    getLogger().warning(String.format(\"%s: イベントの登録に失敗しました。\", name));\n                    e.printStackTrace();\n                    MyMaidLibrary.reportError(getClass(), e);\n                }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "e86abda82d5a8a73dc767bcae9c5711bbe7c0cbfbf5a95b5a33c8e34bcbdf192"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
+      "language": "JAVA",
+      "line": 399,
+      "offset": 15,
+      "length": 15,
+      "code": {
+        "startLine": 397,
+        "length": 15,
+        "offset": 125,
+        "surroundingCode": "        } catch (ClassNotFoundException | IOException e) {\n            getLogger().warning(\"イベントの登録に失敗しました。\");\n            e.printStackTrace();\n            MyMaidLibrary.reportError(getClass(), e);\n        }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "4131409efb9416861dc72b28504140e604792808c89092f47a726798053c8036"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
+      "language": "JAVA",
       "line": 428,
       "offset": 23,
       "length": 15,
@@ -538,6 +598,36 @@
     "baselineState": "unchanged"
   },
   "hash": "dc2bfa7f6e81263e44b83d7b387b59dc9f5416aeef9092557dc13e1b4f0355ab"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
+      "language": "JAVA",
+      "line": 120,
+      "offset": 19,
+      "length": 15,
+      "code": {
+        "startLine": 118,
+        "length": 15,
+        "offset": 91,
+        "surroundingCode": "                rollbar.close(true);\n            } catch (Exception e) {\n                e.printStackTrace();\n            }\n        }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "d6bd587dd7bea047dc7a57810e82ddefafc0b8a6ecd93ee72fcfc06ee186033f"
 },{
   "tool": "Code Inspection",
   "category": "Code maturity",
@@ -670,66 +760,6 @@
       "type": "file",
       "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
       "language": "JAVA",
-      "line": 392,
-      "offset": 23,
-      "length": 15,
-      "code": {
-        "startLine": 390,
-        "length": 15,
-        "offset": 260,
-        "surroundingCode": "                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | NoClassDefFoundError e) {\n                    getLogger().warning(String.format(\"%s: イベントの登録に失敗しました。\", name));\n                    e.printStackTrace();\n                    MyMaidLibrary.reportError(getClass(), e);\n                }"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "ThrowablePrintStackTrace",
-    "isTechDebt": "true",
-    "baselineState": "unchanged"
-  },
-  "hash": "e86abda82d5a8a73dc767bcae9c5711bbe7c0cbfbf5a95b5a33c8e34bcbdf192"
-},{
-  "tool": "Code Inspection",
-  "category": "Code maturity",
-  "type": "Call to 'printStackTrace()'",
-  "severity": "High",
-  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
-  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
-      "language": "JAVA",
-      "line": 399,
-      "offset": 15,
-      "length": 15,
-      "code": {
-        "startLine": 397,
-        "length": 15,
-        "offset": 125,
-        "surroundingCode": "        } catch (ClassNotFoundException | IOException e) {\n            getLogger().warning(\"イベントの登録に失敗しました。\");\n            e.printStackTrace();\n            MyMaidLibrary.reportError(getClass(), e);\n        }"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "ThrowablePrintStackTrace",
-    "isTechDebt": "true",
-    "baselineState": "unchanged"
-  },
-  "hash": "4131409efb9416861dc72b28504140e604792808c89092f47a726798053c8036"
-},{
-  "tool": "Code Inspection",
-  "category": "Code maturity",
-  "type": "Call to 'printStackTrace()'",
-  "severity": "High",
-  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
-  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
-      "language": "JAVA",
       "line": 476,
       "offset": 15,
       "length": 15,
@@ -748,36 +778,6 @@
     "baselineState": "unchanged"
   },
   "hash": "b626c216b9793ca514eff4ce8e5294ff40485eb79238faf326a019a51b1df9ac"
-},{
-  "tool": "Code Inspection",
-  "category": "Code maturity",
-  "type": "Call to 'printStackTrace()'",
-  "severity": "High",
-  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
-  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
-      "language": "JAVA",
-      "line": 120,
-      "offset": 19,
-      "length": 15,
-      "code": {
-        "startLine": 118,
-        "length": 15,
-        "offset": 91,
-        "surroundingCode": "                rollbar.close(true);\n            } catch (Exception e) {\n                e.printStackTrace();\n            }\n        }"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "ThrowablePrintStackTrace",
-    "isTechDebt": "true",
-    "baselineState": "unchanged"
-  },
-  "hash": "d6bd587dd7bea047dc7a57810e82ddefafc0b8a6ecd93ee72fcfc06ee186033f"
 },{
   "tool": "Code Inspection",
   "category": "Code maturity",
