@@ -189,7 +189,7 @@ public class Cmd_Home extends MyMaidLibrary implements CommandPremise {
         if (homenameLength >= 8) {
             homename = homename.substring(0, 5) + "...";
         } else {
-            homename = homename + " ".repeat(8 - homenameLength);
+            homename += " ".repeat(8 - homenameLength);
         }
         return homename;
     }
