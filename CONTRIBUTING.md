@@ -151,14 +151,16 @@ master ブランチ = メインサーバ導入ソースコード です。
 コードの品質や安全性、依存パッケージを管理し一定以上に保つため、以下のサービスを利用しています。
 
 - [CodeQL](https://codeql.github.com/): GitHub によるの静的アプリケーションセキュリティテスト (SAST) です。Push / Pull Request 時にチェックされます。
-- [Renovate](https://www.whitesourcesoftware.com/free-developer-tools/renovate/): WhiteSource
-  による依存パッケージバージョン管理ツールです。自動でアップデートを収集し、Pull Request を作成します。
 - [GitHub Security Advisories](https://docs.github.com/ja/code-security/repository-security-advisories/about-github-security-advisories-for-repositories):
   GitHub によるリポジトリセキュリティ脆弱性検知ツールです。
 - [Dependabot](https://docs.github.com/ja/code-security/supply-chain-security/managing-vulnerabilities-in-your-projects-dependencies):
   GitHub による依存パッケージ脆弱性管理サービスです。
+- [Renovate](https://www.whitesourcesoftware.com/free-developer-tools/renovate/): WhiteSource
+  による依存パッケージバージョン管理ツールです。自動でアップデートを収集し、Pull Request を作成します。
+- [CodeFactor](https://www.codefactor.io/): 静的コード解析サービスです。Push / Pull Request 時にチェックされます。master
+  ブランチのレポートは [こちら](https://www.codefactor.io/repository/github/jaoafa/mymaid4) にあります。
 - [Qodana](https://www.jetbrains.com/ja-jp/qodana/): IntelliJ によるコード品質管理ツールです。Push / Pull Request 時にチェックされます。master
-  ブランチのコード品質については [こちら](https://jaoafa.github.io/MyMaid4/) にレポートがあります。
+  ブランチのレポートは [こちら](https://jaoafa.github.io/MyMaid4/) にあります。
 
 ## Other
 
