@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -22,7 +22,7 @@ jobs:
           distribution: adopt
 
       - name: Qodana Scan
-        uses: JetBrains/qodana-action@v4.2.2
+        uses: JetBrains/qodana-action@v4.2.5
         with:
           linter: jetbrains/qodana-jvm-community
           baseline-path: ./.github/qodana.sarif.json
