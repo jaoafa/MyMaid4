@@ -12,6 +12,7 @@
 package com.jaoafa.mymaid4.tasks;
 
 import com.jaoafa.mymaid4.Main;
+import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -116,7 +117,7 @@ public class Task_CVE_2021_44228 extends BukkitRunnable {
             }
             return object.getInt("count");
         } catch (IOException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
             return -1;
         }
     }

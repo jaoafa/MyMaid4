@@ -101,7 +101,7 @@ public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener,
                             response.close();
                         }, failure -> {
                             Main.getMyMaidLogger().info("NewPlayerAutoBlMap: メッセージ送信失敗 (" + failure.getMessage() + ")");
-                            failure.printStackTrace();
+                            MyMaidLibrary.reportError(getClass(), failure);
                             response.close();
                         });
                 } catch (IOException ex) {

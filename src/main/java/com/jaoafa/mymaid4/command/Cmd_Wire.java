@@ -44,8 +44,8 @@ import java.util.List;
 import static com.jaoafa.mymaid4.Main.getWorldEdit;
 
 public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
-    final double maxDistance = 128.0;
-    final int searchBatRadius = 2;
+    final static double maxDistance = 128.0;
+    final static int searchBatRadius = 2;
 
     @Override
     public MyMaidCommand.Detail details() {

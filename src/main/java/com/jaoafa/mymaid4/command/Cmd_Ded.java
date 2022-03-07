@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -18,6 +18,9 @@ import com.jaoafa.mymaid4.lib.CommandPremise;
 import com.jaoafa.mymaid4.lib.MyMaidCommand;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -49,10 +52,9 @@ public class Cmd_Ded extends MyMaidLibrary implements CommandPremise {
         if (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) {
             SendMessage(player, details(), "Dedコマンドはサバイバル・アドベンチャーモードでは利用できません。");
             SendMessage(player, details(), "クリエイティブモードに切り替えてから実行してください。");
-            SendMessage(player, details(), ChatColor.RED + "" + ChatColor.BOLD + "=== [!] 警告 ===");
-            SendMessage(player, details(), ChatColor.RED + "" + ChatColor.BOLD + "PvP等での「/ded」コマンドの利用は原則禁止です！");
-            SendMessage(player, details(), ChatColor.RED + "" + ChatColor.BOLD + "多く使用すると迷惑行為として認識される場合もあります！");
-
+            SendMessage(player, details(), Component.text("=== [!] 警告 ===", NamedTextColor.RED, TextDecoration.BOLD));
+            SendMessage(player, details(), Component.text("PvP等での「/ded」コマンドの利用は原則禁止です！", NamedTextColor.RED, TextDecoration.BOLD));
+            SendMessage(player, details(), Component.text("多く使用すると迷惑行為として認識される場合もあります！", NamedTextColor.RED, TextDecoration.BOLD));
             return;
         }
         if (!MyMaidData.getLastDed().containsKey(player.getName())) {
@@ -62,9 +64,9 @@ public class Cmd_Ded extends MyMaidLibrary implements CommandPremise {
             player.teleport(location);
             String locationDescription = String.format("( X:%s Y:%s Z:%s )", location.getBlockX(), location.getBlockY(), location.getBlockZ());
             SendMessage(player, details(), "最終死亡場所" + ChatColor.BOLD + locationDescription + ChatColor.RESET + "にテレポートしました。");
-            SendMessage(player, details(), ChatColor.RED + "" + ChatColor.BOLD + "=== [!] 警告 ===");
-            SendMessage(player, details(), ChatColor.RED + "" + ChatColor.BOLD + "PvP等での「/ded」コマンドの利用は原則禁止です！");
-            SendMessage(player, details(), ChatColor.RED + "" + ChatColor.BOLD + "多く使用すると迷惑行為として認識される場合もあります！");
+            SendMessage(player, details(), Component.text("=== [!] 警告 ===", NamedTextColor.RED, TextDecoration.BOLD));
+            SendMessage(player, details(), Component.text("PvP等での「/ded」コマンドの利用は原則禁止です！", NamedTextColor.RED, TextDecoration.BOLD));
+            SendMessage(player, details(), Component.text("多く使用すると迷惑行為として認識される場合もあります！", NamedTextColor.RED, TextDecoration.BOLD));
         }
     }
 }

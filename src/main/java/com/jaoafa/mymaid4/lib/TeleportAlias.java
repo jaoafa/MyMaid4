@@ -58,7 +58,7 @@ public class TeleportAlias {
         try {
             Files.writeString(path, new JSONObject(alias).toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(TeleportAlias.class, e);
         }
     }
 
@@ -71,7 +71,7 @@ public class TeleportAlias {
             JSONObject object = new JSONObject(Files.readString(path));
             alias = toMap(object);
         } catch (IOException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(TeleportAlias.class, e);
         }
     }
 

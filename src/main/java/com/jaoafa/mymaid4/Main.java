@@ -62,6 +62,7 @@ import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.*;
 import java.util.function.Function;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -117,7 +118,7 @@ public final class Main extends JavaPlugin {
             try {
                 rollbar.close(true);
             } catch (Exception e) {
-                e.printStackTrace();
+                getMyMaidLogger().log(Level.WARNING, e.getMessage(), e);
             }
         }
     }
@@ -139,7 +140,6 @@ public final class Main extends JavaPlugin {
             });
         } catch (Exception e) {
             getLogger().warning("コマンドの登録に失敗しました。PaperCommandManagerを取得できません。");
-            e.printStackTrace();
             MyMaidLibrary.reportError(getClass(), e);
             return;
         }
@@ -198,7 +198,7 @@ public final class Main extends JavaPlugin {
             .withHandler(MinecraftExceptionHandler.ExceptionType.COMMAND_EXECUTION, e ->
                 {
                     final Throwable cause = e.getCause();
-                    cause.printStackTrace();
+                    getMyMaidLogger().log(Level.WARNING, cause.getMessage(), cause);
 
                     MyMaidLibrary.reportError(getClass(), e);
 
@@ -315,14 +315,12 @@ public final class Main extends JavaPlugin {
                     getLogger().info(String.format("%s: コマンドの登録に成功しました。", commandName));
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | NoClassDefFoundError e) {
                     getLogger().warning(String.format("%s: コマンドの登録に失敗しました。", commandName));
-                    e.printStackTrace();
                     MyMaidLibrary.reportError(getClass(), e);
                 }
             }
             MyMaidData.putGetDocsData("commands", commands);
         } catch (ClassNotFoundException | IOException e) {
             getLogger().warning("コマンドの登録に失敗しました。");
-            e.printStackTrace();
             MyMaidLibrary.reportError(getClass(), e);
         }
     }
@@ -389,14 +387,12 @@ public final class Main extends JavaPlugin {
                     }
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | NoClassDefFoundError e) {
                     getLogger().warning(String.format("%s: イベントの登録に失敗しました。", name));
-                    e.printStackTrace();
                     MyMaidLibrary.reportError(getClass(), e);
                 }
             }
             MyMaidData.putGetDocsData("events", events);
         } catch (ClassNotFoundException | IOException e) {
             getLogger().warning("イベントの登録に失敗しました。");
-            e.printStackTrace();
             MyMaidLibrary.reportError(getClass(), e);
         }
     }
@@ -425,13 +421,11 @@ public final class Main extends JavaPlugin {
                     getJavaPlugin().getLogger().info(String.format("%s: Discordイベントの登録に成功しました。", clazz.getSimpleName()));
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     getJavaPlugin().getLogger().warning(String.format("%s: Discordイベントの登録に成功しました。", name));
-                    e.printStackTrace();
                     MyMaidLibrary.reportError(Main.class, e);
                 }
             }
         } catch (ClassNotFoundException | IOException e) {
             getJavaPlugin().getLogger().warning("Discordイベントの登録に失敗しました。");
-            e.printStackTrace();
             MyMaidLibrary.reportError(Main.class, e);
         }
     }
@@ -473,7 +467,6 @@ public final class Main extends JavaPlugin {
             }
             MyMaidData.setCreativeInventoryWithNBTs(items);
         } catch (IOException e) {
-            e.printStackTrace();
             MyMaidLibrary.reportError(getClass(), e);
         }
     }

@@ -19,7 +19,7 @@ import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-public class Event_ServerException extends MyMaidLibrary implements Listener, EventPremise {
+public class Event_ServerExceptionCatcher extends MyMaidLibrary implements Listener, EventPremise {
     @Override
     public String description() {
         return "サーバで例外エラーが発生した場合、報告します。";

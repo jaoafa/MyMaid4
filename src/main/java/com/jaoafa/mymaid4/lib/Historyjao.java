@@ -31,7 +31,6 @@ public class Historyjao {
     static final Map<UUID, Historyjao> cache = new HashMap<>();
 
     final OfflinePlayer player;
-    final boolean notify = true;
     final List<Data> data = new ArrayList<>();
     String name;
     UUID uuid;
@@ -251,10 +250,6 @@ public class Historyjao {
 
     public boolean isFound() {
         return found;
-    }
-
-    public boolean isNotify() {
-        return notify;
     }
 
     public static class Data {

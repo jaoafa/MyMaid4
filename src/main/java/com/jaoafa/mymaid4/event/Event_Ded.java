@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -14,7 +14,10 @@ package com.jaoafa.mymaid4.event;
 import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.JoinConfiguration;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,9 +35,21 @@ public class Event_Ded extends MyMaidLibrary implements Listener, EventPremise {
         Player player = event.getEntity();
         Location loc = player.getLocation();
         MyMaidData.setLastDed(player.getName(), loc);
-        player.sendMessage("[DED] " + ChatColor.GREEN + "死亡した場所に戻るには「/ded」コマンドが使用できます。");
-        player.sendMessage("[DED] " + ChatColor.RED + "" + ChatColor.BOLD + "=== [!] 警告 ===");
-        player.sendMessage("[DED] " + ChatColor.RED + "" + ChatColor.BOLD + "PvP等での「/ded」コマンドの利用は原則禁止です。");
-        player.sendMessage("[DED] " + ChatColor.RED + "" + ChatColor.BOLD + "多く使用すると迷惑行為として認識される場合もあります！");
+        player.sendMessage(Component.join(JoinConfiguration.noSeparators(),
+            Component.text("[DED]"),
+            Component.space(),
+            Component.text("死亡した場所に戻るには「/ded」コマンドが使用できます。", NamedTextColor.GREEN)));
+        player.sendMessage(Component.join(JoinConfiguration.noSeparators(),
+            Component.text("[DED]"),
+            Component.space(),
+            Component.text("=== [!] 警告 ===", NamedTextColor.RED, TextDecoration.BOLD)));
+        player.sendMessage(Component.join(JoinConfiguration.noSeparators(),
+            Component.text("[DED]"),
+            Component.space(),
+            Component.text("PvP等での「/ded」コマンドの利用は原則禁止です！", NamedTextColor.RED, TextDecoration.BOLD)));
+        player.sendMessage(Component.join(JoinConfiguration.noSeparators(),
+            Component.text("[DED]"),
+            Component.space(),
+            Component.text("多く使用すると迷惑行為として認識される場合もあります！", NamedTextColor.RED, TextDecoration.BOLD)));
     }
 }
