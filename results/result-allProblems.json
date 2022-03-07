@@ -123,36 +123,6 @@
   "category": "Performance",
   "type": "Field can be made 'static'",
   "severity": "High",
-  "comment": "Field `searchBatRadius` may be 'static'",
-  "detailsInfo": "Reports instance variables that can safely be made `static`. A field can be static if it is declared `final` and initialized with a constant.\n\n**Example:**\n\n\n      public final String str = \"sample\";\n",
-  "sources": [
-    {
-      "type": "file",
-      "path": "src/main/java/com/jaoafa/mymaid4/command/Cmd_Wire.java",
-      "language": "JAVA",
-      "line": 48,
-      "offset": 15,
-      "length": 15,
-      "code": {
-        "startLine": 46,
-        "length": 15,
-        "offset": 124,
-        "surroundingCode": "public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {\n    final double maxDistance = 128.0;\n    final int searchBatRadius = 2;\n\n    @Override"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "FieldMayBeStatic",
-    "isTechDebt": "true",
-    "baselineState": "unchanged"
-  },
-  "hash": "00924585c87ea0270a4477b6aeded0c85a2dd0dd3c7baa187bc5ee9e5046fc77"
-},{
-  "tool": "Code Inspection",
-  "category": "Performance",
-  "type": "Field can be made 'static'",
-  "severity": "High",
   "comment": "Field `maxDistance` may be 'static'",
   "detailsInfo": "Reports instance variables that can safely be made `static`. A field can be static if it is declared `final` and initialized with a constant.\n\n**Example:**\n\n\n      public final String str = \"sample\";\n",
   "sources": [
@@ -178,6 +148,36 @@
     "baselineState": "unchanged"
   },
   "hash": "ae6d9cde5cc690c1dfd5edf1c39d591fe3cca62333f043cc6fad0675182dd03d"
+},{
+  "tool": "Code Inspection",
+  "category": "Performance",
+  "type": "Field can be made 'static'",
+  "severity": "High",
+  "comment": "Field `searchBatRadius` may be 'static'",
+  "detailsInfo": "Reports instance variables that can safely be made `static`. A field can be static if it is declared `final` and initialized with a constant.\n\n**Example:**\n\n\n      public final String str = \"sample\";\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/command/Cmd_Wire.java",
+      "language": "JAVA",
+      "line": 48,
+      "offset": 15,
+      "length": 15,
+      "code": {
+        "startLine": 46,
+        "length": 15,
+        "offset": 124,
+        "surroundingCode": "public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {\n    final double maxDistance = 128.0;\n    final int searchBatRadius = 2;\n\n    @Override"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "FieldMayBeStatic",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "00924585c87ea0270a4477b6aeded0c85a2dd0dd3c7baa187bc5ee9e5046fc77"
 },{
   "tool": "Code Inspection",
   "category": "Code maturity",
@@ -220,36 +220,6 @@
       "type": "file",
       "path": "src/main/java/com/jaoafa/mymaid4/lib/TeleportAlias.java",
       "language": "JAVA",
-      "line": 61,
-      "offset": 15,
-      "length": 15,
-      "code": {
-        "startLine": 59,
-        "length": 15,
-        "offset": 119,
-        "surroundingCode": "            Files.writeString(path, new JSONObject(alias).toString());\n        } catch (IOException e) {\n            e.printStackTrace();\n        }\n    }"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "ThrowablePrintStackTrace",
-    "isTechDebt": "true",
-    "baselineState": "unchanged"
-  },
-  "hash": "d84f8f5833c1ae93a2a433013823cb2695cd1bcec7a9a035496cf01a8af7fb08"
-},{
-  "tool": "Code Inspection",
-  "category": "Code maturity",
-  "type": "Call to 'printStackTrace()'",
-  "severity": "High",
-  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
-  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "src/main/java/com/jaoafa/mymaid4/lib/TeleportAlias.java",
-      "language": "JAVA",
       "line": 74,
       "offset": 15,
       "length": 15,
@@ -268,6 +238,36 @@
     "baselineState": "unchanged"
   },
   "hash": "9ed5a8480a1e3ed3bf6c8eba2cade454a97c98356f11b370dad75b9de73337c6"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/lib/TeleportAlias.java",
+      "language": "JAVA",
+      "line": 61,
+      "offset": 15,
+      "length": 15,
+      "code": {
+        "startLine": 59,
+        "length": 15,
+        "offset": 119,
+        "surroundingCode": "            Files.writeString(path, new JSONObject(alias).toString());\n        } catch (IOException e) {\n            e.printStackTrace();\n        }\n    }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "d84f8f5833c1ae93a2a433013823cb2695cd1bcec7a9a035496cf01a8af7fb08"
 },{
   "tool": "Code Inspection",
   "category": "Code maturity",
@@ -550,66 +550,6 @@
       "type": "file",
       "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
       "language": "JAVA",
-      "line": 476,
-      "offset": 15,
-      "length": 15,
-      "code": {
-        "startLine": 474,
-        "length": 15,
-        "offset": 108,
-        "surroundingCode": "            MyMaidData.setCreativeInventoryWithNBTs(items);\n        } catch (IOException e) {\n            e.printStackTrace();\n            MyMaidLibrary.reportError(getClass(), e);\n        }"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "ThrowablePrintStackTrace",
-    "isTechDebt": "true",
-    "baselineState": "unchanged"
-  },
-  "hash": "b626c216b9793ca514eff4ce8e5294ff40485eb79238faf326a019a51b1df9ac"
-},{
-  "tool": "Code Inspection",
-  "category": "Code maturity",
-  "type": "Call to 'printStackTrace()'",
-  "severity": "High",
-  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
-  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
-      "language": "JAVA",
-      "line": 120,
-      "offset": 19,
-      "length": 15,
-      "code": {
-        "startLine": 118,
-        "length": 15,
-        "offset": 91,
-        "surroundingCode": "                rollbar.close(true);\n            } catch (Exception e) {\n                e.printStackTrace();\n            }\n        }"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "ThrowablePrintStackTrace",
-    "isTechDebt": "true",
-    "baselineState": "unchanged"
-  },
-  "hash": "d6bd587dd7bea047dc7a57810e82ddefafc0b8a6ecd93ee72fcfc06ee186033f"
-},{
-  "tool": "Code Inspection",
-  "category": "Code maturity",
-  "type": "Call to 'printStackTrace()'",
-  "severity": "High",
-  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
-  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
-      "language": "JAVA",
       "line": 142,
       "offset": 15,
       "length": 15,
@@ -778,6 +718,66 @@
     "baselineState": "unchanged"
   },
   "hash": "4131409efb9416861dc72b28504140e604792808c89092f47a726798053c8036"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
+      "language": "JAVA",
+      "line": 476,
+      "offset": 15,
+      "length": 15,
+      "code": {
+        "startLine": 474,
+        "length": 15,
+        "offset": 108,
+        "surroundingCode": "            MyMaidData.setCreativeInventoryWithNBTs(items);\n        } catch (IOException e) {\n            e.printStackTrace();\n            MyMaidLibrary.reportError(getClass(), e);\n        }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "b626c216b9793ca514eff4ce8e5294ff40485eb79238faf326a019a51b1df9ac"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to `printStackTrace()` should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
+      "language": "JAVA",
+      "line": 120,
+      "offset": 19,
+      "length": 15,
+      "code": {
+        "startLine": 118,
+        "length": 15,
+        "offset": 91,
+        "surroundingCode": "                rollbar.close(true);\n            } catch (Exception e) {\n                e.printStackTrace();\n            }\n        }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace",
+    "isTechDebt": "true",
+    "baselineState": "unchanged"
+  },
+  "hash": "d6bd587dd7bea047dc7a57810e82ddefafc0b8a6ecd93ee72fcfc06ee186033f"
 },{
   "tool": "Code Inspection",
   "category": "Code maturity",
@@ -1110,92 +1110,234 @@
   "hash": "545a0fa3a12b9fc9e1c65d0001f034cb6c15e25383df5b2af4d78ac69db8fa0e"
 },{
   "tool": "Code Inspection",
-  "category": "Initialization",
-  "type": "Double brace initialization",
+  "category": "Assignment issues",
+  "type": "Assignment can be replaced with operator assignment",
   "severity": "High",
-  "comment": "Double brace initialization",
-  "detailsInfo": "Reports [Double Brace Initialization](https://www.c2.com/cgi/wiki?DoubleBraceInitialization).\n\nDouble brace initialization may cause memory leaks when used in a non-static context because it creates an anonymous class\nthat will reference the surrounding object.\n\nCompared to regular initialization, double brace initialization provides worse performance since it requires loading an\nadditional class.\n\nIt may also cause failure of `equals()` comparisons if the `equals()` method doesn't accept subclasses as\nparameters.\n\nIn addition, before Java 9, double brace initialization couldn't be combined with the diamond operator since it was incompatible\nwith anonymous classes.\n\n**Example:**\n\n\n      List<Integer> list = new ArrayList<>() {{\n        add(1);\n        add(2);\n      }};\n\nAfter the quick-fix is applied:\n\n\n      List<Integer> list = new ArrayList<>();\n      list.add(1);\n      list.add(2);\n",
+  "comment": "`homename = homename + \" \".repeat(8 - homenameLength)` could be simplified to 'homename += \" \".repeat(8 - homenameLength)'",
+  "detailsInfo": "Reports assignment operations which can be replaced by operator-assignment.\n\nCode using operator assignment is shorter and may be clearer.\n\n**Example:**\n\n      x = x + 3;\n      x = x / 3;\n\nAfter the quick fix is applied:\n\n      x += 3;\n      x /= 3;\n\n\nUse the **Ignore conditional operators** option to ignore `&&`\nand `||`. Replacing conditional operators with operator\nassignment would change the evaluation from lazy to eager, which may change the semantics of the expression.\n\n\nUse the **Ignore obscure operators** option to ignore `^` and `%`, which are less known.",
   "sources": [
     {
       "type": "file",
-      "path": "src/main/java/com/jaoafa/mymaid4/command/Cmd_Wt.java",
+      "path": "src/main/java/com/jaoafa/mymaid4/command/Cmd_Home.java",
       "language": "JAVA",
-      "line": 33,
-      "offset": 44,
-      "length": 9,
+      "line": 192,
+      "offset": 13,
+      "length": 52,
       "code": {
-        "startLine": 31,
-        "length": 9,
-        "offset": 114,
-        "surroundingCode": "public class Cmd_Wt extends MyMaidLibrary implements CommandPremise {\n\n    final Map<String, String> worlds = new HashMap<>() {\n        {\n            put(\"1\", \"Jao_Afa\");"
+        "startLine": 190,
+        "length": 52,
+        "offset": 86,
+        "surroundingCode": "            homename = homename.substring(0, 5) + \"...\";\n        } else {\n            homename = homename + \" \".repeat(8 - homenameLength);\n        }\n        return homename;"
       }
     }
   ],
   "attributes": {
     "module": "project",
-    "inspectionName": "DoubleBraceInitialization",
-    "isTechDebt": "true",
-    "baselineState": "unchanged"
+    "inspectionName": "ReplaceAssignmentWithOperatorAssignment",
+    "baselineState": "new"
   },
-  "hash": "8d4efa44ae62dedcb54a3db52e0b800beb53fdae610c4bbb7b479eb597255b6e"
+  "hash": "a9ba4c468fa01ff7512ab1a6590abe329947b5e8e10ac44fe365015d9ad4c70d"
 },{
   "tool": "Code Inspection",
-  "category": "Control flow issues",
-  "type": "'switch' statement without 'default' branch",
-  "severity": "High",
-  "comment": "`switch` statement without 'default' branch",
-  "detailsInfo": "Reports `switch` statements that do not contain `default` labels.\n\nAdding the `default` label guarantees that all possible scenarios are covered, and it becomes\neasier to make assumptions about the current state of the program.\n\n\nNote that by default, the inspection does not report `switch` statements if all cases for enums or `sealed` classes are covered.\nUse the **Ignore exhaustive switch statements** option if you want to change this behavior.",
+  "category": "Code maturity",
+  "type": "Commented out code",
+  "severity": "Moderate",
+  "comment": "Commented out code (50 lines)",
+  "detailsInfo": "Reports comments that contain Java code.\n\nUsually, code that is commented out gets outdated very quickly and becomes misleading.\nAs most projects use some kind of version control system,\nit is better to delete commented out code completely and use the VCS history instead.\n\nNew in 2020.3",
   "sources": [
     {
       "type": "file",
-      "path": "src/main/java/com/jaoafa/mymaid4/command/Cmd_G.java",
+      "path": "src/main/java/com/jaoafa/mymaid4/event/Event_CommandSender.java",
       "language": "JAVA",
-      "line": 223,
+      "line": 114,
+      "offset": 9,
+      "length": 2,
+      "code": {
+        "startLine": 112,
+        "length": 2,
+        "offset": 30,
+        "surroundingCode": "\n        // TODO 実装する\n        /*\n        if (!Bukkit.getServer().getPluginManager().isPluginEnabled(\"LunaChat\")) {\n            return;"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "CommentedOutCode",
+    "baselineState": "new"
+  },
+  "hash": "730ecc0ce0cab7c4389fe62d1aee614f41293ba5c2f49ea664e7b132fbae5840"
+},{
+  "tool": "Code Inspection",
+  "category": "Class",
+  "type": "Non-exception class name ends with 'Exception'",
+  "severity": "High",
+  "comment": "Non-exception class name `Event_ServerException` ends with 'Exception'",
+  "detailsInfo": "Reports non-`exception` classes whose names end with `Exception`.\n\nSuch classes may cause confusion by breaking a common naming convention and\noften indicate that the `extends Exception` clause is missing.\n\n**Example:**\n\n    public class NotStartedException {}\n\nA quick-fix that renames such classes is available only in the editor.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/event/Event_ServerException.java",
+      "language": "JAVA",
+      "line": 22,
+      "offset": 14,
+      "length": 21,
+      "code": {
+        "startLine": 20,
+        "length": 21,
+        "offset": 48,
+        "surroundingCode": "import org.bukkit.event.Listener;\n\npublic class Event_ServerException extends MyMaidLibrary implements Listener, EventPremise {\n    @Override\n    public String description() {"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "NonExceptionNameEndsWithException",
+    "baselineState": "new"
+  },
+  "hash": "57bbf8f737d22162697d0557a69cbcec9e4ee99d6420ecfc40be7c90070e2ce5"
+},{
+  "tool": "Code Inspection",
+  "category": "Assignment issues",
+  "type": "Assignment to static field from instance context",
+  "severity": "High",
+  "comment": "Assignment to static field `sendTime` from instance context",
+  "detailsInfo": "Reports assignment to, or modification of `static` fields from within an instance method.\n\nAlthough legal, such assignments are tricky to do\nsafely and are often a result of marking fields `static` inadvertently.\n\n**Example:**\n\n\n      class Counter {\n        private static int count = 0;\n\n        void increment() {\n          // Warning: updating a static field\n          // from an instance method\n          count++;\n        }\n      }\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/command/Cmd_Bug.java",
+      "language": "JAVA",
+      "line": 240,
+      "offset": 21,
+      "length": 8,
+      "code": {
+        "startLine": 238,
+        "length": 8,
+        "offset": 182,
+        "surroundingCode": "                    SendMessage(player, details(), \"不具合の改善報告等は致しかねますので、上記リンク先を定期的にご確認ください。ご報告いただきありがとうございました！\");\n                    inv.setItemInMainHand(null);\n                    sendTime = System.currentTimeMillis();\n                } catch (IOException e) {\n                    SendMessage(player, details(), String.format(\"不具合報告に失敗しました: %s\", e.getMessage()));"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "AssignmentToStaticFieldFromInstanceMethod",
+    "baselineState": "new"
+  },
+  "hash": "fb8186e381c150c7cff29d1bc8d77881d89eaf200994f9dba462c1f3d517ad61"
+},{
+  "tool": "Code Inspection",
+  "category": "Assignment issues",
+  "type": "Assignment to static field from instance context",
+  "severity": "High",
+  "comment": "Assignment to static field `Main` from instance context",
+  "detailsInfo": "Reports assignment to, or modification of `static` fields from within an instance method.\n\nAlthough legal, such assignments are tricky to do\nsafely and are often a result of marking fields `static` inadvertently.\n\n**Example:**\n\n\n      class Counter {\n        private static int count = 0;\n\n        void increment() {\n          // Warning: updating a static field\n          // from an instance method\n          count++;\n        }\n      }\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
+      "language": "JAVA",
+      "line": 77,
+      "offset": 9,
+      "length": 4,
+      "code": {
+        "startLine": 75,
+        "length": 4,
+        "offset": 51,
+        "surroundingCode": "    @Override\n    public void onEnable() {\n        Main = this;\n\n        config = new MyMaidConfig();"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "AssignmentToStaticFieldFromInstanceMethod",
+    "baselineState": "new"
+  },
+  "hash": "07ff73e9787dbb80ee24dd5c48d2a2df96f75d646ada631b0b60cfadf7019ec7"
+},{
+  "tool": "Code Inspection",
+  "category": "Assignment issues",
+  "type": "Assignment to static field from instance context",
+  "severity": "High",
+  "comment": "Assignment to static field `config` from instance context",
+  "detailsInfo": "Reports assignment to, or modification of `static` fields from within an instance method.\n\nAlthough legal, such assignments are tricky to do\nsafely and are often a result of marking fields `static` inadvertently.\n\n**Example:**\n\n\n      class Counter {\n        private static int count = 0;\n\n        void increment() {\n          // Warning: updating a static field\n          // from an instance method\n          count++;\n        }\n      }\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
+      "language": "JAVA",
+      "line": 79,
       "offset": 9,
       "length": 6,
       "code": {
-        "startLine": 221,
+        "startLine": 77,
         "length": 6,
-        "offset": 70,
-        "surroundingCode": "    @Nullable\n    GameMode getGameModeStartWith(String str) {\n        switch (str) {\n            case \"0\":\n                return GameMode.SURVIVAL;"
+        "offset": 30,
+        "surroundingCode": "        Main = this;\n\n        config = new MyMaidConfig();\n        config.init();\n        if (!isEnabled())"
       }
     }
   ],
   "attributes": {
     "module": "project",
-    "inspectionName": "SwitchStatementsWithoutDefault",
-    "isTechDebt": "true",
-    "baselineState": "unchanged"
+    "inspectionName": "AssignmentToStaticFieldFromInstanceMethod",
+    "baselineState": "new"
   },
-  "hash": "bc21a06f9f4759ac78fd498b5ac09c7981d199806e8476bd309f088b29fb8f85"
+  "hash": "3087b3188f53a1dfd0f831a43a1edfeaa73e85fddcb53bf33a3f8298abc8f36d"
 },{
   "tool": "Code Inspection",
-  "category": "Control flow issues",
-  "type": "'switch' statement without 'default' branch",
+  "category": "Assignment issues",
+  "type": "Assignment to static field from instance context",
   "severity": "High",
-  "comment": "`switch` statement without 'default' branch",
-  "detailsInfo": "Reports `switch` statements that do not contain `default` labels.\n\nAdding the `default` label guarantees that all possible scenarios are covered, and it becomes\neasier to make assumptions about the current state of the program.\n\n\nNote that by default, the inspection does not report `switch` statements if all cases for enums or `sealed` classes are covered.\nUse the **Ignore exhaustive switch statements** option if you want to change this behavior.",
+  "comment": "Assignment to static field `rollbar` from instance context",
+  "detailsInfo": "Reports assignment to, or modification of `static` fields from within an instance method.\n\nAlthough legal, such assignments are tricky to do\nsafely and are often a result of marking fields `static` inadvertently.\n\n**Example:**\n\n\n      class Counter {\n        private static int count = 0;\n\n        void increment() {\n          // Warning: updating a static field\n          // from an instance method\n          count++;\n        }\n      }\n",
   "sources": [
     {
       "type": "file",
-      "path": "src/main/java/com/jaoafa/mymaid4/command/Cmd_VarCmd.java",
+      "path": "src/main/java/com/jaoafa/mymaid4/Main.java",
       "language": "JAVA",
-      "line": 93,
-      "offset": 9,
-      "length": 6,
+      "line": 85,
+      "offset": 13,
+      "length": 7,
       "code": {
-        "startLine": 91,
-        "length": 6,
-        "offset": 54,
-        "surroundingCode": "\n    String replaceReservedVars(String key) {\n        switch (key) {\n            case \"DateTime_Year\":\n                return new SimpleDateFormat(\"yyyy\").format(new Date());"
+        "startLine": 83,
+        "length": 7,
+        "offset": 67,
+        "surroundingCode": "\n        if (config.getRollbarAccessToken() != null) {\n            rollbar = Rollbar.init(ConfigBuilder\n                .withAccessToken(config.getRollbarAccessToken())\n                .environment(!config.isDevelopmentServer() ? \"production\" : \"development\")"
       }
     }
   ],
   "attributes": {
     "module": "project",
-    "inspectionName": "SwitchStatementsWithoutDefault",
-    "isTechDebt": "true",
-    "baselineState": "unchanged"
+    "inspectionName": "AssignmentToStaticFieldFromInstanceMethod",
+    "baselineState": "new"
   },
-  "hash": "4616e0f0a8b81eeffcc89f129cb0f2e5123db45078b0fff7763088d68164d87a"
+  "hash": "695da0f0d57881b87db80c1a7874e308f239d78cffd062a8ecc85b06f83f24ee"
+},{
+  "tool": "Code Inspection",
+  "category": "Assignment issues",
+  "type": "Assignment to static field from instance context",
+  "severity": "High",
+  "comment": "Assignment to static field `server` from instance context",
+  "detailsInfo": "Reports assignment to, or modification of `static` fields from within an instance method.\n\nAlthough legal, such assignments are tricky to do\nsafely and are often a result of marking fields `static` inadvertently.\n\n**Example:**\n\n\n      class Counter {\n        private static int count = 0;\n\n        void increment() {\n          // Warning: updating a static field\n          // from an instance method\n          count++;\n        }\n      }\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/httpServer/MyMaidServer.java",
+      "language": "JAVA",
+      "line": 32,
+      "offset": 13,
+      "length": 6,
+      "code": {
+        "startLine": 30,
+        "length": 6,
+        "offset": 52,
+        "surroundingCode": "        int port = 31001;\n        try {\n            server = HttpServer.create(new InetSocketAddress(port), 0);\n            server.createContext(\"/\", exc -> {\n                final String response = \"{\\\"status\\\":true,\\\"message\\\":\\\"Hello world.\\\"}\";"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "AssignmentToStaticFieldFromInstanceMethod",
+    "baselineState": "new"
+  },
+  "hash": "f89b3dc10ba40a4f00ff5da8cd0be9a28563b6d96ad05f61d96afb174add6f85"
 }]}

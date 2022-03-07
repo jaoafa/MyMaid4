@@ -26,7 +26,7 @@
       ],
       "orderEntries": [
         {
-          "name": "jbr-11",
+          "name": "openjdk-17",
           "type": "SDK"
         },
         {
