@@ -24,9 +24,6 @@ jobs:
           use-annotations: true
           upload-result: true
 
-      - name: Qodana - Clone Finder
-        uses: JetBrains/qodana-clone-finder-action@v2.0-eap
-
       - uses: actions/upload-artifact@v2
         with:
           path: ${{ github.workspace }}/qodana
