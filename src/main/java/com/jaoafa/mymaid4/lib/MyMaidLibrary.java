@@ -51,6 +51,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -86,7 +87,7 @@ public class MyMaidLibrary {
      * @param e Throwable
      */
     public static void reportError(Class<?> clazz, Throwable e) {
-        e.printStackTrace();
+        Main.getMyMaidLogger().log(Level.WARNING, e.getMessage(), e);
 
         if (Main.getMyMaidConfig().isDevelopmentServer()) {
             return;

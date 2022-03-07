@@ -110,6 +110,7 @@ public class Event_ViaVerCheck extends MyMaidLibrary implements Listener, EventP
                 while (0 <= (numRead = reader.read(buf))) {
                     builder.append(buf, 0, numRead);
                 }
+                reader.close();
                 return builder.toString();
             }
         }.runTaskLater(Main.getJavaPlugin(), 10L);

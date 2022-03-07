@@ -68,7 +68,7 @@ public class Event_jaoBox extends MyMaidLibrary implements Listener, EventPremis
         try {
             yaml.save(Cmd_jaoBox.file);
         } catch (IOException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
         }
 
         List<ItemStack> oldItems = MyMaidData.getBoxPrevious(player.getUniqueId());
@@ -101,7 +101,7 @@ public class Event_jaoBox extends MyMaidLibrary implements Listener, EventPremis
         try {
             Files.writeString(jaoBoxLogPath, message + "\n", StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         } catch (IOException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
         }
     }
 

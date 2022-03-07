@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -133,7 +133,6 @@ public class Cmd_Help extends MyMaidLibrary implements CommandPremise {
             SendMessage(player, details(), "ヘルプブックを登録しました。");
         } catch (IOException e) {
             SendMessage(player, details(), String.format("ヘルプブックが登録できませんでした: %s", e.getMessage()));
-            e.printStackTrace();
             MyMaidLibrary.reportError(getClass(), e);
         }
     }

@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -13,6 +13,7 @@ package com.jaoafa.mymaid4.httpServer;
 
 import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.event.Event_Vote;
+import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import com.jaoafa.mymaid4.lib.PlayerVoteDataMCJP;
 import com.jaoafa.mymaid4.lib.PlayerVoteDataMono;
 import com.sun.net.httpserver.Headers;
@@ -131,7 +132,7 @@ public class HTTP_VoteFill implements HttpHandler {
             }
         } catch (SQLException e) {
             createResponse(500, false, "Caught SQLException: " + e.getMessage());
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
         }
     }
 
@@ -151,6 +152,7 @@ public class HTTP_VoteFill implements HttpHandler {
         while (0 <= (numRead = reader.read(buf))) {
             builder.append(buf, 0, numRead);
         }
+        reader.close();
         return builder.toString();
     }
 }

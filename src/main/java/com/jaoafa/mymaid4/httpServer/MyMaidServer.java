@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.httpServer;
 
+import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import com.sun.net.httpserver.HttpServer;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -41,7 +42,7 @@ public class MyMaidServer extends BukkitRunnable {
             server.createContext("/docs", new HTTP_GetDocs());
             server.start();
         } catch (IOException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
         }
     }
 }

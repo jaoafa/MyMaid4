@@ -25,7 +25,6 @@ jobs:
         uses: JetBrains/qodana-action@v4.2.5
         with:
           linter: jetbrains/qodana-jvm-community
-          baseline-path: ./.github/qodana.sarif.json
           fail-threshold: 100
           upload-result: true
 

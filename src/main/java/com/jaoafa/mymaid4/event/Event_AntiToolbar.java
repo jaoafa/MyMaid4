@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
 public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventPremise {
     final Pattern damagePattern = Pattern.compile("\\{Damage:[0-9]+}");
     final Map<UUID, ItemStack> pickupItems = new HashMap<>();
-    final boolean isCollectCreativeItems = false;
+    final static boolean isCollectCreativeItems = false;
 
     @Override
     public String description() {
@@ -88,7 +88,7 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
                 Files.writeString(path_all, allString);
 
             } catch (IOException e) {
-                e.printStackTrace();
+                MyMaidLibrary.reportError(getClass(), e);
             }
             return;
         }
