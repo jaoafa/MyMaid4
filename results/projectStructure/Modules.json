@@ -7,8 +7,8 @@
           "path": "file://$PROJECT_DIR$",
           "sourceFolders": [
             {
-              "path": "file://$PROJECT_DIR$/src/main/resources",
-              "type": "Resource",
+              "path": "file://$PROJECT_DIR$/src/test/java",
+              "type": "TestSource",
               "packagePrefix": ""
             },
             {
@@ -17,8 +17,8 @@
               "packagePrefix": ""
             },
             {
-              "path": "file://$PROJECT_DIR$/src/test/java",
-              "type": "TestSource",
+              "path": "file://$PROJECT_DIR$/src/main/resources",
+              "type": "Resource",
               "packagePrefix": ""
             }
           ]
