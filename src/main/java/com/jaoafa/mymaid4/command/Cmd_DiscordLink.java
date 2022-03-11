@@ -239,9 +239,29 @@ public class Cmd_DiscordLink extends MyMaidLibrary implements CommandPremise {
         }
         if (old_perm != null) {
             general.sendMessage(
-                    ":loudspeaker:<@" + disid + ">さんのMinecraftアカウント連携を完了しました！地頭切断から1週間以内の再連携のため、元の権限(" + old_perm.toLowerCase(Locale.ROOT) + ")に自動復元されます。 MinecraftID: `" + player.getName() + "`")
+                    ":loudspeaker:<@" + disid + ">さんのMinecraftアカウント連携を完了しました！自動切断から1週間以内の再連携のため、元の権限(" + old_perm.toLowerCase(Locale.ROOT) + ")に自動復元されます。 MinecraftID: `" + player.getName() + "`")
                 .queue();
-            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getUniqueId() + " parent set " + old_perm.toLowerCase(Locale.ROOT));
+
+            if (old_perm.equals("COMMUNITYREGULAR")) {
+                Main.getMyMaidLogger().info("CommunityRegularへの復元のため、鯖内権限をVerifiedに、Discord内ロールをCommunityRegularに変更します。");
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getUniqueId() + " parent set verified");
+                Role roleCommunityRegular = guild.getRoleById(RoleId.COMMUNITYREGULAR.getId());
+                if (roleCommunityRegular != null) {
+                    guild.removeRoleFromMember(member, roleCommunityRegular).queue();
+                }
+            } else {
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getUniqueId() + " parent set " + old_perm.toLowerCase(Locale.ROOT));
+                try {
+                    RoleId roleIdEnum = RoleId.valueOf(old_perm);
+                    Role role = guild.getRoleById(roleIdEnum.getId());
+                    if (role != null) {
+                        guild.removeRoleFromMember(member, role).queue();
+                    }
+                } catch (IllegalArgumentException e) {
+                    Main.getMyMaidLogger().warning("権限名が不正です。");
+                    MyMaidLibrary.reportError(getClass(), e);
+                }
+            }
         } else {
             general.sendMessage(
                     ":loudspeaker:<@" + disid + ">さんのMinecraftアカウント連携を完了しました！ MinecraftID: `" + player.getName() + "`")
@@ -257,5 +277,21 @@ public class Cmd_DiscordLink extends MyMaidLibrary implements CommandPremise {
         }
         guild.addRoleToMember(member, minecraftConnected).queue(); // MinecraftConnected
         guild.addRoleToMember(member, verified).queue(); // Verified
+    }
+
+    enum RoleId {
+        REGULAR(597405176189419554L),
+        COMMUNITYREGULAR(888150763421970492L),
+        VERIFIED(597405176969560064L);
+
+        private final long id;
+
+        RoleId(long id) {
+            this.id = id;
+        }
+
+        public long getId() {
+            return id;
+        }
     }
 }
