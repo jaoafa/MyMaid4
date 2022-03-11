@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -179,7 +179,7 @@ public class Cmd_DiscordLink extends MyMaidLibrary implements CommandPremise {
         try {
             try (PreparedStatement stmt = conn.prepareStatement("SELECT * FROM discordlink WHERE disid = ? AND disabled = ? AND dead_at > (NOW() - INTERVAL 7 DAY) ORDER BY id LIMIT 1")) {
                 stmt.setString(1, disid);
-                stmt.setBoolean(2, false);
+                stmt.setBoolean(2, true);
                 try (ResultSet res = stmt.executeQuery()) {
                     if (res.next()) {
                         old_perm = res.getString("dead_perm");
