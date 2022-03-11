@@ -34,7 +34,7 @@
           "type": "Own sources"
         },
         {
-          "name": "Maven: io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT",
+          "name": "Maven: io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT",
           "type": "Library"
         },
         {
@@ -62,11 +62,11 @@
           "type": "Library"
         },
         {
-          "name": "Maven: com.google.code.gson:gson:2.8.8",
+          "name": "Maven: com.google.code.gson:gson:2.8.9",
           "type": "Library"
         },
         {
-          "name": "Maven: net.md-5:bungeecord-chat:1.16-R0.4",
+          "name": "Maven: net.md-5:bungeecord-chat:1.16-R0.4-deprecated+build.6",
           "type": "Library"
         },
         {
@@ -90,11 +90,11 @@
           "type": "Library"
         },
         {
-          "name": "Maven: net.kyori:adventure-api:4.9.3",
+          "name": "Maven: net.kyori:adventure-api:4.10.1",
           "type": "Library"
         },
         {
-          "name": "Maven: net.kyori:adventure-key:4.9.3",
+          "name": "Maven: net.kyori:adventure-key:4.10.1",
           "type": "Library"
         },
         {
@@ -106,15 +106,19 @@
           "type": "Library"
         },
         {
-          "name": "Maven: net.kyori:adventure-text-serializer-gson:4.9.3",
+          "name": "Maven: net.kyori:adventure-text-minimessage:4.10.1",
           "type": "Library"
         },
         {
-          "name": "Maven: net.kyori:adventure-text-serializer-legacy:4.9.3",
+          "name": "Maven: net.kyori:adventure-text-serializer-gson:4.10.1",
           "type": "Library"
         },
         {
-          "name": "Maven: net.kyori:adventure-text-serializer-plain:4.9.3",
+          "name": "Maven: net.kyori:adventure-text-serializer-legacy:4.10.1",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: net.kyori:adventure-text-serializer-plain:4.10.1",
           "type": "Library"
         },
         {

@@ -1,12 +1,12 @@
 {
   "libraries": [
     {
-      "ideaName": "Maven: io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT",
+      "ideaName": "Maven: io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT",
       "unresolved": false,
       "groupId": "io.papermc.paper",
       "artifactId": "paper-api",
-      "version": "1.18.1-R0.1-20220228.153921-147",
-      "baseVersion": "1.18.1-R0.1-SNAPSHOT",
+      "version": "1.18.2-R0.1-20220311.201816-25",
+      "baseVersion": "1.18.2-R0.1-SNAPSHOT",
       "type": "jar",
       "optional": false,
       "scope": "provided"
@@ -78,23 +78,23 @@
       "scope": "provided"
     },
     {
-      "ideaName": "Maven: com.google.code.gson:gson:2.8.8",
+      "ideaName": "Maven: com.google.code.gson:gson:2.8.9",
       "unresolved": false,
       "groupId": "com.google.code.gson",
       "artifactId": "gson",
-      "version": "2.8.8",
-      "baseVersion": "2.8.8",
+      "version": "2.8.9",
+      "baseVersion": "2.8.9",
       "type": "jar",
       "optional": false,
       "scope": "provided"
     },
     {
-      "ideaName": "Maven: net.md-5:bungeecord-chat:1.16-R0.4",
+      "ideaName": "Maven: net.md-5:bungeecord-chat:1.16-R0.4-deprecated+build.6",
       "unresolved": false,
       "groupId": "net.md-5",
       "artifactId": "bungeecord-chat",
-      "version": "1.16-R0.4",
-      "baseVersion": "1.16-R0.4",
+      "version": "1.16-R0.4-deprecated+build.6",
+      "baseVersion": "1.16-R0.4-deprecated+build.6",
       "type": "jar",
       "optional": false,
       "scope": "provided"
@@ -155,23 +155,23 @@
       "scope": "compile"
     },
     {
-      "ideaName": "Maven: net.kyori:adventure-api:4.9.3",
+      "ideaName": "Maven: net.kyori:adventure-api:4.10.1",
       "unresolved": false,
       "groupId": "net.kyori",
       "artifactId": "adventure-api",
-      "version": "4.9.3",
-      "baseVersion": "4.9.3",
+      "version": "4.10.1",
+      "baseVersion": "4.10.1",
       "type": "jar",
       "optional": false,
       "scope": "compile"
     },
     {
-      "ideaName": "Maven: net.kyori:adventure-key:4.9.3",
+      "ideaName": "Maven: net.kyori:adventure-key:4.10.1",
       "unresolved": false,
       "groupId": "net.kyori",
       "artifactId": "adventure-key",
-      "version": "4.9.3",
-      "baseVersion": "4.9.3",
+      "version": "4.10.1",
+      "baseVersion": "4.10.1",
       "type": "jar",
       "optional": false,
       "scope": "compile"
@@ -199,34 +199,45 @@
       "scope": "compile"
     },
     {
-      "ideaName": "Maven: net.kyori:adventure-text-serializer-gson:4.9.3",
+      "ideaName": "Maven: net.kyori:adventure-text-minimessage:4.10.1",
+      "unresolved": false,
+      "groupId": "net.kyori",
+      "artifactId": "adventure-text-minimessage",
+      "version": "4.10.1",
+      "baseVersion": "4.10.1",
+      "type": "jar",
+      "optional": false,
+      "scope": "provided"
+    },
+    {
+      "ideaName": "Maven: net.kyori:adventure-text-serializer-gson:4.10.1",
       "unresolved": false,
       "groupId": "net.kyori",
       "artifactId": "adventure-text-serializer-gson",
-      "version": "4.9.3",
-      "baseVersion": "4.9.3",
+      "version": "4.10.1",
+      "baseVersion": "4.10.1",
       "type": "jar",
       "optional": false,
       "scope": "provided"
     },
     {
-      "ideaName": "Maven: net.kyori:adventure-text-serializer-legacy:4.9.3",
+      "ideaName": "Maven: net.kyori:adventure-text-serializer-legacy:4.10.1",
       "unresolved": false,
       "groupId": "net.kyori",
       "artifactId": "adventure-text-serializer-legacy",
-      "version": "4.9.3",
-      "baseVersion": "4.9.3",
+      "version": "4.10.1",
+      "baseVersion": "4.10.1",
       "type": "jar",
       "optional": false,
       "scope": "provided"
     },
     {
-      "ideaName": "Maven: net.kyori:adventure-text-serializer-plain:4.9.3",
+      "ideaName": "Maven: net.kyori:adventure-text-serializer-plain:4.10.1",
       "unresolved": false,
       "groupId": "net.kyori",
       "artifactId": "adventure-text-serializer-plain",
-      "version": "4.9.3",
-      "baseVersion": "4.9.3",
+      "version": "4.10.1",
+      "baseVersion": "4.10.1",
       "type": "jar",
       "optional": false,
       "scope": "compile"

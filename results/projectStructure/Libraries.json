@@ -1,9 +1,9 @@
 {
   "libraries": [
     {
-      "name": "Maven: io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT",
+      "name": "Maven: io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/io/papermc/paper/paper-api/1.18.1-R0.1-SNAPSHOT/paper-api-1.18.1-R0.1-20220228.153921-147.jar!/"
+        "jar://$MAVEN_REPOSITORY$/io/papermc/paper/paper-api/1.18.2-R0.1-SNAPSHOT/paper-api-1.18.2-R0.1-20220311.201816-25.jar!/"
       ]
     },
     {
@@ -43,15 +43,15 @@
       ]
     },
     {
-      "name": "Maven: com.google.code.gson:gson:2.8.8",
+      "name": "Maven: com.google.code.gson:gson:2.8.9",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/com/google/code/gson/gson/2.8.8/gson-2.8.8.jar!/"
+        "jar://$MAVEN_REPOSITORY$/com/google/code/gson/gson/2.8.9/gson-2.8.9.jar!/"
       ]
     },
     {
-      "name": "Maven: net.md-5:bungeecord-chat:1.16-R0.4",
+      "name": "Maven: net.md-5:bungeecord-chat:1.16-R0.4-deprecated+build.6",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/net/md-5/bungeecord-chat/1.16-R0.4/bungeecord-chat-1.16-R0.4.jar!/"
+        "jar://$MAVEN_REPOSITORY$/net/md-5/bungeecord-chat/1.16-R0.4-deprecated+build.6/bungeecord-chat-1.16-R0.4-deprecated+build.6.jar!/"
       ]
     },
     {
@@ -85,15 +85,15 @@
       ]
     },
     {
-      "name": "Maven: net.kyori:adventure-api:4.9.3",
+      "name": "Maven: net.kyori:adventure-api:4.10.1",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-api/4.9.3/adventure-api-4.9.3.jar!/"
+        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-api/4.10.1/adventure-api-4.10.1.jar!/"
       ]
     },
     {
-      "name": "Maven: net.kyori:adventure-key:4.9.3",
+      "name": "Maven: net.kyori:adventure-key:4.10.1",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-key/4.9.3/adventure-key-4.9.3.jar!/"
+        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-key/4.10.1/adventure-key-4.10.1.jar!/"
       ]
     },
     {
@@ -109,21 +109,27 @@
       ]
     },
     {
-      "name": "Maven: net.kyori:adventure-text-serializer-gson:4.9.3",
+      "name": "Maven: net.kyori:adventure-text-minimessage:4.10.1",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-text-serializer-gson/4.9.3/adventure-text-serializer-gson-4.9.3.jar!/"
+        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-text-minimessage/4.10.1/adventure-text-minimessage-4.10.1.jar!/"
       ]
     },
     {
-      "name": "Maven: net.kyori:adventure-text-serializer-legacy:4.9.3",
+      "name": "Maven: net.kyori:adventure-text-serializer-gson:4.10.1",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-text-serializer-legacy/4.9.3/adventure-text-serializer-legacy-4.9.3.jar!/"
+        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-text-serializer-gson/4.10.1/adventure-text-serializer-gson-4.10.1.jar!/"
       ]
     },
     {
-      "name": "Maven: net.kyori:adventure-text-serializer-plain:4.9.3",
+      "name": "Maven: net.kyori:adventure-text-serializer-legacy:4.10.1",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-text-serializer-plain/4.9.3/adventure-text-serializer-plain-4.9.3.jar!/"
+        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-text-serializer-legacy/4.10.1/adventure-text-serializer-legacy-4.10.1.jar!/"
+      ]
+    },
+    {
+      "name": "Maven: net.kyori:adventure-text-serializer-plain:4.10.1",
+      "roots": [
+        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-text-serializer-plain/4.10.1/adventure-text-serializer-plain-4.10.1.jar!/"
       ]
     },
     {
