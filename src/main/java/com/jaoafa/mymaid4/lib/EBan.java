@@ -150,9 +150,7 @@ public class EBan {
                         player.getPlayer().setGameMode(GameMode.CREATIVE);
                     }
 
-                    World Jao_Afa = Bukkit.getServer().getWorld("Jao_Afa");
-                    Location minami = new Location(Jao_Afa, 2856, 69, 2888);
-                    player.getPlayer().teleport(minami);
+                    player.getPlayer().teleport(MyMaidData.paradiseLocation);
                 }
 
                 fetchData(true);

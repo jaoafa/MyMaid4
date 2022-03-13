@@ -93,7 +93,7 @@ public class Event_Jail implements Listener, EventPremise {
         if (world == null) {
             return;
         }
-        Location prison = new Location(world, 2856, 69, 2888);
+        Location prison = MyMaidData.paradiseLocation;
         if (!player.getLocation().getWorld().getUID().equals(world.getUID())) {
             player.sendMessage("[Jail] " + ChatColor.GREEN + "あなたは南の楽園から出られません！");
             // ワールド違い
@@ -132,8 +132,7 @@ public class Event_Jail implements Listener, EventPremise {
             return;
         }
         World World = Bukkit.getServer().getWorld("Jao_Afa");
-        Location prison = new Location(World, 2856, 69, 2888);
-        event.setRespawnLocation(prison);
+        event.setRespawnLocation(MyMaidData.paradiseLocation);
     }
 
     @EventHandler

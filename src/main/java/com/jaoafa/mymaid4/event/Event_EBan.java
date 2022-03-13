@@ -97,7 +97,7 @@ public class Event_EBan implements Listener, EventPremise {
         if (!eban.isStatus()) return;
         World world = Bukkit.getServer().getWorld("Jao_Afa");
         if (world == null) return;
-        Location prison = new Location(world, 2856, 69, 2888);
+        Location prison = MyMaidData.paradiseLocation;
         if (!player.getLocation().getWorld().getUID().equals(world.getUID())) {
             player.sendMessage("[EBan] " + ChatColor.GREEN + "あなたは南の楽園から出られません！");
             // ワールド違い
@@ -131,8 +131,7 @@ public class Event_EBan implements Listener, EventPremise {
         EBan eban = EBan.getInstance(player);
         // EBanされてる
         if (!eban.isStatus()) return;
-        World World = Bukkit.getServer().getWorld("Jao_Afa");
-        Location prison = new Location(World, 2856, 69, 2888);
+        Location prison = MyMaidData.paradiseLocation;
         event.setRespawnLocation(prison);
     }
 
