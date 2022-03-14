@@ -19,6 +19,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.*;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
@@ -150,7 +151,7 @@ public class EBan {
                         player.getPlayer().setGameMode(GameMode.CREATIVE);
                     }
 
-                    player.getPlayer().teleport(MyMaidData.paradiseLocation);
+                    MyMaidLibrary.teleportToParadise((Player) player, null);
                 }
 
                 fetchData(true);

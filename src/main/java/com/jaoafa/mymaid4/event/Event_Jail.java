@@ -97,7 +97,8 @@ public class Event_Jail implements Listener, EventPremise {
         if (!player.getLocation().getWorld().getUID().equals(world.getUID())) {
             player.sendMessage("[Jail] " + ChatColor.GREEN + "あなたは南の楽園から出られません！");
             // ワールド違い
-            if (!player.teleport(prison, TeleportCause.PLUGIN)) {
+
+            if (!MyMaidLibrary.teleportToParadise(player, TeleportCause.PLUGIN)) {
                 // 失敗時
                 Location oldBed = player.getBedSpawnLocation();
                 player.setBedSpawnLocation(prison, true);
@@ -111,7 +112,7 @@ public class Event_Jail implements Listener, EventPremise {
             // 中央からの距離が50ブロック or y値が55未満
             player.sendMessage("[Jail] " + ChatColor.GREEN + "あなたは南の楽園から出られません！");
             if (distance >= 60D) {
-                if (!player.teleport(prison, TeleportCause.PLUGIN)) {
+                if (!MyMaidLibrary.teleportToParadise(player, TeleportCause.PLUGIN)) {
                     // 失敗時
                     Location oldBed = player.getBedSpawnLocation();
                     player.setBedSpawnLocation(prison, true);
@@ -131,7 +132,7 @@ public class Event_Jail implements Listener, EventPremise {
         if (!jail.isStatus()) { // Jailされてる
             return;
         }
-        World World = Bukkit.getServer().getWorld("Jao_Afa");
+
         event.setRespawnLocation(MyMaidData.paradiseLocation);
     }
 

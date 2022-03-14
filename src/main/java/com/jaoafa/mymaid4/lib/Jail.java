@@ -23,6 +23,7 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.*;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
@@ -156,7 +157,7 @@ public class Jail {
                         player.getPlayer().setGameMode(GameMode.CREATIVE);
                     }
 
-                    player.getPlayer().teleport(MyMaidData.paradiseLocation);
+                    MyMaidLibrary.teleportToParadise((Player) player, null);
                 }
 
                 Achievementjao.getAchievementAsync(player, Achievement.FIRSTJAIL); // No.22 はじめてのjail

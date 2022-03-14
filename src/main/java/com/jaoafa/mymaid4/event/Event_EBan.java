@@ -101,7 +101,7 @@ public class Event_EBan implements Listener, EventPremise {
         if (!player.getLocation().getWorld().getUID().equals(world.getUID())) {
             player.sendMessage("[EBan] " + ChatColor.GREEN + "あなたは南の楽園から出られません！");
             // ワールド違い
-            if (!player.teleport(prison, TeleportCause.PLUGIN)) {
+            if (!MyMaidLibrary.teleportToParadise(player, TeleportCause.PLUGIN)) {
                 // 失敗時
                 Location oldBed = player.getBedSpawnLocation();
                 player.setBedSpawnLocation(prison, true);
@@ -131,8 +131,7 @@ public class Event_EBan implements Listener, EventPremise {
         EBan eban = EBan.getInstance(player);
         // EBanされてる
         if (!eban.isStatus()) return;
-        Location prison = MyMaidData.paradiseLocation;
-        event.setRespawnLocation(prison);
+        event.setRespawnLocation(MyMaidData.paradiseLocation);
     }
 
     @EventHandler

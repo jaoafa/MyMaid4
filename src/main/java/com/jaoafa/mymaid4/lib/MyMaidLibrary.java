@@ -12,6 +12,7 @@
 package com.jaoafa.mymaid4.lib;
 
 import cloud.commandframework.context.CommandContext;
+import com.avaje.ebeaninternal.server.lib.util.NotFoundException;
 import com.jaoafa.mymaid4.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -34,6 +35,7 @@ import org.bukkit.block.data.type.WallSign;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -608,6 +610,27 @@ public class MyMaidLibrary {
      */
     public static String formatLocation(Location loc) {
         return loc.getWorld().getName() + " " + loc.getBlockX() + " " + loc.getBlockY() + " " + loc.getBlockZ();
+    }
+
+    /**
+     * プレイヤーを南の楽園にテレポートさせます。
+     *
+     * @param player テレポートするプレイヤー
+     * @param teleportCause テレポートの原因
+     *
+     * @throws NotFoundException Jao_Afaワールドが存在しなかった場合
+     *
+     * @return テレポートに成功したかどうか
+     */
+    public static boolean teleportToParadise(Player player, @Nullable PlayerTeleportEvent.TeleportCause teleportCause) {
+        if (Bukkit.getWorld("Jao_Afa") == null)
+            throw new NotFoundException("World:Jao_Afa Not Found!");
+
+        Location paradise = MyMaidData.paradiseLocation;
+
+        if (teleportCause != null)
+            return player.teleport(paradise,teleportCause);
+        else return player.teleport(paradise);
     }
 
     /**
