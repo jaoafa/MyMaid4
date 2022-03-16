@@ -101,7 +101,7 @@ public class Event_EBan implements Listener, EventPremise {
         if (!player.getLocation().getWorld().getUID().equals(world.getUID())) {
             player.sendMessage("[EBan] " + ChatColor.GREEN + "あなたは南の楽園から出られません！");
             // ワールド違い
-            if (!MyMaidLibrary.teleportToParadise(player, TeleportCause.PLUGIN)) {
+            if (!MyMaidLibrary.teleportToParadise(player)) {
                 // 失敗時
                 Location oldBed = player.getBedSpawnLocation();
                 player.setBedSpawnLocation(prison, true);

@@ -12,7 +12,6 @@
 package com.jaoafa.mymaid4.lib;
 
 import cloud.commandframework.context.CommandContext;
-import com.avaje.ebeaninternal.server.lib.util.NotFoundException;
 import com.jaoafa.mymaid4.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -616,21 +615,19 @@ public class MyMaidLibrary {
      * プレイヤーを南の楽園にテレポートさせます。
      *
      * @param player テレポートするプレイヤー
-     * @param teleportCause テレポートの原因
-     *
-     * @throws NotFoundException Jao_Afaワールドが存在しなかった場合
      *
      * @return テレポートに成功したかどうか
+     *
+     * @throws IllegalStateException Jao_Afaワールドが存在しなかった場合
      */
-    public static boolean teleportToParadise(Player player, @Nullable PlayerTeleportEvent.TeleportCause teleportCause) {
+    public static boolean teleportToParadise(Player player) {
         if (Bukkit.getWorld("Jao_Afa") == null)
-            throw new NotFoundException("World:Jao_Afa Not Found!");
+            throw new IllegalStateException("World:Jao_Afa Not Found!");
 
-        Location paradise = MyMaidData.paradiseLocation;
-
-        if (teleportCause != null)
-            return player.teleport(paradise,teleportCause);
-        else return player.teleport(paradise);
+        return player.teleport(
+            MyMaidData.paradiseLocation,
+            PlayerTeleportEvent.TeleportCause.PLUGIN
+        );
     }
 
     /**

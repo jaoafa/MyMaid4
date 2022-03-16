@@ -35,6 +35,8 @@ import java.util.*;
 public class Jail {
     static final Map<UUID, Jail> cache = new HashMap<>();
 
+    public static Map<UUID, Boolean> hasWarned = new HashMap<>();
+
     final OfflinePlayer player;
 
     /** Jail Id */
@@ -157,7 +159,7 @@ public class Jail {
                         player.getPlayer().setGameMode(GameMode.CREATIVE);
                     }
 
-                    MyMaidLibrary.teleportToParadise((Player) player, null);
+                    MyMaidLibrary.teleportToParadise((Player) player);
                 }
 
                 Achievementjao.getAchievementAsync(player, Achievement.FIRSTJAIL); // No.22 はじめてのjail
@@ -231,6 +233,8 @@ public class Jail {
                         Component.text("が使えるかもしれません。", NamedTextColor.GREEN)
                     ));
                 }
+
+                hasWarned.remove(player.getUniqueId());
 
                 fetchData(true);
                 return Result.SUCCESS;

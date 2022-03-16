@@ -151,7 +151,7 @@ public class EBan {
                         player.getPlayer().setGameMode(GameMode.CREATIVE);
                     }
 
-                    MyMaidLibrary.teleportToParadise((Player) player, null);
+                    MyMaidLibrary.teleportToParadise((Player) player);
                 }
 
                 fetchData(true);
