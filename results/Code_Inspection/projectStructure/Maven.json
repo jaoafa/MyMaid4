@@ -5,7 +5,7 @@
       "unresolved": false,
       "groupId": "io.papermc.paper",
       "artifactId": "paper-api",
-      "version": "1.18.2-R0.1-20220311.201816-25",
+      "version": "1.18.2-R0.1-20220315.185055-36",
       "baseVersion": "1.18.2-R0.1-SNAPSHOT",
       "type": "jar",
       "optional": false,
@@ -515,7 +515,7 @@
       "baseVersion": "2.5.10",
       "type": "jar",
       "optional": false,
-      "scope": "provided"
+      "scope": "compile"
     },
     {
       "ideaName": "Maven: org.apache.commons:commons-lang3:3.12.0",
@@ -526,7 +526,7 @@
       "baseVersion": "3.12.0",
       "type": "jar",
       "optional": false,
-      "scope": "provided"
+      "scope": "compile"
     },
     {
       "ideaName": "Maven: com.maxmind.geoip2:geoip2:3.0.0",
