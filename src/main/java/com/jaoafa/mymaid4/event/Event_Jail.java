@@ -33,7 +33,6 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
@@ -115,7 +114,7 @@ public class Event_Jail implements Listener, EventPremise {
             UUID uuid = player.getUniqueId();
             if (!Jail.hasWarned.get(uuid))
                 player.sendMessage("[Jail] " + ChatColor.GREEN + "あなたは南の楽園から出られません！");
-            Jail.hasWarned.put(uuid,true);
+            Jail.hasWarned.put(uuid, true);
 
             if (distance >= 70D) {
                 if (!MyMaidLibrary.teleportToParadise(player)) {
