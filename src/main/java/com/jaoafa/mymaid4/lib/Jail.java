@@ -165,6 +165,8 @@ public class Jail {
 
                 Achievementjao.getAchievementAsync(player, Achievement.FIRSTJAIL); // No.22 はじめてのjail
 
+                Jail.hasWarned.put(player.getUniqueId(), false);
+
                 fetchData(true);
                 return Result.SUCCESS;
             }
