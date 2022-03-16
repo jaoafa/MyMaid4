@@ -18,7 +18,9 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
@@ -150,9 +152,7 @@ public class EBan {
                         player.getPlayer().setGameMode(GameMode.CREATIVE);
                     }
 
-                    World Jao_Afa = Bukkit.getServer().getWorld("Jao_Afa");
-                    Location minami = new Location(Jao_Afa, 2856, 69, 2888);
-                    player.getPlayer().teleport(minami);
+                    MyMaidLibrary.teleportToParadise(player.getPlayer());
                 }
 
                 fetchData(true);

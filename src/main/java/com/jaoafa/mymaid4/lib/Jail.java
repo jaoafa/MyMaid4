@@ -22,7 +22,9 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
@@ -33,6 +35,8 @@ import java.util.*;
  */
 public class Jail {
     static final Map<UUID, Jail> cache = new HashMap<>();
+
+    public static Map<UUID, Boolean> hasWarned = new HashMap<>();
 
     final OfflinePlayer player;
 
@@ -156,12 +160,12 @@ public class Jail {
                         player.getPlayer().setGameMode(GameMode.CREATIVE);
                     }
 
-                    World Jao_Afa = Bukkit.getServer().getWorld("Jao_Afa");
-                    Location minami = new Location(Jao_Afa, 2856, 69, 2888);
-                    player.getPlayer().teleport(minami);
+                    MyMaidLibrary.teleportToParadise(player.getPlayer());
                 }
 
                 Achievementjao.getAchievementAsync(player, Achievement.FIRSTJAIL); // No.22 はじめてのjail
+
+                Jail.hasWarned.put(player.getUniqueId(), false);
 
                 fetchData(true);
                 return Result.SUCCESS;
@@ -232,6 +236,8 @@ public class Jail {
                         Component.text("が使えるかもしれません。", NamedTextColor.GREEN)
                     ));
                 }
+
+                hasWarned.remove(player.getUniqueId());
 
                 fetchData(true);
                 return Result.SUCCESS;

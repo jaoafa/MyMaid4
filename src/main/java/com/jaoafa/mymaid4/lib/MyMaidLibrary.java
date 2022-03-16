@@ -34,6 +34,7 @@ import org.bukkit.block.data.type.WallSign;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -608,6 +609,25 @@ public class MyMaidLibrary {
      */
     public static String formatLocation(Location loc) {
         return loc.getWorld().getName() + " " + loc.getBlockX() + " " + loc.getBlockY() + " " + loc.getBlockZ();
+    }
+
+    /**
+     * プレイヤーを南の楽園にテレポートさせます。
+     *
+     * @param player テレポートするプレイヤー
+     *
+     * @return テレポートに成功したかどうか
+     *
+     * @throws IllegalStateException Jao_Afaワールドが存在しなかった場合
+     */
+    public static boolean teleportToParadise(Player player) {
+        if (Bukkit.getWorld("Jao_Afa") == null)
+            throw new IllegalStateException("World:Jao_Afa Not Found!");
+
+        return player.teleport(
+            MyMaidData.paradiseLocation,
+            PlayerTeleportEvent.TeleportCause.PLUGIN
+        );
     }
 
     /**

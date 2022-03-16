@@ -33,8 +33,9 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.UUID;
 
 public class Event_Jail implements Listener, EventPremise {
     @Override
@@ -93,11 +94,12 @@ public class Event_Jail implements Listener, EventPremise {
         if (world == null) {
             return;
         }
-        Location prison = new Location(world, 2856, 69, 2888);
+        Location prison = MyMaidData.paradiseLocation;
         if (!player.getLocation().getWorld().getUID().equals(world.getUID())) {
             player.sendMessage("[Jail] " + ChatColor.GREEN + "あなたは南の楽園から出られません！");
             // ワールド違い
-            if (!player.teleport(prison, TeleportCause.PLUGIN)) {
+
+            if (!MyMaidLibrary.teleportToParadise(player)) {
                 // 失敗時
                 Location oldBed = player.getBedSpawnLocation();
                 player.setBedSpawnLocation(prison, true);
@@ -107,11 +109,15 @@ public class Event_Jail implements Listener, EventPremise {
             return;
         }
         double distance = prison.distance(to);
-        if (distance >= 50D || to.getBlockY() < 55) {
-            // 中央からの距離が50ブロック or y値が55未満
-            player.sendMessage("[Jail] " + ChatColor.GREEN + "あなたは南の楽園から出られません！");
-            if (distance >= 60D) {
-                if (!player.teleport(prison, TeleportCause.PLUGIN)) {
+        if (distance >= 65D || to.getBlockY() < 65) {
+            // 中央からの距離が65ブロック or y値が65未満
+            UUID uuid = player.getUniqueId();
+            if (!Jail.hasWarned.get(uuid))
+                player.sendMessage("[Jail] " + ChatColor.GREEN + "あなたは南の楽園から出られません！");
+            Jail.hasWarned.put(uuid, true);
+
+            if (distance >= 70D) {
+                if (!MyMaidLibrary.teleportToParadise(player)) {
                     // 失敗時
                     Location oldBed = player.getBedSpawnLocation();
                     player.setBedSpawnLocation(prison, true);
@@ -131,9 +137,8 @@ public class Event_Jail implements Listener, EventPremise {
         if (!jail.isStatus()) { // Jailされてる
             return;
         }
-        World World = Bukkit.getServer().getWorld("Jao_Afa");
-        Location prison = new Location(World, 2856, 69, 2888);
-        event.setRespawnLocation(prison);
+
+        event.setRespawnLocation(MyMaidData.paradiseLocation);
     }
 
     @EventHandler
