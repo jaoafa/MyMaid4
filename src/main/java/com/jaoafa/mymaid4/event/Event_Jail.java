@@ -112,7 +112,7 @@ public class Event_Jail implements Listener, EventPremise {
         if (distance >= 65D || to.getBlockY() < 65) {
             // 中央からの距離が65ブロック or y値が65未満
             UUID uuid = player.getUniqueId();
-            if (!Jail.hasWarned.get(uuid))
+            if (!Jail.hasWarned.containsKey(uuid) || !Jail.hasWarned.get(uuid))
                 player.sendMessage("[Jail] " + ChatColor.GREEN + "あなたは南の楽園から出られません！");
             Jail.hasWarned.put(uuid, true);
 
