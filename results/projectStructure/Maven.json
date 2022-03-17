@@ -5,7 +5,7 @@
       "unresolved": false,
       "groupId": "io.papermc.paper",
       "artifactId": "paper-api",
-      "version": "1.18.2-R0.1-20220315.185055-36",
+      "version": "1.18.2-R0.1-20220317.005956-40",
       "baseVersion": "1.18.2-R0.1-SNAPSHOT",
       "type": "jar",
       "optional": false,
@@ -507,12 +507,12 @@
       "scope": "provided"
     },
     {
-      "ideaName": "Maven: com.jaoafa:jaosuperachievement2:2.5.10",
+      "ideaName": "Maven: com.jaoafa:jaosuperachievement2:2.5.12",
       "unresolved": false,
       "groupId": "com.jaoafa",
       "artifactId": "jaosuperachievement2",
-      "version": "2.5.10",
-      "baseVersion": "2.5.10",
+      "version": "2.5.12",
+      "baseVersion": "2.5.12",
       "type": "jar",
       "optional": false,
       "scope": "compile"
