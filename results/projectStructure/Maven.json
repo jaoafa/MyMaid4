@@ -515,7 +515,7 @@
       "baseVersion": "2.5.12",
       "type": "jar",
       "optional": false,
-      "scope": "compile"
+      "scope": "provided"
     },
     {
       "ideaName": "Maven: org.apache.commons:commons-lang3:3.12.0",
@@ -526,7 +526,7 @@
       "baseVersion": "3.12.0",
       "type": "jar",
       "optional": false,
-      "scope": "compile"
+      "scope": "provided"
     },
     {
       "ideaName": "Maven: com.maxmind.geoip2:geoip2:3.0.0",
