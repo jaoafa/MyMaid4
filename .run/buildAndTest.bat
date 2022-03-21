@@ -16,7 +16,7 @@ if not exist server\plugins (
 )
 
 if not exist server\paper.jar (
-    curl -o server\paper.jar -L "https://api.tomacheese.com/papermc/1.18.1/latest"
+    curl -o server\paper.jar -L "https://api.tomacheese.com/papermc/1.18.2/latest"
 )
 
 if not exist server\mcrconapi-1.1.1.jar (

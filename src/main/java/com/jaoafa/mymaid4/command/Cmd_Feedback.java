@@ -34,7 +34,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -43,14 +42,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class Cmd_Bug extends MyMaidLibrary implements CommandPremise {
+public class Cmd_Feedback extends MyMaidLibrary implements CommandPremise {
     static long sendTime = -1L;
 
     @Override
     public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
-            "bug",
-            "不具合報告を行います。GitHub jaoafa/MyMaid4にIssueを作成します。"
+            "feedback",
+            "フィードバックを行います。GitHub jaoafa/jao-Minecraft-ServerにIssueを作成します。"
         );
     }
 
@@ -58,12 +57,12 @@ public class Cmd_Bug extends MyMaidLibrary implements CommandPremise {
     public MyMaidCommand.Cmd register(Command.Builder<CommandSender> builder) {
         return new MyMaidCommand.Cmd(
             builder
-                .meta(CommandMeta.DESCRIPTION, "不具合報告用の本を与えます。")
+                .meta(CommandMeta.DESCRIPTION, "フィードバック用の本を与えます。")
                 .senderType(Player.class)
                 .handler(this::giveIssueBook)
                 .build(),
             builder
-                .meta(CommandMeta.DESCRIPTION, "本をもとに不具合報告を行います。")
+                .meta(CommandMeta.DESCRIPTION, "本をもとにフィードバックを行います。")
                 .senderType(Player.class)
                 .literal("true")
                 .handler(this::createIssueBook)
@@ -84,65 +83,41 @@ public class Cmd_Bug extends MyMaidLibrary implements CommandPremise {
         PlayerInventory inv = player.getInventory();
 
         if (Main.getMyMaidConfig().getGitHubAccessToken() == null) {
-            SendMessage(player, details(), "不具合報告に必要な設定情報が見つからなかったため、不具合報告ができません。");
+            SendMessage(player, details(), "フィードバックに必要な設定情報が見つからなかったため、フィードバックができません。");
             return;
         }
 
         ItemStack is = new ItemStack(Material.WRITABLE_BOOK);
         BookMeta book = (BookMeta) is.getItemMeta();
-        book = book.title(Component.text("MyMaid4 Issue Book", NamedTextColor.GOLD));
+        book = book.title(Component.text("FeedBack Issue Book", NamedTextColor.GOLD));
         book.addPages(
             Component.text().append(
-                Component.text("*- MyMaid4 Issue Book --*", NamedTextColor.GOLD, TextDecoration.BOLD),
+                Component.text("*- FeedBack Issue Book --*", NamedTextColor.GOLD, TextDecoration.BOLD),
                 Component.newline(),
                 Component.text("不具合を見つけた際は、"),
                 Component.newline(),
                 Component.text("この本の次のページから記入して下さい。"),
                 Component.newline(),
                 Component.newline(),
-                Component.text("この本を署名することで、jaoafa/MyMaid4にIssueが作成されます", NamedTextColor.RED, TextDecoration.BOLD),
+                Component.text("この本を署名することで、jaoafa/jao-Minecraft-ServerにIssueが作成されます", NamedTextColor.RED, TextDecoration.BOLD),
                 Component.newline(),
                 Component.text("自治体申請や運営への対応が必要な用件は公式Discordサーバの#supportにてお願いします。")
             ).build(),
             Component.text().append(
-                Component.text("## 不具合の説明", NamedTextColor.GOLD, TextDecoration.BOLD),
+                Component.text("## 内容", NamedTextColor.GOLD, TextDecoration.BOLD),
                 Component.newline(),
                 Component.newline(),
-                Component.text("> 不具合の内容を明確・簡潔に説明してください", NamedTextColor.GRAY),
-                Component.newline(),
-                Component.newline()
-            ).build(),
-            Component.text().append(
-                Component.text("## 再現手順", NamedTextColor.GOLD, TextDecoration.BOLD),
-                Component.newline(),
-                Component.newline(),
-                Component.text("> バグが発生する手順を示してください", NamedTextColor.GRAY),
-                Component.newline(),
-                Component.newline()
-            ).build(),
-            Component.text().append(
-                Component.text("## スクリーンショット", NamedTextColor.GOLD, TextDecoration.BOLD),
-                Component.newline(),
-                Component.newline(),
-                Component.text("> エラーメッセージなどのスクリーンショットがある場合はURLを添付して下さい", NamedTextColor.GRAY),
-                Component.newline(),
-                Component.newline()
-            ).build(),
-            Component.text().append(
-                Component.text("## 追加情報", NamedTextColor.GOLD, TextDecoration.BOLD),
-                Component.newline(),
-                Component.newline(),
-                Component.text("> 何か追加情報がある場合は記載してください", NamedTextColor.GRAY),
+                Component.text("> フィードバックの内容を明確・簡潔に説明してください。", NamedTextColor.GRAY),
                 Component.newline(),
                 Component.newline()
             ).build()
         );
         is.setItemMeta(book);
-        is = NMSManager.setNBTString(is, "MyMaidBugBook", String.valueOf(System.currentTimeMillis()));
+        is = NMSManager.setNBTString(is, "FeedBackBook", String.valueOf(System.currentTimeMillis()));
 
         ItemStack main = inv.getItemInMainHand();
         inv.setItemInMainHand(is);
-        SendMessage(player, details(), "不具合報告用の本をあなたのメインハンドのアイテムと置きかえました。");
+        SendMessage(player, details(), "フィードバック用の本をあなたのメインハンドのアイテムと置きかえました。");
         SendMessage(player, details(), "本を編集し、署名することで不具合を報告できます。");
 
         if (main.getType() != Material.AIR) {
@@ -167,7 +142,7 @@ public class Cmd_Bug extends MyMaidLibrary implements CommandPremise {
         BookMeta meta = (BookMeta) is.getItemMeta();
 
         Component rawTitle = meta.title();
-        if (rawTitle == null || rawTitle.equals(Component.text("MyMaid4 Issue Book", NamedTextColor.GOLD))) {
+        if (rawTitle == null || rawTitle.equals(Component.text("FeedBack Issue Book", NamedTextColor.GOLD))) {
             SendMessage(player, details(), "持っている本は対象の本ではないようです。");
             return;
         }
@@ -202,13 +177,11 @@ public class Cmd_Bug extends MyMaidLibrary implements CommandPremise {
                     return;
                 }
 
-                String repo = "jaoafa/MyMaid4";
+                String repo = "jaoafa/jao-Minecraft-Server";
                 String url = String.format("https://api.github.com/repos/%s/issues", repo);
                 JSONObject json = new JSONObject()
                     .put("title", title)
-                    .put("body", body)
-                    .put("labels", new JSONArray()
-                        .put("\uD83D\uDC1Bbug"));
+                    .put("body", body);
 
                 try {
                     OkHttpClient client = new OkHttpClient();
@@ -229,17 +202,17 @@ public class Cmd_Bug extends MyMaidLibrary implements CommandPremise {
 
                     int issueNum = obj.getInt("number");
                     SendMessage(player, details(), Component.text().append(
-                        Component.text("不具合報告に成功しました。", NamedTextColor.GREEN),
+                        Component.text("フィードバックの送信に成功しました。", NamedTextColor.GREEN),
                         Component.text("こちら", NamedTextColor.AQUA, TextDecoration.UNDERLINED)
                             .hoverEvent(HoverEvent.showText(Component.text()))
                             .clickEvent(ClickEvent.openUrl(MessageFormat.format("https://github.com/{0}/issues/{1}", repo, issueNum))),
                         Component.text("から確認できます。", NamedTextColor.GREEN)
                     ).build());
-                    SendMessage(player, details(), "不具合の改善報告等は致しかねますので、上記リンク先を定期的にご確認ください。ご報告いただきありがとうございました！");
+                    SendMessage(player, details(), "フィードバックに対する直接の返信は致しかねますので、上記リンク先を定期的にご確認ください。ありがとうございました！");
                     inv.setItemInMainHand(null);
                     sendTime = System.currentTimeMillis();
                 } catch (IOException e) {
-                    SendMessage(player, details(), String.format("不具合報告に失敗しました: %s", e.getMessage()));
+                    SendMessage(player, details(), String.format("フィードバック処理に失敗しました: %s", e.getMessage()));
                     MyMaidLibrary.reportError(getClass(), e);
                 }
             }
