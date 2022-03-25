@@ -3,7 +3,7 @@
     {
       "name": "Maven: io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/io/papermc/paper/paper-api/1.18.2-R0.1-SNAPSHOT/paper-api-1.18.2-R0.1-20220320.005506-49.jar!/"
+        "jar://$MAVEN_REPOSITORY$/io/papermc/paper/paper-api/1.18.2-R0.1-SNAPSHOT/paper-api-1.18.2-R0.1-20220321.184811-51.jar!/"
       ]
     },
     {

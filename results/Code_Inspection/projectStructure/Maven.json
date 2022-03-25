@@ -5,7 +5,7 @@
       "unresolved": false,
       "groupId": "io.papermc.paper",
       "artifactId": "paper-api",
-      "version": "1.18.2-R0.1-20220320.005506-49",
+      "version": "1.18.2-R0.1-20220321.184811-51",
       "baseVersion": "1.18.2-R0.1-SNAPSHOT",
       "type": "jar",
       "optional": false,
