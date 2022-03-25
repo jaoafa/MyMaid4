@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SKKColorManager {
-    static final List<NamedTextColor> TextColors = Arrays.asList(
+    public static final List<NamedTextColor> TextColors = Arrays.asList(
         NamedTextColor.GRAY,
         NamedTextColor.WHITE,
         NamedTextColor.DARK_BLUE,
@@ -78,14 +78,14 @@ public class SKKColorManager {
      *
      * @return ランク数値 (0 <= n <= 13)
      */
-    static int calculateRank(int vote_count) {
+    public static int calculateRank(int vote_count) {
         if (vote_count == 0)
             return 0;
         if (vote_count <= 5)
             return 1;
         if (vote_count >= 160)
             return 13;
-        return (vote_count - 5) / 14 + 1;
+        return ((vote_count - 6) / 14) + 2;
     }
 
     public static Component getPlayerSKKTabListComponent(Player player) {
