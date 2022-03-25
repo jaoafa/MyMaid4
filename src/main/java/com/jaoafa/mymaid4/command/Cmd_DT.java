@@ -73,7 +73,7 @@ public class Cmd_DT extends MyMaidLibrary implements CommandPremise {
                     .newBuilder("targets"), ArgumentDescription.of("エンティティ対象セレクター"))
                 .argument(StringArgument
                     .<CommandSender>newBuilder("markerName")
-                    .withSuggestionsProvider(this::suggestMarkerTypes), ArgumentDescription.of("マーカー名"))
+                    .withSuggestionsProvider(this::suggestMarkerNames), ArgumentDescription.of("マーカー名"))
                 .handler(this::teleportOtherMarker)
                 .build(),
             builder
