@@ -40,7 +40,7 @@ jobs:
           distribution: adopt
 
       - name: Cache local Maven repository
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -71,7 +71,7 @@ jobs:
           body: ${{ steps.tag_version.outputs.changelog }}
 
       - name: Upload Release Asset
-        uses: shogo82148/actions-upload-release-asset@v1.6.0
+        uses: shogo82148/actions-upload-release-asset@v1.6.1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: target/*.jar
@@ -82,7 +82,7 @@ jobs:
           sha256sum *.jar > sha256sum.txt
 
       - name: Upload Release Asset sha256sum.txt
-        uses: shogo82148/actions-upload-release-asset@v1.6.0
+        uses: shogo82148/actions-upload-release-asset@v1.6.1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: target/sha256sum.txt
@@ -119,7 +119,7 @@ jobs:
 
       - name: Is Successful Deploy
         if: ${{ fromJson(steps.deployRequest.outputs.response).status == 'SUCCESSFUL' }}
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v2
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
@@ -133,7 +133,7 @@ jobs:
 
       - name: Is Failed Deploy
         if: ${{ fromJson(steps.deployRequest.outputs.response).status == 'ERROR' }}
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v2
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
