@@ -267,6 +267,6 @@ public class MyMaidData {
 
     public static Location paradiseLocation = new Location(
         Bukkit.getServer().getWorld("Jao_Afa"),
-        6050, 64, 6050
+        6050, 68, 6050
     );
 }
