@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 public class Event_AdvancementDiscordNotify extends MyMaidLibrary implements Listener, EventPremise {
     @Override
     public String description() {
-        return "エンドポータルの作成を制限します。";
+        return "進捗を達成した際にDiscord#server-chatに日本語進捗名で通知します。";
     }
 
     @EventHandler

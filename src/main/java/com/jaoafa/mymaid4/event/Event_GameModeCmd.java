@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -23,7 +23,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 public class Event_GameModeCmd extends MyMaidLibrary implements Listener, EventPremise {
     @Override
     public String description() {
-        return "hideコマンドに関する処理を行います。";
+        return "gamemodeコマンドが実行された際に、gコマンドを勧めます。";
     }
 
     @EventHandler
