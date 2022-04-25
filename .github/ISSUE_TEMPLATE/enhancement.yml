@@ -14,6 +14,5 @@ body:
       description: |
         新機能・新コマンドについて、理由も併せて明確・簡潔に説明してください
         コマンドの場合、コマンド名(例: `/dt`)や引数(例: `/dt <MarkerName>`)も併せて記載して頂けると非常に有難いです
-      render: markdown
     validations:
       required: true
