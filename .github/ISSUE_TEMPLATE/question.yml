@@ -1,0 +1,16 @@
+name: 質問 - Question
+description: このプラグインに関する質問がある場合は、このテンプレートを使用してください。
+labels: [ "❓question" ]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        jao Minecraft Server の Web サイト([`jaoafa/jaoweb`](https://github.com/jaoafa/jaoweb)) および Javajaotan2([`jaoafa/Javajaotan2`](https://github.com/jaoafa/Javajaotan2)) の不具合報告や新機能の提案は各リポジトリの Issue にてお願いします。どこに提出するべきかわからない場合は [jaoafa/jao-Minecraft-Server](https://github.com/jaoafa/jao-Minecraft-Server) へ。
+        Issue の提出先が間違っていても、メンテナーが移動しますのでご安心ください。
+  - type: textarea
+    id: target
+    attributes:
+      label: 内容
+      description: 質問内容を具体的に、分かりやすく記載してください
+    validations:
+      required: true

@@ -12,7 +12,6 @@ body:
     attributes:
       label: 対象の機能・コマンド
       description: どの機能・コマンドに対するものかを示してください
-      render: markdown
     validations:
       required: true
   - type: textarea
@@ -20,7 +19,6 @@ body:
     attributes:
       label: 強化・改善の内容
       description: どのように強化・改善を行うかを示してください
-      render: markdown
     validations:
       required: true
   - type: textarea
@@ -28,6 +26,5 @@ body:
     attributes:
       label: 強化・改善を希望する理由
       description: 機能・コマンドに対してなぜその強化・改善を希望するのかを示してください
-      render: markdown
     validations:
       required: true
