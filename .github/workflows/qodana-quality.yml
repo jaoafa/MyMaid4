@@ -27,6 +27,7 @@ jobs:
         with:
           upload-result: true
           args: "--linter,jetbrains/qodana-jvm-community,--fail-threshold,100"
+          use-caches: false
 
       - uses: actions/upload-artifact@v3
         if: always()
