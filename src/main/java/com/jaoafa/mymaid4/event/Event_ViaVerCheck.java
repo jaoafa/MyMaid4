@@ -76,7 +76,7 @@ public class Event_ViaVerCheck extends MyMaidLibrary implements Listener, EventP
 
                 String version = obj.getString(ver);
 
-                if (!version.equals("1.18.1")) {
+                if (!version.equals("1.18.2")) {
                     player.sendMessage(Component.text().append(
                         Component.text("[VersionChecker]"),
                         Component.space(),
@@ -85,13 +85,13 @@ public class Event_ViaVerCheck extends MyMaidLibrary implements Listener, EventP
                     player.sendMessage(Component.text().append(
                         Component.text("[VersionChecker]"),
                         Component.space(),
-                        Component.text("サーババージョンは1.18.1のため、", NamedTextColor.AQUA),
+                        Component.text("サーババージョンは1.18.2のため、", NamedTextColor.AQUA),
                         Component.text("一部のブロック・機能は利用できません。", NamedTextColor.RED)
                     ).build());
                     player.sendMessage(Component.text().append(
                         Component.text("[VersionChecker]"),
                         Component.space(),
-                        Component.text("クライアントバージョンを「1.18.1」にすることを強くお勧めします。", NamedTextColor.AQUA)
+                        Component.text("クライアントバージョンを「1.18.2」にすることを強くお勧めします。", NamedTextColor.AQUA)
                     ).build());
                 }
 

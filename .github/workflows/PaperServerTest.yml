@@ -30,4 +30,4 @@ jobs:
         uses: jaoafa/CheckPluginEnabling@v2.2
         with:
           plugin-name: MyMaid4
-          minecraft-version: 1.18.1
+          minecraft-version: 1.18.2

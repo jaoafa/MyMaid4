@@ -2,6 +2,7 @@
 
 set PLUGIN_NAME=MyMaid4
 set JAR_FILE=MyMaid4.jar
+set PAPER_VERSION=1.18.2
 
 if not exist server (
     mkdir server
@@ -15,8 +16,8 @@ if not exist server\plugins (
     mkdir server\plugins
 )
 
-if not exist server\paper.jar (
-    curl -o server\paper.jar -L "https://api.tomacheese.com/papermc/1.18.2/latest"
+if not exist server\paper-%PAPER_VERSION%.jar (
+    curl -o server\paper-%PAPER_VERSION%.jar -L "https://api.tomacheese.com/papermc/%PAPER_VERSION%/latest"
 )
 
 if not exist server\mcrconapi-1.1.1.jar (
@@ -88,7 +89,7 @@ if not %errorlevel% == 0 (
     echo Minecraftサーバが起動していないため、起動します。
 
     cd server
-    %SELECTED_JAVA% -jar paper.jar -nogui
+    %SELECTED_JAVA% -jar paper-%PAPER_VERSION%.jar -nogui
     if %errorlevel% == 0 exit
 )
 
