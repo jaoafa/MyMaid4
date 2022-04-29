@@ -76,7 +76,7 @@ public class Event_ViaVerCheck extends MyMaidLibrary implements Listener, EventP
 
                 String version = obj.getString(ver);
 
-                if (!version.equals("1.18.1")) {
+                if (!version.equals("1.18.2")) {
                     player.sendMessage(Component.text().append(
                         Component.text("[VersionChecker]"),
                         Component.space(),
