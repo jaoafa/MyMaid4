@@ -28,6 +28,8 @@ jobs:
           cat ../pr_urls.txt | xargs -L1 gh pr edit -B dev --add-reviewer ${{ github.event.sender.login }}
           echo Update dependencies packages for renovate (${{ steps.date.outputs.date }}) > ../pr_description.txt
           cat ../pr_urls.txt | xargs -L1 echo - >> ../pr_description.txt
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create pull request
         run: |
