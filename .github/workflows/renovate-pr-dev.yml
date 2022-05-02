@@ -29,7 +29,7 @@ jobs:
           echo Update dependencies packages for renovate (${{ steps.date.outputs.date }}) > ../pr_description.txt
           cat ../pr_urls.txt | xargs -L1 echo - >> ../pr_description.txt
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
 
       - name: Create pull request
         run: |
