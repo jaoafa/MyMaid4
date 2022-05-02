@@ -22,6 +22,14 @@ jobs:
           git config --global user.name "jaotan"
           git config --global user.email "34743289+jaotan@users.noreply.github.com"
 
+      - name: Create pull request
+        run: |
+          git commit --allow-empty -m "chore: Update dependencies packages for renovate"
+          hub push --set-upstream origin renovate-${{ steps.date.outputs.date }}
+          hub pull-request -b master -F ../pr_description.txt -r ${{ github.event.sender.login }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
       - name: Process change pr base
         run: |
           gh pr list --app renovate -B master -s open --json url | jq -r ".[].url" > ../pr_urls.txt
@@ -30,11 +38,3 @@ jobs:
           cat ../pr_urls.txt | xargs -L1 echo - >> ../pr_description.txt
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-
-      - name: Create pull request
-        run: |
-          git commit --allow-empty -m "chore: Update dependencies packages for renovate"
-          hub push --set-upstream origin renovate-${{ steps.date.outputs.date }}
-          hub pull-request -b master -F ../pr_description.txt -r ${{ github.event.sender.login }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
