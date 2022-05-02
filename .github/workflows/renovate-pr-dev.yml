@@ -22,6 +22,12 @@ jobs:
           git config --global user.name "jaotan"
           git config --global user.email "34743289+jaotan@users.noreply.github.com"
 
+      - name: List pull requests
+        run: |
+          gh pr list --app renovate -B master -s open --json url | jq -r ".[].url" > ../pr_urls.txt
+          echo Update dependencies packages for renovate (${{ steps.date.outputs.date }}) > ../pr_description.txt
+          cat ../pr_urls.txt | xargs -L1 echo - >> ../pr_description.txt
+
       - name: Create pull request
         run: |
           git commit --allow-empty -m "chore: Update dependencies packages for renovate"
@@ -30,11 +36,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
-      - name: Process change pr base
+      - name: Process change pr base & add reviewer
         run: |
-          gh pr list --app renovate -B master -s open --json url | jq -r ".[].url" > ../pr_urls.txt
           cat ../pr_urls.txt | xargs -L1 gh pr edit -B renovate-${{ steps.date.outputs.date }} --add-reviewer ${{ github.event.sender.login }}
-          echo Update dependencies packages for renovate (${{ steps.date.outputs.date }}) > ../pr_description.txt
-          cat ../pr_urls.txt | xargs -L1 echo - >> ../pr_description.txt
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
