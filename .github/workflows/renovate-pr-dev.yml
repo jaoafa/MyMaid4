@@ -32,6 +32,7 @@ jobs:
 
       - name: Create pull request
         run: |
+          hub pull
           git commit --allow-empty -m "chore: Update dependencies packages for renovate"
           hub push --set-upstream origin renovate-${{ steps.date.outputs.date }}
           hub pull-request -b master -F ../pr_description.txt -r ${{ github.event.sender.login }}
