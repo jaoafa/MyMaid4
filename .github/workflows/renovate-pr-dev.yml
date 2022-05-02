@@ -15,7 +15,7 @@ jobs:
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
       - name: Create new branch
-        run: hub checkout -b renovate-${{ steps.date.outputs.date }}
+        run: hub checkout -b dep-update/${{ steps.date.outputs.date }}
 
       - name: Set git config
         run: |
@@ -33,13 +33,13 @@ jobs:
       - name: Create pull request
         run: |
           git commit --allow-empty -m "chore: Update dependencies packages for renovate"
-          hub push --set-upstream origin renovate-${{ steps.date.outputs.date }}
+          hub push --set-upstream origin dep-update/${{ steps.date.outputs.date }}
           hub pull-request -b master -F ../pr_description.txt -r ${{ github.event.sender.login }}
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       - name: Process change pr base & add reviewer
         run: |
-          cat ../pr_urls.txt | xargs -L1 gh pr edit -B renovate-${{ steps.date.outputs.date }} --add-reviewer ${{ github.event.sender.login }}
+          cat ../pr_urls.txt | xargs -L1 gh pr edit -B dep-update/${{ steps.date.outputs.date }} --add-reviewer ${{ github.event.sender.login }}
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
