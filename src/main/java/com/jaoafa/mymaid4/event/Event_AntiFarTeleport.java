@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -21,7 +21,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-public class Event_AntiProblemTeleport extends MyMaidLibrary implements Listener, EventPremise {
+public class Event_AntiFarTeleport extends MyMaidLibrary implements Listener, EventPremise {
     @Override
     public String description() {
         return "極端に遠い場所へのテレポートを禁止します。";
