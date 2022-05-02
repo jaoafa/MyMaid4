@@ -1,0 +1,38 @@
+name: Change the base branch of all renovate pr to dev branch & Add reviewer
+
+on: workflow_dispatch
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+      - name: Create new branch
+        run: hub checkout -b renovate-${{ steps.date.outputs.date }}
+
+      - name: Set git config
+        run: |
+          git config --global user.name "jaotan"
+          git config --global user.email "34743289+jaotan@users.noreply.github.com"
+
+      - name: Process change pr base
+        run: |
+          gh pr list --app renovate -B master -s open --json url | jq -r ".[].url" > ../pr_urls.txt
+          cat ../pr_urls.txt | xargs -L1 gh pr edit -B dev --add-reviewer ${{ github.event.sender.login }}
+          echo Update dependencies packages for renovate (${{ steps.date.outputs.date }}) > ../pr_description.txt
+          cat ../pr_urls.txt | xargs -L1 echo - >> ../pr_description.txt
+
+      - name: Create pull request
+        run: |
+          git commit --allow-empty -m "chore: Update dependencies packages for renovate"
+          hub push --set-upstream origin renovate-${{ steps.date.outputs.date }}
+          hub pull-request -b master -F ../pr_description.txt -r ${{ github.event.sender.login }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
