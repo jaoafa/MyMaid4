@@ -25,14 +25,14 @@ jobs:
       - name: List pull requests
         run: |
           gh pr list --app renovate -B master -s open --json url | jq -r ".[].url" > ../pr_urls.txt
-          echo -e "Update dependencies packages for renovate (${{ steps.date.outputs.date }})\n\n" > ../pr_description.txt
+          echo -e "Update dependencies packages by renovate (${{ steps.date.outputs.date }})\n\n" > ../pr_description.txt
           cat ../pr_urls.txt | xargs -L1 echo - >> ../pr_description.txt
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       - name: Create pull request
         run: |
-          git commit --allow-empty -m "chore: Update dependencies packages for renovate"
+          git commit --allow-empty -m "chore: Update dependencies packages by renovate"
           hub push --set-upstream origin dep-update/${{ steps.date.outputs.date }}
           hub pull-request -b master -F ../pr_description.txt -r ${{ github.event.sender.login }}
         env:
