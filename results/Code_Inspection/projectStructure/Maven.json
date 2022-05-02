@@ -397,12 +397,12 @@
       "scope": "compile"
     },
     {
-      "ideaName": "Maven: net.dv8tion:JDA:5.0.0-alpha.9",
+      "ideaName": "Maven: net.dv8tion:JDA:5.0.0-alpha.11",
       "unresolved": false,
       "groupId": "net.dv8tion",
       "artifactId": "JDA",
-      "version": "5.0.0-alpha.9",
-      "baseVersion": "5.0.0-alpha.9",
+      "version": "5.0.0-alpha.11",
+      "baseVersion": "5.0.0-alpha.11",
       "type": "jar",
       "optional": false,
       "scope": "compile"
@@ -419,12 +419,12 @@
       "scope": "compile"
     },
     {
-      "ideaName": "Maven: org.jetbrains:annotations:16.0.1",
+      "ideaName": "Maven: org.jetbrains:annotations:23.0.0",
       "unresolved": false,
       "groupId": "org.jetbrains",
       "artifactId": "annotations",
-      "version": "16.0.1",
-      "baseVersion": "16.0.1",
+      "version": "23.0.0",
+      "baseVersion": "23.0.0",
       "type": "jar",
       "optional": false,
       "scope": "compile"
@@ -441,12 +441,12 @@
       "scope": "compile"
     },
     {
-      "ideaName": "Maven: org.apache.commons:commons-collections4:4.1",
+      "ideaName": "Maven: org.apache.commons:commons-collections4:4.4",
       "unresolved": false,
       "groupId": "org.apache.commons",
       "artifactId": "commons-collections4",
-      "version": "4.1",
-      "baseVersion": "4.1",
+      "version": "4.4",
+      "baseVersion": "4.4",
       "type": "jar",
       "optional": false,
       "scope": "compile"
@@ -463,12 +463,23 @@
       "scope": "runtime"
     },
     {
-      "ideaName": "Maven: com.fasterxml.jackson.core:jackson-databind:2.10.1",
+      "ideaName": "Maven: com.fasterxml.jackson.core:jackson-core:2.13.2",
+      "unresolved": false,
+      "groupId": "com.fasterxml.jackson.core",
+      "artifactId": "jackson-core",
+      "version": "2.13.2",
+      "baseVersion": "2.13.2",
+      "type": "jar",
+      "optional": false,
+      "scope": "compile"
+    },
+    {
+      "ideaName": "Maven: com.fasterxml.jackson.core:jackson-databind:2.13.2.2",
       "unresolved": false,
       "groupId": "com.fasterxml.jackson.core",
       "artifactId": "jackson-databind",
-      "version": "2.10.1",
-      "baseVersion": "2.10.1",
+      "version": "2.13.2.2",
+      "baseVersion": "2.13.2.2",
       "type": "jar",
       "optional": false,
       "scope": "compile"
@@ -507,34 +518,23 @@
       "scope": "provided"
     },
     {
-      "ideaName": "Maven: com.jaoafa:jaosuperachievement2:2.5.16",
+      "ideaName": "Maven: com.jaoafa:jaosuperachievement2:2.5.22",
       "unresolved": false,
       "groupId": "com.jaoafa",
       "artifactId": "jaosuperachievement2",
-      "version": "2.5.16",
-      "baseVersion": "2.5.16",
+      "version": "2.5.22",
+      "baseVersion": "2.5.22",
       "type": "jar",
       "optional": false,
       "scope": "provided"
     },
     {
-      "ideaName": "Maven: org.apache.commons:commons-lang3:3.12.0",
-      "unresolved": false,
-      "groupId": "org.apache.commons",
-      "artifactId": "commons-lang3",
-      "version": "3.12.0",
-      "baseVersion": "3.12.0",
-      "type": "jar",
-      "optional": false,
-      "scope": "provided"
-    },
-    {
-      "ideaName": "Maven: com.maxmind.geoip2:geoip2:3.0.0",
+      "ideaName": "Maven: com.maxmind.geoip2:geoip2:3.0.1",
       "unresolved": false,
       "groupId": "com.maxmind.geoip2",
       "artifactId": "geoip2",
-      "version": "3.0.0",
-      "baseVersion": "3.0.0",
+      "version": "3.0.1",
+      "baseVersion": "3.0.1",
       "type": "jar",
       "optional": false,
       "scope": "compile"
@@ -551,23 +551,12 @@
       "scope": "compile"
     },
     {
-      "ideaName": "Maven: com.fasterxml.jackson.core:jackson-core:2.13.1",
-      "unresolved": false,
-      "groupId": "com.fasterxml.jackson.core",
-      "artifactId": "jackson-core",
-      "version": "2.13.1",
-      "baseVersion": "2.13.1",
-      "type": "jar",
-      "optional": false,
-      "scope": "compile"
-    },
-    {
-      "ideaName": "Maven: com.fasterxml.jackson.core:jackson-annotations:2.13.1",
+      "ideaName": "Maven: com.fasterxml.jackson.core:jackson-annotations:2.13.2",
       "unresolved": false,
       "groupId": "com.fasterxml.jackson.core",
       "artifactId": "jackson-annotations",
-      "version": "2.13.1",
-      "baseVersion": "2.13.1",
+      "version": "2.13.2",
+      "baseVersion": "2.13.2",
       "type": "jar",
       "optional": false,
       "scope": "compile"

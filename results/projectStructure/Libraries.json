@@ -217,9 +217,9 @@
       ]
     },
     {
-      "name": "Maven: net.dv8tion:JDA:5.0.0-alpha.9",
+      "name": "Maven: net.dv8tion:JDA:5.0.0-alpha.11",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/net/dv8tion/JDA/5.0.0-alpha.9/JDA-5.0.0-alpha.9.jar!/"
+        "jar://$MAVEN_REPOSITORY$/net/dv8tion/JDA/5.0.0-alpha.11/JDA-5.0.0-alpha.11.jar!/"
       ]
     },
     {
@@ -229,9 +229,9 @@
       ]
     },
     {
-      "name": "Maven: org.jetbrains:annotations:16.0.1",
+      "name": "Maven: org.jetbrains:annotations:23.0.0",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/org/jetbrains/annotations/16.0.1/annotations-16.0.1.jar!/"
+        "jar://$MAVEN_REPOSITORY$/org/jetbrains/annotations/23.0.0/annotations-23.0.0.jar!/"
       ]
     },
     {
@@ -241,9 +241,9 @@
       ]
     },
     {
-      "name": "Maven: org.apache.commons:commons-collections4:4.1",
+      "name": "Maven: org.apache.commons:commons-collections4:4.4",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-collections4/4.1/commons-collections4-4.1.jar!/"
+        "jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-collections4/4.4/commons-collections4-4.4.jar!/"
       ]
     },
     {
@@ -253,9 +253,15 @@
       ]
     },
     {
-      "name": "Maven: com.fasterxml.jackson.core:jackson-databind:2.10.1",
+      "name": "Maven: com.fasterxml.jackson.core:jackson-core:2.13.2",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.10.1/jackson-databind-2.10.1.jar!/"
+        "jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.13.2/jackson-core-2.13.2.jar!/"
+      ]
+    },
+    {
+      "name": "Maven: com.fasterxml.jackson.core:jackson-databind:2.13.2.2",
+      "roots": [
+        "jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.13.2.2/jackson-databind-2.13.2.2.jar!/"
       ]
     },
     {
@@ -277,21 +283,15 @@
       ]
     },
     {
-      "name": "Maven: com.jaoafa:jaosuperachievement2:2.5.16",
+      "name": "Maven: com.jaoafa:jaosuperachievement2:2.5.22",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/com/jaoafa/jaosuperachievement2/2.5.16/jaosuperachievement2-2.5.16.jar!/"
+        "jar://$MAVEN_REPOSITORY$/com/jaoafa/jaosuperachievement2/2.5.22/jaosuperachievement2-2.5.22.jar!/"
       ]
     },
     {
-      "name": "Maven: org.apache.commons:commons-lang3:3.12.0",
+      "name": "Maven: com.maxmind.geoip2:geoip2:3.0.1",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.12.0/commons-lang3-3.12.0.jar!/"
-      ]
-    },
-    {
-      "name": "Maven: com.maxmind.geoip2:geoip2:3.0.0",
-      "roots": [
-        "jar://$MAVEN_REPOSITORY$/com/maxmind/geoip2/geoip2/3.0.0/geoip2-3.0.0.jar!/"
+        "jar://$MAVEN_REPOSITORY$/com/maxmind/geoip2/geoip2/3.0.1/geoip2-3.0.1.jar!/"
       ]
     },
     {
@@ -301,15 +301,9 @@
       ]
     },
     {
-      "name": "Maven: com.fasterxml.jackson.core:jackson-core:2.13.1",
+      "name": "Maven: com.fasterxml.jackson.core:jackson-annotations:2.13.2",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.13.1/jackson-core-2.13.1.jar!/"
-      ]
-    },
-    {
-      "name": "Maven: com.fasterxml.jackson.core:jackson-annotations:2.13.1",
-      "roots": [
-        "jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.13.1/jackson-annotations-2.13.1.jar!/"
+        "jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.13.2/jackson-annotations-2.13.2.jar!/"
       ]
     },
     {
