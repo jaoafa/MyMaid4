@@ -47,7 +47,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.0-SNAPSHOT</version>
+                <version>3.3.0</version>
                 <configuration>
                     <finalName>MyMaid4</finalName>
                     <relocations>
@@ -163,7 +163,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>5.0.0-alpha.9</version>
+            <version>5.0.0-alpha.11</version>
             <exclusions>
                 <exclusion>
                     <groupId>club.minnced</groupId>
@@ -187,13 +187,13 @@
         <dependency>
             <groupId>com.jaoafa</groupId>
             <artifactId>jaosuperachievement2</artifactId>
-            <version>2.5.16</version>
+            <version>2.5.22</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.maxmind.geoip2</groupId>
             <artifactId>geoip2</artifactId>
-            <version>3.0.0</version>
+            <version>3.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.vexsoftware</groupId>
