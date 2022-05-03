@@ -526,7 +526,7 @@
       "baseVersion": "2.5.22",
       "type": "jar",
       "optional": false,
-      "scope": "provided"
+      "scope": "compile"
     },
     {
       "ideaName": "Maven: com.maxmind.geoip2:geoip2:3.0.1",
