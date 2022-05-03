@@ -19,14 +19,17 @@ import com.vexsoftware.votifier.model.Vote;
 import com.vexsoftware.votifier.model.VotifierEvent;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.Connection;
@@ -36,6 +39,122 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise {
+    @Override
+    public String description() {
+        return "各サーバリストサイトからの投票通知を受け取り、処理します。";
+    }
+
+    @EventHandler
+    public void onVotifierEvent(VotifierEvent event) {
+        Vote vote = event.getVote();
+        String name = vote.getUsername();
+        String service = vote.getServiceName();
+        Main.getMyMaidLogger().info("onVotifierEvent[MyMaid4]: " + vote.getUsername() + " " + vote.getAddress() + " "
+            + vote.getServiceName() + " " + vote.getTimeStamp());
+        new BukkitRunnable() {
+            public void run() {
+                if (service.equalsIgnoreCase("minecraft.jp")) {
+                    VoteReceive(name);
+                } else if (service.equalsIgnoreCase("monocraft.net")) {
+                    VoteReceiveMonocraftNet(name);
+                }
+            }
+        }.runTaskAsynchronously(Main.getJavaPlugin());
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+
+        new BukkitRunnable() {
+            public void run() {
+                boolean notVoted = false;
+                PlayerVoteDataMCJP mcjp = new PlayerVoteDataMCJP(player);
+                if (!mcjp.isVoted()) {
+                    player.sendMessage(Component.join(JoinConfiguration.noSeparators(),
+                        Component.text("[Vote]"),
+                        Component.space(),
+                        Component.text("まだ minecraft.jp で投票していないようです。", NamedTextColor.GREEN),
+                        Component.text("こちら", NamedTextColor.GREEN, TextDecoration.UNDERLINED)
+                            .hoverEvent(HoverEvent.showText(Component.text("「jaoafa.com/vote」をブラウザで開きます。", NamedTextColor.AQUA)))
+                            .clickEvent(ClickEvent.openUrl("https://jaoafa.com/vote")),
+                        Component.text("から投票をお願いします！")));
+                    notVoted = true;
+                }
+
+                PlayerVoteDataMono mono = new PlayerVoteDataMono(player);
+                if (!mono.isVoted()) {
+                    player.sendMessage(Component.join(JoinConfiguration.noSeparators(),
+                        Component.text("[Vote]"),
+                        Component.space(),
+                        Component.text("まだ monocraft.net で投票していないようです。", NamedTextColor.GREEN),
+                        Component.text("こちら", NamedTextColor.GREEN, TextDecoration.UNDERLINED)
+                            .hoverEvent(HoverEvent.showText(Component.text("「jaoafa.com/monovote」をブラウザで開きます。", NamedTextColor.AQUA)))
+                            .clickEvent(ClickEvent.openUrl("https://jaoafa.com/monovote")),
+                        Component.text("から投票をお願いします！")));
+                    notVoted = true;
+                }
+
+                if (notVoted) {
+                    player.sendMessage(Component.join(JoinConfiguration.noSeparators(),
+                        Component.text("[Vote]"),
+                        Component.space(),
+                        Component.text("投票についての解説は", NamedTextColor.GREEN),
+                        Component.text("こちら", NamedTextColor.GREEN, TextDecoration.UNDERLINED)
+                            .hoverEvent(HoverEvent.showText(Component.text("「jaoafa.com/blog/how-to-vote」をブラウザで開きます。", NamedTextColor.AQUA)))
+                            .clickEvent(ClickEvent.openUrl("https://jaoafa.com/blog/how-to-vote")),
+                        Component.text("からご覧ください。")));
+                }
+            }
+        }.runTaskAsynchronously(Main.getJavaPlugin());
+    }
+
+    void VoteReceiveMonocraftNet(String name) {
+        MySQLDBManager MySQLDBManager = MyMaidData.getMainMySQLDBManager();
+        if (MySQLDBManager == null) {
+            missedNotifyMonocraftNet(name, "MySQLDBManager == null");
+            return;
+        }
+        // nameからuuidを取得する
+        UUID uuid = getUUID(MySQLDBManager, name);
+        if (uuid == null) {
+            missedNotifyMonocraftNet(name, "UUID取得失敗");
+            return;
+        }
+
+        OfflinePlayer offplayer = Bukkit.getOfflinePlayer(uuid);
+
+        if (offplayer.getName() == null) {
+            missedNotifyMonocraftNet(name, "OfflinePlayer取得失敗");
+            return;
+        }
+
+        if (!offplayer.getName().equals(name)) {
+            name += "(" + offplayer.getName() + ")";
+        }
+
+        int oldVote;
+        int newVote;
+        boolean isTodayFirst;
+        try {
+            PlayerVoteDataMono pvd = new PlayerVoteDataMono(offplayer);
+            oldVote = pvd.getVoteCount();
+
+            isTodayFirst = PlayerVoteDataMono.isTodayFirstVote();
+
+            pvd.add();
+
+            newVote = pvd.getVoteCount();
+        } catch (SQLException | NullPointerException e) {
+            missedNotifyMonocraftNet(name, e.getClass().getName() + " -> " + e.getMessage() + " (投票数追加失敗)");
+            MyMaidLibrary.reportError(getClass(), e);
+            return;
+        }
+
+        successNotifyMonocraftNet(name, oldVote, newVote);
+        checkjSA(offplayer, isTodayFirst, newVote);
+    }
+
     public static void successNotifyMinecraftJP(String name, int oldVote, int newVote, boolean isAutoFill) {
         String autoFillMessage = isAutoFill ? " [自動補填]" : "";
 
@@ -108,48 +227,6 @@ public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise 
         }
     }
 
-    public static void checkjSA(OfflinePlayer offplayer, boolean isTodayFirst, int newVote) {
-        if (isTodayFirst) {
-            Achievementjao.getAchievementAsync(offplayer, Achievement.EARLYSHAREHOLDER); // 筆頭株主 - 誰よりも早くjao鯖に投票
-        }
-        Achievementjao.getAchievementAsync(offplayer, Achievement.EXPECTEDMEMBER); // 期待の新人 - 初めての投票
-        if (newVote >= 10) {
-            Achievementjao.getAchievementAsync(offplayer, Achievement.STABLESHAREHOLDER); // 安定株主 - 10回投票
-        }
-        if (newVote >= 20) {
-            Achievementjao.getAchievementAsync(offplayer, Achievement.VIPPER); // VIPPERな俺 - 20回投票
-        }
-        if (newVote >= 100) {
-            Achievementjao.getAchievementAsync(offplayer, Achievement.MAJORSHAREHOLDER); // 大株主 - 100回投票
-        }
-        if (newVote >= 1000) {
-            Achievementjao.getAchievementAsync(offplayer, Achievement.LEGENDARYSHAREHOLDER); // 伝説の株主 - 1000回投票
-        }
-    }
-
-    @Override
-    public String description() {
-        return "各サーバリストサイトからの投票通知を受け取り、処理します。";
-    }
-
-    @EventHandler
-    public void onVotifierEvent(VotifierEvent event) {
-        Vote vote = event.getVote();
-        String name = vote.getUsername();
-        String service = vote.getServiceName();
-        Main.getMyMaidLogger().info("onVotifierEvent[MyMaid4]: " + vote.getUsername() + " " + vote.getAddress() + " "
-            + vote.getServiceName() + " " + vote.getTimeStamp());
-        new BukkitRunnable() {
-            public void run() {
-                if (service.equalsIgnoreCase("minecraft.jp")) {
-                    VoteReceive(name);
-                } else if (service.equalsIgnoreCase("monocraft.net")) {
-                    VoteReceiveMonocraftNet(name);
-                }
-            }
-        }.runTaskAsynchronously(Main.getJavaPlugin());
-    }
-
     void VoteReceive(String name) {
         MySQLDBManager MySQLDBManager = MyMaidData.getMainMySQLDBManager();
         if (MySQLDBManager == null) {
@@ -196,70 +273,31 @@ public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise 
         checkjSA(offplayer, isTodayFirst, newVote);
     }
 
-    void VoteReceiveMonocraftNet(String name) {
-        MySQLDBManager MySQLDBManager = MyMaidData.getMainMySQLDBManager();
-        if (MySQLDBManager == null) {
-            missedNotifyMonocraftNet(name, "MySQLDBManager == null");
-            return;
+    public static void checkjSA(OfflinePlayer offplayer, boolean isTodayFirst, int newVote) {
+        if (isTodayFirst) {
+            Achievementjao.getAchievementAsync(offplayer, Achievement.EARLYSHAREHOLDER); // 筆頭株主 - 誰よりも早くjao鯖に投票
         }
-        // nameからuuidを取得する
-        UUID uuid = getUUID(MySQLDBManager, name);
-        if (uuid == null) {
-            missedNotifyMonocraftNet(name, "UUID取得失敗");
-            return;
+        Achievementjao.getAchievementAsync(offplayer, Achievement.EXPECTEDMEMBER); // 期待の新人 - 初めての投票
+        if (newVote >= 10) {
+            Achievementjao.getAchievementAsync(offplayer, Achievement.STABLESHAREHOLDER); // 安定株主 - 10回投票
         }
-
-        OfflinePlayer offplayer = Bukkit.getOfflinePlayer(uuid);
-
-        if (offplayer.getName() == null) {
-            missedNotifyMonocraftNet(name, "OfflinePlayer取得失敗");
-            return;
+        if (newVote >= 20) {
+            Achievementjao.getAchievementAsync(offplayer, Achievement.VIPPER); // VIPPERな俺 - 20回投票
         }
-
-        if (!offplayer.getName().equals(name)) {
-            name += "(" + offplayer.getName() + ")";
+        if (newVote >= 100) {
+            Achievementjao.getAchievementAsync(offplayer, Achievement.MAJORSHAREHOLDER); // 大株主 - 100回投票
         }
-
-        int oldVote;
-        int newVote;
-        boolean isTodayFirst;
-        try {
-            PlayerVoteDataMono pvd = new PlayerVoteDataMono(offplayer);
-            oldVote = pvd.getVoteCount();
-
-            isTodayFirst = PlayerVoteDataMono.isTodayFirstVote();
-
-            pvd.add();
-
-            newVote = pvd.getVoteCount();
-        } catch (SQLException | NullPointerException e) {
-            missedNotifyMonocraftNet(name, e.getClass().getName() + " -> " + e.getMessage() + " (投票数追加失敗)");
-            MyMaidLibrary.reportError(getClass(), e);
-            return;
+        if (newVote >= 1000) {
+            Achievementjao.getAchievementAsync(offplayer, Achievement.LEGENDARYSHAREHOLDER); // 伝説の株主 - 1000回投票
         }
-
-        successNotifyMonocraftNet(name, oldVote, newVote);
-        checkjSA(offplayer, isTodayFirst, newVote);
     }
 
-    UUID getUUID(MySQLDBManager MySQLDBManager, String name) {
-        UUID uuid = null;
-        try {
-            Connection conn = MySQLDBManager.getConnection();
-            PreparedStatement statement = conn
-                .prepareStatement("SELECT * FROM login WHERE player = ? ORDER BY id DESC");
-            statement.setString(1, name);
+    void successNotifyMinecraftJP(String name, int oldVote, int newVote) {
+        successNotifyMinecraftJP(name, oldVote, newVote, false);
+    }
 
-            ResultSet res = statement.executeQuery();
-            if (res.next()) {
-                uuid = UUID.fromString(res.getString("uuid"));
-            }
-            return uuid;
-        } catch (SQLException e) {
-            missedNotify(name, e.getClass().getName() + " -> " + e.getMessage());
-            MyMaidLibrary.reportError(getClass(), e);
-            return null;
-        }
+    void successNotifyMonocraftNet(String name, int oldVote, int newVote) {
+        successNotifyMonocraftNet(name, oldVote, newVote, false);
     }
 
     void missedNotify(String name, String reason) {
@@ -305,11 +343,23 @@ public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise 
             .queue();
     }
 
-    void successNotifyMinecraftJP(String name, int oldVote, int newVote) {
-        successNotifyMinecraftJP(name, oldVote, newVote, false);
-    }
+    UUID getUUID(MySQLDBManager MySQLDBManager, String name) {
+        UUID uuid = null;
+        try {
+            Connection conn = MySQLDBManager.getConnection();
+            PreparedStatement statement = conn
+                .prepareStatement("SELECT * FROM login WHERE player = ? ORDER BY id DESC");
+            statement.setString(1, name);
 
-    void successNotifyMonocraftNet(String name, int oldVote, int newVote) {
-        successNotifyMonocraftNet(name, oldVote, newVote, false);
+            ResultSet res = statement.executeQuery();
+            if (res.next()) {
+                uuid = UUID.fromString(res.getString("uuid"));
+            }
+            return uuid;
+        } catch (SQLException e) {
+            missedNotify(name, e.getClass().getName() + " -> " + e.getMessage());
+            MyMaidLibrary.reportError(getClass(), e);
+            return null;
+        }
     }
 }
