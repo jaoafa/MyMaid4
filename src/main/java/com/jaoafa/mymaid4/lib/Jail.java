@@ -25,6 +25,13 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.data.Powerable;
+import org.bukkit.block.data.type.Door;
+import org.bukkit.block.data.type.Gate;
+import org.bukkit.block.data.type.Switch;
+import org.bukkit.block.data.type.TrapDoor;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
@@ -34,6 +41,14 @@ import java.util.*;
  * Jail Library
  */
 public class Jail {
+    public static final List<JailAction> actionWhitelist = List.of(
+        new JailAction(Action.RIGHT_CLICK_BLOCK, (event) -> event.getClickedBlock() != null && event.getClickedBlock().getType().data == Door.class),
+        new JailAction(Action.RIGHT_CLICK_BLOCK, (event) -> event.getClickedBlock() != null && event.getClickedBlock().getType().data == TrapDoor.class),
+        new JailAction(Action.RIGHT_CLICK_BLOCK, (event) -> event.getClickedBlock() != null && event.getClickedBlock().getType().data == Gate.class),
+        new JailAction(Action.RIGHT_CLICK_BLOCK, (event) -> event.getClickedBlock() != null && event.getClickedBlock().getType().data == Powerable.class),
+        new JailAction(Action.RIGHT_CLICK_BLOCK, (event) -> event.getClickedBlock() != null && event.getClickedBlock().getType().data == Switch.class)
+    );
+
     static final Map<UUID, Jail> cache = new HashMap<>();
 
     public static Map<UUID, Boolean> hasWarned = new HashMap<>();
@@ -486,5 +501,12 @@ public class Jail {
         CACHED,
         /** 不明なエラー */
         UNKNOWN
+    }
+
+    public record JailAction(Action action, Checker checker) {
+    }
+
+    public interface Checker {
+        boolean check(PlayerInteractEvent event);
     }
 }

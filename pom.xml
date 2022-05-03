@@ -58,10 +58,18 @@
                     </relocations>
                     <filters>
                         <filter>
+                            <artifact>com.jaoafa:jaosuperachievement2</artifact>
+                            <excludes>
+                                <exclude>plugin.yml</exclude>
+                            </excludes>
+                        </filter>
+                        <filter>
                             <artifact>*:*</artifact>
                             <excludes>
+                                <exclude>module-info.class</exclude>
+                                <exclude>*module-info</exclude>
                                 <exclude>META-INF*</exclude>
-                                <exclude>META-INF/*</exclude>
+                                <exclude>META-INF/**</exclude>
                                 <exclude>LICENSE</exclude>
                             </excludes>
                         </filter>
@@ -77,10 +85,19 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <filters>
                                 <filter>
+                                    <artifact>com.jaoafa:jaosuperachievement2</artifact>
+                                    <excludes>
+                                        <exclude>plugin.yml</exclude>
+                                    </excludes>
+                                </filter>
+                                <filter>
                                     <artifact>*:*</artifact>
                                     <excludes>
                                         <exclude>module-info.class</exclude>
+                                        <exclude>*module-info</exclude>
                                         <exclude>META-INF*</exclude>
+                                        <exclude>META-INF/**</exclude>
+                                        <exclude>LICENSE</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
@@ -188,7 +205,6 @@
             <groupId>com.jaoafa</groupId>
             <artifactId>jaosuperachievement2</artifactId>
             <version>2.5.22</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.maxmind.geoip2</groupId>

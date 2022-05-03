@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -233,8 +234,23 @@ public class Event_EBan implements Listener, EventPremise {
     public void onPotionSplashEvent(PotionSplashEvent event) {
         if (!(event.getEntity().getShooter() instanceof Player player)) return;
         EBan eban = EBan.getInstance(player);
-        // EBanされてる
-        if (!eban.isStatus()) return;
+        if (!eban.isStatus()) return; // EBanされてる
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        EBan eban = EBan.getInstance(player);
+        if (!eban.isStatus()) { // EBanされてる
+            return;
+        }
+        if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_AIR) {
+            return; // 空気に対するアクションは無視
+        }
+        if (Jail.actionWhitelist.stream().noneMatch(action -> action.action() == event.getAction() && action.checker().check(event))) {
+            return; // アクションがホワイトリストにない場合は無視
+        }
         event.setCancelled(true);
     }
 

@@ -26,6 +26,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -273,6 +274,22 @@ public class Event_Jail implements Listener, EventPremise {
         Jail jail = Jail.getInstance(player);
         if (!jail.isStatus()) { // Jailされてる
             return;
+        }
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        Jail jail = Jail.getInstance(player);
+        if (!jail.isStatus()) { // Jailされてる
+            return;
+        }
+        if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_AIR) {
+            return; // 空気に対するアクションは無視
+        }
+        if (Jail.actionWhitelist.stream().noneMatch(action -> action.action() == event.getAction() && action.checker().check(event))) {
+            return; // アクションがホワイトリストにない場合は無視
         }
         event.setCancelled(true);
     }
