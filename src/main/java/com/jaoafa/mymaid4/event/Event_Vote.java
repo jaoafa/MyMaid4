@@ -68,8 +68,6 @@ public class Event_Vote extends MyMaidLibrary implements Listener, EventPremise 
 
         new BukkitRunnable() {
             public void run() {
-                Bukkit.getServer().sendMessage(Component.text("checking..."));
-
                 boolean notVoted = false;
                 PlayerVoteDataMCJP mcjp = new PlayerVoteDataMCJP(player);
                 if (!mcjp.isVoted()) {
