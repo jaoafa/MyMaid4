@@ -732,4 +732,8 @@ public class MyMaidLibrary {
         }
         return jaoium;
     }
+
+    public void wrapGetAchievement(Player player, String achievement) {
+
+    }
 }
