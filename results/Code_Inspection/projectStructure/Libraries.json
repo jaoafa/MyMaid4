@@ -3,7 +3,7 @@
     {
       "name": "Maven: io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/io/papermc/paper/paper-api/1.18.2-R0.1-SNAPSHOT/paper-api-1.18.2-R0.1-20220430.204854-101.jar!/"
+        "jar://$MAVEN_REPOSITORY$/io/papermc/paper/paper-api/1.18.2-R0.1-SNAPSHOT/paper-api-1.18.2-R0.1-20220504.223801-102.jar!/"
       ]
     },
     {
@@ -283,9 +283,9 @@
       ]
     },
     {
-      "name": "Maven: com.jaoafa:jaosuperachievement2:2.5.22",
+      "name": "Maven: com.jaoafa:jaosuperachievement2:2.5.23",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/com/jaoafa/jaosuperachievement2/2.5.22/jaosuperachievement2-2.5.22.jar!/"
+        "jar://$MAVEN_REPOSITORY$/com/jaoafa/jaosuperachievement2/2.5.23/jaosuperachievement2-2.5.23.jar!/"
       ]
     },
     {
