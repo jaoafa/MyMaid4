@@ -72,25 +72,14 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
             return;
         }
 
-        Country country = null;
-        String countryName = null;
-        City city = null;
-        String cityName = null;
-        if (!(ia.isAnyLocalAddress() || ia.isLoopbackAddress()) && !ip.startsWith("192.168")) {
-            CityResponse res = Event_PlayerCheckPreLogin.getGeoIP(ia);
-            if (res != null) {
-                country = res.getCountry();
-                countryName = country.getName();
-                city = res.getCity();
-                cityName = city.getName();
-            }
+        GeoIP geoip = !(ia.isAnyLocalAddress() || ia.isLoopbackAddress()) && !ip.startsWith("192.168") ?
+            getGeoIP(ia) : null;
+        if (geoip != null && geoip.country() != null && geoip.city() != null) {
+            Main.getJavaPlugin().getLogger().info("Country: " + geoip.country().getName() + " (" + geoip.country().getIsoCode() + ")");
+            Main.getJavaPlugin().getLogger().info("City: " + geoip.city().getName() + " (" + geoip.city().getGeoNameId() + ")");
         }
 
         String permission = getPermissionMainGroup(Bukkit.getOfflinePlayer(uuid));
-        if (country != null) {
-            Main.getJavaPlugin().getLogger().info("Country: " + country.getName() + " (" + country.getIsoCode() + ")");
-            Main.getJavaPlugin().getLogger().info("City: " + city.getName() + " (" + city.getGeoNameId() + ")");
-        }
         Main.getJavaPlugin().getLogger().info("Permission: " + permission);
 
         // 「jaotan」というプレイヤー名は禁止
@@ -103,16 +92,20 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
         }
 
         // 日本国外からのアクセスをすべて規制
-        if (country != null && !countryName.equalsIgnoreCase("Japan")) {
+        if (geoip == null || geoip.country() == null || !geoip.country().getIsoCode().equals("JP")) {
+            // Unknown
+            // Japan
+            // Japan Tokyo
+            String location = (geoip != null && geoip.country() != null && geoip.city() != null) ?
+                geoip.country().getName() + " " + geoip.city().getName() :
+                (geoip != null && geoip.country() != null) ? geoip.country().getName() : "Unknown";
+
             disallow(event, Component.text().append(
                 Component.text("海外からのログインと判定されました。", NamedTextColor.WHITE),
                 Component.text("当サーバでは、日本国外からのログインを禁止しています。", NamedTextColor.AQUA)
-            ).build(), "Region restricted", countryName + " " + cityName);
-            return;
+            ).build(), "Region restricted", location);
         }
 
-        String finalCountry = countryName;
-        String finalCity = cityName;
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -126,8 +119,8 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
                         statement.setString(2, uuid.toString()); // uuid
                         statement.setString(3, ip); // ip
                         statement.setString(4, host); // host
-                        statement.setString(5, finalCountry); // countryName
-                        statement.setString(6, finalCity); // city
+                        statement.setString(5, geoip != null && geoip.country() != null ? geoip.country().getName() : null); // countryName
+                        statement.setString(6, geoip != null && geoip.city() != null ? geoip.city().getName() : null); // city
                         statement.setString(7, permission); // permission
                         statement.executeUpdate();
                     }
@@ -138,7 +131,7 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
         }.runTaskAsynchronously(Main.getJavaPlugin());
     }
 
-    private static CityResponse getGeoIP(InetAddress ia) {
+    private static GeoIP getGeoIP(InetAddress ia) {
         JavaPlugin plugin = Main.getJavaPlugin();
         File file = new File(plugin.getDataFolder(), "GeoLite2-City.mmdb");
         if (!file.exists()) {
@@ -146,32 +139,25 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
             return null;
         }
 
-        try {
-            DatabaseReader dr = new DatabaseReader.Builder(file).build();
-            return dr.city(ia);
+        try (DatabaseReader dr = new DatabaseReader.Builder(file).build()) {
+            CityResponse response = dr.city(ia);
+            return new GeoIP(response.getCountry(), response.getCity());
         } catch (IOException e) {
-            plugin.getLogger().warning("IOException catched. getGeoIP failed.");
+            plugin.getLogger().warning("IOException caught. getGeoIP failed.");
             MyMaidLibrary.reportError(Event_PlayerCheckPreLogin.class, e);
             return null;
         } catch (GeoIp2Exception e) {
-            plugin.getLogger().warning("GeoIp2Exception catched. getGeoIP failed.");
+            plugin.getLogger().warning("GeoIp2Exception caught. getGeoIP failed.");
             MyMaidLibrary.reportError(Event_PlayerCheckPreLogin.class, e);
             return null;
         }
     }
 
+    record GeoIP(Country country, City city) {
+    }
+
     private static void disallow(AsyncPlayerPreLoginEvent event, Component message, String reason) {
-        Component component = Component.text().append(
-            Component.text("[Login Denied! - Reason: " + reason + "]", NamedTextColor.RED),
-            Component.newline(),
-            message,
-            Component.newline(),
-            Component.text("もしこの判定が誤判定と思われる場合は、公式Discordへお問い合わせください。", NamedTextColor.WHITE)
-        ).build();
-        event.disallow(Result.KICK_FULL, component);
-        if (MyMaidData.getJaotanChannel() == null) return;
-        MyMaidData.getJaotanChannel().sendMessage(
-            "[MyMaid4-PreLoginCheck] " + event.getName() + " -> `" + reason + "`").queue();
+        disallow(event, message, reason, null);
     }
 
     private static void disallow(AsyncPlayerPreLoginEvent event, Component message, String reason, String data) {
@@ -184,8 +170,10 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
         ).build();
         event.disallow(Result.KICK_FULL, component);
         if (MyMaidData.getJaotanChannel() == null) return;
-        MyMaidData.getJaotanChannel().sendMessage(
-            "[MyMaid4-PreLoginCheck] " + event.getName() + " -> `" + reason + " (" + data + ")`").queue();
+        String content = data != null ?
+            "[MyMaid4-PreLoginCheck] " + event.getName() + " -> `" + reason + " (" + data + ")`" :
+            "[MyMaid4-PreLoginCheck] " + event.getName() + " -> `" + reason + "`";
+        MyMaidData.getJaotanChannel().sendMessage(content).queue();
     }
 
     @Override
