@@ -24,6 +24,7 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;
@@ -411,14 +412,27 @@ public class MyMaidLibrary {
      * @param sendToDiscord Discordにも送信するか
      */
     public static void chatFake(NamedTextColor color, String name, String text, boolean sendToDiscord) {
+        chatFake(color, name, Component.text(text), sendToDiscord);
+    }
+
+    /**
+     * フェイクのチャットを送信します。
+     *
+     * @param color         四角色
+     * @param name          プレイヤー名
+     * @param component     テキスト
+     * @param sendToDiscord Discordにも送信するか
+     */
+    public static void chatFake(NamedTextColor color, String name, Component component, boolean sendToDiscord) {
         Bukkit.getServer().sendMessage(Component.text().append(
             Component.text("[" + sdfTimeFormat(new Date()) + "]", NamedTextColor.GRAY),
             Component.text("■", color),
             Component.text(name, NamedTextColor.WHITE),
             Component.text(":"),
             Component.space(),
-            Component.text(text)
+            component
         ));
+        String text = PlainTextComponentSerializer.plainText().serialize(component);
         if (sendToDiscord && MyMaidData.getServerChatChannel() != null)
             MyMaidData.getServerChatChannel()
                 .sendMessage("**" + DiscordEscape(name) + "**: " + DiscordEscape(ChatColor.stripColor(text)))
