@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -13,6 +13,9 @@ package com.jaoafa.mymaid4.event;
 
 import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.JoinConfiguration;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,6 +38,9 @@ public class Event_DVNotSpectator extends MyMaidLibrary implements Listener, Eve
         if (isAMR(player)) {
             return;
         }
+        player.sendMessage(Component.join(JoinConfiguration.noSeparators(),
+            Component.text("[GAMEMODE] "),
+            Component.text("あなたはゲームモードをスペクテイターに切り替えることができません。", NamedTextColor.GREEN)));
         event.setCancelled(true);
     }
 }

@@ -49,6 +49,7 @@ public class Cmd_Feedback extends MyMaidLibrary implements CommandPremise {
     public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
             "feedback",
+            List.of("report"),
             "フィードバックを行います。GitHub jaoafa/jao-Minecraft-ServerにIssueを作成します。"
         );
     }
