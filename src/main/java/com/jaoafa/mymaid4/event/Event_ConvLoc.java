@@ -53,6 +53,10 @@ public class Event_ConvLoc extends MyMaidLibrary implements Listener, EventPremi
             return;
         }
 
+        if (!player.hasPermission("mymaid.convloc")) {
+            return;
+        }
+
         String displayName = PlainTextComponentSerializer.plainText().serialize(Objects.requireNonNull(meta.displayName()));
         if (!displayName.equals("ConvLocStick : RELATIVE") && !displayName.equals("ConvLocStick : ABSOLUTE")) {
             return;
