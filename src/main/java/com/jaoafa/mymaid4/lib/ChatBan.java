@@ -222,9 +222,6 @@ public class ChatBan {
         if (!MyMaidData.isMainDBActive()) {
             return Result.DATABASE_NOT_ACTIVE;
         }
-        if (isStatus()) {
-            return Result.ALREADY;
-        }
         try {
             Connection conn = MyMaidData.getMainMySQLDBManager().getConnection();
             PreparedStatement stmt = conn
