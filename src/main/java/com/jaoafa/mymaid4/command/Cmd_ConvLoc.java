@@ -64,13 +64,13 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandPremise {
                 .senderType(Player.class)
                 .build(),
             builder
-                .meta(CommandMeta.DESCRIPTION, "見ているコマンドブロックのコマンドを「相対座標(relative)」に変換します。<relative|absolute>は短縮できます。")
+                .meta(CommandMeta.DESCRIPTION, "見ているコマンドブロックのコマンドを「相対座標(relative)」に変換します。relativeは短縮できます。")
                 .literal("relative")
                 .senderType(Player.class)
                 .handler(this::lookingChangeToRelative)
                 .build(),
             builder
-                .meta(CommandMeta.DESCRIPTION, "見ているコマンドブロックのコマンドを「絶対座標(absolute)」に変換します。<relative|absolute>は短縮できます。")
+                .meta(CommandMeta.DESCRIPTION, "見ているコマンドブロックのコマンドを「絶対座標(absolute)」に変換します。absoluteは短縮できます。")
                 .literal("absolute")
                 .senderType(Player.class)
                 .handler(this::lookingChangeToAbsolute)
@@ -87,7 +87,7 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandPremise {
                 .senderType(Player.class)
                 .build(),
             builder
-                .meta(CommandMeta.DESCRIPTION, "WorldEditで選択した範囲にあるコマンドブロックの座標を相対/絶対座標に変換します。")
+                .meta(CommandMeta.DESCRIPTION, "WorldEditで選択した範囲にあるコマンドブロックの座標を「相対座標(relative)」か「絶対座標(absolute)」のいずれかに変換します。")
                 .literal("select")
                 .argument(StringArgument
                     .<CommandSender>newBuilder("type")
