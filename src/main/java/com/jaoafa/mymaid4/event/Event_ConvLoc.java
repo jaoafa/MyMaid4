@@ -71,5 +71,6 @@ public class Event_ConvLoc extends MyMaidLibrary implements Listener, EventPremi
         }
 
         new ConvLoc().replace(player, Collections.singletonList(block), isRelative);
+        event.setCancelled(true);
     }
 }

@@ -32,6 +32,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -135,13 +136,14 @@ public class Cmd_ConvLoc extends MyMaidLibrary implements CommandPremise {
         ItemStack is = new ItemStack(Material.STICK);
         ItemMeta meta = is.getItemMeta();
         meta.displayName(Component.text("ConvLocStick : %s".formatted("relative".startsWith(type.toLowerCase()) ? "RELATIVE" : "ABSOLUTE"), NamedTextColor.YELLOW));
+        meta.addEnchant(Enchantment.DURABILITY, 1, false);
         is.setItemMeta(meta);
 
         PlayerInventory inv = player.getInventory();
         ItemStack main = inv.getItemInMainHand();
 
         inv.setItemInMainHand(is);
-        SendMessage(player, details(), "コマンドブロックをメインハンドのアイテムと置きかえました。");
+        SendMessage(player, details(), "コマンドブロックのコマンドを" + ("relative".startsWith(type.toLowerCase()) ? "相対" : "絶対") + "座標に変換する棒をメインハンドのアイテムと置きかえました。");
 
         if (main.getType() != Material.AIR) {
             if (player.getInventory().firstEmpty() == -1) {

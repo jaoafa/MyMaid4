@@ -334,6 +334,9 @@ public class ConvLoc {
          * @return 絶対座標数値 (3)
          */
         String toAbsolute(String xyz, int cmb_xyz) {
+            if (xyz.equals("~")) {
+                return String.valueOf(cmb_xyz);
+            }
             Matcher matcher = LOC_PATTERN.matcher(xyz);
             if (!matcher.matches()) {
                 return xyz;
@@ -341,11 +344,11 @@ public class ConvLoc {
             if (matcher.groupCount() != 3) {
                 return xyz;
             }
-            if (matcher.group(1).equals("")) {
+            if (matcher.group(1).isEmpty()) {
                 // 既に絶対座標数値
                 return xyz;
             }
-            double i = matcher.group(3).equals("") ? 0 : Double.parseDouble(matcher.group(3));
+            double i = matcher.group(3).isEmpty() ? 0 : Double.parseDouble(matcher.group(3));
             if (matcher.group(2).equals("-")) {
                 i = cmb_xyz - i;
             } else {
