@@ -91,12 +91,12 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
             return;
         }
 
-        if (geoip != null && geoip.country() == null) {
+        if (geoip != null && (geoip.country() == null || geoip.country().getIsoCode() == null)) {
             // Unknown
             disallow(event, Component.text().append(
                 Component.text("接続元国情報の取得に失敗しました。", NamedTextColor.WHITE),
                 Component.text("当サーバでは、日本国外からのログインを禁止しています。", NamedTextColor.AQUA),
-                Component.text("あなたの接続元国情報を取得できなかったため、ログインを制限いたしました。", NamedTextColor.AQUA)
+                Component.text("あなたの接続元国情報を取得できなかったため、ログインを制限しました。", NamedTextColor.AQUA)
             ).build(), "Region unknown");
         } else if (geoip != null && !geoip.country().getIsoCode().equals("JP")) {
             // 日本国外からのアクセスをすべて規制
