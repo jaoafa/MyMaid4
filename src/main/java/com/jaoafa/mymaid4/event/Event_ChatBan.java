@@ -30,7 +30,19 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.List;
+
 public class Event_ChatBan implements Listener, EventPremise {
+    private final List<String> tell1v1 = List.of(
+        "tell",
+        "msg",
+        "message",
+        "m",
+        "t",
+        "r",
+        "w"
+    );
+
     @Override
     public String description() {
         return "ChatBanに関する各種処理を行います。";
@@ -88,7 +100,8 @@ public class Event_ChatBan implements Listener, EventPremise {
         // ChatBanされてる
         if (!chatBan.isStatus()) return;
         String command = event.getMessage();
-        if (!command.toLowerCase().startsWith("/chatban")) return;
+        if (!command.toLowerCase().startsWith("/chatban") && tell1v1.stream().map(c -> "/" + c).noneMatch(command::startsWith))
+            return;
         event.setCancelled(true);
         player.sendMessage("[ChatBan] " + ChatColor.GREEN + "あなたはコマンドを実行できません。");
         Bukkit.getLogger().info("[ChatBan] " + player.getName() + "==>あなたはコマンドを実行できません。");
