@@ -133,11 +133,13 @@ public class ChatBan {
                 ));
 
                 TextChannel sendTo = getDiscordSendTo();
-                sendTo.sendMessage(
-                    String.format("__**ChatBan[追加]**__: プレイヤー「%s」が「%s」によって「%s」という理由でChatBanされました。",
-                        MyMaidLibrary.DiscordEscape(player.getName()),
-                        MyMaidLibrary.DiscordEscape(banned_by),
-                        MyMaidLibrary.DiscordEscape(reason))).queue();
+                if (sendTo != null) {
+                    sendTo.sendMessage(
+                        String.format("__**ChatBan[追加]**__: プレイヤー「%s」が「%s」によって「%s」という理由でChatBanされました。",
+                            MyMaidLibrary.DiscordEscape(player.getName()),
+                            MyMaidLibrary.DiscordEscape(banned_by),
+                            MyMaidLibrary.DiscordEscape(reason))).queue();
+                }
                 if (MyMaidData.getServerChatChannel() != null) {
                     MyMaidData.getServerChatChannel().sendMessage(
                         String.format("__**ChatBan[追加]**__: プレイヤー「%s」が「%s」によって「%s」という理由でChatBanされました。",

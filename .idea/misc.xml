@@ -13,9 +13,11 @@
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_17" project-jdk-name="corretto-17" project-jdk-type="JavaSDK" />
-  <component name="SwUserDefinedSpecifications">
-    <option name="specTypeByUrl">
-      <map />
+  <component name="WorkspaceManager">
+    <option name="workspaces">
+      <value>
+        <list size="0" />
+      </value>
     </option>
   </component>
 </project>
