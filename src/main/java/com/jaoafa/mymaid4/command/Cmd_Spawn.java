@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -22,11 +22,14 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 public class Cmd_Spawn extends MyMaidLibrary implements CommandPremise {
     @Override
     public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
             "spawn",
+            List.of("hub", "lobby"),
             "スポーン地点にテレポートします。"
         );
     }
