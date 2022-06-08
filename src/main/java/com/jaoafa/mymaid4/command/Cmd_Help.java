@@ -98,10 +98,12 @@ public class Cmd_Help extends MyMaidLibrary implements CommandPremise {
         YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
         String strTitle = yaml.getString("title");
         Component title = strTitle != null ? GsonComponentSerializer.gson().deserialize(strTitle) : Component.text().build();
+        String strAuthor = yaml.getString("author");
+        Component author = strAuthor != null ? GsonComponentSerializer.gson().deserialize(strAuthor) : Component.text().build();
         List<Component> pages = yaml.getStringList("pages").stream()
             .map(page -> GsonComponentSerializer.gson().deserialize(page))
             .collect(Collectors.toList());
-        Book book = meta.title(title).pages(pages);
+        Book book = meta.title(title).author(author).pages(pages);
 
         player.openBook(book);
     }
@@ -120,13 +122,16 @@ public class Cmd_Help extends MyMaidLibrary implements CommandPremise {
         }
         BookMeta meta = (BookMeta) item.getItemMeta();
         Component componentTitle = meta.title();
+        Component componentAuthor = meta.author();
         String title = componentTitle != null ? GsonComponentSerializer.gson().serialize(componentTitle) : null;
+        String author = componentAuthor != null ? GsonComponentSerializer.gson().serialize(componentAuthor) : null;
         List<String> pages = meta.pages().stream()
             .map(page -> GsonComponentSerializer.gson().serialize(page))
             .collect(Collectors.toList());
 
         YamlConfiguration yaml = new YamlConfiguration();
         yaml.set("title", title);
+        yaml.set("author", author);
         yaml.set("pages", pages);
         try {
             yaml.save(file);
