@@ -83,7 +83,7 @@ public class Cmd_Lead extends MyMaidLibrary implements CommandPremise {
                 if (!(e instanceof LivingEntity)) {
                     continue;
                 }
-                if (isEntityLooking(player, (LivingEntity) e)) {
+                if (isEntityLooking(player, e)) {
                     looking = (LivingEntity) e;
                     break;
                 }
@@ -155,7 +155,7 @@ public class Cmd_Lead extends MyMaidLibrary implements CommandPremise {
                 if (!(e instanceof LivingEntity)) {
                     continue;
                 }
-                if (isEntityLooking(player, (LivingEntity) e)) {
+                if (isEntityLooking(player, e)) {
                     looking = (LivingEntity) e;
                     break;
                 }
