@@ -27,9 +27,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class Event_WhereAreYou extends MyMaidLibrary implements Listener, EventPremise {
     List<List<String>> whereAreYou = List.of(
@@ -50,7 +48,6 @@ public class Event_WhereAreYou extends MyMaidLibrary implements Listener, EventP
             "doko"
         )
     );
-    List<UUID> notified = new ArrayList<>();
 
     @Override
     public String description() {
@@ -62,11 +59,6 @@ public class Event_WhereAreYou extends MyMaidLibrary implements Listener, EventP
         Player player = event.getPlayer();
         Component component = event.message();
         String message = PlainTextComponentSerializer.plainText().serialize(component);
-
-        if (notified.contains(player.getUniqueId())) {
-            return;
-        }
-        notified.add(player.getUniqueId());
 
         // 各項目のいずれか、そのうちのすべてに一致する場合
         if (whereAreYou.stream().noneMatch(list -> list.stream().allMatch(message::contains))) {
