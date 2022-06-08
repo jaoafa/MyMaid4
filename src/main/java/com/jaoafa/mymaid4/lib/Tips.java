@@ -89,7 +89,7 @@ public class Tips {
                 tips.put(key, object.getString(key));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(Tips.class, e);
         }
     }
 
@@ -101,7 +101,7 @@ public class Tips {
         try {
             Files.writeString(path, object.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(Tips.class, e);
         }
     }
 }
