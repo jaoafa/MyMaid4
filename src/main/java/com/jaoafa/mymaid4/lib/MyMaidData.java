@@ -49,6 +49,14 @@ public class MyMaidData {
     private static Map<Material, List<String>> creativeInventoryWithNBTs = new HashMap<>(); // material : nbt
     private static final Map<UUID, List<ItemStack>> jaoBoxPrevious = new HashMap<>();
 
+    private static final Map<String, String> aliasWorlds = new HashMap<>() {
+        {
+            put("1", "Jao_Afa");
+            put("2", "Jao_Afa_nether");
+            put("3", "SandBox");
+        }
+    };
+
     @Nullable
     public static TextChannel getReportChannel() {
         return reportChannel;
@@ -269,4 +277,8 @@ public class MyMaidData {
         Bukkit.getServer().getWorld("Jao_Afa"),
         6050, 68, 6050
     );
+
+    public static Map<String, String> getAliasWorlds() {
+        return aliasWorlds;
+    }
 }
