@@ -50,14 +50,14 @@ public class Cmd_Body extends MyMaidLibrary implements CommandPremise {
             SendMessage(player, details(), "手にブロックを持ってください。");
             return;
         }
-        ItemStack head = inv.getHelmet();
-        if (head != null) {
-            if (head.getType() != Material.AIR) {
-                inv.removeItem(head);
+        ItemStack chestplate = inv.getChestplate();
+        if (chestplate != null) {
+            if (chestplate.getType() != Material.AIR) {
+                inv.removeItem(chestplate);
             }
         }
-        inv.setHelmet(hand);
-        player.getInventory().setChestplate(head);
+        inv.setChestplate(hand);
+        player.getInventory().setItemInMainHand(chestplate);
         SendMessage(player, details(), "持っていたブロックを背中に付けました。");
     }
 }
