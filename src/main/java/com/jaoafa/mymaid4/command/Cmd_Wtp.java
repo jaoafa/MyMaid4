@@ -12,6 +12,8 @@
 package com.jaoafa.mymaid4.command;
 
 import cloud.commandframework.ArgumentDescription;
+import cloud.commandframework.arguments.standard.DoubleArgument;
+import cloud.commandframework.arguments.standard.FloatArgument;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.bukkit.parsers.PlayerArgument;
 import cloud.commandframework.context.CommandContext;
@@ -28,12 +30,12 @@ import org.bukkit.entity.Player;
 
 import java.util.Map;
 
-public class Cmd_Wt extends MyMaidLibrary implements CommandPremise {
+public class Cmd_Wtp extends MyMaidLibrary implements CommandPremise {
     @Override
     public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
-            "wt",
-            "他ワールドにテレポートします。"
+            "wtp",
+            "他ワールドの特定座標にテレポートします。"
         );
     }
 
@@ -41,40 +43,46 @@ public class Cmd_Wt extends MyMaidLibrary implements CommandPremise {
     public MyMaidCommand.Cmd register(cloud.commandframework.Command.Builder<CommandSender> builder) {
         return new MyMaidCommand.Cmd(
             builder
-                .meta(CommandMeta.DESCRIPTION, "指定したワールドにテレポートします。")
+                .meta(CommandMeta.DESCRIPTION, "指定したワールドの特定座標にテレポートします。")
                 .senderType(Player.class)
                 .argument(StringArgument
                     .<CommandSender>newBuilder("worldName")
                     .withSuggestionsProvider(MyMaidLibrary::suggestWorldNames), ArgumentDescription.of("ワールド名もしくはワールド番号"))
+                .argument(DoubleArgument.of("x"), ArgumentDescription.of("X座標"))
+                .argument(DoubleArgument.of("y"), ArgumentDescription.of("Y座標"))
+                .argument(DoubleArgument.of("z"), ArgumentDescription.of("Z座標"))
+                .argument(FloatArgument.optional("yaw", 0), ArgumentDescription.of("Yaw"))
+                .argument(FloatArgument.optional("pitch", 0), ArgumentDescription.of("Pitch"))
+                .argument(PlayerArgument.optional("player"), ArgumentDescription.of("テレポートさせるプレイヤー"))
                 .handler(this::worldTeleport)
-                .build(),
-
-            builder
-                .meta(CommandMeta.DESCRIPTION, "指定したプレイヤーを指定したワールドにテレポートさせます。")
-                .argument(StringArgument
-                    .<CommandSender>newBuilder("worldName")
-                    .withSuggestionsProvider(MyMaidLibrary::suggestWorldNames), ArgumentDescription.of("ワールド名もしくはワールド番号"))
-                .argument(PlayerArgument.of("player"), ArgumentDescription.of("テレポートさせるプレイヤー"))
-                .handler(this::worldTeleportPlayer)
                 .build()
         );
     }
 
     void worldTeleport(CommandContext<CommandSender> context) {
+        if (context.getOptional("player").isPresent()) {
+            worldTeleportPlayer(context);
+            return;
+        }
         Player player = (Player) context.getSender();
         String worldName = context.get("worldName");
+        double x = context.get("x");
+        double y = context.get("y");
+        double z = context.get("z");
+        float yaw = context.get("yaw");
+        float pitch = context.get("pitch");
         Map<String, String> worlds = MyMaidData.getAliasWorlds();
         World world = Bukkit.getWorld(worlds.getOrDefault(worldName, worldName));
         if (world == null) {
             SendMessage(player, details(), String.format("「%s」ワールドの取得に失敗しました。", worlds.getOrDefault(worldName, worldName)));
             return;
         }
-        Location loc = new Location(world, 0, 0, 0, 0, 0);
-        int y = getGroundPos(loc);
-        loc = new Location(world, 0, y, 0, 0, 0);
-        loc.add(0.5f, 0f, 0.5f);
+        Location loc = new Location(world, x, y, z, yaw, pitch);
+        if (x % 1 == 0 && y % 1 == 0 && z % 1 == 0) {
+            loc.add(0.5f, 0f, 0.5f);
+        }
         player.teleport(loc);
-        SendMessage(player, details(), String.format("「%s」ワールドにテレポートしました。", world.getName()));
+        SendMessage(player, details(), "「%s」ワールドの%f %f %fにテレポートしました。".formatted(worldName, x, y, z));
     }
 
 
@@ -89,18 +97,23 @@ public class Cmd_Wt extends MyMaidLibrary implements CommandPremise {
             return;
         }
         String worldName = context.get("worldName");
+        double x = context.get("x");
+        double y = context.get("y");
+        double z = context.get("z");
+        float yaw = context.get("yaw");
+        float pitch = context.get("pitch");
         Map<String, String> worlds = MyMaidData.getAliasWorlds();
         World world = Bukkit.getWorld(worlds.getOrDefault(worldName, worldName));
         if (world == null) {
             SendMessage(player, details(), String.format("「%s」ワールドの取得に失敗しました。", worlds.getOrDefault(worldName, worldName)));
             return;
         }
-        Location loc = new Location(world, 0, 0, 0, 0, 0);
-        int y = getGroundPos(loc);
-        loc = new Location(world, 0, y, 0, 0, 0);
-        loc.add(0.5f, 0f, 0.5f);
+        Location loc = new Location(world, x, y, z, yaw, pitch);
+        if (x % 1 == 0 && y % 1 == 0 && z % 1 == 0) {
+            loc.add(0.5f, 0f, 0.5f);
+        }
         player.teleport(loc);
-        SendMessage(player, details(), String.format("「%s」ワールドにテレポートしました。", world.getName()));
-        SendMessage(sender, details(), String.format("プレイヤー「%s」を「%s」ワールドにテレポートさせました。", player, world.getName()));
+        SendMessage(player, details(), "「%s」ワールドの%f %f %fにテレポートしました。".formatted(worldName, x, y, z));
+        SendMessage(sender, details(), "プレイヤー「%s」を「%s」ワールドの%f %f %fにテレポートしました。".formatted(player, worldName, x, y, z));
     }
 }
