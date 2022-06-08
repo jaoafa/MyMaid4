@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -51,30 +51,42 @@ public class Cmd_Elytra extends MyMaidLibrary implements CommandPremise {
         PlayerInventory inv = player.getInventory();
         ItemStack offhand = inv.getItemInOffHand();
 
-        inv.setItemInOffHand(fireworks);
-        SendMessage(player, details(), "花火をオフハンドのアイテムと置きかえました。");
+        boolean changed = false;
 
-        if (offhand.getType() != Material.AIR) {
-            if (player.getInventory().firstEmpty() == -1) {
-                player.getLocation().getWorld().dropItem(player.getLocation(), offhand);
-                SendMessage(player, details(), "インベントリがいっぱいだったため、既にオフハンドに持っていたアイテムはあなたの足元にドロップしました。");
-            } else {
-                inv.addItem(offhand);
+        if (offhand.getType() != fireworks.getType()) {
+            inv.setItemInOffHand(fireworks);
+            SendMessage(player, details(), "花火をオフハンドのアイテムと置きかえました。");
+            changed = true;
+
+            if (offhand.getType() != Material.AIR) {
+                if (player.getInventory().firstEmpty() == -1) {
+                    player.getLocation().getWorld().dropItem(player.getLocation(), offhand);
+                    SendMessage(player, details(), "インベントリがいっぱいだったため、既にオフハンドに持っていたアイテムはあなたの足元にドロップしました。");
+                } else {
+                    inv.addItem(offhand);
+                }
             }
         }
 
         ItemStack chestplate = inv.getChestplate();
 
-        inv.setChestplate(elytra);
-        SendMessage(player, details(), "エリトラを装備しました。");
+        if (chestplate == null || chestplate.getType() != elytra.getType()) {
+            inv.setChestplate(elytra);
+            SendMessage(player, details(), "エリトラを装備しました。");
+            changed = true;
 
-        if (chestplate != null && chestplate.getType() != Material.AIR) {
-            if (player.getInventory().firstEmpty() == -1) {
-                player.getLocation().getWorld().dropItem(player.getLocation(), chestplate);
-                SendMessage(player, details(), "インベントリがいっぱいだったため、既に胴体につけていたアイテムはあなたの足元にドロップしました。");
-            } else {
-                inv.addItem(chestplate);
+            if (chestplate != null && chestplate.getType() != Material.AIR) {
+                if (player.getInventory().firstEmpty() == -1) {
+                    player.getLocation().getWorld().dropItem(player.getLocation(), chestplate);
+                    SendMessage(player, details(), "インベントリがいっぱいだったため、既に胴体につけていたアイテムはあなたの足元にドロップしました。");
+                } else {
+                    inv.addItem(chestplate);
+                }
             }
+        }
+
+        if (!changed) {
+            SendMessage(player, details(), "エリトラと花火は既に装備しています。");
         }
     }
 }
