@@ -50,14 +50,14 @@ public class Cmd_Boots extends MyMaidLibrary implements CommandPremise {
             SendMessage(player, details(), "手にブロックを持ってください。");
             return;
         }
-        ItemStack head = inv.getHelmet();
-        if (head != null) {
-            if (head.getType() != Material.AIR) {
-                inv.removeItem(head);
+        ItemStack boots = inv.getBoots();
+        if (boots != null) {
+            if (boots.getType() != Material.AIR) {
+                inv.removeItem(boots);
             }
         }
-        inv.setHelmet(hand);
-        player.getInventory().setBoots(head);
+        inv.setBoots(hand);
+        player.getInventory().setItemInMainHand(boots);
         SendMessage(player, details(), "持っていたブロックを足に付けました。");
     }
 }
