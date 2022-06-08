@@ -23,6 +23,7 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.luckperms.api.LuckPerms;
@@ -399,7 +400,7 @@ public class MyMaidLibrary {
      * @param name  プレイヤー名
      * @param text  テキスト
      */
-    public static void chatFake(NamedTextColor color, String name, String text) {
+    public static void chatFake(TextColor color, String name, String text) {
         chatFake(color, name, text, true);
     }
 
@@ -411,7 +412,7 @@ public class MyMaidLibrary {
      * @param text          テキスト
      * @param sendToDiscord Discordにも送信するか
      */
-    public static void chatFake(NamedTextColor color, String name, String text, boolean sendToDiscord) {
+    public static void chatFake(TextColor color, String name, String text, boolean sendToDiscord) {
         chatFake(color, name, Component.text(text), sendToDiscord);
     }
 
@@ -423,7 +424,7 @@ public class MyMaidLibrary {
      * @param component     テキスト
      * @param sendToDiscord Discordにも送信するか
      */
-    public static void chatFake(NamedTextColor color, String name, Component component, boolean sendToDiscord) {
+    public static void chatFake(TextColor color, String name, Component component, boolean sendToDiscord) {
         Bukkit.getServer().sendMessage(Component.text().append(
             Component.text("[" + sdfTimeFormat(new Date()) + "]", NamedTextColor.GRAY),
             Component.text("■", color),
