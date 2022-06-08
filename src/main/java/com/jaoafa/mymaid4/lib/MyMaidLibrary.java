@@ -34,6 +34,7 @@ import org.bukkit.*;
 import org.bukkit.block.data.type.Sign;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -715,9 +716,15 @@ public class MyMaidLibrary {
         return dot > 0.99D;
     }
 
-    protected boolean isEntityLooking(Player player, LivingEntity target) {
+    protected boolean isEntityLooking(Player player, Entity target) {
         Location eye = player.getEyeLocation();
-        Vector toEntity = target.getEyeLocation().toVector().subtract(eye.toVector());
+        Location location;
+        if (target instanceof LivingEntity) {
+            location = ((LivingEntity) target).getEyeLocation();
+        } else {
+            location = target.getLocation();
+        }
+        Vector toEntity = location.toVector().subtract(eye.toVector());
         double dot = toEntity.normalize().dot(eye.getDirection());
 
         return dot > 0.99D;
