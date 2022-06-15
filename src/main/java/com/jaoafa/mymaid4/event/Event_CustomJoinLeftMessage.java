@@ -21,12 +21,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Event_CustomJoinMessage extends MyMaidLibrary implements Listener, EventPremise {
+public class Event_CustomJoinLeftMessage extends MyMaidLibrary implements Listener, EventPremise {
     static final List<String> JoinMessages = Arrays.asList(
         "the New Generation", "- Super", "Hyper", "Ultra", "Extreme", "Insane", "Gigantic", "Epic", "Amazing", "Beautiful",
         "Special", "Swag", "Lunatic", "Exotic", "God", "Hell", "Heaven", "Mega", "Giga", "Tera", "Refined", "Sharp",
@@ -39,7 +40,7 @@ public class Event_CustomJoinMessage extends MyMaidLibrary implements Listener, 
 
     @Override
     public String description() {
-        return "独自のログインメッセージを表示するように制御します。";
+        return "独自のログイン・ログアウトメッセージを表示するように制御します。";
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -47,6 +48,12 @@ public class Event_CustomJoinMessage extends MyMaidLibrary implements Listener, 
         Player player = event.getPlayer();
         Component joinMessage = getPlayerJoinMessage(player);
         if (joinMessage != null) event.joinMessage(joinMessage);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onEvent_LeftChangeMessage(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        event.quitMessage(Component.text("%s left the game.".formatted(player.getName()), NamedTextColor.YELLOW));
     }
 
     String getJoinMessage(int count) {
@@ -67,7 +74,7 @@ public class Event_CustomJoinMessage extends MyMaidLibrary implements Listener, 
     Component getPlayerJoinMessage(Player player) {
         int count = getVoteCount(player);
         if (count < 20) {
-            return null;
+            return Component.text("%s joined the game.".formatted(player.getName()), NamedTextColor.YELLOW);
         }
         String rankText = getJoinMessage(count);
         String customMessage = getCustomMessage(player);
