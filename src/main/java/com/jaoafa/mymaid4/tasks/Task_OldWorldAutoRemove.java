@@ -53,7 +53,7 @@ public class Task_OldWorldAutoRemove extends BukkitRunnable {
                 nextRemoveWorlds.add(world.getName());
                 return;
             }
-            sendMessageOP(Component.text("ワールド「%s」をアンロードします。"));
+            sendMessageOP(Component.text("ワールド「%s」をアンロードします。".formatted(world.getName())));
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mv remove %s".formatted(world.getName()));
         });
     }
