@@ -72,15 +72,17 @@ public class Event_jaoBox extends MyMaidLibrary implements Listener, EventPremis
         }
 
         List<ItemStack> oldItems = MyMaidData.getBoxPrevious(player.getUniqueId());
-        for (int i = 0; i < inventory.getSize(); i++) {
-            ItemStack oldItem = oldItems.get(i);
-            ItemStack newItem = inventory.getItem(i);
+        if (oldItems.size() != 0) {
+            for (int i = 0; i < inventory.getSize(); i++) {
+                ItemStack oldItem = oldItems.get(i);
+                ItemStack newItem = inventory.getItem(i);
 
-            if (Objects.equals(oldItem, newItem)) {
-                continue;
+                if (Objects.equals(oldItem, newItem)) {
+                    continue;
+                }
+
+                logging(player, i, oldItem, newItem);
             }
-
-            logging(player, i, oldItem, newItem);
         }
 
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CHEST_LOCKED, 1.0F, 1.0F);
