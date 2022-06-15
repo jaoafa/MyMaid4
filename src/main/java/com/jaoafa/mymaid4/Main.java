@@ -27,6 +27,7 @@ import cloud.commandframework.minecraft.extras.MinecraftHelp;
 import cloud.commandframework.paper.PaperCommandManager;
 import com.jaoafa.mymaid4.httpServer.MyMaidServer;
 import com.jaoafa.mymaid4.lib.*;
+import com.jaoafa.mymaid4.tasks.Task_OldWorldAutoRemove;
 import com.jaoafa.mymaid4.tasks.Task_Pigeon;
 import com.jaoafa.mymaid4.tasks.Task_TabList;
 import com.rollbar.notifier.Rollbar;
@@ -313,7 +314,8 @@ public final class Main extends JavaPlugin {
                     commands.put(details);
 
                     getLogger().info(String.format("%s: コマンドの登録に成功しました。", commandName));
-                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | NoClassDefFoundError e) {
+                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                         InvocationTargetException | NoClassDefFoundError e) {
                     getLogger().warning(String.format("%s: コマンドの登録に失敗しました。", commandName));
                     MyMaidLibrary.reportError(getClass(), e);
                 }
@@ -385,7 +387,8 @@ public final class Main extends JavaPlugin {
                         getLogger().warning(String.format("%s: Listener を実装していないため、登録できませんでした。[1]", clazz.getSimpleName()));
                         MyMaidLibrary.reportError(getClass(), e);
                     }
-                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | NoClassDefFoundError e) {
+                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                         InvocationTargetException | NoClassDefFoundError e) {
                     getLogger().warning(String.format("%s: イベントの登録に失敗しました。", name));
                     MyMaidLibrary.reportError(getClass(), e);
                 }
@@ -419,7 +422,8 @@ public final class Main extends JavaPlugin {
 
                     d.addEventListeners(instance);
                     getJavaPlugin().getLogger().info(String.format("%s: Discordイベントの登録に成功しました。", clazz.getSimpleName()));
-                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                         InvocationTargetException e) {
                     getJavaPlugin().getLogger().warning(String.format("%s: Discordイベントの登録に成功しました。", name));
                     MyMaidLibrary.reportError(Main.class, e);
                 }
@@ -434,6 +438,7 @@ public final class Main extends JavaPlugin {
         new MyMaidServer().runTaskAsynchronously(this);
         new Task_Pigeon().runTaskTimerAsynchronously(this, 200L, 12000L); // 10秒後から10分毎
         new Task_TabList().runTaskTimerAsynchronously(this, 200L, 1200L); // 10秒後から1分毎
+        new Task_OldWorldAutoRemove().runTaskTimer(this, 200L, 2400L); // 10秒後から2分毎
     }
 
     private void initCreativeInventoryItems() {
