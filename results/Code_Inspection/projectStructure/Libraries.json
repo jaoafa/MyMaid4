@@ -3,7 +3,7 @@
     {
       "name": "Maven: io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/io/papermc/paper/paper-api/1.18.2-R0.1-SNAPSHOT/paper-api-1.18.2-R0.1-20220607.005826-161.jar!/"
+        "jar://$MAVEN_REPOSITORY$/io/papermc/paper/paper-api/1.18.2-R0.1-SNAPSHOT/paper-api-1.18.2-R0.1-20220614.230913-165.jar!/"
       ]
     },
     {
@@ -85,15 +85,15 @@
       ]
     },
     {
-      "name": "Maven: net.kyori:adventure-api:4.10.1",
+      "name": "Maven: net.kyori:adventure-api:4.11.0",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-api/4.10.1/adventure-api-4.10.1.jar!/"
+        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-api/4.11.0/adventure-api-4.11.0.jar!/"
       ]
     },
     {
-      "name": "Maven: net.kyori:adventure-key:4.10.1",
+      "name": "Maven: net.kyori:adventure-key:4.11.0",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-key/4.10.1/adventure-key-4.10.1.jar!/"
+        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-key/4.11.0/adventure-key-4.11.0.jar!/"
       ]
     },
     {
@@ -109,27 +109,33 @@
       ]
     },
     {
-      "name": "Maven: net.kyori:adventure-text-minimessage:4.10.1",
+      "name": "Maven: net.kyori:adventure-text-minimessage:4.11.0",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-text-minimessage/4.10.1/adventure-text-minimessage-4.10.1.jar!/"
+        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-text-minimessage/4.11.0/adventure-text-minimessage-4.11.0.jar!/"
       ]
     },
     {
-      "name": "Maven: net.kyori:adventure-text-serializer-gson:4.10.1",
+      "name": "Maven: net.kyori:adventure-text-serializer-gson:4.11.0",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-text-serializer-gson/4.10.1/adventure-text-serializer-gson-4.10.1.jar!/"
+        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-text-serializer-gson/4.11.0/adventure-text-serializer-gson-4.11.0.jar!/"
       ]
     },
     {
-      "name": "Maven: net.kyori:adventure-text-serializer-legacy:4.10.1",
+      "name": "Maven: net.kyori:adventure-text-serializer-legacy:4.11.0",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-text-serializer-legacy/4.10.1/adventure-text-serializer-legacy-4.10.1.jar!/"
+        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-text-serializer-legacy/4.11.0/adventure-text-serializer-legacy-4.11.0.jar!/"
       ]
     },
     {
-      "name": "Maven: net.kyori:adventure-text-serializer-plain:4.10.1",
+      "name": "Maven: net.kyori:adventure-text-serializer-plain:4.11.0",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-text-serializer-plain/4.10.1/adventure-text-serializer-plain-4.10.1.jar!/"
+        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-text-serializer-plain/4.11.0/adventure-text-serializer-plain-4.11.0.jar!/"
+      ]
+    },
+    {
+      "name": "Maven: net.kyori:adventure-text-logger-slf4j:4.11.0",
+      "roots": [
+        "jar://$MAVEN_REPOSITORY$/net/kyori/adventure-text-logger-slf4j/4.11.0/adventure-text-logger-slf4j-4.11.0.jar!/"
       ]
     },
     {

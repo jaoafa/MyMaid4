@@ -90,11 +90,11 @@
           "type": "Library"
         },
         {
-          "name": "Maven: net.kyori:adventure-api:4.10.1",
+          "name": "Maven: net.kyori:adventure-api:4.11.0",
           "type": "Library"
         },
         {
-          "name": "Maven: net.kyori:adventure-key:4.10.1",
+          "name": "Maven: net.kyori:adventure-key:4.11.0",
           "type": "Library"
         },
         {
@@ -106,19 +106,23 @@
           "type": "Library"
         },
         {
-          "name": "Maven: net.kyori:adventure-text-minimessage:4.10.1",
+          "name": "Maven: net.kyori:adventure-text-minimessage:4.11.0",
           "type": "Library"
         },
         {
-          "name": "Maven: net.kyori:adventure-text-serializer-gson:4.10.1",
+          "name": "Maven: net.kyori:adventure-text-serializer-gson:4.11.0",
           "type": "Library"
         },
         {
-          "name": "Maven: net.kyori:adventure-text-serializer-legacy:4.10.1",
+          "name": "Maven: net.kyori:adventure-text-serializer-legacy:4.11.0",
           "type": "Library"
         },
         {
-          "name": "Maven: net.kyori:adventure-text-serializer-plain:4.10.1",
+          "name": "Maven: net.kyori:adventure-text-serializer-plain:4.11.0",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: net.kyori:adventure-text-logger-slf4j:4.11.0",
           "type": "Library"
         },
         {
