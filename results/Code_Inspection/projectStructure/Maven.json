@@ -529,12 +529,12 @@
       "scope": "provided"
     },
     {
-      "ideaName": "Maven: com.jaoafa:jaosuperachievement2:2.5.23",
+      "ideaName": "Maven: com.jaoafa:jaosuperachievement2:2.5.24",
       "unresolved": false,
       "groupId": "com.jaoafa",
       "artifactId": "jaosuperachievement2",
-      "version": "2.5.23",
-      "baseVersion": "2.5.23",
+      "version": "2.5.24",
+      "baseVersion": "2.5.24",
       "type": "jar",
       "optional": false,
       "scope": "provided"

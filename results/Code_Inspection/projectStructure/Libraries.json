@@ -289,9 +289,9 @@
       ]
     },
     {
-      "name": "Maven: com.jaoafa:jaosuperachievement2:2.5.23",
+      "name": "Maven: com.jaoafa:jaosuperachievement2:2.5.24",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/com/jaoafa/jaosuperachievement2/2.5.23/jaosuperachievement2-2.5.23.jar!/"
+        "jar://$MAVEN_REPOSITORY$/com/jaoafa/jaosuperachievement2/2.5.24/jaosuperachievement2-2.5.24.jar!/"
       ]
     },
     {
