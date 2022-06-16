@@ -408,12 +408,12 @@
       "scope": "compile"
     },
     {
-      "ideaName": "Maven: net.dv8tion:JDA:5.0.0-alpha.11",
+      "ideaName": "Maven: net.dv8tion:JDA:5.0.0-alpha.12",
       "unresolved": false,
       "groupId": "net.dv8tion",
       "artifactId": "JDA",
-      "version": "5.0.0-alpha.11",
-      "baseVersion": "5.0.0-alpha.11",
+      "version": "5.0.0-alpha.12",
+      "baseVersion": "5.0.0-alpha.12",
       "type": "jar",
       "optional": false,
       "scope": "compile"
@@ -1057,12 +1057,12 @@
       "scope": "test"
     },
     {
-      "ideaName": "Maven: de.tr7zw:item-nbt-api:2.9.2",
+      "ideaName": "Maven: de.tr7zw:item-nbt-api:2.10.0",
       "unresolved": false,
       "groupId": "de.tr7zw",
       "artifactId": "item-nbt-api",
-      "version": "2.9.2",
-      "baseVersion": "2.9.2",
+      "version": "2.10.0",
+      "baseVersion": "2.10.0",
       "type": "jar",
       "optional": false,
       "scope": "compile"
@@ -1079,23 +1079,23 @@
       "scope": "compile"
     },
     {
-      "ideaName": "Maven: de.tr7zw:nbt-injector:2.9.2",
+      "ideaName": "Maven: de.tr7zw:nbt-injector:2.10.0",
       "unresolved": false,
       "groupId": "de.tr7zw",
       "artifactId": "nbt-injector",
-      "version": "2.9.2",
-      "baseVersion": "2.9.2",
+      "version": "2.10.0",
+      "baseVersion": "2.10.0",
       "type": "jar",
       "optional": false,
       "scope": "compile"
     },
     {
-      "ideaName": "Maven: org.javassist:javassist:3.28.0-GA",
+      "ideaName": "Maven: org.javassist:javassist:3.29.0-GA",
       "unresolved": false,
       "groupId": "org.javassist",
       "artifactId": "javassist",
-      "version": "3.28.0-GA",
-      "baseVersion": "3.28.0-GA",
+      "version": "3.29.0-GA",
+      "baseVersion": "3.29.0-GA",
       "type": "jar",
       "optional": false,
       "scope": "compile"
