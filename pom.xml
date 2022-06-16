@@ -180,7 +180,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>5.0.0-alpha.11</version>
+            <version>5.0.0-alpha.12</version>
             <exclusions>
                 <exclusion>
                     <groupId>club.minnced</groupId>
@@ -266,12 +266,12 @@
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api</artifactId>
-            <version>2.9.2</version>
+            <version>2.10.0</version>
         </dependency>
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>nbt-injector</artifactId>
-            <version>2.9.2</version>
+            <version>2.10.0</version>
         </dependency>
     </dependencies>
 </project>
