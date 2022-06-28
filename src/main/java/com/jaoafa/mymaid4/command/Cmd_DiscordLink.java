@@ -242,7 +242,7 @@ public class Cmd_DiscordLink extends MyMaidLibrary implements CommandPremise {
                     ":loudspeaker:<@" + disid + ">さんのMinecraftアカウント連携を完了しました！自動切断から1週間以内の再連携のため、元の権限(" + old_perm.toLowerCase(Locale.ROOT) + ")に自動復元されます。 MinecraftID: `" + player.getName() + "`")
                 .queue();
 
-            if (old_perm.equals("COMMUNITYREGULAR")) {
+            if (old_perm.toUpperCase(Locale.ROOT).equals("COMMUNITYREGULAR")) {
                 Main.getMyMaidLogger().info("CommunityRegularへの復元のため、鯖内権限をVerifiedに、Discord内ロールをCommunityRegularに変更します。");
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getUniqueId() + " parent set verified");
                 Role roleCommunityRegular = guild.getRoleById(RoleId.COMMUNITYREGULAR.getId());
