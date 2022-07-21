@@ -1,0 +1,32 @@
+name: ONLY Change the base branch of all renovate pr to dev branch
+
+on: workflow_dispatch
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+      - name: Set git config
+        run: |
+          git config --global user.name "jaotan"
+          git config --global user.email "34743289+jaotan@users.noreply.github.com"
+ 
+      - name: List pull requests
+        run: |
+          gh pr list --app renovate -B master -s open --json url | jq -r ".[].url" > ../pr_urls.txt
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
+      - name: Process change pr base
+        run: |
+          cat ../pr_urls.txt | xargs -L1 gh pr edit -B dep-update/${{ steps.date.outputs.date }} || true
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
