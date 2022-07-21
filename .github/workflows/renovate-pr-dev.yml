@@ -41,5 +41,6 @@ jobs:
       - name: Process change pr base & add reviewer
         run: |
           cat ../pr_urls.txt | xargs -L1 gh pr edit -B dep-update/${{ steps.date.outputs.date }} --add-reviewer ${{ github.event.sender.login }}
+          cat ../pr_urls.txt | xargs -L1 gh pr edit -B dep-update/${{ steps.date.outputs.date }} || true
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
