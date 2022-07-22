@@ -182,7 +182,7 @@
           "type": "Library"
         },
         {
-          "name": "Maven: net.dv8tion:JDA:5.0.0-alpha.12",
+          "name": "Maven: net.dv8tion:JDA:5.0.0-alpha.16",
           "type": "Library"
         },
         {
@@ -226,7 +226,7 @@
           "type": "Library"
         },
         {
-          "name": "Maven: com.jaoafa:jaosuperachievement2:2.5.24",
+          "name": "Maven: com.jaoafa:jaosuperachievement2:2.5.25",
           "type": "Library"
         },
         {

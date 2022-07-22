@@ -408,12 +408,12 @@
       "scope": "compile"
     },
     {
-      "ideaName": "Maven: net.dv8tion:JDA:5.0.0-alpha.12",
+      "ideaName": "Maven: net.dv8tion:JDA:5.0.0-alpha.16",
       "unresolved": false,
       "groupId": "net.dv8tion",
       "artifactId": "JDA",
-      "version": "5.0.0-alpha.12",
-      "baseVersion": "5.0.0-alpha.12",
+      "version": "5.0.0-alpha.16",
+      "baseVersion": "5.0.0-alpha.16",
       "type": "jar",
       "optional": false,
       "scope": "compile"
@@ -529,12 +529,12 @@
       "scope": "provided"
     },
     {
-      "ideaName": "Maven: com.jaoafa:jaosuperachievement2:2.5.24",
+      "ideaName": "Maven: com.jaoafa:jaosuperachievement2:2.5.25",
       "unresolved": false,
       "groupId": "com.jaoafa",
       "artifactId": "jaosuperachievement2",
-      "version": "2.5.24",
-      "baseVersion": "2.5.24",
+      "version": "2.5.25",
+      "baseVersion": "2.5.25",
       "type": "jar",
       "optional": false,
       "scope": "provided"
