@@ -408,12 +408,12 @@
       "scope": "compile"
     },
     {
-      "ideaName": "Maven: net.dv8tion:JDA:5.0.0-alpha.16",
+      "ideaName": "Maven: net.dv8tion:JDA:5.0.0-alpha.17",
       "unresolved": false,
       "groupId": "net.dv8tion",
       "artifactId": "JDA",
-      "version": "5.0.0-alpha.16",
-      "baseVersion": "5.0.0-alpha.16",
+      "version": "5.0.0-alpha.17",
+      "baseVersion": "5.0.0-alpha.17",
       "type": "jar",
       "optional": false,
       "scope": "compile"
