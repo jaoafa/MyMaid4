@@ -18,7 +18,7 @@ jobs:
         run: |
           git config --global user.name "jaotan"
           git config --global user.email "34743289+jaotan@users.noreply.github.com"
- 
+
       - name: List pull requests
         run: |
           gh pr list --app renovate -B master -s open --json url | jq -r ".[].url" > ../pr_urls.txt
