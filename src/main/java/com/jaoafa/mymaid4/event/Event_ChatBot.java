@@ -38,22 +38,22 @@ public class Event_ChatBot extends MyMaidLibrary implements Listener, EventPremi
             return;
         }
 
-        MeboChatBot chatBot = Main.getMeboChatBot();
-        MeboChatBot.MeboResponse response = chatBot.chat(player, content);
-        if (response == null) {
-            return;
-        }
-        if (!response.status()) {
-            return;
-        }
-        if (response.score() < 85) {
-            return;
-        }
-
         new BukkitRunnable() {
             public void run() {
+                MeboChatBot chatBot = Main.getMeboChatBot();
+                MeboChatBot.MeboResponse response = chatBot.chat(player, content);
+                if (response == null) {
+                    return;
+                }
+                if (!response.status()) {
+                    return;
+                }
+                if (response.score() < 85) {
+                    return;
+                }
+
                 MyMaidLibrary.chatFake(NamedTextColor.GOLD, "jaotan", response.message(), true);
             }
-        }.runTaskLater(Main.getMain(), 10L);
+        }.runTaskLaterAsynchronously(Main.getMain(), 10L);
     }
 }
