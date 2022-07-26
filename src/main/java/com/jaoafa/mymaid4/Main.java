@@ -73,6 +73,7 @@ public final class Main extends JavaPlugin {
     private static MyMaidConfig config = null;
     private static Rollbar rollbar = null;
     private MinecraftHelp<CommandSender> minecraftHelp;
+    private static MeboChatBot meboChatBot = null;
 
     @Override
     public void onEnable() {
@@ -105,6 +106,10 @@ public final class Main extends JavaPlugin {
         MyMaidData.setBlacklist(new Blacklist());
 
         initCreativeInventoryItems();
+
+        if (config.getMeboApiKey() != null && config.getMeboAgentId() != null) {
+            meboChatBot = new MeboChatBot(config.getMeboApiKey(), config.getMeboAgentId());
+        }
     }
 
     @Override
@@ -511,4 +516,7 @@ public final class Main extends JavaPlugin {
         return rollbar;
     }
 
+    public static MeboChatBot getMeboChatBot() {
+        return meboChatBot;
+    }
 }

@@ -34,6 +34,8 @@ public class MyMaidConfig {
     private Long serverChatChannelId = null;
     private String githubAccessToken = null;
     private String rollbarAccessToken = null;
+    private String meboApiKey = null;
+    private String meboAgentId = null;
 
     public void init() {
         JavaPlugin plugin = Main.getJavaPlugin();
@@ -136,6 +138,18 @@ public class MyMaidConfig {
         } else {
             plugin.getLogger().warning(notFoundConfigKey("rollbarAccessToken"));
         }
+
+        if (config.contains("meboApiKey")) {
+            meboApiKey = config.getString("meboApiKey");
+        } else {
+            plugin.getLogger().warning(notFoundConfigKey("meboApiKey"));
+        }
+
+        if (config.contains("meboAgentId")) {
+            meboAgentId = config.getString("meboAgentId");
+        } else {
+            plugin.getLogger().warning(notFoundConfigKey("meboAgentId"));
+        }
     }
 
     String notFoundConfigKey(String key) {
@@ -173,5 +187,13 @@ public class MyMaidConfig {
 
     public String getRollbarAccessToken() {
         return rollbarAccessToken;
+    }
+
+    public String getMeboApiKey() {
+        return meboApiKey;
+    }
+
+    public String getMeboAgentId() {
+        return meboAgentId;
     }
 }
