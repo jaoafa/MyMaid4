@@ -34,7 +34,7 @@ public class Event_ChatBot extends MyMaidLibrary implements Listener, EventPremi
         Player player = event.getPlayer();
         String content = PlainTextComponentSerializer.plainText().serialize(event.message());
 
-        if (content.equals(".")) {
+        if (content.length() < 5) {
             return;
         }
 
