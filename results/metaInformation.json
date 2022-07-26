@@ -1,13 +1,13 @@
 {
-  "total": 1,
+  "total": 2,
   "tools inspection": {
-    "Code Inspection": 1
+    "Code Inspection": 2
   },
   "attributes": {
     "vcs": {
       "sarifIdea": {
         "repositoryUri": "https://github.com/jaoafa/MyMaid4",
-        "revisionId": "0f981a502d92807c10e0ea54e95b89a4970346fd",
+        "revisionId": "ec8eb996c264e113376d79c67c47e987848f860f",
         "branch": "master"
       }
     },
