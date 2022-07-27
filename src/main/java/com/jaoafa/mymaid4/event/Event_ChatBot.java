@@ -41,6 +41,9 @@ public class Event_ChatBot extends MyMaidLibrary implements Listener, EventPremi
         new BukkitRunnable() {
             public void run() {
                 MeboChatBot chatBot = Main.getMeboChatBot();
+                if (chatBot == null) {
+                    return;
+                }
                 MeboChatBot.MeboResponse response = chatBot.chat(player, content);
                 if (response == null) {
                     return;
