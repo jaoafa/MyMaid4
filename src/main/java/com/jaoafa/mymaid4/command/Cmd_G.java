@@ -75,6 +75,17 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
         );
     }
 
+    void sendChangeNotify(Player player, String before, String after) {
+        SendMessage(player, details(), Component.text().append(
+            Component.text("ゲームモードを切り替えました: ", NamedTextColor.GREEN),
+            Component.text(before, NamedTextColor.GREEN)
+                .hoverEvent(HoverEvent.showText(Component.text(MessageFormat.format("{0} にゲームモードを変更します", before))))
+                .clickEvent(ClickEvent.runCommand(String.format("/g %s", before))),
+            Component.text(" -> ", NamedTextColor.GREEN),
+            Component.text(after, NamedTextColor.GREEN, TextDecoration.BOLD)
+        ).build());
+    }
+
     void autoChangeGamemode(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
         GameMode beforeGamemode = player.getGameMode();
@@ -89,25 +100,11 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
             }
 
             player.setGameMode(GameMode.SPECTATOR);
-            SendMessage(player, details(), Component.text().append(
-                Component.text("ゲームモードを切り替えました: ", NamedTextColor.GREEN),
-                Component.text(beforeGamemode.name(), NamedTextColor.GREEN)
-                    .hoverEvent(HoverEvent.showText(Component.text(MessageFormat.format("{0} にゲームモードを変更します", beforeGamemode.name()))))
-                    .clickEvent(ClickEvent.runCommand(String.format("/g %s", beforeGamemode.name()))),
-                Component.text(" -> ", NamedTextColor.GREEN),
-                Component.text("SPECTATOR", NamedTextColor.GREEN, TextDecoration.BOLD)
-            ).build());
         } else {
             player.setGameMode(GameMode.CREATIVE);
-            SendMessage(player, details(), Component.text().append(
-                Component.text("ゲームモードを切り替えました: ", NamedTextColor.GREEN),
-                Component.text(beforeGamemode.name(), NamedTextColor.GREEN)
-                    .hoverEvent(HoverEvent.showText(Component.text(MessageFormat.format("{0} にゲームモードを変更します", beforeGamemode.name()))))
-                    .clickEvent(ClickEvent.runCommand(String.format("/g %s", beforeGamemode.name()))),
-                Component.text(" -> ", NamedTextColor.GREEN),
-                Component.text(player.getGameMode().name(), NamedTextColor.GREEN, TextDecoration.BOLD)
-            ).build());
         }
+
+        sendChangeNotify(player, beforeGamemode.name(), player.getGameMode().name());
     }
 
     void changeGamemode(CommandContext<CommandSender> context) {
@@ -134,14 +131,8 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
         }
 
         player.setGameMode(gamemode);
-        SendMessage(player, details(), Component.text().append(
-            Component.text("ゲームモードを切り替えました: ", NamedTextColor.GREEN),
-            Component.text(beforeGamemode.name(), NamedTextColor.GREEN)
-                .hoverEvent(HoverEvent.showText(Component.text(MessageFormat.format("{0} にゲームモードを変更します", beforeGamemode.name()))))
-                .clickEvent(ClickEvent.runCommand(String.format("/g %s", beforeGamemode.name()))),
-            Component.text(" -> ", NamedTextColor.GREEN),
-            Component.text(player.getGameMode().name(), NamedTextColor.GREEN, TextDecoration.BOLD)
-        ).build());
+
+        sendChangeNotify(player, beforeGamemode.name(), player.getGameMode().name());
     }
 
     void changePlayerGamemode(CommandContext<CommandSender> context) {
@@ -207,7 +198,7 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
             Component.text("Creative -> c / 1 / creative", NamedTextColor.WHITE)
                 .clickEvent(ClickEvent.runCommand("/g c")),
             Component.newline(),
-            Component.text("Advanture -> a / 2 / advanture", NamedTextColor.RED)
+            Component.text("Adventure -> a / 2 / adventure", NamedTextColor.RED)
                 .clickEvent(ClickEvent.runCommand("/g a")),
             Component.newline(),
             Component.text("Spectator -> sp / 3 / spectator", NamedTextColor.YELLOW)
@@ -231,7 +222,7 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
                 return GameMode.SPECTATOR;
         }
         for (GameMode mode : GameMode.values()) {
-            if (mode.name().toLowerCase().startsWith(str)) {
+            if (mode.name().toLowerCase().startsWith(str.toLowerCase())) {
                 return mode;
             }
         }
