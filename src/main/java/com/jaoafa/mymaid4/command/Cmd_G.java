@@ -198,7 +198,7 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
             Component.text("Creative -> c / 1 / creative", NamedTextColor.WHITE)
                 .clickEvent(ClickEvent.runCommand("/g c")),
             Component.newline(),
-            Component.text("Advanture -> a / 2 / advanture", NamedTextColor.RED)
+            Component.text("Adventure -> a / 2 / adventure", NamedTextColor.RED)
                 .clickEvent(ClickEvent.runCommand("/g a")),
             Component.newline(),
             Component.text("Spectator -> sp / 3 / spectator", NamedTextColor.YELLOW)
