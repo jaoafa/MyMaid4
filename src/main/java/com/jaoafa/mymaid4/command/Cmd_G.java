@@ -231,7 +231,7 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
                 return GameMode.SPECTATOR;
         }
         for (GameMode mode : GameMode.values()) {
-            if (mode.name().toLowerCase().startsWith(str)) {
+            if (mode.name().toLowerCase().startsWith(str.toLowerCase())) {
                 return mode;
             }
         }
