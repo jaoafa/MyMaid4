@@ -54,4 +54,32 @@
     "inspectionName": "ConstantConditions"
   },
   "hash": "f492a7ec1c52899ed30db7c14388d6f9a66dc572c7509701aca4519cb5910b65"
+},{
+  "tool": "Code Inspection",
+  "category": "Visibility",
+  "type": "Pattern variable hides field",
+  "severity": "High",
+  "comment": "Pattern variable 'cb' hides field in class 'Replacer'",
+  "detailsInfo": "Reports pattern variables named identically to a field of a surrounding class. As a result of such naming, you may accidentally use the pattern variable when using the identically named field is intended.\n\n\nA quick-fix is suggested to rename the variable.\n\n**Example:**\n\n\n      class Pointless {\n        Point p = new Point();\n\n        public void test(Object a) {\n          if (a instanceof Point p) {\n            System.out.print(\"a is a point (\" + p.x + \", \" + p.y + ')');\n          } else {\n            System.out.print(\"p is a point (\" + p.x + \", \" + p.y + ')');\n          }\n        }\n      }\n\nNew in 2022.2",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/lib/ConvLoc.java",
+      "language": "JAVA",
+      "line": 155,
+      "offset": 60,
+      "length": 2,
+      "code": {
+        "startLine": 153,
+        "length": 2,
+        "offset": 97,
+        "surroundingCode": "                return;\n            }\n            if (!(block.getState() instanceof CommandBlock cb)) {\n                result = ReplacerResult.FAILED_GET_STATE;\n                return;"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "PatternVariableHidesField"
+  },
+  "hash": "8e5b1b56aedc444a4085b286b3722ee8401b43e80f43cbb2bba277d66eaba4c2"
 }]}
