@@ -26,7 +26,8 @@ Eclipse などでも開発できますが、開発のサポートやテストサ
 
 ## Project board
 
-プロジェクトのタスク管理ボードとして [GitHub の Project 機能](https://github.com/jaoafa/MyMaid4/projects/1) を使用しています。
+プロジェクトのタスク管理ボードとして[GitHub の Issue 機能](https://github.com/jaoafa/MyMaid4/issues/) と [GitHub の Project 機能](https://github.com/jaoafa/MyMaid4/projects/1) を使用しています。  
+主にメインで使うのは Issue で、Project はほぼサブとしてしか使っていません（割り当てられていない Issue も多いです）。
 
 ## How to develop
 
@@ -38,7 +39,8 @@ Eclipse などでも開発できますが、開発のサポートやテストサ
 - 送信されたプルリクエストはコードオーナーによってコードをチェックされ、問題がなければマージされます。問題がある場合はプルリクエストのレビュー・コメントにて、その旨を記載しますので応答・修正して下さい。
 
 開発を行う前に、 [MyMaid4 の Wiki の開発者向け記事](https://github.com/jaoafa/MyMaid4/wiki/For-Developers) をご覧ください。  
-ここには、MyMaid4 を開発するために必要となるであろう様々な情報がまとめられています。
+ここには、MyMaid4 を開発するために必要となるであろう様々な情報がまとめられています。  
+これらの内容は古い可能性があるため、更新日時を参考に最新の情報をご確認ください。
 
 ## Precautions for development
 
@@ -61,7 +63,7 @@ Eclipse などでも開発できますが、開発のサポートやテストサ
 - 複数のクラスにわたって使用される変数は `MyMaidData` に変数を作成し、 Getter と Setter を使用して管理してください。
 - 複数のクラスにわたって多く使用される関数は `MyMaidLibrary` に関数を作成し、Javadoc を書いたうえで `extends MyMaidLibrary` して利用してください。
 - データベースは jaoMain と ZakuroHat の二つがありますが、原則 jaoMain
-  が使用されます。それぞれ `MyMaidData.getMainMySQLDBManager` `MyMaidData.getZKRHatMySQLDBManager` で取得できます。
+  が使用されます。それぞれ `MyMaidData.getMainMySQLDBManager()` `MyMaidData.getZKRHatMySQLDBManager()` で取得できます。
 - 開発サーバかどうかは `MyMaidConfig.isDevelopmentServer()` で判定できます。`plugins/MyMaid4/this-server-is-development`
   ファイルの存在有無で確認しています。
 - 全てのコマンドのパーミッションノードは小文字の `mymaid.<CommandName>` でなければなりません。このパーミッションノードは自動で付与されます。
@@ -85,7 +87,7 @@ Eclipse などでも開発できますが、開発のサポートやテストサ
 - また、ここに配置されるコマンドクラスは `com.jaoafa.mymaid4.lib.CommandPremise` インターフェースを実装する必要があります。（`implements CommandPremise`）
 - コマンドを実行したユーザーにメッセージを送る場合は `MyMaidLibrary` にある `SendMessage` メソッドを利用してください。
 - コマンドの情報（コマンド名・説明）は `details()` で定義します。
-- コマンドの内容は `register()` で定義します。このメソッドは Main クラスの `registerCommand` から呼び出され、コマンドが追加されます。（`plugin.yml` に書く必要がありません）
+- コマンドの内容は `register()` で定義します。このメソッドは Main クラスの `registerCommand` から呼び出され、コマンドが追加されます。（`plugin.yml` に書く必要はありません）
 
 ### Event
 
@@ -99,17 +101,19 @@ Eclipse などでも開発できますが、開発のサポートやテストサ
 
 ## Git
 
+### General
+
+- `upstream` とは `jaoafa/MyMaid4` のことです（オリジナルリポジトリとも呼びます）。
+- フォークしている場合、`origin` とはあなたのアカウント以下にある MyMaid4 のフォークリポジトリのことです（フォークリポジトリとも呼びます）。
+- ローカルリポジトリとは、あなたのコンピュータ上にある MyMaid4 のリポジトリのことです。
+
 ### Commit
 
 - 発生しているエラーなどはコミット・プルリクエスト前にすべて修正してください。
--
-
-コミットメッセージは **[CommitLint のルール](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional#rules)
-である以下に沿っていることを期待しますが、必須ではありません。**
-
-- 次の形式でコミットメッセージを指定してください: `type(scope): subject` (e.g. `fix(home): message`)
+- コミットメッセージやプルリクエストのタイトルは **[CommitLint のルール](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional#rules) である以下に沿っていることを期待しますが、必須ではありません。**
+  - 次の形式でコミットメッセージを指定してください: `type(scope): subject` (e.g. `fix(home): message`)
     - `type`, `subject` は必須、 `scope` は必須ではありません
-- `type-enum`: `type` は必ず次のいずれかにしなければなりません
+  - `type-enum`: `type` は必ず次のいずれかにしなければなりません
     - `build`: ビルド関連
     - `ci`: CI 関連
     - `chore`: いろいろ
@@ -121,30 +125,33 @@ Eclipse などでも開発できますが、開発のサポートやテストサ
     - `revert`: コミットの取り消し
     - `style`: コードスタイルの修正
     - `test`: テストコミット
-- `type-case`: `type` は必ず小文字でなければなりません (NG: `FIX` / OK: `fix`)
-- `type-empty`: `type` は必ず含めなければなりません (NG: `test message` / OK: `test: message`)
-- `scope-case`: `scope` は必ず小文字でなければなりません (NG: `fix(HOME): message` / OK: `fix:(home): message`)
-- `subject-case`: `subject` は必ず次のいずれかの書式でなければなりません `sentence-case`, `start-case`, `pascal-case`, `upper-case`
-- `subject-empty`: `subject` は必ず含めなければなりません (NG: `fix:` / OK: `fix: message`)
-- `subject-full-stop`: `subject` は `.` 以外で終えてください (NG: `fix: message.` / OK: `fix: message`)
+  - `type-case`: `type` は必ず小文字でなければなりません (NG: `FIX` / OK: `fix`)
+  - `type-empty`: `type` は必ず含めなければなりません (NG: `test message` / OK: `test: message`)
+  - `scope-case`: `scope` は必ず小文字でなければなりません (NG: `fix(HOME): message` / OK: `fix:(home): message`)
+  - `subject-case`: `subject` は必ず次のいずれかの書式でなければなりません `sentence-case`, `start-case`, `pascal-case`, `upper-case`
+  - `subject-empty`: `subject` は必ず含めなければなりません (NG: `fix:` / OK: `fix: message`)
+  - `subject-full-stop`: `subject` は `.` 以外で終えてください (NG: `fix: message.` / OK: `fix: message`)
+- プルリクエスト発行後、レビューを受けた修正は対象ブランチで新規にコミット・プッシュすることでプルリクエストへ追加更新されます。
 
-#### Branch rule
+### Branch rule
 
 - 必ずフォークして開発してください
-- 必要がある場合、ブランチは機能追加・修正などに応じて分けて作成してください
-- ブランチ名は機能追加・修正の内容を示す言葉で構成してください（例: `add-test-command`, `fix-test-command-api-url`）
-- master ブランチへの直接コミットはできません
-- 全てのコード追加はプルリクエストを必要とします
-- Tomachi に限りセルフマージを可能とします
-- レビューはほぼすべてを Tomachi が行います
+- ブランチは機能追加・修正などに応じて分けて作成してください。一つのプルリクエストに複数の変更事項をまとめるとレビュアーの負担が増えます。
+- ブランチ名は機能追加・修正の内容を示す言葉で構成することをお勧めします。（例: `feat/test-command`, `fix/test-command-api-url`）
+  - 開発者自身が自分で「何のために作ったブランチか」を把握できればどんな名前でも構いません。
+- upstream の master ブランチへの直接コミットはできません。
+- 全てのコード編集はプルリクエストを必要とします。
+- [Tomachi](https://github.com/book000) に限りセルフマージを可能とします（この際、jaotanがレビューします）。
+- マージにあたっては [Tomachi](https://github.com/book000) のレビュー承認が必要です。
+- レビュアーに指定されていなくても気になることがあればレビューして構いません。
 
 ### Publish
 
-master ブランチ = メインサーバ導入ソースコード です。
+ビルドに失敗していない限り、upstream の master ブランチ = メインサーバ導入ソースコード です。
 
-- コミットされると、GitHub Actions によってビルドが実施されます。失敗した場合、jMS Gamers Club `#github-notice` に通知が飛びます。
+- コミットされると、GitHub Actions によってビルドが実施されます。
 - コミットされると、メインサーバでビルドされビルドに成功すれば本番環境の`MinecraftServerDir/plugins/update/`にビルド成果物が配置されます。再起動時に自動的にアップデートされます。
-- バージョン表記は本番環境でのビルド処理によって、`yyyy.mm.dd_hh.mm_最終コミットsha8桁`に変更されます。
+- バージョンは [Semantic Versioning 2.0.0](https://semver.org) に基づきコミットメッセージを元に自動で付与されます。
 
 ## Code Quality
 
