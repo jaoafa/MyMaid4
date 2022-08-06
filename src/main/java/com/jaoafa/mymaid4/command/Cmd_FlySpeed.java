@@ -49,6 +49,12 @@ public class Cmd_FlySpeed extends MyMaidLibrary implements CommandPremise {
                 .literal("set")
                 .argument(FloatArgument.of("percent"), ArgumentDescription.of("クリエイティブ飛行速度(通常100%)"))
                 .handler(this::setFlySpeed)
+                .build(),
+            builder
+                .meta(CommandMeta.DESCRIPTION, "クリエイティブ飛行速度を初期化します。")
+                .senderType(Player.class)
+                .literal("reset")
+                .handler(this::resetFlySpeed)
                 .build()
         );
     }
@@ -66,11 +72,9 @@ public class Cmd_FlySpeed extends MyMaidLibrary implements CommandPremise {
         }
         float speed = MyMaidData.getFlySpeed(target.getUniqueId()) * 1000;
         SendMessage(sender, details(), Component.text().append(
-            Component.text(sender == target ? "あなた" : target.getName(), NamedTextColor.GREEN),
-            Component.text("のクリエイティブ飛行速度は", NamedTextColor.GREEN),
+            Component.text((sender == target ? "あなた" : target.getName()) + "のクリエイティブ飛行速度は", NamedTextColor.GREEN),
             Component.space(),
-            Component.text(speed, NamedTextColor.GREEN),
-            Component.text("%", NamedTextColor.GREEN),
+            Component.text(speed + "%", NamedTextColor.GREEN),
             Component.space(),
             Component.text("です。", NamedTextColor.GREEN)
         ).build());
@@ -78,19 +82,26 @@ public class Cmd_FlySpeed extends MyMaidLibrary implements CommandPremise {
 
     void setFlySpeed(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
-        float speed = context.<Float>get("percent") / 1000;
-        if (speed < -1 || speed > 1) {
+        float speedFloat = context.<Float>get("percent") / 1000;
+        if (speedFloat < -1 || speedFloat > 1) {
             SendMessage(player, details(), "値は 1000% から -1000% を指定できます。");
             return;
         }
-        MyMaidData.setFlySpeed(player.getUniqueId(), speed);
+        MyMaidData.setFlySpeed(player.getUniqueId(), speedFloat);
         SendMessage(player, details(), Component.text().append(
             Component.text("あなたのクリエイティブ飛行速度を", NamedTextColor.GREEN),
             Component.space(),
-            Component.text(speed * 1000, NamedTextColor.GREEN),
-            Component.text("%", NamedTextColor.GREEN),
+            Component.text((speedFloat * 1000) + "%", NamedTextColor.GREEN),
             Component.space(),
             Component.text("に変更しました。", NamedTextColor.GREEN)
+        ).build());
+    }
+
+    void resetFlySpeed(CommandContext<CommandSender> context) {
+        Player player = (Player) context.getSender();
+        MyMaidData.setFlySpeed(player.getUniqueId(), 0.1f);
+        SendMessage(player, details(), Component.text().append(
+            Component.text("あなたのクリエイティブ飛行速度を初期化しました。", NamedTextColor.GREEN)
         ).build());
     }
 }

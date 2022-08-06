@@ -48,8 +48,14 @@ public class Cmd_WalkSpeed extends MyMaidLibrary implements CommandPremise {
                 .senderType(Player.class)
                 .literal("set")
                 .argument(FloatArgument.of("percent"),
-                    ArgumentDescription.of("移動速度(通常100%)"))
+                    ArgumentDescription.of("移動速度(通常200%)"))
                 .handler(this::setWalkSpeed)
+                .build(),
+            builder
+                .meta(CommandMeta.DESCRIPTION, "移動速度を初期化します。")
+                .senderType(Player.class)
+                .literal("reset")
+                .handler(this::resetWalkSpeed)
                 .build()
         );
     }
@@ -67,11 +73,9 @@ public class Cmd_WalkSpeed extends MyMaidLibrary implements CommandPremise {
         }
         float speed = target.getWalkSpeed() * 1000;
         SendMessage(sender, details(), Component.text().append(
-            Component.text(sender == target ? "あなた" : target.getName(), NamedTextColor.GREEN),
-            Component.text("の移動速度は", NamedTextColor.GREEN),
+            Component.text((sender == target ? "あなた" : target.getName()) + "の移動速度は", NamedTextColor.GREEN),
             Component.space(),
-            Component.text(speed, NamedTextColor.GREEN),
-            Component.text("%", NamedTextColor.GREEN),
+            Component.text(speed + "%", NamedTextColor.GREEN),
             Component.space(),
             Component.text("です。", NamedTextColor.GREEN)
         ).build());
@@ -79,19 +83,26 @@ public class Cmd_WalkSpeed extends MyMaidLibrary implements CommandPremise {
 
     void setWalkSpeed(CommandContext<CommandSender> context) {
         Player player = (Player) context.getSender();
-        float speed = context.<Float>get("percent") / 1000;
-        if (speed < -1 || speed > 1) {
+        float speedFloat = context.<Float>get("percent") / 1000;
+        if (speedFloat < -1 || speedFloat > 1) {
             SendMessage(player, details(), "値は 1000% から -1000% を指定できます。");
             return;
         }
-        player.setWalkSpeed(speed);
+        player.setWalkSpeed(speedFloat);
         SendMessage(player, details(), Component.text().append(
             Component.text("あなたの移動速度を", NamedTextColor.GREEN),
             Component.space(),
-            Component.text(speed * 1000, NamedTextColor.GREEN),
-            Component.text("%", NamedTextColor.GREEN),
+            Component.text((speedFloat * 1000) + "%", NamedTextColor.GREEN),
             Component.space(),
             Component.text("に変更しました。", NamedTextColor.GREEN)
+        ).build());
+    }
+
+    void resetWalkSpeed(CommandContext<CommandSender> context) {
+        Player player = (Player) context.getSender();
+        player.setWalkSpeed(0.2f);
+        SendMessage(player, details(), Component.text().append(
+            Component.text("あなたの移動速度を初期化しました。", NamedTextColor.GREEN)
         ).build());
     }
 }
