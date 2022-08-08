@@ -7,12 +7,12 @@
     "vcs": {
       "sarifIdea": {
         "repositoryUri": "https://github.com/jaoafa/MyMaid4",
-        "revisionId": "baaf7cfcd88eca106d98616692e28e7693fd0d3e",
+        "revisionId": "6f74ab433e8e414d467f587d8757f85bf12c42cc",
         "branch": "master"
       }
     },
     "deviceId": "200820300000000-a2af-b8f9-6e34-a59eae6dc3e1",
-    "jobUrl": "https://github.com/jaoafa/MyMaid4/actions/runs/2810014788",
+    "jobUrl": "https://github.com/jaoafa/MyMaid4/actions/runs/2818281605",
     "repoUrl": "https://github.com/jaoafa/MyMaid4"
   }
 }
