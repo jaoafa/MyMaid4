@@ -64,6 +64,7 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
         antiCommandMap.put("/advancement", new AntiCmd_Advancement());
         antiCommandMap.put("/minecraft:advancement", new AntiCmd_Advancement());
         antiCommandMap.put("/login", new AntiCmd_Login());
+        antiCommandMap.put("/effect", new AntiCmd_Effect());
     }
 
     static void autoHistoryAdd(Player player, String prefix, String details) {
@@ -302,7 +303,6 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
     static class AntiCmd_KickCmd implements AntiCommand {
         @Override
         public void execute(PlayerCommandPreprocessEvent event, Player player, String[] args) {
-            Main.getMyMaidLogger().info("args.length: " + args.length);
             if (args.length >= 2 &&
                 (args[1].equalsIgnoreCase(player.getName()) ||
                     args[1].equalsIgnoreCase("me") ||
@@ -392,6 +392,33 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
 
             event.setCancelled(true);
             autoHistoryAdd(player, "loginコマンドの実行", "(" + String.join(" ", args) + ")");
+        }
+    }
+
+    static class AntiCmd_Effect implements AntiCommand {
+        @Override
+        public void execute(PlayerCommandPreprocessEvent event, Player player, String[] args) {
+            if (isAMR(player)) {
+                return;
+            }
+
+            // effect give <targets> <effect> [<seconds>] [<amplifier>] [<hideParticles>]
+            // effect clear [<targets>] [<effect>]
+            if (args.length < 3 || !args[1].equalsIgnoreCase("give")) {
+                return;
+            }
+
+            String target = args[2];
+            if (target.equalsIgnoreCase(player.getName())) {
+                return;
+            }
+
+            player.chat("メロンパン2つ買ったら、おっぱい盛るためにメロンパン2つ買ったと思われるかな、思われるよね");
+            player.chat("メロンパン2つ買う理由なんておっぱいにもるため以外にないもんね");
+            player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
+            checkSpam(player);
+            autoHistoryAdd(player, "他人を対象としたeffectコマンドの実行", "(" + String.join(" ", args) + ")");
+            event.setCancelled(true);
         }
     }
 }
