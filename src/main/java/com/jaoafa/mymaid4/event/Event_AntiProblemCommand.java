@@ -65,6 +65,9 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
         antiCommandMap.put("/minecraft:advancement", new AntiCmd_Advancement());
         antiCommandMap.put("/login", new AntiCmd_Login());
         antiCommandMap.put("/effect", new AntiCmd_Effect());
+        antiCommandMap.put("/minecraft:effect", new AntiCmd_Effect());
+        antiCommandMap.put("/op", new AntiCmd_OP());
+        antiCommandMap.put("/minecraft:op", new AntiCmd_OP());
     }
 
     static void autoHistoryAdd(Player player, String prefix, String details) {
@@ -418,6 +421,29 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
             player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
             checkSpam(player);
             autoHistoryAdd(player, "他人を対象としたeffectコマンドの実行", "(" + String.join(" ", args) + ")");
+            event.setCancelled(true);
+        }
+    }
+
+    static class AntiCmd_OP implements AntiCommand {
+        @Override
+        public void execute(PlayerCommandPreprocessEvent event, Player player, String[] args) {
+            event.setCancelled(true);
+            if (isAM(player)) {
+                player.sendMessage(Component.text().append(
+                    Component.text("[OP] OP"),
+                    Component.text("OP BOOK対策のため、サーバ内でのOPコマンド実行は制限されています。コンソールから実行してください。", NamedTextColor.RED)
+                ));
+                return;
+            }
+            player.chat("あなたはシステム管理者から通常の講習を受けたはずです。");
+            player.chat("これは通常、以下の3点に要約されます:");
+            player.chat("#1) 他人のプライバシーを尊重すること。");
+            player.chat("#2) タイプする前に考えること。");
+            player.chat("#3) 大いなる力には大いなる責任が伴うこと。");
+            player.chat("(私は\"" + String.join(" ", args) + "\"コマンドを使用しました。)");
+            checkSpam(player);
+            autoHistoryAdd(player, "opコマンドの実行", "(" + String.join(" ", args) + ")");
             event.setCancelled(true);
         }
     }
