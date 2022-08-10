@@ -431,7 +431,8 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
             event.setCancelled(true);
             if (isAM(player)) {
                 player.sendMessage(Component.text().append(
-                    Component.text("[OP] OP"),
+                    Component.text("[OP]"),
+                    Component.space(),
                     Component.text("OP BOOK対策のため、サーバ内でのOPコマンド実行は制限されています。コンソールから実行してください。", NamedTextColor.RED)
                 ));
                 return;
