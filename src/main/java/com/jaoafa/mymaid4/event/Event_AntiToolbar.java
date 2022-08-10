@@ -26,6 +26,8 @@ import org.bukkit.event.inventory.InventoryCreativeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.profile.PlayerProfile;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -36,8 +38,26 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Pattern;
 
+/**
+ * ツールバーの利用を制限します。
+ * <p>
+ * ・クリエイティブモードでクリエイティブインベントリやツールバーからアイテムをインベントリに追加する際に {@link InventoryCreativeEvent} が発生することを利用して制限します。
+ * ・この機能は Admin, Moderator, Regular には適用されません。
+ * ・クリエイティブインベントリに存在するアイテムの一覧はデータフォルダにある creative-items.tsv で定義します。これが未定義の場合はこの機能は動作しません。
+ * → このファイルはフラグ isCollectCreativeItems を True にし、クリエイティブインベントリにあるアイテムをすべて入手（ドロップ）することで出力できます。
+ * <p>
+ * ・クリエイティブインベントリのアイテムと {@link InventoryCreativeEvent#getCursor()} が合致する場合、除外します。
+ * ・InventoryCreativeEvent 発生時、{@link InventoryCreativeEvent#getCurrentItem()} が NULL ではなく AIR ではない場合はアイテムを持ち上げたものとして Map に記録します。
+ * → さらに、次のイベント発生時に記録したアイテムと {@link InventoryCreativeEvent#getCursor()} が合致する場合はツールバーからの取得とみなしません。
+ * → これにより、一度持ち上げて別のスロットに移動させた場合にツールバーとして判定されなくなります。(#429, #913)
+ * ・jaoiumに該当するアイテムは処罰対象としてその後処理されるため、この機能では当該アイテムを削除しません。
+ * ・ImageOnMapのマップをマウス中クリックでコピーするとツールバーとして誤認されてしまう問題を回避するため、{@link Material#FILLED_MAP} のアイテムはすべて除外します。(#533)
+ * <p>
+ * 以上のフローを経て、除外されなかったアイテムはすべてツールバーとして判定し、当該アイテムを削除します。
+ * また当該アイテムの情報をデータフォルダの toolbar-items.tsv に記録します。
+ */
 public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventPremise {
-    final Pattern damagePattern = Pattern.compile("\\{Damage:[0-9]+}");
+    final Pattern damagePattern = Pattern.compile("\\{Damage:\\d+}");
     final Map<UUID, ItemStack> pickupItems = new HashMap<>();
     final static boolean isCollectCreativeItems = false;
 
@@ -96,28 +116,32 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
         if (MyMaidData.getCreativeInventoryWithNBTs().isEmpty()) {
             return;
         }
+        ItemStack is = event.getCursor();
+
+        boolean isPickupItem = pickupItems.containsKey(player.getUniqueId()) &&
+            pickupItems.get(player.getUniqueId()).equals(is) &&
+            (pickupItems.get(player.getUniqueId()).getItemMeta().equals(is.getItemMeta()) ||
+                isAllowPlayerHead(pickupItems.get(player.getUniqueId()), is));
 
         if (event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
             pickupItems.put(player.getUniqueId(), event.getCurrentItem());
         }
-        if (event.getCursor().getType() == Material.AIR) {
+
+        if (isPickupItem) {
+            return;
+        }
+
+        if (is.getType() == Material.AIR) {
             return;
         }
 
         boolean isDeny = isDenyItemStack(event.getCursor());
-        ItemStack is = event.getCursor();
 
         if (!isDeny) {
             return;
         }
 
         if (isExistsInventory(player.getInventory(), is)) {
-            return;
-        }
-
-        if (pickupItems.containsKey(player.getUniqueId()) &&
-            pickupItems.get(player.getUniqueId()).equals(is) &&
-            pickupItems.get(player.getUniqueId()).getItemMeta().equals(is.getItemMeta())) {
             return;
         }
 
@@ -182,7 +206,27 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
             .stream(inv.getContents())
             .filter(Objects::nonNull)
             .anyMatch(item ->
-                item.getType() == is.getType() && item.getItemMeta() != null && item.getItemMeta().equals(is.getItemMeta())
+                item.getType() == is.getType() &&
+                    item.getItemMeta() != null &&
+                    (isAllowPlayerHead(item, is) || item.getItemMeta().equals(is.getItemMeta()))
             );
+    }
+
+    @SuppressWarnings("deprecation")
+    boolean isAllowPlayerHead(ItemStack is1, ItemStack is2) {
+        if (is1.getType() != Material.PLAYER_HEAD || is2.getType() != Material.PLAYER_HEAD) {
+            return false;
+        }
+
+        PlayerProfile profile1 = ((SkullMeta) is1.getItemMeta()).getOwnerProfile();
+        PlayerProfile profile2 = ((SkullMeta) is2.getItemMeta()).getOwnerProfile();
+
+        if (profile1 == null || profile2 == null) {
+            return false;
+        }
+
+        return (profile1.getName() != null && profile2.getName() != null && profile1.getName().equals(profile2.getName())) ||
+            (profile1.getUniqueId() != null && profile2.getUniqueId() != null && profile1.getUniqueId().equals(profile2.getUniqueId())) ||
+            profile1.getTextures().equals(profile2.getTextures());
     }
 }
