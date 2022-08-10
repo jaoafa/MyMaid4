@@ -61,7 +61,7 @@ public class MCBansCache {
                 json = new JSONObject(body.string());
             }
         }
-        return new MCBansCache(player, json.getInt("id"), json.getDouble("reputation"), parseBans(json.getJSONArray("bans")), parseBans(json.getJSONArray("issuedBans")), parseServer(json.getJSONArray("ownedServers")), new Date(json.getLong("lastCheckedAt")));
+        return new MCBansCache(player, json.getInt("playerId"), json.getDouble("reputation"), parseBans(json.getJSONArray("bans")), parseBans(json.getJSONArray("issuedBans")), parseServer(json.getJSONArray("ownedServers")), new Date(json.getLong("lastCheckedAt")));
     }
 
     public OfflinePlayer getPlayer() {
