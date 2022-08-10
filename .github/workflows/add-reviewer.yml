@@ -14,9 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     if: >-
       ${{
-        github.actor != 'dependabot[bot]' ||
-        github.actor != 'renovate[bot]' ||
-        github.actor != 'github-actions[bot]' ||
+        github.actor != 'dependabot[bot]' &&
+        github.actor != 'renovate[bot]' &&
+        github.actor != 'github-actions[bot]' &&
         github.actor != 'book000'
       }}
 
