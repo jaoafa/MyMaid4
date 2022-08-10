@@ -26,6 +26,8 @@ import org.bukkit.event.inventory.InventoryCreativeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.profile.PlayerProfile;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -37,7 +39,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventPremise {
-    final Pattern damagePattern = Pattern.compile("\\{Damage:[0-9]+}");
+    final Pattern damagePattern = Pattern.compile("\\{Damage:\\d+}");
     final Map<UUID, ItemStack> pickupItems = new HashMap<>();
     final static boolean isCollectCreativeItems = false;
 
@@ -96,28 +98,32 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
         if (MyMaidData.getCreativeInventoryWithNBTs().isEmpty()) {
             return;
         }
+        ItemStack is = event.getCursor();
+
+        boolean isPickupItem = pickupItems.containsKey(player.getUniqueId()) &&
+            pickupItems.get(player.getUniqueId()).equals(is) &&
+            (pickupItems.get(player.getUniqueId()).getItemMeta().equals(is.getItemMeta()) ||
+                isAllowPlayerHead(pickupItems.get(player.getUniqueId()), is));
 
         if (event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
             pickupItems.put(player.getUniqueId(), event.getCurrentItem());
         }
-        if (event.getCursor().getType() == Material.AIR) {
+
+        if (isPickupItem) {
+            return;
+        }
+
+        if (is.getType() == Material.AIR) {
             return;
         }
 
         boolean isDeny = isDenyItemStack(event.getCursor());
-        ItemStack is = event.getCursor();
 
         if (!isDeny) {
             return;
         }
 
         if (isExistsInventory(player.getInventory(), is)) {
-            return;
-        }
-
-        if (pickupItems.containsKey(player.getUniqueId()) &&
-            pickupItems.get(player.getUniqueId()).equals(is) &&
-            pickupItems.get(player.getUniqueId()).getItemMeta().equals(is.getItemMeta())) {
             return;
         }
 
@@ -182,7 +188,27 @@ public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventP
             .stream(inv.getContents())
             .filter(Objects::nonNull)
             .anyMatch(item ->
-                item.getType() == is.getType() && item.getItemMeta() != null && item.getItemMeta().equals(is.getItemMeta())
+                item.getType() == is.getType() &&
+                    item.getItemMeta() != null &&
+                    (isAllowPlayerHead(item, is) || item.getItemMeta().equals(is.getItemMeta()))
             );
+    }
+
+    @SuppressWarnings("deprecation")
+    boolean isAllowPlayerHead(ItemStack is1, ItemStack is2) {
+        if (is1.getType() != Material.PLAYER_HEAD || is2.getType() != Material.PLAYER_HEAD) {
+            return false;
+        }
+
+        PlayerProfile profile1 = ((SkullMeta) is1.getItemMeta()).getOwnerProfile();
+        PlayerProfile profile2 = ((SkullMeta) is2.getItemMeta()).getOwnerProfile();
+
+        if (profile1 == null || profile2 == null) {
+            return false;
+        }
+
+        return (profile1.getName() != null && profile2.getName() != null && profile1.getName().equals(profile2.getName())) ||
+            (profile1.getUniqueId() != null && profile2.getUniqueId() != null && profile1.getUniqueId().equals(profile2.getUniqueId())) ||
+            profile1.getTextures().equals(profile2.getTextures());
     }
 }
