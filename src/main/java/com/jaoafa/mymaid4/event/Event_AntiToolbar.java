@@ -38,6 +38,24 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Pattern;
 
+/**
+ * ツールバーの利用を制限します。
+ * <p>
+ * ・クリエイティブモードでクリエイティブインベントリやツールバーからアイテムをインベントリに追加する際に {@link InventoryCreativeEvent} が発生することを利用して制限します。
+ * ・この機能は Admin, Moderator, Regular には適用されません。
+ * ・クリエイティブインベントリに存在するアイテムの一覧はデータフォルダにある creative-items.tsv で定義します。これが未定義の場合はこの機能は動作しません。
+ * → このファイルはフラグ isCollectCreativeItems を True にし、クリエイティブインベントリにあるアイテムをすべて入手（ドロップ）することで出力できます。
+ * <p>
+ * ・クリエイティブインベントリのアイテムと {@link InventoryCreativeEvent#getCursor()} が合致する場合、除外します。
+ * ・InventoryCreativeEvent 発生時、{@link InventoryCreativeEvent#getCurrentItem()} が NULL ではなく AIR ではない場合はアイテムを持ち上げたものとして Map に記録します。
+ * → さらに、次のイベント発生時に記録したアイテムと {@link InventoryCreativeEvent#getCursor()} が合致する場合はツールバーからの取得とみなしません。
+ * → これにより、一度持ち上げて別のスロットに移動させた場合にツールバーとして判定されなくなります。(#429, #913)
+ * ・jaoiumに該当するアイテムは処罰対象としてその後処理されるため、この機能では当該アイテムを削除しません。
+ * ・ImageOnMapのマップをマウス中クリックでコピーするとツールバーとして誤認されてしまう問題を回避するため、{@link Material#FILLED_MAP} のアイテムはすべて除外します。(#533)
+ * <p>
+ * 以上のフローを経て、除外されなかったアイテムはすべてツールバーとして判定し、当該アイテムを削除します。
+ * また当該アイテムの情報をデータフォルダの toolbar-items.tsv に記録します。
+ */
 public class Event_AntiToolbar extends MyMaidLibrary implements Listener, EventPremise {
     final Pattern damagePattern = Pattern.compile("\\{Damage:\\d+}");
     final Map<UUID, ItemStack> pickupItems = new HashMap<>();
