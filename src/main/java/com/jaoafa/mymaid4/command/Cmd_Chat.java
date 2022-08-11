@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -43,7 +43,7 @@ public class Cmd_Chat extends MyMaidLibrary implements CommandPremise {
         return new MyMaidCommand.Cmd(
             builder
                 .meta(CommandMeta.DESCRIPTION, "偽のプレイヤーに喋らせます。")
-                .argument(StringArgument.single("player"), ArgumentDescription.of("喋らせるプレイヤー名"))
+                .argument(StringArgument.quoted("player"), ArgumentDescription.of("喋らせるプレイヤー名"))
                 .argument(StringArgument.greedy("message"), ArgumentDescription.of("喋らせるメッセージ"))
                 .handler(this::chatFake)
                 .build()
