@@ -78,6 +78,10 @@ public class Event_DailyOnlineTime extends MyMaidLibrary implements Listener, Ev
         }
 
         UUID uuid = player.getUniqueId();
+        if (!this.onlineTime.containsKey(uuid)) {
+            return;
+        }
+
         long time = System.currentTimeMillis();
         long loginTime = this.onlineTime.get(uuid);
         long diffSec = (time - loginTime) / 1000L;
