@@ -71,16 +71,16 @@ Eclipse などでも開発できますが、開発のサポートやテストサ
 ### General
 
 - コマンド・機能の開発を始める前に、次の作業を実施することを強くお勧めします。
-    - **`upstream/master` からブランチを作成するなどを行い、最新の状態から開発する**
-    - **[Projects](https://github.com/jaoafa/MyMaid4/projects/1) で、該当する看板があれば `In Progress` に移動する**
-    - 該当する Issue の `Assignees` に自分を追加する
+  - **`upstream/master` からブランチを作成するなどを行い、最新の状態から開発する**
+  - **[Projects](https://github.com/jaoafa/MyMaid4/projects/1) で、該当する看板があれば `In Progress` に移動する**
+  - 該当する Issue の `Assignees` に自分を追加する
 - ローカル変数はなにかしらの理由がある場合を除き小文字で始めてください。
 - 将来的に追加・修正などを行わなければならない項目がある場合は、 `// TODO <Message>` で TODO を登録してください。
 
 ### Command
 
 - 使用しているコマンドフレームワークは [Incendo/cloud](https://github.com/Incendo/cloud) です。
-    - ドキュメントは [こちら](https://incendo.github.io/cloud) です。
+  - ドキュメントは [こちら](https://incendo.github.io/cloud) です。
 - 全てのコマンドは [`src/main/java/com/jaoafa/mymaid4/command/Cmd_<CommandName>.java`](src/main/java/com/jaoafa/mymaid4/command)
   に配置され、これらが自動で読み込まれます。
 - 同時に、クラス名は `Cmd_<CommandName>` でなければなりません。`<CommandName>` は大文字・小文字を問いません。
