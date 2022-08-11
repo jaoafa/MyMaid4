@@ -72,7 +72,7 @@ Eclipse などでも開発できますが、開発のサポートやテストサ
 
 - コマンド・機能の開発を始める前に、次の作業を実施することを強くお勧めします。
   - **`upstream/master` からブランチを作成するなどを行い、最新の状態から開発する**
-  - **[Projects](https://github.com/jaoafa/MyMaid4/projects/1) で、該当する看板があれば `In Progress` に移動する**
+  - **[Projects](https://github.com/jaoafa/MyMaid4/projects/1) で、該当する看板があれば `🚧 作業中` に移動する**
   - 該当する Issue の `Assignees` に自分を追加する
 - ローカル変数はなにかしらの理由がある場合を除き小文字で始めてください。
 - 将来的に追加・修正などを行わなければならない項目がある場合は、 `// TODO <Message>` で TODO を登録してください。
