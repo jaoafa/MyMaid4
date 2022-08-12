@@ -155,7 +155,7 @@ public class Blacklist {
         TELL(context -> {
             context.getPlayer().sendMessage(Component.text().append(
                 Component.text("[BLACKLIST] "),
-                Component.text(MessageFormat.format("あなたは{0}を{1}することはできません。",
+                Component.text(MessageFormat.format("あなたは{0}を{1}できません。",
                     context.getBlacklistItem().getMaterial().name(),
                     context.getBlacklistEvent().getName()), NamedTextColor.RED)
             ));
@@ -164,14 +164,14 @@ public class Blacklist {
         KICK(context -> {
             context.getPlayer().kick(Component.text().append(
                 Component.text("[BLACKLIST] "),
-                Component.text(MessageFormat.format("あなたは{0}を{1}することはできません。",
+                Component.text(MessageFormat.format("あなたは{0}を{1}できません。",
                     context.getBlacklistItem().getMaterial().name(),
                     context.getBlacklistEvent().getName()), NamedTextColor.RED)
             ).build());
             return true;
         }),
         BAN(context -> {
-            context.getPlayer().banPlayer(MessageFormat.format("[BLACKLIST] あなたは{0}を{1}することはできません。",
+            context.getPlayer().banPlayer(MessageFormat.format("[BLACKLIST] あなたは{0}を{1}できません。",
                 context.getBlacklistItem().getMaterial().name(),
                 context.getBlacklistEvent().getName()));
             return true;
