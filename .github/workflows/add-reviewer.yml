@@ -26,6 +26,6 @@ jobs:
 
       - name: Add reviewer
         run: |
-          gh pr edit ${{ github.event.pull_request.number }} --add-reviewer book000
+          gh pr edit ${{ github.event.pull_request.number }} --add-reviewer book000 || true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
