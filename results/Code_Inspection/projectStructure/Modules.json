@@ -226,7 +226,7 @@
           "type": "Library"
         },
         {
-          "name": "Maven: com.jaoafa:jaosuperachievement2:2.5.25",
+          "name": "Maven: com.jaoafa:jaosuperachievement2:2.5.27",
           "type": "Library"
         },
         {
@@ -322,11 +322,11 @@
           "type": "Library"
         },
         {
-          "name": "Maven: com.sk89q.worldedit:worldedit-bukkit:7.2.10",
+          "name": "Maven: com.sk89q.worldedit:worldedit-bukkit:7.2.12",
           "type": "Library"
         },
         {
-          "name": "Maven: com.sk89q.worldedit.worldedit-libs:bukkit:7.2.10",
+          "name": "Maven: com.sk89q.worldedit.worldedit-libs:bukkit:7.2.12",
           "type": "Library"
         },
         {
@@ -342,11 +342,11 @@
           "type": "Library"
         },
         {
-          "name": "Maven: com.sk89q.worldedit:worldedit-core:7.2.10",
+          "name": "Maven: com.sk89q.worldedit:worldedit-core:7.2.12",
           "type": "Library"
         },
         {
-          "name": "Maven: com.sk89q.worldedit.worldedit-libs:core:7.2.10",
+          "name": "Maven: com.sk89q.worldedit.worldedit-libs:core:7.2.12",
           "type": "Library"
         },
         {

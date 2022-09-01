@@ -529,12 +529,12 @@
       "scope": "provided"
     },
     {
-      "ideaName": "Maven: com.jaoafa:jaosuperachievement2:2.5.25",
+      "ideaName": "Maven: com.jaoafa:jaosuperachievement2:2.5.27",
       "unresolved": false,
       "groupId": "com.jaoafa",
       "artifactId": "jaosuperachievement2",
-      "version": "2.5.25",
-      "baseVersion": "2.5.25",
+      "version": "2.5.27",
+      "baseVersion": "2.5.27",
       "type": "jar",
       "optional": false,
       "scope": "provided"
@@ -793,23 +793,23 @@
       "scope": "compile"
     },
     {
-      "ideaName": "Maven: com.sk89q.worldedit:worldedit-bukkit:7.2.10",
+      "ideaName": "Maven: com.sk89q.worldedit:worldedit-bukkit:7.2.12",
       "unresolved": false,
       "groupId": "com.sk89q.worldedit",
       "artifactId": "worldedit-bukkit",
-      "version": "7.2.10",
-      "baseVersion": "7.2.10",
+      "version": "7.2.12",
+      "baseVersion": "7.2.12",
       "type": "jar",
       "optional": false,
       "scope": "provided"
     },
     {
-      "ideaName": "Maven: com.sk89q.worldedit.worldedit-libs:bukkit:7.2.10",
+      "ideaName": "Maven: com.sk89q.worldedit.worldedit-libs:bukkit:7.2.12",
       "unresolved": false,
       "groupId": "com.sk89q.worldedit.worldedit-libs",
       "artifactId": "bukkit",
-      "version": "7.2.10",
-      "baseVersion": "7.2.10",
+      "version": "7.2.12",
+      "baseVersion": "7.2.12",
       "type": "jar",
       "optional": false,
       "scope": "provided"
@@ -848,23 +848,23 @@
       "scope": "provided"
     },
     {
-      "ideaName": "Maven: com.sk89q.worldedit:worldedit-core:7.2.10",
+      "ideaName": "Maven: com.sk89q.worldedit:worldedit-core:7.2.12",
       "unresolved": false,
       "groupId": "com.sk89q.worldedit",
       "artifactId": "worldedit-core",
-      "version": "7.2.10",
-      "baseVersion": "7.2.10",
+      "version": "7.2.12",
+      "baseVersion": "7.2.12",
       "type": "jar",
       "optional": false,
       "scope": "provided"
     },
     {
-      "ideaName": "Maven: com.sk89q.worldedit.worldedit-libs:core:7.2.10",
+      "ideaName": "Maven: com.sk89q.worldedit.worldedit-libs:core:7.2.12",
       "unresolved": false,
       "groupId": "com.sk89q.worldedit.worldedit-libs",
       "artifactId": "core",
-      "version": "7.2.10",
-      "baseVersion": "7.2.10",
+      "version": "7.2.12",
+      "baseVersion": "7.2.12",
       "type": "jar",
       "optional": false,
       "scope": "provided"

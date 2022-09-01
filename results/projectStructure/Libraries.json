@@ -289,9 +289,9 @@
       ]
     },
     {
-      "name": "Maven: com.jaoafa:jaosuperachievement2:2.5.25",
+      "name": "Maven: com.jaoafa:jaosuperachievement2:2.5.27",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/com/jaoafa/jaosuperachievement2/2.5.25/jaosuperachievement2-2.5.25.jar!/"
+        "jar://$MAVEN_REPOSITORY$/com/jaoafa/jaosuperachievement2/2.5.27/jaosuperachievement2-2.5.27.jar!/"
       ]
     },
     {
@@ -433,15 +433,15 @@
       ]
     },
     {
-      "name": "Maven: com.sk89q.worldedit:worldedit-bukkit:7.2.10",
+      "name": "Maven: com.sk89q.worldedit:worldedit-bukkit:7.2.12",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/com/sk89q/worldedit/worldedit-bukkit/7.2.10/worldedit-bukkit-7.2.10.jar!/"
+        "jar://$MAVEN_REPOSITORY$/com/sk89q/worldedit/worldedit-bukkit/7.2.12/worldedit-bukkit-7.2.12.jar!/"
       ]
     },
     {
-      "name": "Maven: com.sk89q.worldedit.worldedit-libs:bukkit:7.2.10",
+      "name": "Maven: com.sk89q.worldedit.worldedit-libs:bukkit:7.2.12",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/com/sk89q/worldedit/worldedit-libs/bukkit/7.2.10/bukkit-7.2.10.jar!/"
+        "jar://$MAVEN_REPOSITORY$/com/sk89q/worldedit/worldedit-libs/bukkit/7.2.12/bukkit-7.2.12.jar!/"
       ]
     },
     {
@@ -463,15 +463,15 @@
       ]
     },
     {
-      "name": "Maven: com.sk89q.worldedit:worldedit-core:7.2.10",
+      "name": "Maven: com.sk89q.worldedit:worldedit-core:7.2.12",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/com/sk89q/worldedit/worldedit-core/7.2.10/worldedit-core-7.2.10.jar!/"
+        "jar://$MAVEN_REPOSITORY$/com/sk89q/worldedit/worldedit-core/7.2.12/worldedit-core-7.2.12.jar!/"
       ]
     },
     {
-      "name": "Maven: com.sk89q.worldedit.worldedit-libs:core:7.2.10",
+      "name": "Maven: com.sk89q.worldedit.worldedit-libs:core:7.2.12",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/com/sk89q/worldedit/worldedit-libs/core/7.2.10/core-7.2.10.jar!/"
+        "jar://$MAVEN_REPOSITORY$/com/sk89q/worldedit/worldedit-libs/core/7.2.12/core-7.2.12.jar!/"
       ]
     },
     {
