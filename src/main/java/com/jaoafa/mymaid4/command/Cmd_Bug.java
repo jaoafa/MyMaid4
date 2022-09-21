@@ -15,18 +15,12 @@ import cloud.commandframework.Command;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.meta.CommandMeta;
 import com.jaoafa.mymaid4.Main;
-import com.jaoafa.mymaid4.lib.CommandPremise;
-import com.jaoafa.mymaid4.lib.MyMaidCommand;
-import com.jaoafa.mymaid4.lib.MyMaidLibrary;
-import com.jaoafa.mymaid4.lib.NMSManager;
+import com.jaoafa.mymaid4.lib.*;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import okhttp3.*;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -34,17 +28,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class Cmd_Bug extends MyMaidLibrary implements CommandPremise {
     static long sendTime = -1L;
+    static IssueManager.Repository repo = IssueManager.Repository.MyMaid4;
 
     @Override
     public MyMaidCommand.Detail details() {
@@ -177,71 +167,28 @@ public class Cmd_Bug extends MyMaidLibrary implements CommandPremise {
             return;
         }
 
-        String title = meta.getTitle();
-        String author = meta.getAuthor();
-        List<Component> pages = meta.pages();
-        String body = pages.stream()
-            .skip(1)
-            .map(o -> ChatColor.stripColor(PlainTextComponentSerializer.plainText().serialize(o)))
-            .collect(Collectors.joining("\n")) +
-            MessageFormat.format("""
-                    ## システム追加情報
-
-                    - 作成者: [{0} (`{1}`)]({2})
-                    - 執筆者: {3}""",
-                player.getName(),
-                player.getUniqueId().toString(),
-                String.format("https://users.jaoafa.com/%s", player.getUniqueId()),
-                author);
-
         new BukkitRunnable() {
             public void run() {
-                String accessToken = Main.getMyMaidConfig().getGitHubAccessToken();
-                if (accessToken == null) {
-                    SendMessage(player, details(), "不具合報告に必要な設定情報が見つからなかったため、不具合報告ができませんでした。");
-                    return;
+                IssueManager.CreateIssueResponse response = IssueManager.addIssue(player, repo, meta, List.of(IssueManager.Label.BUG));
+                if (response.getErrorMessage() != null) {
+                    // Exception
+                    SendMessage(player, details(), "不具合報告処理に失敗しました: %s".formatted(response.getErrorMessage()));
+                } else if (!response.getStatus()) {
+                    // Error
+                    SendMessage(player, details(), String.format("不具合報告に失敗しました: %d", response.getStatusCode()));
                 }
 
-                String repo = "jaoafa/MyMaid4";
-                String url = String.format("https://api.github.com/repos/%s/issues", repo);
-                JSONObject json = new JSONObject()
-                    .put("title", title)
-                    .put("body", body)
-                    .put("labels", new JSONArray()
-                        .put("\uD83D\uDC1Bbug"));
-
-                try {
-                    OkHttpClient client = new OkHttpClient();
-                    RequestBody requestBody = RequestBody.create(json.toString(), MediaType.parse("application/json; charset=UTF-8"));
-                    Request request = new Request.Builder()
-                        .url(url)
-                        .header("Authorization", String.format("token %s", accessToken))
-                        .post(requestBody)
-                        .build();
-                    JSONObject obj;
-                    try (Response response = client.newCall(request).execute()) {
-                        if (response.code() != 201) {
-                            SendMessage(player, details(), String.format("不具合報告に失敗しました: %d", response.code()));
-                            return;
-                        }
-                        obj = new JSONObject(Objects.requireNonNull(response.body()).string());
-                    }
-
-                    int issueNum = obj.getInt("number");
-                    SendMessage(player, details(), Component.text().append(
-                        Component.text("不具合報告に成功しました。", NamedTextColor.GREEN),
-                        Component.text("こちら", NamedTextColor.AQUA, TextDecoration.UNDERLINED)
-                            .hoverEvent(HoverEvent.showText(Component.text()))
-                            .clickEvent(ClickEvent.openUrl(MessageFormat.format("https://github.com/{0}/issues/{1}", repo, issueNum))),
-                        Component.text("から確認できます。", NamedTextColor.GREEN)
-                    ).build());
-                    SendMessage(player, details(), "不具合の改善報告等は致しかねますので、上記リンク先を定期的にご確認ください。ご報告いただきありがとうございました！");
-                    inv.setItemInMainHand(null);
-                    sendTime = System.currentTimeMillis();
-                } catch (IOException e) {
-                    SendMessage(player, details(), String.format("不具合報告に失敗しました: %s", e.getMessage()));
-                    MyMaidLibrary.reportError(getClass(), e);
-                }
+                // Success
+                SendMessage(player, details(), Component.text().append(
+                    Component.text("不具合報告に成功しました。", NamedTextColor.GREEN),
+                    Component.text("こちら", NamedTextColor.AQUA, TextDecoration.UNDERLINED)
+                        .hoverEvent(HoverEvent.showText(Component.text()))
+                        .clickEvent(ClickEvent.openUrl(MessageFormat.format("https://github.com/{0}/issues/{1}", repo.getRepo(), response.getIssueNumber()))),
+                    Component.text("から確認できます。", NamedTextColor.GREEN)
+                ).build());
+                SendMessage(player, details(), "不具合の改善連絡等は致しかねますので、上記リンク先を定期的にご確認ください。ご報告いただきありがとうございました！");
+                inv.setItemInMainHand(null);
+                sendTime = System.currentTimeMillis();
             }
         }.runTaskAsynchronously(Main.getJavaPlugin());
     }
