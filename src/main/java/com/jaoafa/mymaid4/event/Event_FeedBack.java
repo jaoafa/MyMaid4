@@ -49,11 +49,11 @@ public class Event_FeedBack extends MyMaidLibrary implements Listener, EventPrem
             Component.text("記入した内容で報告する場合は", NamedTextColor.GREEN),
             Component.text("ここ", NamedTextColor.AQUA, TextDecoration.UNDERLINED)
                 .hoverEvent(HoverEvent.showText(Component.text("クリックすると手に持っている本の内容でフィードバックを作成します")))
-                .clickEvent(ClickEvent.runCommand("/bug true")),
+                .clickEvent(ClickEvent.runCommand("/feedback true")),
             Component.text("を、記入可能な本に戻す場合は", NamedTextColor.GREEN),
             Component.text("ここ", NamedTextColor.AQUA, TextDecoration.UNDERLINED)
                 .hoverEvent(HoverEvent.showText(Component.text("クリックすると記入済みの本を記入可能な本に戻します")))
-                .clickEvent(ClickEvent.runCommand("/bug false")),
+                .clickEvent(ClickEvent.runCommand("/feedback false")),
             Component.text("をクリックして下さい。", NamedTextColor.GREEN)
         ));
     }
