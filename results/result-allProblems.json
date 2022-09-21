@@ -1,33 +1,5 @@
 {"version":"3","listProblem":[{
   "tool": "Code Inspection",
-  "category": "Code maturity",
-  "type": "Call to 'printStackTrace()'",
-  "severity": "High",
-  "comment": "Call to 'printStackTrace()' should probably be replaced with more robust logging",
-  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "src/main/java/com/jaoafa/mymaid4/lib/MeboChatBot.java",
-      "language": "JAVA",
-      "line": 70,
-      "offset": 15,
-      "length": 15,
-      "code": {
-        "startLine": 68,
-        "length": 15,
-        "offset": 63,
-        "surroundingCode": "            );\n        } catch (IOException e) {\n            e.printStackTrace();\n            return new MeboResponse(false, 0, \"IOException\", null);\n        }"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "project",
-    "inspectionName": "ThrowablePrintStackTrace"
-  },
-  "hash": "edd929330e890a0053ff0a5cdacf90dc5d3bdca99a1b87b9845295ddc7827a11"
-},{
-  "tool": "Code Inspection",
   "category": "Probable bugs",
   "type": "Constant conditions & exceptions",
   "severity": "High",
@@ -54,6 +26,34 @@
     "inspectionName": "ConstantConditions"
   },
   "hash": "f492a7ec1c52899ed30db7c14388d6f9a66dc572c7509701aca4519cb5910b65"
+},{
+  "tool": "Code Inspection",
+  "category": "Code maturity",
+  "type": "Call to 'printStackTrace()'",
+  "severity": "High",
+  "comment": "Call to 'printStackTrace()' should probably be replaced with more robust logging",
+  "detailsInfo": "Reports calls to `Throwable.printStackTrace()` without arguments.\n\nSuch statements are often used for temporary debugging and should be either removed from the production code\nor replaced with a more robust logging facility.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/com/jaoafa/mymaid4/lib/MeboChatBot.java",
+      "language": "JAVA",
+      "line": 70,
+      "offset": 15,
+      "length": 15,
+      "code": {
+        "startLine": 68,
+        "length": 15,
+        "offset": 63,
+        "surroundingCode": "            );\n        } catch (IOException e) {\n            e.printStackTrace();\n            return new MeboResponse(false, 0, \"IOException\", null);\n        }"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "project",
+    "inspectionName": "ThrowablePrintStackTrace"
+  },
+  "hash": "edd929330e890a0053ff0a5cdacf90dc5d3bdca99a1b87b9845295ddc7827a11"
 },{
   "tool": "Code Inspection",
   "category": "Visibility",
