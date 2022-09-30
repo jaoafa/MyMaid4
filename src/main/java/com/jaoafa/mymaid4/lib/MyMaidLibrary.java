@@ -15,7 +15,8 @@ import cloud.commandframework.context.CommandContext;
 import com.jaoafa.mymaid4.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.utils.FileUpload;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.TextReplacementConfig;
@@ -117,7 +118,7 @@ public class MyMaidLibrary {
             .setFooter(String.format("MyMaid4 %s", Main.getJavaPlugin().getDescription().getVersion()))
             .build();
         reportChannel.sendMessageEmbeds(embed).queue();
-        reportChannel.sendFile(is, "stacktrace.txt").queue();
+        reportChannel.sendFiles(FileUpload.fromData(is, "stacktrace.txt")).queue();
 
         if (Main.getRollbar() != null && !Main.getMyMaidConfig().isDevelopmentServer()) {
             Main.getRollbar().critical(e, "Class: " + clazz.getName());

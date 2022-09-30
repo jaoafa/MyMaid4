@@ -16,7 +16,8 @@ import com.jaoafa.jaosuperachievement2.lib.Achievement;
 import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.lib.*;
 import com.jaoafa.mymaid4.tasks.Task_AutoRemoveJailByjaoium;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.utils.FileUpload;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -148,7 +149,7 @@ public class Event_Antijaoium extends MyMaidLibrary implements Listener, EventPr
             hash,
             exists,
             isWarning ? String.format("\n**[警告]** jaoiumという文字列が含まれていません: `%s`", displayName) : "")).queue();
-        channel.sendFile(file, hash + ".txt").queue();
+        channel.sendFiles(FileUpload.fromData(file, hash + ".txt")).queue();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
