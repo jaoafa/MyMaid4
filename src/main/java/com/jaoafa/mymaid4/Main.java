@@ -138,7 +138,7 @@ public final class Main extends JavaPlugin {
                 Function.identity(), Function.identity());
 
             // case-insensitive support (大文字小文字を区別しない)
-            manager.setCommandSuggestionProcessor((context, strings) -> {
+            manager.commandSuggestionProcessor((context, strings) -> {
                 String input = context.getInputQueue().isEmpty() ? "" : context.getInputQueue().peek().toLowerCase();
                 return strings.stream()
                     .filter(s -> s.toLowerCase().startsWith(input))
@@ -157,12 +157,12 @@ public final class Main extends JavaPlugin {
         );
 
         // Mojangのコマンドパーサー、Brigadierを登録する
-        if (manager.queryCapability(CloudBukkitCapabilities.BRIGADIER)) {
+        if (manager.hasCapability(CloudBukkitCapabilities.BRIGADIER)) {
             manager.registerBrigadier();
         }
 
         // 非同期の引数補完
-        if (manager.queryCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
+        if (manager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
             manager.registerAsynchronousCompletions();
         }
 
