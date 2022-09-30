@@ -273,7 +273,7 @@ public class MyMaidData {
         return jaoBoxPrevious.get(uuid);
     }
 
-    public static Location paradiseLocation = new Location(
+    public static final Location paradiseLocation = new Location(
         Bukkit.getServer().getWorld("Jao_Afa"),
         6050, 68, 6050
     );

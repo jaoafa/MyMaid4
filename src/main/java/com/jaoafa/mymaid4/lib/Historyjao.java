@@ -85,7 +85,7 @@ public class Historyjao {
         EmbedBuilder builder = new EmbedBuilder()
             .setTitle("HISTORY ADDED")
             .setDescription("jaoHistoryに項目が追加されました。")
-            .addField("MinecraftID", player.getName(), false)
+            .addField("MinecraftID", player.getName() != null ? player.getName() : "NULL", false)
             .addField("Message", message, false)
             .setTimestamp(Instant.now())
             .setColor(Color.YELLOW);

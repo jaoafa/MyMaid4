@@ -37,9 +37,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ConvLoc {
-    Pattern LOC_PATTERN = Pattern.compile("^(~?)(-?)([.\\d]+)$");
-    Pattern SELECTOR_PATTERN = Pattern.compile("^@[praes]\\[.*?]$");
-    Pattern XYZ_SELECTOR_PATTERN = Pattern.compile("[^d]([xyz])=([~.\\-0-9]+)");
+    final Pattern LOC_PATTERN = Pattern.compile("^(~?)(-?)([.\\d]+)$");
+    final Pattern SELECTOR_PATTERN = Pattern.compile("^@[praes]\\[.*?]$");
+    final Pattern XYZ_SELECTOR_PATTERN = Pattern.compile("[^d]([xyz])=([~.\\-0-9]+)");
 
     public void replace(Player player, List<Block> blocks, boolean isRelative) {
         List<Replacer> replacers = new ArrayList<>();
@@ -132,8 +132,8 @@ public class ConvLoc {
     }
 
     class Replacer {
-        Block block;
-        boolean isRelative;
+        final Block block;
+        final boolean isRelative;
 
         ReplacerResult result;
         String oldCommand;
@@ -152,11 +152,11 @@ public class ConvLoc {
                 result = ReplacerResult.NOT_TARGET_MATERIAL;
                 return;
             }
-            if (!(block.getState() instanceof CommandBlock cb)) {
+            if (!(block.getState() instanceof CommandBlock state)) {
                 result = ReplacerResult.FAILED_GET_STATE;
                 return;
             }
-            this.cb = cb;
+            this.cb = state;
             String command = cb.getCommand();
             oldCommand = command;
             if (command.isEmpty()) {

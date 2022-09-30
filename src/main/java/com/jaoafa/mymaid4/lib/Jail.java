@@ -51,7 +51,7 @@ public class Jail {
 
     static final Map<UUID, Jail> cache = new HashMap<>();
 
-    public static Map<UUID, Boolean> hasWarned = new HashMap<>();
+    public static final Map<UUID, Boolean> hasWarned = new HashMap<>();
 
     final OfflinePlayer player;
 
