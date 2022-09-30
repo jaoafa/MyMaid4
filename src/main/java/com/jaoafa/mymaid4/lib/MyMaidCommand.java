@@ -64,7 +64,6 @@ public class MyMaidCommand {
         }
     }
 
-    @SuppressWarnings("ClassCanBeRecord")
     public static class Cmd {
         private final Command<CommandSender>[] commands;
 

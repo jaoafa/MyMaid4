@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Task_OldWorldAutoRemove extends BukkitRunnable {
-    List<String> targetWorlds = List.of(
+    final List<String> targetWorlds = List.of(
         "kassi-hp-tk",
         "Jao_Afa_1",
         "Jao_Afa_2",
@@ -39,7 +39,7 @@ public class Task_OldWorldAutoRemove extends BukkitRunnable {
         "Summer2020"
     );
 
-    List<String> nextRemoveWorlds = new ArrayList<>();
+    final List<String> nextRemoveWorlds = new ArrayList<>();
 
     @Override
     public void run() {

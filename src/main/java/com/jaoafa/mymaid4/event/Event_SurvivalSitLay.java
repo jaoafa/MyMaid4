@@ -31,7 +31,7 @@ public class Event_SurvivalSitLay extends MyMaidLibrary implements Listener, Eve
         return "サバイバルモードなどでsitやlayコマンドを使えないようにします。";
     }
 
-    static Set<String> targetCommands = Set.of("/sit", "/lay", "/gsit:sit", "/glay:lay");
+    static final Set<String> targetCommands = Set.of("/sit", "/lay", "/gsit:sit", "/glay:lay");
 
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent event) {

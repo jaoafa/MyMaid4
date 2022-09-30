@@ -165,12 +165,12 @@
         <dependency>
             <groupId>cloud.commandframework</groupId>
             <artifactId>cloud-paper</artifactId>
-            <version>1.6.2</version>
+            <version>1.7.1</version>
         </dependency>
         <dependency>
             <groupId>cloud.commandframework</groupId>
             <artifactId>cloud-minecraft-extras</artifactId>
-            <version>1.6.2</version>
+            <version>1.7.1</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
