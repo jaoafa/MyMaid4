@@ -15,7 +15,8 @@ import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.utils.FileUpload;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -95,8 +96,8 @@ public class Event_NewPlayerAutoBlMap extends MyMaidLibrary implements Listener,
                         return;
                     }
 
-                    channel.sendFile(body.byteStream(), player.getUniqueId() + ".png")
-                        .append(String.format("新規プレイヤー「%s」のブロック編集マップ\nhttps://jaoafa.com/cp/?uuid=%s", player.getName(), player.getUniqueId())).queue(msg -> {
+                    channel.sendFiles(FileUpload.fromData(body.byteStream(), player.getUniqueId() + ".png"))
+                        .addContent(String.format("新規プレイヤー「%s」のブロック編集マップ\nhttps://jaoafa.com/cp/?uuid=%s", player.getName(), player.getUniqueId())).queue(msg -> {
                             Main.getMyMaidLogger().info("NewPlayerAutoBlMap: メッセージ送信完了 (" + msg.getJumpUrl() + ")");
                             response.close();
                         }, failure -> {

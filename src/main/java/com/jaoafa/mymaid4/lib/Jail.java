@@ -15,7 +15,7 @@ import com.jaoafa.jaosuperachievement2.api.Achievementjao;
 import com.jaoafa.jaosuperachievement2.lib.Achievement;
 import com.jaoafa.mymaid4.Main;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -51,7 +51,7 @@ public class Jail {
 
     static final Map<UUID, Jail> cache = new HashMap<>();
 
-    public static Map<UUID, Boolean> hasWarned = new HashMap<>();
+    public static final Map<UUID, Boolean> hasWarned = new HashMap<>();
 
     final OfflinePlayer player;
 

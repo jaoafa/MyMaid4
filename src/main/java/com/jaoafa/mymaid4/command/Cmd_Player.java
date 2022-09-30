@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -57,7 +57,6 @@ public class Cmd_Player extends MyMaidLibrary implements CommandPremise {
         );
     }
 
-    @SuppressWarnings("deprecation")
     void getPermGroup(CommandContext<CommandSender> context) {
         OfflinePlayer player;
         if (context.contains("player")) {

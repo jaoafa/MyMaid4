@@ -47,7 +47,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.4.0</version>
                 <configuration>
                     <finalName>MyMaid4</finalName>
                     <relocations>
@@ -165,12 +165,12 @@
         <dependency>
             <groupId>cloud.commandframework</groupId>
             <artifactId>cloud-paper</artifactId>
-            <version>1.6.2</version>
+            <version>1.7.1</version>
         </dependency>
         <dependency>
             <groupId>cloud.commandframework</groupId>
             <artifactId>cloud-minecraft-extras</artifactId>
-            <version>1.6.2</version>
+            <version>1.7.1</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
@@ -180,7 +180,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>5.0.0-alpha.17</version>
+            <version>5.0.0-alpha.20</version>
             <exclusions>
                 <exclusion>
                     <groupId>club.minnced</groupId>
@@ -204,7 +204,7 @@
         <dependency>
             <groupId>com.jaoafa</groupId>
             <artifactId>jaosuperachievement2</artifactId>
-            <version>2.5.28</version>
+            <version>2.5.29</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -221,7 +221,7 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20220320</version>
+            <version>20220924</version>
         </dependency>
         <dependency>
             <groupId>us.myles</groupId>

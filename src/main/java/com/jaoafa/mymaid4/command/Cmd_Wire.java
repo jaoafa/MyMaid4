@@ -256,7 +256,6 @@ public class Cmd_Wire extends MyMaidLibrary implements CommandPremise {
 
             List<BlockVector2> polylist = polyRegion.getPoints();
             int polyPosY = polyRegion.getMaximumY();
-            int wireRemoveCount = 0;
 
             for (int i = 0; i < polylist.size() - 1; i++) {
                 Location loc1 = new Location(player.getWorld(), polylist.get(i).getX() + 0.5, polyPosY + 0.1725, polylist.get(i).getZ() + 0.5);

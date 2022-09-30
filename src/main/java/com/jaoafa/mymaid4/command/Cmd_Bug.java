@@ -34,7 +34,7 @@ import java.util.List;
 
 public class Cmd_Bug extends MyMaidLibrary implements CommandPremise {
     static long sendTime = -1L;
-    static IssueManager.Repository repo = IssueManager.Repository.MyMaid4;
+    static final IssueManager.Repository repo = IssueManager.Repository.MyMaid4;
 
     @Override
     public MyMaidCommand.Detail details() {

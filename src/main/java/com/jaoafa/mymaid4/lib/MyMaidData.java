@@ -11,7 +11,7 @@
 
 package com.jaoafa.mymaid4.lib;
 
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -273,7 +273,7 @@ public class MyMaidData {
         return jaoBoxPrevious.get(uuid);
     }
 
-    public static Location paradiseLocation = new Location(
+    public static final Location paradiseLocation = new Location(
         Bukkit.getServer().getWorld("Jao_Afa"),
         6050, 68, 6050
     );

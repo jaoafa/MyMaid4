@@ -23,11 +23,10 @@ import java.util.Map;
 public class TeleportAlias {
     static Map<String, String> alias = new HashMap<>();
 
-    public static boolean setAlias(String target, String replacement) {
+    public static void setAlias(String target, String replacement) {
         load();
         alias.put(target, replacement);
         save();
-        return true;
     }
 
     public static boolean removeAlias(String target) {

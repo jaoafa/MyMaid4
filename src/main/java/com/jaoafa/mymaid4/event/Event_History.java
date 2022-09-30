@@ -15,7 +15,7 @@ import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.Historyjao;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.apache.commons.lang.time.DateUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

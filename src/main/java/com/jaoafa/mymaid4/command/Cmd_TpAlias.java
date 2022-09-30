@@ -64,8 +64,8 @@ public class Cmd_TpAlias extends MyMaidLibrary implements CommandPremise {
             SendMessage(context.getSender(), details(), "既に登録されているエイリアスです。");
             return;
         }
-        boolean result = TeleportAlias.setAlias(target, replacement);
-        SendMessage(context.getSender(), details(), "追加に" + (result ? "成功" : "失敗") + "しました。");
+        TeleportAlias.setAlias(target, replacement);
+        SendMessage(context.getSender(), details(), "追加に成功しました。");
     }
 
     void removeAlias(CommandContext<CommandSender> context) {

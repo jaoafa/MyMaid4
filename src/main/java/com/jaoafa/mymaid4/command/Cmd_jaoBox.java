@@ -37,8 +37,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class Cmd_jaoBox extends MyMaidLibrary implements CommandPremise {
-    public static Component viewerTitleComponent = Component.text("jaoBox", NamedTextColor.YELLOW);
-    public static Component registerTitleComponent = Component.join(
+    public static final Component viewerTitleComponent = Component.text("jaoBox", NamedTextColor.YELLOW);
+    public static final Component registerTitleComponent = Component.join(
         JoinConfiguration.noSeparators(),
         Component.text("jaoBox"),
         Component.space(),

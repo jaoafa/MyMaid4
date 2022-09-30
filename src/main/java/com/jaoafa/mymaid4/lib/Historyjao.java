@@ -14,7 +14,7 @@ package com.jaoafa.mymaid4.lib;
 import com.jaoafa.mymaid4.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -85,7 +85,7 @@ public class Historyjao {
         EmbedBuilder builder = new EmbedBuilder()
             .setTitle("HISTORY ADDED")
             .setDescription("jaoHistoryに項目が追加されました。")
-            .addField("MinecraftID", player.getName(), false)
+            .addField("MinecraftID", player.getName() != null ? player.getName() : "NULL", false)
             .addField("Message", message, false)
             .setTimestamp(Instant.now())
             .setColor(Color.YELLOW);

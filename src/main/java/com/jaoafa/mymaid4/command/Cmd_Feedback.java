@@ -34,7 +34,7 @@ import java.util.List;
 
 public class Cmd_Feedback extends MyMaidLibrary implements CommandPremise {
     static long sendTime = -1L;
-    static IssueManager.Repository repo = IssueManager.Repository.jaoMinecraftServer;
+    static final IssueManager.Repository repo = IssueManager.Repository.jaoMinecraftServer;
 
     @Override
     public MyMaidCommand.Detail details() {
