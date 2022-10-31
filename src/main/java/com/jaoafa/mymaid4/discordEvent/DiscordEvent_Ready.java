@@ -13,7 +13,7 @@ package com.jaoafa.mymaid4.discordEvent;
 
 import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.lib.MyMaidData;
-import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.hooks.SubscribeEvent;
 
