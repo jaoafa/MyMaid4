@@ -1,6 +1,9 @@
 name: Change the base branch of all renovate pr to dev branch & Add reviewer
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  schedule:
+    - cron:  '0 0 1 * *'
 
 jobs:
   update:
