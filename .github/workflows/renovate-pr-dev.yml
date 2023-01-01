@@ -55,5 +55,6 @@ jobs:
           fi
           cat ../pr_urls.txt | xargs -L1 gh pr edit -B dep-update/${{ steps.date.outputs.date }} --add-reviewer $REVIEWER
           cat ../pr_urls.txt | xargs -L1 gh pr edit -B dep-update/${{ steps.date.outputs.date }} || true
+          cat ../pr_urls.txt | xargs -L1 gh pr merge --auto -s -d || true
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
