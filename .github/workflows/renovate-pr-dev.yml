@@ -35,9 +35,14 @@ jobs:
 
       - name: Create pull request
         run: |
+          # check exists github.event.sender.login
+          REVIEWER=${{ github.event.sender.login }}
+          if [ -z "$REVIEWER" ]; then
+              REVIEWER="book000"
+          fi
           git commit --allow-empty -m "chore: Update dependencies packages by renovate"
           hub push --set-upstream origin dep-update/${{ steps.date.outputs.date }}
-          hub pull-request -b master -F ../pr_description.txt -r ${{ github.event.sender.login }}
+          hub pull-request -b master -F ../pr_description.txt -r $REVIEWER
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
