@@ -29,7 +29,7 @@ jobs:
         run: |
           gh pr list --app renovate -B master -s open --json url | jq -r ".[].url" > ../pr_urls.txt
           echo -e "Update dependencies packages by renovate (${{ steps.date.outputs.date }})\n\n" > ../pr_description.txt
-          cat ../pr_urls.txt | xargs -L1 echo - >> ../pr_description.txt
+          cat ../pr_urls.txt | xargs -L1 echo - [ ] >> ../pr_description.txt
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
