@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2022 jao Minecraft Server
+ * Copyright (c) 2023 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -23,7 +23,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 public class Event_GameModeCmd extends MyMaidLibrary implements Listener, EventPremise {
     @Override
     public String description() {
-        return "gamemodeコマンドが実行された際に、gコマンドを勧めます。";
+        return "minecraft:gamemodeコマンドが実行された際に、gコマンドを勧めます。";
     }
 
     @EventHandler
@@ -34,8 +34,7 @@ public class Event_GameModeCmd extends MyMaidLibrary implements Listener, EventP
         if (args.length == 0) {
             return; // 本来発生しないと思うけど
         }
-        if (!args[0].equalsIgnoreCase("/gamemode")
-            && !args[0].equalsIgnoreCase("/minecraft:gamemode")) {
+        if (!args[0].equalsIgnoreCase("/minecraft:gamemode")) {
             return; // gamemodeコマンド以外
         }
         if (isAMRV(player)) {
