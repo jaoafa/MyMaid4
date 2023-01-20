@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2022 jao Minecraft Server
+ * Copyright (c) 2023 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -34,7 +34,6 @@ import org.jetbrains.annotations.Nullable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,7 +42,7 @@ public class Cmd_G extends MyMaidLibrary implements CommandPremise {
     public MyMaidCommand.Detail details() {
         return new MyMaidCommand.Detail(
             "g",
-            Collections.singletonList("gm"),
+            List.of("gm", "gamemode"),
             "ゲームモードを変更します。"
         );
     }
