@@ -165,7 +165,7 @@
         <dependency>
             <groupId>cloud.commandframework</groupId>
             <artifactId>cloud-paper</artifactId>
-            <version>1.8.0</version>
+            <version>1.8.1</version>
         </dependency>
         <dependency>
             <groupId>cloud.commandframework</groupId>
