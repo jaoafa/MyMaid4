@@ -170,7 +170,7 @@
         <dependency>
             <groupId>cloud.commandframework</groupId>
             <artifactId>cloud-minecraft-extras</artifactId>
-            <version>1.8.0</version>
+            <version>1.8.2</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
