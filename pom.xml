@@ -165,12 +165,12 @@
         <dependency>
             <groupId>cloud.commandframework</groupId>
             <artifactId>cloud-paper</artifactId>
-            <version>1.8.2</version>
+            <version>1.8.3</version>
         </dependency>
         <dependency>
             <groupId>cloud.commandframework</groupId>
             <artifactId>cloud-minecraft-extras</artifactId>
-            <version>1.8.2</version>
+            <version>1.8.3</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
@@ -204,13 +204,13 @@
         <dependency>
             <groupId>com.jaoafa</groupId>
             <artifactId>jaosuperachievement2</artifactId>
-            <version>2.5.34</version>
+            <version>2.5.39</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.maxmind.geoip2</groupId>
             <artifactId>geoip2</artifactId>
-            <version>4.0.0</version>
+            <version>4.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.vexsoftware</groupId>
@@ -237,7 +237,7 @@
         <dependency>
             <groupId>com.sk89q.worldedit</groupId>
             <artifactId>worldedit-bukkit</artifactId>
-            <version>7.2.13</version>
+            <version>7.2.14</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -254,7 +254,7 @@
         </dependency>
         <dependency>
             <groupId>com.rollbar</groupId>
-            <version>1.9.0</version>
+            <version>1.10.0</version>
             <artifactId>rollbar-java</artifactId>
         </dependency>
         <dependency>
@@ -266,12 +266,12 @@
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api</artifactId>
-            <version>2.11.1</version>
+            <version>2.11.2</version>
         </dependency>
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>nbt-injector</artifactId>
-            <version>2.11.1</version>
+            <version>2.11.2</version>
         </dependency>
     </dependencies>
 </project>
