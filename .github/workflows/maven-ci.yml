@@ -1,0 +1,115 @@
+# Maven でビルドを実行する。マージされたら、リリースを作成する。
+# リリースが作成されたら、本番環境へデプロイする。
+
+name: Maven
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+    types:
+      - opened
+      - synchronize
+    paths:
+      - .github/workflows/maven-ci.yml
+  pull_request_target:
+    branches:
+      - main
+      - master
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.merged == true && github.base_ref || github.event.pull_request.head.sha }}
+
+jobs:
+  maven-ci:
+    name: Maven CI
+    uses: book000/templates/.github/workflows/reusable-maven.yml@master
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+
+    needs:
+      - maven-ci
+
+    steps:
+      - name: Create GitHub deployment
+        uses: chrnorm/deployment-action@v2.0.5
+        id: deployment
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ needs.maven-ci.outputs.tag }}
+          environment: "production"
+          environment-url: https://github.com/${{ github.repository }}/releases/tag/${{ needs.maven-ci.outputs.tag }}
+
+      - name: Update deployment status (in_progress)
+        uses: chrnorm/deployment-status@v2.0.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          state: in_progress
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+
+      - name: Deploy
+        id: deployRequest
+        run: |
+          curl -i -X POST -H 'Authorization: Bearer ${{ secrets.DEPLOY_KEY }}' "${{ secrets.DEPLOY_URL }}" > response.txt
+          cat response.txt
+
+      - name: Is Successful Deploy
+        if: ${{ success() }}
+        run: |
+          cat <<EOF > comment.txt
+          # :white_check_mark: デプロイが完了しました
+
+          プルリクエストがマージされたため、本番環境へのデプロイを行いました。
+          バージョンは \`${{ needs.maven-ci.outputs.version }}\` です。
+          反映は本番環境の再起動後ですので、アクティブログインユーザーの同意を得て再起動するか、3時の自動再起動を待ってください。
+
+          https://github.com/${{ github.repository }}/releases/tag/${{ needs.maven-ci.outputs.tag }}
+          EOF
+
+          gh pr comment ${{ github.event.pull_request.number }} -R ${{ github.repository }} -F comment.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Is Failed Deploy
+        if: ${{ failure() }}
+        run: |
+          cat <<EOF > comment.txt
+          # :x: デプロイに失敗しました
+
+          プルリクエストがマージされたため、本番環境へのデプロイを行おうとしましたが失敗しました。
+          エラー内容は以下の通りです。
+
+          \`\`\`
+          $(cat response.txt)
+          \`\`\`
+
+          https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          EOF
+
+          gh pr comment ${{ github.event.pull_request.number }} -R ${{ github.repository }} -F comment.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Is Successful Deploy
+        if: ${{ success() }}
+        uses: chrnorm/deployment-status@v2.0.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          state: success
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+
+      - name: Update deployment status (failure)
+        if: ${{ failure() }}
+        uses: chrnorm/deployment-status@v2.0.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          state: failure
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
